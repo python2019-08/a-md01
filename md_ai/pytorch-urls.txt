@@ -1,0 +1,41 @@
+【PyTorch深度学习实战案例】70个练手项目合集，七天练完，练完即可就业！还不拿下 ！！！（很少有人可以把pytorch讲的如此通俗易懂了）
+5.3万
+2023-02-13 17:35:11
+https://www.bilibili.com/video/BV1a14y1c72R?p=10
+
+
+【不要再看那些过时的PyTorch老教程了】2024巨献教程，PyTorch入门小白最新版全套教程(PyTorch入门/深度学习/神经网络/项目实战教程）
+https://www.bilibili.com/video/BV1pVWWeRELf?p=2
+
+19、Transformer模型Encoder原理精讲及其PyTorch逐行实现_哔哩哔哩_bilibili
+2021-11-27 00:49:46
+https://www.bilibili.com/video/BV1cP4y1V7GF/?spm_id_from=333.788&vd_source=4212b105520112daf65694a1e5944e23
+
+Transformer代码(源码Pytorch版本)从零解读(Pytorch版本）
+2021-10-15 22:02:22 
+https://www.bilibili.com/video/BV1dR4y1E7aL?p=1
+
+Transformer的PyTorch实现_哔哩哔哩_bilibili
+2020-07-14 15:06:24
+https://www.bilibili.com/video/BV1mk4y1q7eK?p=1
+ 
+
+零基础AI入门实战【深度学习+pytorch】_哔哩哔哩_bilibili
+https://www.bilibili.com/cheese/play/ss11872?query_from=0&search_id=2345962212476245621&search_query=pytorch+%E5%AE%9E%E6%88%98&csource=common_hpsearch_null_null&spm_id_from=333.337.search-card.all.click
+
+
+Pytorch框架与经典卷积神经网络与实战_哔哩哔哩_bilibili
+https://www.bilibili.com/video/BV1e34y1M7wR/?spm_id_from=333.337.search-card.all.click&vd_source=4212b105520112daf65694a1e5944e23
+=====================================================
+
+【李宏毅】2024年公认最好的【LLM大模型】教程！大模型入门到进阶，一套全解决！2024生成式人工智慧-附带课件代码
+https://www.bilibili.com/video/BV1XS411w7qr?p=1
+
+【精选】大模型开发教程：只用pytorch 从零训练自己的大模型应用;大模型源码解读 大模型训练流程 分词器设计 GPU显存 本地部署等人工智能大模型入门课程
+授课大咖：卢菁博士【北京大学博士后人工智能专家】只用pytorch,从零训练自己的大模型应用
+https://www.bilibili.com/video/BV1V1421t7hg?p=1
+
+
+【吹爆！】【AIGC扩散学习+多模态+大模型】入门到实战，全程通俗易懂干货分享-北京大学卢菁博士授课—人工智能/机器学习/图像处理
+2023-12-12 22:26:33
+https://www.bilibili.com/video/BV15j411p71v?p=1

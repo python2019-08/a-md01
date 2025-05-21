@@ -1,0 +1,1051 @@
+C:\_abel\_stu\map\tangram-es>mkdir build
+
+C:\_abel\_stu\map\tangram-es>cmake -S . -B .\build -G "Visual Studio 16 2019" -DCMAKE_TOOLCHAIN_FILE="C:\Programs\vcpkg-2021.05.12\scripts\buildsystems\vcpkg.cmake"
+-- Running vcpkg install
+Warning: The following VS instances are excluded because the English language pack is unavailable.
+    C:\Program Files (x86)\Microsoft Visual Studio\2019\Community
+Please install the English language pack.
+No suitable Visual Studio instances were found
+-- Running vcpkg install - failed
+CMake Error at C:/Programs/vcpkg-2021.05.12/scripts/buildsystems/vcpkg.cmake:898 (message):
+  vcpkg install failed.  See logs for more information:
+  C:\_abel\_stu\map\tangram-es\build\vcpkg-manifest-install.log
+Call Stack (most recent call first):
+  C:/Programs/CMake/share/cmake-3.22/Modules/CMakeDetermineSystem.cmake:124 (include)
+  CMakeLists.txt:3 (project)
+
+
+-- Configuring incomplete, errors occurred!
+
+C:\_abel\_stu\map\tangram-es>cmake -S . -B .\build -G "Visual Studio 16 2019" -DCMAKE_TOOLCHAIN_FILE="C:\Programs\vcpkg-2021.05.12\scripts\buildsystems\vcpkg.cmake"
+-- Running vcpkg install
+Detecting compiler hash for triplet x64-windows...
+A suitable version of powershell-core was not found (required v7.1.0). Downloading portable powershell-core v7.1.0...
+Downloading powershell-core...
+  https://github.com/PowerShell/PowerShell/releases/download/v7.1.3/PowerShell-7.1.3-win-x86.zip -> C:\Programs\vcpkg-2021.05.12\downloads\PowerShell-7.1.3-win-x86.zip
+Extracting powershell-core...
+A suitable version of 7zip was not found (required v18.1.0). Downloading portable 7zip v18.1.0...
+Downloading 7zip...
+  https://www.nuget.org/api/v2/package/7-Zip.CommandLine/18.1.0 -> C:\Programs\vcpkg-2021.05.12\downloads\7-zip.commandline.18.1.0.nupkg
+Extracting 7zip...
+A suitable version of nuget was not found (required v5.5.0). Downloading portable nuget v5.5.0...
+Downloading nuget...
+  https://dist.nuget.org/win-x86-commandline/v5.5.1/nuget.exe -> C:\Programs\vcpkg-2021.05.12\downloads\22ea847d-nuget.exe
+The following packages will be built and installed:
+    benchmark[core]:x64-windows -> 1.5.2
+    brotli[core]:x64-windows -> 1.0.9#1
+    bzip2[core]:x64-windows -> 1.0.8#1
+    curl[core,http2,non-http,schannel,ssl,sspi,winssl]:x64-windows -> 7.74.0#4
+    egl-registry[core]:x64-windows -> 2020-02-20
+    freetype[brotli,bzip2,core,png,zlib]:x64-windows -> 2.10.4
+    glad[core,loader]:x64-windows -> 0.1.34
+    glfw3[core]:x64-windows -> 3.3.3
+    harfbuzz[core,icu]:x64-windows -> 2.7.4#2
+    icu[core]:x64-windows -> 69.1#9
+    imgui[core,docking-experimental]:x64-windows -> 1.82
+    libpng[core]:x64-windows -> 1.6.37#14
+    nghttp2[core]:x64-windows -> 1.42.0
+    opengl-registry[core]:x64-windows -> 2020-03-25
+    vcpkg-cmake[core]:x64-windows -> 2021-02-28#2
+    vcpkg-cmake-config[core]:x64-windows -> 2021-02-26#1
+    yaml-cpp[core]:x64-windows -> 0.6.3
+    zlib[core]:x64-windows -> 1.2.11#10
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\c7\c7ea62ad193ee0bf45d32e5b49e3c606c53b8d9e.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\61\61681fbc6e48f61504007030f8f0c58028b8898f.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\b0\b0e7c066e2740f31d31e1c78ffa7b4140d85e0cf.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\16\16e551bb77ea6e405f68e74d133d28646d79523c.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\f9\f98a5695574e7f86015e7de28def22ec6f967314.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\63\631068d6be99f90ef82ea1b210cec49fed45cc33.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\5b\5bcd262fb4cfde1cdc1a3ca2e157bde26cfeecad.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\75\756cf83e35be90c36e9b50a598f63d89af72edfc.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\cd\cdaa57634811812734e5d90b4b42b186accb66e6.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\67\674023600018516cc8a31933c66c0108e5220be2.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\cc\ccc6225ea9212aea5244ba25400b7e9d3fac883f.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\e8\e8f23708e99e272d75cbf37550a0a2e9d9dc818c.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\54\5452f84f8f1d5aa37b912689b5d8a1bb79dde4e4.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\cc\cc4d683587e8f85be86714277eadf6e44608412c.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\05\05647483489a77ad2a5f83bf23388ff48be247f4.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\27\274fd01bd130b37a5d4c7834bcb2a25b5d858483.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\9a\9a2e5551440042f62ab13812af3e86e7d90c394d.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\a5\a5db952ffa6290d680c5412d11aee97da0a35b75.zip
+Starting package 1/18: benchmark:x64-windows
+Building package benchmark[core]:x64-windows...
+-- Note: benchmark only supports static library linkage. Building static library.
+-- Downloading https://github.com/google/benchmark/archive/73d4d5e8d6d449fc8663765a42aa8aeeee844489.tar.gz -> google-benchmark-73d4d5e8d6d449fc8663765a42aa8aeeee844489.tar.gz...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/google-benchmark-73d4d5e8d6d449fc8663765a42aa8aeeee844489.tar.gz
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/benchmark/src/eeee844489-75b6880063.clean
+-- Found external ninja('1.10.2').
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Downloading https://repo.msys2.org/mingw/i686/mingw-w64-i686-pkg-config-0.29.2-2-any.pkg.tar.zst -> msys-mingw-w64-i686-pkg-config-0.29.2-2-any.pkg.tar.zst...
+-- Downloading https://repo.msys2.org/mingw/i686/mingw-w64-i686-libwinpthread-git-8.0.0.5906.c9a21571-1-any.pkg.tar.zst -> msys-mingw-w64-i686-libwinpthread-git-8.0.0.5906.c9a21571-1-any.pkg.tar.zst...
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/50864d9fae363d6e
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/benchmark_x64-windows/lib/pkgconfig/benchmark.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/benchmark_x64-windows/debug/lib/pkgconfig/benchmark.pc
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/benchmark_x64-windows/share/benchmark/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\c7\c7ea62ad193ee0bf45d32e5b49e3c606c53b8d9e.zip
+Building package benchmark[core]:x64-windows... done
+Installing package benchmark[core]:x64-windows...
+Installing package benchmark[core]:x64-windows... done
+Elapsed time for package benchmark:x64-windows: 18.29 s
+Starting package 2/18: nghttp2:x64-windows
+Building package nghttp2[core]:x64-windows...
+-- Downloading https://github.com/nghttp2/nghttp2/archive/v1.42.0.tar.gz -> nghttp2-nghttp2-v1.42.0.tar.gz...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/nghttp2-nghttp2-v1.42.0.tar.gz
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/nghttp2/src/v1.42.0-69d49d807f.clean
+-- Found external ninja('1.10.2').
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/50864d9fae363d6e
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/nghttp2_x64-windows/lib/pkgconfig/libnghttp2.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/nghttp2_x64-windows/debug/lib/pkgconfig/libnghttp2.pc
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/nghttp2_x64-windows/share/nghttp2/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\61\61681fbc6e48f61504007030f8f0c58028b8898f.zip
+Building package nghttp2[core]:x64-windows... done
+Installing package nghttp2[core]:x64-windows...
+Installing package nghttp2[core]:x64-windows... done
+Elapsed time for package nghttp2:x64-windows: 19.6 s
+Starting package 3/18: zlib:x64-windows
+Building package zlib[core]:x64-windows...
+-- Downloading http://www.zlib.net/zlib-1.2.11.tar.gz -> zlib1211.tar.gz...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/zlib1211.tar.gz
+-- Applying patch cmake_dont_build_more_than_needed.patch
+-- Applying patch 0001-Prevent-invalid-inclusions-when-HAVE_-is-set-to-0.patch
+-- Applying patch add_debug_postfix_on_mingw.patch
+-- Applying patch 0002-android-build-mingw.patch
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/zlib/src/1.2.11-e9a093319e.clean
+-- Found external ninja('1.10.2').
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/50864d9fae363d6e
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/zlib_x64-windows/lib/pkgconfig/zlib.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/zlib_x64-windows/debug/lib/pkgconfig/zlib.pc
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/zlib_x64-windows/share/zlib/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\b0\b0e7c066e2740f31d31e1c78ffa7b4140d85e0cf.zip
+Building package zlib[core]:x64-windows... done
+Installing package zlib[core]:x64-windows...
+Installing package zlib[core]:x64-windows... done
+Elapsed time for package zlib:x64-windows: 4.98 s
+Starting package 4/18: curl:x64-windows
+Building package curl[core,http2,non-http,schannel,ssl,sspi,winssl]:x64-windows...
+-- Downloading https://github.com/curl/curl/archive/e052859759b34d0e05ce0f17244873e5cd7b457b.tar.gz -> curl-curl-e052859759b34d0e05ce0f17244873e5cd7b457b.tar.gz...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/curl-curl-e052859759b34d0e05ce0f17244873e5cd7b457b.tar.gz
+-- Applying patch 0002_fix_uwp.patch
+-- Applying patch 0004_nghttp2_staticlib.patch
+-- Applying patch 0005_remove_imp_suffix.patch
+-- Applying patch 0006_fix_tool_depends.patch
+-- Applying patch 0007_disable_tool_export_curl_target.patch
+-- Applying patch 0009_fix_openssl_config.patch
+-- Applying patch 0010_fix_othertests_cmake.patch
+-- Applying patch 0011_fix_static_build.patch
+-- Applying patch 0012-fix-dependency-idn2.patch
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/curl/src/e5cd7b457b-f116018cb9.clean
+-- Found external ninja('1.10.2').
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/curl_x64-windows/share/curl/curl-config
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/50864d9fae363d6e
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/curl_x64-windows/lib/pkgconfig/libcurl.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/curl_x64-windows/debug/lib/pkgconfig/libcurl.pc
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/curl_x64-windows/share/curl/vcpkg-cmake-wrapper.cmake
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/curl_x64-windows/share/curl/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\16\16e551bb77ea6e405f68e74d133d28646d79523c.zip
+Building package curl[core,http2,non-http,schannel,ssl,sspi,winssl]:x64-windows... done
+Installing package curl[core,http2,non-http,schannel,ssl,sspi,winssl]:x64-windows...
+Installing package curl[core,http2,non-http,schannel,ssl,sspi,winssl]:x64-windows... done
+Elapsed time for package curl:x64-windows: 43.13 s
+Starting package 5/18: vcpkg-cmake-config:x64-windows
+Building package vcpkg-cmake-config[core]:x64-windows...
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/vcpkg-cmake-config_x64-windows/share/vcpkg-cmake-config/vcpkg_cmake_config_fixup.cmake
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/vcpkg-cmake-config_x64-windows/share/vcpkg-cmake-config/vcpkg-port-config.cmake
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/vcpkg-cmake-config_x64-windows/share/vcpkg-cmake-config/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\f9\f98a5695574e7f86015e7de28def22ec6f967314.zip
+Building package vcpkg-cmake-config[core]:x64-windows... done
+Installing package vcpkg-cmake-config[core]:x64-windows...
+Installing package vcpkg-cmake-config[core]:x64-windows... done
+Elapsed time for package vcpkg-cmake-config:x64-windows: 88.88 ms
+Starting package 6/18: vcpkg-cmake:x64-windows
+Building package vcpkg-cmake[core]:x64-windows...
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/vcpkg-cmake_x64-windows/share/vcpkg-cmake/vcpkg_cmake_configure.cmake
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/vcpkg-cmake_x64-windows/share/vcpkg-cmake/vcpkg_cmake_build.cmake
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/vcpkg-cmake_x64-windows/share/vcpkg-cmake/vcpkg_cmake_install.cmake
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/vcpkg-cmake_x64-windows/share/vcpkg-cmake/vcpkg-port-config.cmake
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/vcpkg-cmake_x64-windows/share/vcpkg-cmake/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\63\631068d6be99f90ef82ea1b210cec49fed45cc33.zip
+Building package vcpkg-cmake[core]:x64-windows... done
+Installing package vcpkg-cmake[core]:x64-windows...
+Installing package vcpkg-cmake[core]:x64-windows... done
+Elapsed time for package vcpkg-cmake:x64-windows: 115.4 ms
+Starting package 7/18: egl-registry:x64-windows
+Building package egl-registry[core]:x64-windows...
+-- Downloading https://github.com/KhronosGroup/EGL-Registry/archive/11478904448bbdf5757b798c856a525aa2b351b1.tar.gz -> KhronosGroup-EGL-Registry-11478904448bbdf5757b798c856a525aa2b351b1.tar.gz...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/KhronosGroup-EGL-Registry-11478904448bbdf5757b798c856a525aa2b351b1.tar.gz
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/egl-registry/src/5aa2b351b1-2a8c3e3154.clean
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/egl-registry_x64-windows/share/egl-registry/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\5b\5bcd262fb4cfde1cdc1a3ca2e157bde26cfeecad.zip
+Building package egl-registry[core]:x64-windows... done
+Installing package egl-registry[core]:x64-windows...
+Installing package egl-registry[core]:x64-windows... done
+Elapsed time for package egl-registry:x64-windows: 3.23 s
+Starting package 8/18: opengl-registry:x64-windows
+Building package opengl-registry[core]:x64-windows...
+-- Downloading https://github.com/KhronosGroup/OpenGL-Registry/archive/4594c03239fb76580bc5d5a13acb2a8f563f0158.tar.gz -> KhronosGroup-OpenGL-Registry-4594c03239fb76580bc5d5a13acb2a8f563f0158.tar.gz...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/KhronosGroup-OpenGL-Registry-4594c03239fb76580bc5d5a13acb2a8f563f0158.tar.gz
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/opengl-registry/src/8f563f0158-717a41e24a.clean
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/opengl-registry_x64-windows/share/opengl-registry/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\75\756cf83e35be90c36e9b50a598f63d89af72edfc.zip
+Building package opengl-registry[core]:x64-windows... done
+Installing package opengl-registry[core]:x64-windows...
+Installing package opengl-registry[core]:x64-windows... done
+Elapsed time for package opengl-registry:x64-windows: 15.72 s
+Starting package 9/18: glad:x64-windows
+Building package glad[core,loader]:x64-windows...
+-- Note: glad only supports static library linkage. Building static library.
+-- Downloading https://github.com/Dav1dde/glad/archive/7ece538856bf124d798ab323c8e1e64ebb83cb50.tar.gz -> Dav1dde-glad-7ece538856bf124d798ab323c8e1e64ebb83cb50.tar.gz...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/Dav1dde-glad-7ece538856bf124d798ab323c8e1e64ebb83cb50.tar.gz
+-- Applying patch encoding.patch
+-- Applying patch find_python.patch
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/glad/src/4ebb83cb50-009ec283eb.clean
+-- This version of glad uses the compatibility profile. To use the core profile instead, create an overlay port of this with GLAD_PROFILE set to 'core' or set GLAD_PROFILE to 'core' in a custom triplet.
+-- This recipe is at C:/Programs/vcpkg-2021.05.12/ports/glad
+-- See the overlay ports documentation at https://github.com/microsoft/vcpkg/blob/master/docs/specifications/ports-overlay.md
+-- Downloading https://www.python.org/ftp/python/3.9.2/python-3.9.2-embed-amd64.zip -> python-3.9.2-embed-amd64.zip...
+-- Found external ninja('1.10.2').
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/glad_x64-windows/share/glad/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\cd\cdaa57634811812734e5d90b4b42b186accb66e6.zip
+Building package glad[core,loader]:x64-windows... done
+Installing package glad[core,loader]:x64-windows...
+Installing package glad[core,loader]:x64-windows... done
+Elapsed time for package glad:x64-windows: 6.788 s
+Starting package 10/18: glfw3:x64-windows
+Building package glfw3[core]:x64-windows...
+-- Downloading https://github.com/glfw/glfw/archive/3.3.3.tar.gz -> glfw-glfw-3.3.3.tar.gz...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/glfw-glfw-3.3.3.tar.gz
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/glfw3/src/3.3.3-47325b0495.clean
+-- Found external ninja('1.10.2').
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/50864d9fae363d6e
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/glfw3_x64-windows/lib/pkgconfig/glfw3.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/glfw3_x64-windows/debug/lib/pkgconfig/glfw3.pc
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/glfw3_x64-windows/share/glfw3/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\67\674023600018516cc8a31933c66c0108e5220be2.zip
+Building package glfw3[core]:x64-windows... done
+Installing package glfw3[core]:x64-windows...
+Installing package glfw3[core]:x64-windows... done
+Elapsed time for package glfw3:x64-windows: 5.06 s
+Starting package 11/18: icu:x64-windows
+Building package icu[core]:x64-windows...
+-- Downloading https://github.com/unicode-org/icu/releases/download/release-69-1/icu4c-69_1-src.tgz -> icu4c-69_1-src.tgz...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/icu4c-69_1-src.tgz
+-- Applying patch C:/Programs/vcpkg-2021.05.12/ports/icu/disable-escapestr-tool.patch
+-- Applying patch C:/Programs/vcpkg-2021.05.12/ports/icu/remove-MD-from-configure.patch
+-- Applying patch C:/Programs/vcpkg-2021.05.12/ports/icu/fix_parallel_build_on_windows.patch
+-- Applying patch C:/Programs/vcpkg-2021.05.12/ports/icu/fix-extra.patch
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/icu/src/c-69_1-src-78c1b28057.clean
+-- Found external ninja('1.10.2').
+-- Configuring x64-windows
+-- Downloading https://repo.msys2.org/msys/x86_64/bash-4.4.023-2-x86_64.pkg.tar.xz -> msys-bash-4.4.023-2-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/autoconf-2.69-5-any.pkg.tar.xz -> msys-autoconf-2.69-5-any.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/diffutils-3.7-1-x86_64.pkg.tar.xz -> msys-diffutils-3.7-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/binutils-2.34-4-x86_64.pkg.tar.zst -> msys-binutils-2.34-4-x86_64.pkg.tar.zst...
+-- Downloading https://repo.msys2.org/msys/x86_64/libtool-2.4.6-9-x86_64.pkg.tar.xz -> msys-libtool-2.4.6-9-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/file-5.39-1-x86_64.pkg.tar.zst -> msys-file-5.39-1-x86_64.pkg.tar.zst...
+-- Downloading https://repo.msys2.org/msys/x86_64/zlib-1.2.11-1-x86_64.pkg.tar.xz -> msys-zlib-1.2.11-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/libbz2-1.0.8-2-x86_64.pkg.tar.xz -> msys-libbz2-1.0.8-2-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/coreutils-8.32-1-x86_64.pkg.tar.xz -> msys-coreutils-8.32-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/grep-3.0-2-x86_64.pkg.tar.xz -> msys-grep-3.0-2-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/sed-4.8-1-x86_64.pkg.tar.xz -> msys-sed-4.8-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/libpcre-8.44-1-x86_64.pkg.tar.xz -> msys-libpcre-8.44-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/m4-1.4.18-2-x86_64.pkg.tar.xz -> msys-m4-1.4.18-2-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/automake-wrapper-11-1-any.pkg.tar.xz -> msys-automake-wrapper-11-1-any.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/gawk-5.1.0-1-x86_64.pkg.tar.xz -> msys-gawk-5.1.0-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/mpfr-4.1.0-1-x86_64.pkg.tar.zst -> msys-mpfr-4.1.0-1-x86_64.pkg.tar.zst...
+-- Downloading https://repo.msys2.org/msys/x86_64/gmp-6.2.0-1-x86_64.pkg.tar.xz -> msys-gmp-6.2.0-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/libreadline-8.0.004-1-x86_64.pkg.tar.xz -> msys-libreadline-8.0.004-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/ncurses-6.2-1-x86_64.pkg.tar.xz -> msys-ncurses-6.2-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/automake1.16-1.16.2-2-any.pkg.tar.zst -> msys-automake1.16-1.16.2-2-any.pkg.tar.zst...
+-- Downloading https://repo.msys2.org/msys/x86_64/perl-5.32.0-2-x86_64.pkg.tar.zst -> msys-perl-5.32.0-2-x86_64.pkg.tar.zst...
+-- Downloading https://repo.msys2.org/msys/x86_64/perl-5.32.0-2-x86_64.pkg.tar.zst... Failed. Status: 92;"Stream error in the HTTP/2 framing layer"
+-- Downloading https://www2.futureware.at/~nickoe/msys2-mirror/msys/x86_64/perl-5.32.0-2-x86_64.pkg.tar.zst -> msys-perl-5.32.0-2-x86_64.pkg.tar.zst...
+-- Downloading https://repo.msys2.org/msys/x86_64/libcrypt-2.1-2-x86_64.pkg.tar.xz -> msys-libcrypt-2.1-2-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/pkg-config-0.29.2-4-x86_64.pkg.tar.zst -> msys-pkg-config-0.29.2-4-x86_64.pkg.tar.zst...
+-- Downloading https://repo.msys2.org/msys/x86_64/make-4.3-1-x86_64.pkg.tar.xz -> msys-make-4.3-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/findutils-4.7.0-1-x86_64.pkg.tar.xz -> msys-findutils-4.7.0-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/libintl-0.19.8.1-1-x86_64.pkg.tar.xz -> msys-libintl-0.19.8.1-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/libiconv-1.16-2-x86_64.pkg.tar.zst -> msys-libiconv-1.16-2-x86_64.pkg.tar.zst...
+-- Downloading https://repo.msys2.org/msys/x86_64/gcc-libs-9.3.0-1-x86_64.pkg.tar.xz -> msys-gcc-libs-9.3.0-1-x86_64.pkg.tar.xz...
+-- Downloading https://repo.msys2.org/msys/x86_64/msys2-runtime-3.1.6-3-x86_64.pkg.tar.xz -> msys-msys2-runtime-3.1.6-3-x86_64.pkg.tar.xz...
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/d589ebc2087b2b2c
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/50864d9fae363d6e
+-- Configuring x64-windows-dbg
+-- Configuring x64-windows-rel
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/969c0913b9df89e1
+-- Building x64-windows-dbg
+-- Installing x64-windows-dbg
+-- Building x64-windows-rel
+-- Installing x64-windows-rel
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/tools/icu/config/icucross.inc
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/tools/icu/config/icucross.mk
+CMake Warning at scripts/cmake/vcpkg_copy_pdbs.cmake:69 (message):
+  Could not find a matching pdb file
+  for:C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/bin/icudt69.dll
+
+      C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/bin/icuin69.dll
+      C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/bin/icuio69.dll
+      C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/bin/icutu69.dll
+      C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/bin/icuuc69.dll
+      C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/debug/bin/icudtd69.dll
+      C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/debug/bin/icuind69.dll
+      C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/debug/bin/icuiod69.dll
+      C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/debug/bin/icutud69.dll
+      C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/debug/bin/icuucd69.dll
+
+Call Stack (most recent call first):
+  ports/icu/portfile.cmake:230 (vcpkg_copy_pdbs)
+  scripts/ports.cmake:142 (include)
+
+
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/50864d9fae363d6e
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/lib/pkgconfig/icu-i18n.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/lib/pkgconfig/icu-io.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/lib/pkgconfig/icu-uc.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/debug/lib/pkgconfig/icu-i18n.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/debug/lib/pkgconfig/icu-io.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/debug/lib/pkgconfig/icu-uc.pc
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/icu_x64-windows/share/icu/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\cc\ccc6225ea9212aea5244ba25400b7e9d3fac883f.zip
+Building package icu[core]:x64-windows... done
+Installing package icu[core]:x64-windows...
+Installing package icu[core]:x64-windows... done
+Elapsed time for package icu:x64-windows: 31.07 min
+Starting package 12/18: libpng:x64-windows
+Building package libpng[core]:x64-windows...
+-- Downloading https://github.com/glennrp/libpng/archive/v1.6.37.tar.gz -> glennrp-libpng-v1.6.37.tar.gz...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/glennrp-libpng-v1.6.37.tar.gz
+-- Applying patch use_abort.patch
+-- Applying patch cmake.patch
+-- Applying patch pkgconfig.patch
+-- Applying patch pkgconfig.2.patch
+-- Applying patch fix-export-targets.patch
+-- Applying patch macos-arch-fix.patch
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/libpng/src/v1.6.37-05658d6f1a.clean
+-- Found external ninja('1.10.2').
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/50864d9fae363d6e
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/libpng_x64-windows/lib/pkgconfig/libpng.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/libpng_x64-windows/lib/pkgconfig/libpng16.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/libpng_x64-windows/debug/lib/pkgconfig/libpng.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/libpng_x64-windows/debug/lib/pkgconfig/libpng16.pc
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/libpng_x64-windows/share/libpng/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\e8\e8f23708e99e272d75cbf37550a0a2e9d9dc818c.zip
+Building package libpng[core]:x64-windows... done
+Installing package libpng[core]:x64-windows...
+Installing package libpng[core]:x64-windows... done
+Elapsed time for package libpng:x64-windows: 7.135 s
+Starting package 13/18: bzip2:x64-windows
+Building package bzip2[core]:x64-windows...
+-- Fetching https://sourceware.org/git/bzip2.git...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/bzip2-75a94bea3918e612b879d6a11ca64b8689526147.tar.gz
+-- Applying patch fix-import-export-macros.patch
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/bzip2/src/8689526147-1ef169fbaa.clean
+-- Found external ninja('1.10.2').
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/50864d9fae363d6e
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/bzip2_x64-windows/lib/pkgconfig/bzip2.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/bzip2_x64-windows/debug/lib/pkgconfig/bzip2.pc
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/bzip2_x64-windows/share/bzip2/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\54\5452f84f8f1d5aa37b912689b5d8a1bb79dde4e4.zip
+Building package bzip2[core]:x64-windows... done
+Installing package bzip2[core]:x64-windows...
+Installing package bzip2[core]:x64-windows... done
+Elapsed time for package bzip2:x64-windows: 6.026 s
+Starting package 14/18: brotli:x64-windows
+Building package brotli[core]:x64-windows...
+-- Downloading https://github.com/google/brotli/archive/e61745a6b7add50d380cfd7d3883dd6c62fc2c71.tar.gz -> google-brotli-e61745a6b7add50d380cfd7d3883dd6c62fc2c71.tar.gz...
+-- Extracting source C:/Programs/vcpkg-2021.05.12/downloads/google-brotli-e61745a6b7add50d380cfd7d3883dd6c62fc2c71.tar.gz
+-- Applying patch install.patch
+-- Applying patch fix-arm-uwp.patch
+-- Applying patch pkgconfig.patch
+-- Applying patch fix-ios.patch
+-- Using source at C:/Programs/vcpkg-2021.05.12/buildtrees/brotli/src/6c62fc2c71-7c6c2710e9.clean
+-- Found external ninja('1.10.2').
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Using msys root at C:/Programs/vcpkg-2021.05.12/downloads/tools/msys2/50864d9fae363d6e
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/brotli_x64-windows/lib/pkgconfig/libbrotlicommon.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/brotli_x64-windows/lib/pkgconfig/libbrotlidec.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/brotli_x64-windows/lib/pkgconfig/libbrotlienc.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/brotli_x64-windows/debug/lib/pkgconfig/libbrotlicommon.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/brotli_x64-windows/debug/lib/pkgconfig/libbrotlidec.pc
+-- Fixing pkgconfig file: C:/Programs/vcpkg-2021.05.12/packages/brotli_x64-windows/debug/lib/pkgconfig/libbrotlienc.pc
+-- Installing: C:/Programs/vcpkg-2021.05.12/packages/brotli_x64-windows/share/brotli/copyright
+-- Performing post-build validation
+-- Performing post-build validation done
+Stored binary cache: C:\Users\pytho\AppData\Local\vcpkg\archives\cc\cc4d683587e8f85be86714277eadf6e44608412c.zip
+Building package brotli[core]:x64-windows... done
+Installing package brotli[core]:x64-windows...
+Installing package brotli[core]:x64-windows... done
+Elapsed time for package brotli:x64-windows: 9.719 s
+Starting package 15/18: freetype:x64-windows
+Building package freetype[brotli,bzip2,core,png,zlib]:x64-windows...
+-- Trying auto-select mirror...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:183 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- The default mirror is in Disaster Recovery mode, trying other mirrors...
+-- Trying mirror cfhcable...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=cfhcable -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=cfhcable... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror pilotfiber...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=pilotfiber -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=pilotfiber... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror gigenet...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=gigenet -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=gigenet... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror versaweb...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=versaweb -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=versaweb... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror ayera...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=ayera -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=ayera... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror netactuate...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netactuate -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netactuate... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror phoenixnap...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=phoenixnap -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=phoenixnap... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror astuteinternet...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=astuteinternet -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=astuteinternet... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror freefr...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=freefr -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=freefr... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror netcologne...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netcologne -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netcologne... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror deac-riga...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=deac-riga -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=deac-riga... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror excellmedia...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=excellmedia -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=excellmedia... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror iweb...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=iweb -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=iweb... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror jaist...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=jaist -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=jaist... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror jztkft...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=jztkft -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=jztkft... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror managedway...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=managedway -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=managedway... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror nchc...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=nchc -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=nchc... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror netix...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netix -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netix... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror ufpr...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=ufpr -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=ufpr... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror tenet...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=tenet -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=tenet... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+CMake Error at scripts/cmake/vcpkg_from_sourceforge.cmake:221 (message):
+              Couldn't download source from any of the sourceforge mirrors, please check your network.
+              If you use a proxy, please set the HTTPS_PROXY and HTTP_PROXY environment
+              variables to "http[s]://user:password@your-proxy-ip-address:port/".
+              Otherwise, please submit an issue at https://github.com/Microsoft/vcpkg/issues
+
+Call Stack (most recent call first):
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+Error: Building package freetype:x64-windows failed with: BUILD_FAILED
+Please ensure you're using the latest portfiles with `.\vcpkg update`, then
+submit an issue at https://github.com/Microsoft/vcpkg/issues including:
+  Package: freetype:x64-windows
+  Vcpkg version: 2021-05-05-9f849c4c43e50d1b16186ae76681c27b0c1be9d9
+
+Additionally, attach any relevant sections from the log files above.
+-- Running vcpkg install - failed
+CMake Error at C:/Programs/vcpkg-2021.05.12/scripts/buildsystems/vcpkg.cmake:898 (message):
+  vcpkg install failed.  See logs for more information:
+  C:\_abel\_stu\map\tangram-es\build\vcpkg-manifest-install.log
+Call Stack (most recent call first):
+  C:/Programs/CMake/share/cmake-3.22/Modules/CMakeDetermineSystem.cmake:124 (include)
+  CMakeLists.txt:3 (project)
+
+
+-- Configuring incomplete, errors occurred!
+
+C:\_abel\_stu\map\tangram-es>cmake -S . -B .\build -G "Visual Studio 16 2019" -DCMAKE_TOOLCHAIN_FILE="C:\Programs\vcpkg-2021.05.12\scripts\buildsystems\vcpkg.cmake"
+-- Running vcpkg install
+Detecting compiler hash for triplet x64-windows...
+The following packages will be built and installed:
+    freetype[brotli,bzip2,core,png,zlib]:x64-windows -> 2.10.4
+    harfbuzz[core,icu]:x64-windows -> 2.7.4#2
+    imgui[core,docking-experimental]:x64-windows -> 1.82
+    yaml-cpp[core]:x64-windows -> 0.6.3
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\05\05647483489a77ad2a5f83bf23388ff48be247f4.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\27\274fd01bd130b37a5d4c7834bcb2a25b5d858483.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\9a\9a2e5551440042f62ab13812af3e86e7d90c394d.zip
+Could not locate cached archive: C:\Users\pytho\AppData\Local\vcpkg\archives\a5\a5db952ffa6290d680c5412d11aee97da0a35b75.zip
+Starting package 1/4: freetype:x64-windows
+Building package freetype[brotli,bzip2,core,png,zlib]:x64-windows...
+-- Trying auto-select mirror...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:183 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- The default mirror is in Disaster Recovery mode, trying other mirrors...
+-- Trying mirror cfhcable...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=cfhcable -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=cfhcable... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror pilotfiber...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=pilotfiber -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=pilotfiber... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror gigenet...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=gigenet -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=gigenet... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror versaweb...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=versaweb -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=versaweb... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror ayera...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=ayera -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=ayera... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror netactuate...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netactuate -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netactuate... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror phoenixnap...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=phoenixnap -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=phoenixnap... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror astuteinternet...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=astuteinternet -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=astuteinternet... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror freefr...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=freefr -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=freefr... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror netcologne...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netcologne -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netcologne... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror deac-riga...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=deac-riga -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=deac-riga... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror excellmedia...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=excellmedia -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=excellmedia... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror iweb...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=iweb -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=iweb... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror jaist...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=jaist -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=jaist... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror jztkft...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=jztkft -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=jztkft... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror managedway...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=managedway -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=managedway... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror nchc...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=nchc -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=nchc... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror netix...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netix -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=netix... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror ufpr...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=ufpr -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=ufpr... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+-- Trying mirror tenet...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=tenet -> freetype-2.10.4.tar.xz...
+-- Downloading https://sourceforge.net/projects/freetype/files/freetype2/2.10.4/freetype-2.10.4.tar.xz/download?use_mirror=tenet... Failed. Status: 7;"Couldn't connect to server"
+CMake Warning at scripts/cmake/vcpkg_download_distfile.cmake:202 (message):
+
+      Failed to download file.
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_from_sourceforge.cmake:200 (vcpkg_download_distfile)
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+CMake Error at scripts/cmake/vcpkg_from_sourceforge.cmake:221 (message):
+              Couldn't download source from any of the sourceforge mirrors, please check your network.
+              If you use a proxy, please set the HTTPS_PROXY and HTTP_PROXY environment
+              variables to "http[s]://user:password@your-proxy-ip-address:port/".
+              Otherwise, please submit an issue at https://github.com/Microsoft/vcpkg/issues
+
+Call Stack (most recent call first):
+  ports/freetype/portfile.cmake:3 (vcpkg_from_sourceforge)
+  scripts/ports.cmake:142 (include)
+
+
+Error: Building package freetype:x64-windows failed with: BUILD_FAILED
+Please ensure you're using the latest portfiles with `.\vcpkg update`, then
+submit an issue at https://github.com/Microsoft/vcpkg/issues including:
+  Package: freetype:x64-windows
+  Vcpkg version: 2021-05-05-9f849c4c43e50d1b16186ae76681c27b0c1be9d9
+
+Additionally, attach any relevant sections from the log files above.
+-- Running vcpkg install - failed
+CMake Error at C:/Programs/vcpkg-2021.05.12/scripts/buildsystems/vcpkg.cmake:898 (message):
+  vcpkg install failed.  See logs for more information:
+  C:\_abel\_stu\map\tangram-es\build\vcpkg-manifest-install.log
+Call Stack (most recent call first):
+  C:/Programs/CMake/share/cmake-3.22/Modules/CMakeDetermineSystem.cmake:124 (include)
+  CMakeLists.txt:3 (project)
+
+
+-- Configuring incomplete, errors occurred!
+
+C:\_abel\_stu\map\tangram-es>

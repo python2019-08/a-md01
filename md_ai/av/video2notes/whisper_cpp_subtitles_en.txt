@@ -1,0 +1,162 @@
+
+[00:00:00.000 --> 00:00:01.280]   Hi everyone.
+[00:00:01.280 --> 00:00:04.800]   In this episode we're going to create scriptable objects to hold the planets shape and colour
+[00:00:04.800 --> 00:00:05.800]   settings.
+[00:00:05.800 --> 00:00:10.840]   We'll have a custom editor to display these in our planets inspector, and have any changes
+[00:00:10.840 --> 00:00:14.040]   to them cause the planet to update automatically.
+[00:00:14.040 --> 00:00:17.760]   The reason for doing it this way is that later on it will be extremely easy to save the shape
+[00:00:17.760 --> 00:00:22.080]   and colour settings for planets that we generate and load them in as we want.
+[00:00:22.080 --> 00:00:29.680]   Alright, so in Unity I'm going to create a new C# script, call this shape_settings,
+[00:00:29.680 --> 00:00:34.360]   and then a second one called the colour settings.
+[00:00:34.360 --> 00:00:39.720]   Alright, I will open this up.
+[00:00:39.720 --> 00:00:44.800]   These are both going to inherit from scriptable object so that we can create actual assets
+[00:00:44.800 --> 00:00:51.120]   out of them, and I'll just have this create asset menu attribute up at the top here.
+[00:00:51.120 --> 00:00:55.840]   Shape settings, it will eventually have loads of stuff, but for now let's just have a public
+[00:00:55.840 --> 00:01:02.280]   float for the planet radius, and I'll set that to maybe 1 by default.
+[00:01:02.280 --> 00:01:06.080]   Save that, and open up the colour settings file.
+[00:01:06.080 --> 00:01:12.140]   So this inherits from scriptable object, and once again have this create asset menu attribute
+[00:01:12.140 --> 00:01:21.320]   up here, and for now this can just hold a public colour for the colour of the planet.
+[00:01:21.320 --> 00:01:27.040]   Alright, so if we save this, go into Unity and just wait for that to compile, then when
+[00:01:27.040 --> 00:01:31.160]   we right click, under the create menu we will now have our shape and colour settings.
+[00:01:31.160 --> 00:01:36.360]   I'm going to create a new folder first though, call this settings, and then inside there
+[00:01:36.360 --> 00:01:43.080]   I'll create a new shape settings, just call that shape, and a new colour settings, which
+[00:01:43.080 --> 00:01:44.720]   I'll call colour.
+[00:01:44.720 --> 00:01:53.000]   Alright, in here we can then set the colour of our planet as well as the radius, like so.
+[00:01:53.000 --> 00:02:00.680]   Of course these settings currently aren't linked to anything, so let's go back into
+[00:02:00.680 --> 00:02:11.240]   the planet script, and this is going to have a public shape settings, as well as a public
+[00:02:11.240 --> 00:02:14.960]   colour settings.
+[00:02:14.960 --> 00:02:21.000]   Alright then, coming down here, along with the generateMesh method, let's have a generateColours
+[00:02:21.000 --> 00:02:22.000]   method.
+[00:02:22.000 --> 00:02:28.600]   For now this is just going to loop through the meshes, and set the material's colour
+[00:02:28.600 --> 00:02:34.800]   to the colour we have in our settings, so I'll say for each mesh filter, just call that
+[00:02:34.800 --> 00:02:42.040]   M in the mesh filters array, we need to get its mesh renderer component, which we can
+[00:02:42.040 --> 00:02:51.880]   do like so, and then set the shared material colour equal to colourSettings.planetColour.
+[00:02:51.880 --> 00:02:59.880]   Alright we can then have a public void on colour settings updated, where we first call
+[00:02:59.880 --> 00:03:05.120]   initialize, and then generateColours.
+[00:03:05.120 --> 00:03:12.120]   Also have a public void for when the shape settings are updated, and here we'll call
+[00:03:12.120 --> 00:03:16.480]   initialize followed by generateMesh.
+[00:03:16.480 --> 00:03:21.680]   Now generateMesh is calling this constructMesh method on each of the faces, so we need to
+[00:03:21.680 --> 00:03:25.960]   get that to use the planet radius from our settings.
+[00:03:25.960 --> 00:03:30.340]   So we could simply give each terrain face access to the shape settings, but of course
+[00:03:30.340 --> 00:03:35.320]   later on the shape generation is going to be a little more complex than just the radius,
+[00:03:35.320 --> 00:03:42.640]   so I'm going to go ahead and create a new C# script, which I'll call the shape generator,
+[00:03:42.640 --> 00:03:48.760]   and then I'll open that up, and this isn't going to inherit from MonoBehaviour, and it's
+[00:03:48.760 --> 00:03:55.960]   going to have a shapeSettings object here, which can be assigned in the constructor,
+[00:03:55.960 --> 00:04:05.280]   and then it's going to have a public method returning a vector3, I'll call this CalculatePointOnPlanet,
+[00:04:05.280 --> 00:04:10.920]   and we'll take in a vector3 PointOnUnitSphere.
+[00:04:10.920 --> 00:04:15.520]   Alright so at the moment this method will just be very simple, it will return the point
+[00:04:15.520 --> 00:04:20.460]   on the unit sphere multiplied by settings.planetRadius.
+[00:04:20.460 --> 00:04:29.640]   Ok so I'll save that, go into the planet script, and here we'll want a shape generator object,
+[00:04:29.640 --> 00:04:37.280]   call that shape generator, and in initialize we can just set that equal to a new shape
+[00:04:37.280 --> 00:04:41.600]   generator and pass in the current shape settings.
+[00:04:41.600 --> 00:04:46.760]   Alright now we'll want each terrain face to have access to that shape generator, so I'll
+[00:04:46.760 --> 00:04:51.880]   just pass it in as an argument here, shape generator, and then we'll need to go into
+[00:04:51.880 --> 00:04:59.000]   the terrain face to actually update the constructor, so I'll add the shape generator as the first
+[00:04:59.000 --> 00:05:00.000]   parameter here.
+[00:05:00.000 --> 00:05:06.160]   Ok I'll quickly copy that so that we can have a reference to it outside of the constructor,
+[00:05:06.160 --> 00:05:11.480]   and then just assign that in here, this dot shape generator is equal to the given shape
+[00:05:11.480 --> 00:05:12.480]   generator.
+[00:05:12.480 --> 00:05:19.880]   Alright then when we're assigning to the vertices here we can say vertices i is equal to shape
+[00:05:19.880 --> 00:05:26.880]   generator dot CalculatePointOnPlanet passing in the point on the unit sphere.
+[00:05:26.880 --> 00:05:38.840]   Ok going back to the planet script quickly I'm going to create a public void generatePlanet,
+[00:05:38.840 --> 00:05:46.920]   this will call initialize, it will call generateMesh, and it will call generateColours.
+[00:05:46.920 --> 00:05:51.480]   So basically this is the method you want to call to generate the planet, but if only the
+[00:05:51.480 --> 00:05:55.260]   shape settings have changed then you can call this method, and if only the colour settings
+[00:05:55.260 --> 00:05:58.900]   have changed then you can call this method.
+[00:05:58.900 --> 00:06:07.800]   Alright so coming up to our onValidate thing here, let's just call generatePlanet, so I'll
+[00:06:07.800 --> 00:06:14.800]   save that, and if we go into Unity we'll probably get some errors when this tries to generate
+[00:06:14.800 --> 00:06:18.800]   the planet but it doesn't have the shape or colour settings assigned yet.
+[00:06:18.800 --> 00:06:24.960]   So let's go into the settings here and just assign both of these quickly, and now you
+[00:06:24.960 --> 00:06:31.860]   can see that this is green as defined by our colour, and it has a radius of 2.
+[00:06:31.860 --> 00:06:37.680]   So if we change this to red, you can see it doesn't actually update immediately, we have
+[00:06:37.680 --> 00:06:44.440]   to go onto the planet and actually trigger the onValidate method by doing something like
+[00:06:44.440 --> 00:06:46.480]   changing the resolution.
+[00:06:46.480 --> 00:06:51.000]   Now that's obviously not ideal, what I would like is for first of all the shape and colour
+[00:06:51.000 --> 00:06:57.840]   settings to be editable right here in the inspector of our planet object, and secondly for any
+[00:06:57.840 --> 00:07:01.880]   change to those settings to immediately update the planet.
+[00:07:01.880 --> 00:07:10.960]   So to achieve this we're going to need a custom editor, so let's create a editor folder, and
+[00:07:10.960 --> 00:07:18.560]   inside of there go to create a new C# script called the planet editor, and I'll open that
+[00:07:18.560 --> 00:07:19.560]   up.
+[00:07:19.560 --> 00:07:27.080]   So up at the top here we can say using Unity editor, and we can inherit from the editor,
+[00:07:27.080 --> 00:07:37.080]   let's just say that this is a custom editor type of planet, and then we can have a reference
+[00:07:37.080 --> 00:07:44.200]   to our planet, which we'll set in the onEnable method by saying planet is equal to, and then
+[00:07:44.200 --> 00:07:49.320]   casting the target object to a planet, like so.
+[00:07:49.320 --> 00:07:55.080]   We can then override the onInspectorGUI method, and then we'll want to draw an editor for
+[00:07:55.080 --> 00:07:57.760]   the shape and colour settings.
+[00:07:57.760 --> 00:08:06.080]   So I'm going to make a method called drawSettingsEditor, this will take in an object for the settings
+[00:08:06.080 --> 00:08:13.080]   object, and we can for now simply say editor is equal to, and we can create a new editor
+[00:08:13.080 --> 00:08:20.100]   passing in the settings object, and then to display it we just call editor.onInspectorGUI.
+[00:08:20.100 --> 00:08:30.400]   Okay so from this onInspectorGUI we can call drawSettingsEditor, passing in planet.shapeSettings,
+[00:08:30.400 --> 00:08:37.240]   and then drawSettingsEditor again, this time passing in the colour settings.
+[00:08:37.240 --> 00:08:42.520]   Okay so if we save this now and go into Unity, then once this finishes compiling, we should
+[00:08:42.520 --> 00:08:47.240]   see over here, we have our shape settings, and we can change the planet radius right
+[00:08:47.240 --> 00:08:51.480]   there, and we've also got the colour settings, and we can change the planet colour here.
+[00:08:51.480 --> 00:08:57.460]   Now of course this isn't updating automatically just yet, so let's go back into the script
+[00:08:57.460 --> 00:09:02.800]   here and we can check if anything in the editor has changed in the following way.
+[00:09:02.800 --> 00:09:07.640]   We say using, and we create a variable called something like check, set this equal to a
+[00:09:07.640 --> 00:09:20.160]   new editorGUI.changeCheckScope, and then at the end of this we can say if check.changed,
+[00:09:20.160 --> 00:09:23.080]   then obviously something has changed.
+[00:09:23.080 --> 00:09:28.200]   So in here we'll want to call the planets on shape settings updated, or on colour settings
+[00:09:28.200 --> 00:09:33.240]   updated method, depending on which settings object we're currently drawing.
+[00:09:33.240 --> 00:09:44.840]   So in the method parameters here, let's add a action which I'll call onSettingsUpdated,
+[00:09:44.840 --> 00:09:52.600]   and then in here we can just say if onSettingsUpdated is not equal to null, then we will invoke
+[00:09:52.600 --> 00:10:02.840]   that, and then up here where we're passing in the shape settings, we can pass in planet.onShapeSettingsUpdated,
+[00:10:02.840 --> 00:10:08.900]   and where we're drawing the colour settings, planet.onColourSettingsUpdated.
+[00:10:08.900 --> 00:10:15.320]   Alright let's save that, and go into Unity, and once that compiles we can now change the
+[00:10:15.320 --> 00:10:23.720]   planet radius, and we see that updates immediately, and same story with the colours.
+[00:10:23.720 --> 00:10:28.400]   Alright now currently it's not so clear where the different editors start and end, so let's
+[00:10:28.400 --> 00:10:32.240]   make things a little clearer by drawing a title bar for each of them.
+[00:10:32.240 --> 00:10:39.200]   So I'll go back into the planet editor script, and before we create the editor we can just
+[00:10:39.200 --> 00:10:47.560]   call editor GUI layout dot inspector title bar, and we can pass in value of true, and
+[00:10:47.560 --> 00:10:50.160]   then our settings object.
+[00:10:50.160 --> 00:10:56.920]   This value of true I'll explain in a moment, but let's just save that and go into Unity
+[00:10:56.920 --> 00:10:58.360]   again quickly.
+[00:10:58.360 --> 00:11:03.240]   So now we can see this is looking much nicer, but currently if we click on this little foldout
+[00:11:03.240 --> 00:11:09.760]   arrow here, it's not actually hiding the editor as it does with say our planet script, and
+[00:11:09.760 --> 00:11:14.800]   that is what this value of true is saying, it's just that it's always folded out.
+[00:11:14.800 --> 00:11:24.080]   So to make that work, let's add a bool foldout to the parameters here, and we can pass that
+[00:11:24.080 --> 00:11:30.520]   in instead, and then this method returns a bool, telling us the new value of the foldout
+[00:11:30.520 --> 00:11:35.480]   in the case that the user has actually pressed the little arrow, so we can update the value
+[00:11:35.480 --> 00:11:40.560]   by saying foldout is equal to the result of that method, then obviously we only want to
+[00:11:40.560 --> 00:11:47.040]   actually draw the editor if foldout is true.
+[00:11:47.040 --> 00:11:52.040]   Alright now this foldout value needs to be stored somewhere, we can't store it in our
+[00:11:52.040 --> 00:11:56.280]   editor here because our values aren't serialized here, which means it's going to keep losing
+[00:11:56.280 --> 00:12:03.280]   its value, so instead we'll just store it in the planet script, I'll create public bool
+[00:12:03.280 --> 00:12:09.960]   shape settings foldout, and don't want that to be displayed in the inspector, so I'll
+[00:12:09.960 --> 00:12:17.800]   just add hide in inspector here, and I'll just copy paste that for the color settings foldout
+[00:12:17.800 --> 00:12:26.640]   as well. Ok, save that, go back to the planet editor, and now over here we can pass this
+[00:12:26.640 --> 00:12:38.280]   in, so I'll pass in planet dot shape settings foldout, and planet dot color settings foldout.
+[00:12:38.280 --> 00:12:42.760]   Alright now in order for us to be able to change the value of the foldout variable that
+[00:12:42.760 --> 00:12:49.160]   is actually in the planet class, we're going to need to have this bool passed in by reference,
+[00:12:49.160 --> 00:12:55.680]   so let's add the ref keyword there, and we'll also need to add those two keywords in front
+[00:12:55.680 --> 00:13:02.120]   when we call the method. Ok, so we should now be able to save this, go into unity, and
+[00:13:02.120 --> 00:13:11.000]   once this compiles, we should be able to control the foldout of our two settings editors. Alright,
+[00:13:11.000 --> 00:13:17.320]   so the functionality that we wanted is now all there. There are just a couple of small
+[00:13:17.320 --> 00:13:24.320]   changes I want to make. For one, I don't want toggling the foldout of the inspector titlebar
+[00:13:24.320 --> 00:13:29.960]   to actually trigger check dot changed, so I'm just going to move this outside of the
+[00:13:29.960 --> 00:13:36.940]   change check, like so. Then I also don't want to have to create a new editor each time we
+[00:13:36.940 --> 00:13:43.620]   draw this, because that's a little bit inefficient, so instead I'm going to define an editor outside
+[00:13:43.620 --> 00:13:55.240]   here, call this the shape editor, and another for the color editor. Then in the parameters
+[00:13:55.240 --> 00:14:02.600]   here we can have a reference to the appropriate editor, and pass the right one in here, so
+[00:14:02.600 --> 00:14:13.120]   ref shape editor and ref color editor. Then instead of using this create editor method,
+[00:14:13.120 --> 00:14:20.080]   we can use create cached editor, and here we pass in our settings, we can just use nulls
+[00:14:20.080 --> 00:14:25.560]   for the editor type, that will just use the default editor type, and then we can pass
+[00:14:25.560 --> 00:14:33.880]   in our editor by reference. So with this method the editor that we pass in is getting saved
+[00:14:33.880 --> 00:14:40.520]   up here, and it's only creating a new editor when it actually has to. Ok, let's also handle
+[00:14:40.520 --> 00:14:43.880]   the case where the settings object hasn't been assigned in the inspector, and so it's
+[00:14:43.880 --> 00:14:49.320]   null, so we'll only try and draw the settings editor if the settings object is not equal
+[00:14:49.320 --> 00:14:59.320]   to null. Ok, then I'm going to copy this change check scope line, and I'm just going to surround
+[00:14:59.320 --> 00:15:07.400]   this call to base dot on inspector GUI with that, and then here say if check dot changed,
+[00:15:07.400 --> 00:15:13.760]   then I'll call planet dot generate planet. This is going to be replacing the on validate
+[00:15:13.760 --> 00:15:18.640]   method in the planet script, just so that all of the updating is being done from within
+[00:15:18.640 --> 00:15:24.720]   the editor script. Then it might also be nice to have a button to just manually generate
+[00:15:24.720 --> 00:15:36.680]   a planet, so if GUI layout dot button, I'll call this generate planet, if that button
+[00:15:36.680 --> 00:15:44.320]   is pressed, then we can call planet dot generate planet. Alright, last thing is just in the
+[00:15:44.320 --> 00:15:52.440]   planet script I'm going to have a public bool auto update, which I'll set to true by default,
+[00:15:52.440 --> 00:16:01.440]   and then we'll only run these on settings updated methods if auto update is true. Just
+[00:16:01.440 --> 00:16:11.200]   like so. Alright, let's save that, and I'll go into unity one last time to just make sure
+[00:16:11.200 --> 00:16:18.360]   that this is all still working. So with auto update on, you can change the planet radius
+[00:16:18.360 --> 00:16:24.280]   and the colour of the planet, and that works fine. If I turn auto update off, you can change
+[00:16:24.280 --> 00:16:29.920]   say the radius here and then generate a planet manually, and that updates. Alright, so that
+[00:16:29.920 --> 00:16:32.960]   is going to be everything for this episode, until next time, cheers.
+

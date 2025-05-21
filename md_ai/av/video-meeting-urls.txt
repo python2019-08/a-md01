@@ -1,0 +1,22 @@
+开源 视频会议软件  客户端 服务端  git 地址 
+
+以下是一些开源视频会议软件的客户端与服务端的 Git 地址：
+Jitsi Meet：
+Git 地址：https://github.com/jitsi/jitsi-meet
+简介：一个开源的视频会议和即时通讯平台，支持多人视频通话和屏幕共享等功能。
+--------------------------------------
+OpenVidu：
+Git 地址：https://gitcode.com/gh_mirrors/op/openvidu
+简介：基于 Apache 2.0 协议的开源 WebRTC 视频会议平台，提供 API，可构建自定义视频会议服务。
+--------------------------------------
+Spreed WebRTC：
+Git 地址：https://gitcode.com/gh_mirrors/sp/spreed-webrtc
+简介：遵循 AGPL-3.0 许可证的开源项目，专注于 WebRTC 技术驱动的音频和视频通话以及会议服务器和配套网页客户端。
+--------------------------------------
+GVMeeting：
+Git 地址：https://gitcode.com/gh_mirrors/gv/gvmetting
+简介：基于 WebRTC 技术的开源视频会议系统，支持屏幕共享、实时聊天和白板功能。
+--------------------------------------
+Jangouts：
+Git 地址：https://gitcode.com/gh_mirrors/ja/jangouts
+简介：基于 WebRTC 和 Janus Gateway 的开源视频会议系统，提供高清音视频通话、屏幕共享和实时协作功能。

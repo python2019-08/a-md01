@@ -1,0 +1,858 @@
+ mapsme-organicmaps2024-1112 >> android build>>>
+
+
+Executing tasks: [:app:assembleFdroidDebug] in project /home/abner/abner2/zdev/nv/mapsme-organicmaps2024-1112/android
+
+Starting Gradle Daemon...
+Gradle Daemon started in 674 ms
+
+> Configure project :app
+Building without Google Firebase Services
+Version: 2024.11.12-1
+VersionCode: 24111201
+Building for [armeabi-v7a, arm64-v8a, x86_64] archs.
+Create separate apks: false
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preFdroidDebugBuild UP-TO-DATE
+> Task :app:mergeFdroidDebugNativeDebugMetadata NO-SOURCE
+> Task :app:dataBindingMergeDependencyArtifactsFdroidDebug
+> Task :app:generateFdroidDebugResValues
+> Task :app:generateFdroidDebugResources
+Download https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/8.9.0-12782657/aapt2-8.9.0-12782657.pom, took 320 ms
+Download https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/8.9.0-12782657/aapt2-8.9.0-12782657-linux.jar, took 457 ms
+> Task :app:mergeFdroidDebugResources
+> Task :app:packageFdroidDebugResources
+> Task :app:dataBindingTriggerFdroidDebug
+> Task :app:generateFdroidDebugBuildConfig
+Download https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-compiler/8.9.0/databinding-compiler-8.9.0.pom, took 199 ms
+> Task :app:parseFdroidDebugLocalResources
+Download https://repo.maven.apache.org/maven2/com/google/auto/auto-common/1.2.1/auto-common-1.2.1.pom, took 423 ms
+Download https://repo.maven.apache.org/maven2/com/google/auto/auto-common/1.2.1/auto-common-1.2.1.jar, took 241 ms
+Download https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-compiler/8.9.0/databinding-compiler-8.9.0.jar, took 311 ms
+> Task :app:javaPreCompileFdroidDebug
+> Task :app:dataBindingGenBaseClassesFdroidDebug
+> Task :app:checkFdroidDebugAarMetadata
+> Task :app:mapFdroidDebugSourceSetPaths
+> Task :app:createFdroidDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksFdroidDebug
+> Task :app:processFdroidDebugMainManifest
+> Task :app:processFdroidDebugManifest
+> Task :app:mergeFdroidDebugShaders
+> Task :app:compileFdroidDebugShaders NO-SOURCE
+> Task :app:generateFdroidDebugAssets UP-TO-DATE
+> Task :app:mergeFdroidDebugAssets
+> Task :app:processFdroidDebugManifestForPackage
+> Task :app:checkFdroidDebugDuplicateClasses
+> Task :app:desugarFdroidDebugFileDependencies
+> Task :app:compressFdroidDebugAssets
+> Task :app:processFdroidDebugResources
+> Task :app:l8DexDesugarLibFdroidDebug
+> Task :app:mergeExtDexFdroidDebug
+
+> Task :app:compileFdroidDebugJavaWithJavac
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/maplayer/MapButtonsController.java:217: 警告: [deprecation] Resources中的getColor(int)已过时
+      mBadgeDrawable.setBackgroundColor(getResources().getColor(R.color.base_accent));
+                                                      ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/maplayer/SearchWheel.java:115: 警告: [deprecation] WindowManager中的getDefaultDisplay()已过时
+    windowmanager.getDefaultDisplay().getMetrics(displayMetrics);
+                 ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/maplayer/SearchWheel.java:115: 警告: [deprecation] Display中的getMetrics(DisplayMetrics)已过时
+    windowmanager.getDefaultDisplay().getMetrics(displayMetrics);
+                                     ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/UiUtils.java:238: 警告: [deprecation] LayoutParams中的FLAG_FULLSCREEN已过时
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                                                  ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/UiUtils.java:238: 警告: [deprecation] LayoutParams中的FLAG_FULLSCREEN已过时
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                                                                                              ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/UiUtils.java:240: 警告: [deprecation] LayoutParams中的FLAG_FULLSCREEN已过时
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                                                    ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/UiUtils.java:272: 警告: [deprecation] Window中的setStatusBarColor(int)已过时
+      window.setStatusBarColor(color);
+            ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/base/BaseMwmFragmentActivity.java:162: 警告: [deprecation] ComponentActivity中的onBackPressed()已过时
+  public void onBackPressed()
+              ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/base/BaseMwmFragmentActivity.java:166: 警告: [deprecation] ComponentActivity中的onBackPressed()已过时
+      super.onBackPressed();
+           ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/base/BaseMwmFragmentActivity.java:175: 警告: [deprecation] ComponentActivity中的onBackPressed()已过时
+      super.onBackPressed();
+           ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/base/BaseMwmFragmentActivity.java:182: 警告: [deprecation] ComponentActivity中的onBackPressed()已过时
+    super.onBackPressed();
+         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/MapFragment.java:105: 警告: [deprecation] Fragment中的setRetainInstance(boolean)已过时
+    setRetainInstance(true);
+    ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/MapFragment.java:203: 警告: [deprecation] WindowManager中的getDefaultDisplay()已过时
+    requireActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                                        ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/MapFragment.java:203: 警告: [deprecation] Display中的getMetrics(DisplayMetrics)已过时
+    requireActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                                                            ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/Language.java:52: 警告: [deprecation] InputMethodSubtype中的getLocale()已过时
+    String locale = ims.getLocale();
+                       ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/RtlUtils.java:21: 警告: [deprecation] ViewCompat中的LAYOUT_DIRECTION_RTL已过时
+      final boolean isRTL = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL;
+                                                                                                           ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/LocationUtils.java:106: 警告: [deprecation] Secure中的LOCATION_MODE已过时
+      return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE)
+                                                                                 ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:28: 警告: [deprecation] ConnectivityManager中的TYPE_WIFI已过时
+    WIFI(CONNECTION_WIFI, ConnectivityManager.TYPE_WIFI),
+                                             ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:29: 警告: [deprecation] ConnectivityManager中的TYPE_MOBILE已过时
+    WWAN(CONNECTION_WWAN, ConnectivityManager.TYPE_MOBILE);
+                                             ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:58: 警告: [deprecation] android.net中的NetworkInfo已过时
+    final NetworkInfo info = getActiveNetwork();
+          ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:59: 警告: [deprecation] NetworkInfo中的getType()已过时
+    return info != null && info.getType() == networkType && info.isConnected();
+                               ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:59: 警告: [deprecation] NetworkInfo中的isConnected()已过时
+    return info != null && info.getType() == networkType && info.isConnected();
+                                                                ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:63: 警告: [deprecation] android.net中的NetworkInfo已过时
+  public NetworkInfo getActiveNetwork()
+         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:63: 警告: [deprecation] android.net中的NetworkInfo已过时
+  public NetworkInfo getActiveNetwork()
+         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:63: 警告: [deprecation] android.net中的NetworkInfo已过时
+  public NetworkInfo getActiveNetwork()
+         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:63: 警告: [deprecation] android.net中的NetworkInfo已过时
+  public NetworkInfo getActiveNetwork()
+         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:70: 警告: [deprecation] ConnectivityManager中的getActiveNetworkInfo()已过时
+    return manager.getActiveNetworkInfo();
+                  ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:75: 警告: [deprecation] ConnectivityManager中的TYPE_MOBILE已过时
+    return isNetworkConnected(ConnectivityManager.TYPE_MOBILE);
+                                                 ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:80: 警告: [deprecation] ConnectivityManager中的TYPE_WIFI已过时
+    return isNetworkConnected(ConnectivityManager.TYPE_WIFI);
+                                                 ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:85: 警告: [deprecation] ConnectivityManager中的TYPE_WIFI已过时
+    return isNetworkConnected(ConnectivityManager.TYPE_WIFI) || isNetworkConnected(ConnectivityManager.TYPE_MOBILE);
+                                                 ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:85: 警告: [deprecation] ConnectivityManager中的TYPE_MOBILE已过时
+    return isNetworkConnected(ConnectivityManager.TYPE_WIFI) || isNetworkConnected(ConnectivityManager.TYPE_MOBILE);
+                                                                                                      ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:90: 警告: [deprecation] android.net中的NetworkInfo已过时
+    NetworkInfo info = getActiveNetwork();
+    ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/ConnectionState.java:91: 警告: [deprecation] NetworkInfo中的isRoaming()已过时
+    return info != null && info.isRoaming();
+                               ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/log/LogsManager.java:257: 警告: [deprecation] ConnectivityManager中的getAllNetworks()已过时
+      for (Network network : manager.getAllNetworks())
+                                    ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/Utils.java:91: 警告: [deprecation] LayoutParams中的FLAG_SHOW_WHEN_LOCKED已过时
+      activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+                                                              ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/Utils.java:93: 警告: [deprecation] LayoutParams中的FLAG_SHOW_WHEN_LOCKED已过时
+      activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+                                                                ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/util/Utils.java:587: 警告: [deprecation] Fragment中的getFragmentManager()已过时
+    FragmentManager manager = fragment.getFragmentManager();
+                                      ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/dialog/ProgressDialogFragment.java:30: 警告: [deprecation] Fragment中的getTargetFragment()已过时
+    Fragment targetFragment = getTargetFragment();
+                              ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/dialog/ProgressDialogFragment.java:32: 警告: [deprecation] Fragment中的getTargetRequestCode()已过时
+      targetFragment.onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, null);
+                                      ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/dialog/ProgressDialogFragment.java:32: 警告: [deprecation] Fragment中的onActivityResult(int,int,Intent)已过时
+      targetFragment.onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, null);
+                    ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/dialog/ProgressDialogFragment.java:40: 警告: [deprecation] Fragment中的setRetainInstance(boolean)已过时
+    setRetainInstance(args.getBoolean(ARG_RETAIN_INSTANCE, true));
+    ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/dialog/ProgressDialogFragment.java:65: 警告: [deprecation] Fragment中的getRetainInstance()已过时
+    if (getDialog() != null && getRetainInstance())
+                               ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/search/TabAdapter.java:21: 警告: [deprecation] androidx.fragment.app中的FragmentPagerAdapter已过时
+class TabAdapter extends FragmentPagerAdapter
+                         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/search/TabAdapter.java:21: 警告: [deprecation] androidx.fragment.app中的FragmentPagerAdapter已过时
+class TabAdapter extends FragmentPagerAdapter
+                         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/search/TabAdapter.java:21: 警告: [deprecation] androidx.fragment.app中的FragmentPagerAdapter已过时
+class TabAdapter extends FragmentPagerAdapter
+                         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/search/TabAdapter.java:21: 警告: [deprecation] androidx.fragment.app中的FragmentPagerAdapter已过时
+class TabAdapter extends FragmentPagerAdapter
+                         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/search/TabAdapter.java:113: 警告: [deprecation] FragmentPagerAdapter中的FragmentPagerAdapter(FragmentManager)已过时
+    super(fragmentManager);
+    ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/search/TabAdapter.java:153: 警告: [deprecation] TabLayout中的setOnTabSelectedListener(OnTabSelectedListener)已过时
+    tabs.setOnTabSelectedListener(new OnTabSelectedListenerForViewPager(mPager));
+        ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/search/TabAdapter.java:171: 警告: [deprecation] Class中的newInstance()已过时
+        res = mClasses.get(position).newInstance();
+                                    ^
+  其中, T是类型变量:
+    T扩展已在类 Class中声明的Object
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/sound/AudioFocusManager.java:46: 警告: [deprecation] AudioManager中的requestAudioFocus(OnAudioFocusChangeListener,int,int)已过时
+        mAudioManager.requestAudioFocus(mOnFocusChange, AudioManager.STREAM_VOICE_CALL, AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+                     ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/sound/AudioFocusManager.java:59: 警告: [deprecation] AudioManager中的abandonAudioFocus(OnAudioFocusChangeListener)已过时
+        mAudioManager.abandonAudioFocus(mOnFocusChange);
+                     ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/sound/TtsPlayer.java:175: 警告: [deprecation] UtteranceProgressListener中的onError(String)已过时
+        public void onError(String utteranceId)
+                    ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/WebContainerDelegate.java:34: 警告: [deprecation] WebViewClient中的shouldOverrideUrlLoading(WebView,String)已过时
+      public boolean shouldOverrideUrlLoading(WebView v, String url)
+                     ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/editor/HoursMinutesPickerFragment.java:153: 警告: [deprecation] TabLayout中的setOnTabSelectedListener(OnTabSelectedListener)已过时
+    mTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener()
+         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/editor/HoursMinutesPickerFragment.java:181: 警告: [deprecation] TimePicker中的getCurrentHour()已过时
+    final HoursMinutes hoursMinutes = new HoursMinutes(mPicker.getCurrentHour(),
+                                                              ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/editor/HoursMinutesPickerFragment.java:182: 警告: [deprecation] TimePicker中的getCurrentMinute()已过时
+                                                       mPicker.getCurrentMinute(), is24HourFormat);
+                                                              ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/editor/HoursMinutesPickerFragment.java:211: 警告: [deprecation] TimePicker中的setCurrentMinute(Integer)已过时
+    mPicker.setCurrentMinute((int) hoursMinutes.minutes);
+           ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/editor/HoursMinutesPickerFragment.java:212: 警告: [deprecation] TimePicker中的setCurrentHour(Integer)已过时
+    mPicker.setCurrentHour((int) hoursMinutes.hours);
+           ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/editor/TimetableContainerFragment.java:94: 警告: [deprecation] LayoutParams中的SOFT_INPUT_ADJUST_RESIZE已过时
+      activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                                                                      ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/MwmActivity.java:2384: 警告: [deprecation] ComponentCallbacks2中的TRIM_MEMORY_RUNNING_LOW已过时
+    if (level >= TRIM_MEMORY_RUNNING_LOW)
+                 ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/widget/placepage/PlacePageView.java:473: 警告: [deprecation] Resources中的getColor(int)已过时
+      final int editPlaceButtonColor = Editor.nativeShouldEnableEditPlace() ? ContextCompat.getColor(getContext(), UiUtils.getStyledResourceId(getContext(), androidx.appcompat.R.attr.colorAccent)) : getResources().getColor(R.color.button_accent_text_disabled);
+                                                                                                                                                                                                                     ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/widget/LanesDrawable.java:143: 警告: [deprecation] Drawable中的getOpacity()已过时
+  public int getOpacity()
+             ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/intent/Factory.java:58: 警告: [deprecation] Intent中的<T>getParcelableArrayListExtra(String)已过时
+        uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+                     ^
+  其中, T是类型变量:
+    T扩展已在方法 <T>getParcelableArrayListExtra(String)中声明的Parcelable
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/location/AndroidNativeProvider.java:55: 警告: [deprecation] LocationListener中的onStatusChanged(String,int,Bundle)已过时
+    public void onStatusChanged(String provider, int status, Bundle extras)
+                ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/location/LocationHelper.java:111: 警告: [deprecation] Handler中的Handler()已过时
+    mHandler = new Handler();
+               ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/location/PlatformSocket.java:136: 警告: [deprecation] android.net中的SSLCertificateSocketFactory已过时
+      return SSLCertificateSocketFactory.getInsecure(0, null);
+             ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/location/PlatformSocket.java:136: 警告: [deprecation] SSLCertificateSocketFactory中的getInsecure(int,SSLSessionCache)已过时
+      return SSLCertificateSocketFactory.getInsecure(0, null);
+                                        ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/downloader/DownloaderToolbarController.java:26: 警告: [deprecation] Activity中的onBackPressed()已过时
+    requireActivity().onBackPressed();
+                     ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/downloader/DownloaderToolbarController.java:64: 警告: [deprecation] Fragment中的startActivityForResult(Intent,int)已过时
+    mFragment.startActivityForResult(intent, code);
+             ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/car/CarAppService.java:66: 警告: [deprecation] Service中的stopForeground(boolean)已过时
+          stopForeground(true);
+          ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/MwmApplication.java:324: 警告: [deprecation] WindowManager中的getDefaultDisplay()已过时
+    mSensorHelper.setRotation(activity.getWindowManager().getDefaultDisplay().getRotation());
+                                                         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarkCategorySettingsActivity.java:40: 警告: [deprecation] Fragment中的startActivityForResult(Intent,int)已过时
+    fragment.startActivityForResult(intent, REQUEST_CODE);
+            ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarkCategorySettingsFragment.java:63: 警告: [deprecation] Fragment中的setHasOptionsMenu(boolean)已过时
+    setHasOptionsMenu(true);
+    ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarkCategorySettingsFragment.java:96: 警告: [deprecation] Fragment中的onCreateOptionsMenu(Menu,MenuInflater)已过时
+  public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater)
+              ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarkCategorySettingsFragment.java:102: 警告: [deprecation] Fragment中的onOptionsItemSelected(MenuItem)已过时
+  public boolean onOptionsItemSelected(MenuItem item)
+                 ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarkCategorySettingsFragment.java:109: 警告: [deprecation] Fragment中的onOptionsItemSelected(MenuItem)已过时
+    return super.onOptionsItemSelected(item);
+                ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksListFragment.java:176: 警告: [deprecation] Fragment中的setHasOptionsMenu(boolean)已过时
+    setHasOptionsMenu(true);
+    ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksListFragment.java:656: 警告: [deprecation] Fragment中的onCreateOptionsMenu(Menu,MenuInflater)已过时
+  public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater)
+              ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksListFragment.java:665: 警告: [deprecation] Fragment中的onPrepareOptionsMenu(Menu)已过时
+  public void onPrepareOptionsMenu(@NonNull Menu menu)
+              ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksListFragment.java:667: 警告: [deprecation] Fragment中的onPrepareOptionsMenu(Menu)已过时
+    super.onPrepareOptionsMenu(menu);
+         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksListFragment.java:679: 警告: [deprecation] Fragment中的onOptionsItemSelected(MenuItem)已过时
+  public boolean onOptionsItemSelected(MenuItem item)
+                 ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksListFragment.java:694: 警告: [deprecation] Fragment中的onOptionsItemSelected(MenuItem)已过时
+    return super.onOptionsItemSelected(item);
+                ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/ChooseBookmarksSortingTypeFragment.java:120: 警告: [deprecation] Fragment中的getTargetFragment()已过时
+    mListener = (ChooseSortingTypeListener) (getParentFragment() == null ? getTargetFragment()
+                                                                           ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksSharingHelper.java:31: 警告: [deprecation] android.app中的ProgressDialog已过时
+  private ProgressDialog mProgressDialog;
+          ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksSharingHelper.java:31: 警告: [deprecation] android.app中的ProgressDialog已过时
+  private ProgressDialog mProgressDialog;
+          ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksSharingHelper.java:31: 警告: [deprecation] android.app中的ProgressDialog已过时
+  private ProgressDialog mProgressDialog;
+          ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksSharingHelper.java:31: 警告: [deprecation] android.app中的ProgressDialog已过时
+  private ProgressDialog mProgressDialog;
+          ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksSharingHelper.java:41: 警告: [deprecation] android.app中的ProgressDialog已过时
+    mProgressDialog = new ProgressDialog(context, R.style.MwmTheme_ProgressDialog);
+                          ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksSharingHelper.java:41: 警告: [deprecation] ProgressDialog中的ProgressDialog(Context,int)已过时
+    mProgressDialog = new ProgressDialog(context, R.style.MwmTheme_ProgressDialog);
+                      ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksSharingHelper.java:42: 警告: [deprecation] ProgressDialog中的setMessage(CharSequence)已过时
+    mProgressDialog.setMessage(context.getString(R.string.please_wait));
+                   ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksSharingHelper.java:43: 警告: [deprecation] android.app中的ProgressDialog已过时
+    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                     ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksSharingHelper.java:43: 警告: [deprecation] ProgressDialog中的STYLE_SPINNER已过时
+    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                                   ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksSharingHelper.java:43: 警告: [deprecation] ProgressDialog中的setProgressStyle(int)已过时
+    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                   ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarksSharingHelper.java:44: 警告: [deprecation] ProgressDialog中的setIndeterminate(boolean)已过时
+    mProgressDialog.setIndeterminate(true);
+                   ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarkListActivity.java:65: 警告: [deprecation] Fragment中的startActivityForResult(Intent,int)已过时
+    fragment.startActivityForResult(intent, BookmarkCategoriesFragment.REQ_CODE_DELETE_CATEGORY);
+            ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarkCategoriesFragment.java:262: 警告: [deprecation] Fragment中的startActivityForResult(Intent,int)已过时
+      startActivityForResult(intent, REQ_CODE_IMPORT_DIRECTORY);
+      ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarkCategoriesFragment.java:310: 警告: [deprecation] Fragment中的onActivityResult(int,int,Intent)已过时
+  public final void onActivityResult(int requestCode, int resultCode, Intent data)
+                    ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarkCategoriesFragment.java:312: 警告: [deprecation] Fragment中的onActivityResult(int,int,Intent)已过时
+    super.onActivityResult(requestCode, resultCode, data);
+         ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarkCategoriesFragment.java:325: 警告: [deprecation] android.app中的ProgressDialog已过时
+        final ProgressDialog dialog = new ProgressDialog(context, R.style.MwmTheme_ProgressDialog);
+              ^
+/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/src/main/java/app/organicmaps/bookmarks/BookmarkCategoriesFragment.java:325: 警告: [deprecation] android.app中的ProgressDialog已过时
+        final ProgressDialog dialog = new ProgressDialog(context, R.style.MwmTheme_ProgressDialog);
+                                          ^
+注: 某些输入文件还使用或覆盖了已过时的 API。
+100 个警告
+
+> Task :app:dexBuilderFdroidDebug
+> Task :app:mergeFdroidDebugGlobalSynthetics
+> Task :app:processFdroidDebugJavaRes
+> Task :app:preHuaweiDebugBuild UP-TO-DATE
+> Task :app:mergeLibDexFdroidDebug
+> Task :app:mergeProjectDexFdroidDebug
+> Task :app:mergeFdroidDebugJavaResource
+
+> Task :app:configureCMakeDebug[x86_64]
+C/C++: -- The C compiler identification is Clang 18.0.2
+C/C++: -- The CXX compiler identification is Clang 18.0.2
+C/C++: -- Detecting C compiler ABI info
+C/C++: -- Detecting C compiler ABI info - done
+C/C++: -- Check for working C compiler: /home/abner/Android/Sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/bin/clang - skipped
+C/C++: -- Detecting C compile features
+C/C++: -- Detecting C compile features - done
+C/C++: -- Detecting CXX compiler ABI info
+C/C++: -- Detecting CXX compiler ABI info - done
+C/C++: -- Check for working CXX compiler: /home/abner/Android/Sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ - skipped
+C/C++: -- Detecting CXX compile features
+C/C++: -- Detecting CXX compile features - done
+C/C++: -- Using compiler Clang 18.0.2
+C/C++: -- Using Unity Build with batch 50, export UNITY_DISABLE=1 or use -DUNITY_DISABLE=ON to disable it.
+C/C++: -- export COLORS_DISABLE=1 or use -DCOLORS_DISABLE=ON to disable colored compiler output.
+C/C++: -- Build type: Debug
+C/C++: -- Using ld.ldd linker
+C/C++: -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+C/C++: -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+C/C++: -- Looking for pthread_create in pthreads
+C/C++: -- Looking for pthread_create in pthreads - not found
+C/C++: -- Looking for pthread_create in pthread
+C/C++: -- Looking for pthread_create in pthread - not found
+C/C++: -- Check if compiler accepts -pthread
+C/C++: -- Check if compiler accepts -pthread - yes
+C/C++: -- Found Threads: TRUE
+C/C++: -- Found ZLIB: /home/abner/Android/Sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/21/libz.so (found version "1.3.0.1")
+C/C++: -- Looking for dlfcn.h
+C/C++: -- Looking for dlfcn.h - found
+C/C++: -- Looking for fcntl.h
+C/C++: -- Looking for fcntl.h - found
+C/C++: -- Looking for inttypes.h
+C/C++: -- Looking for inttypes.h - found
+C/C++: -- Looking for memory.h
+C/C++: -- Looking for memory.h - found
+C/C++: -- Looking for stdint.h
+C/C++: -- Looking for stdint.h - found
+C/C++: -- Looking for stdlib.h
+C/C++: -- Looking for stdlib.h - found
+C/C++: -- Looking for strings.h
+C/C++: -- Looking for strings.h - found
+C/C++: -- Looking for string.h
+C/C++: -- Looking for string.h - found
+C/C++: -- Looking for sys/stat.h
+C/C++: -- Looking for sys/stat.h - found
+C/C++: -- Looking for sys/types.h
+C/C++: -- Looking for sys/types.h - found
+C/C++: -- Looking for unistd.h
+C/C++: -- Looking for unistd.h - found
+C/C++: -- Looking for getpagesize
+C/C++: -- Looking for getpagesize - found
+C/C++: -- Looking for mmap
+C/C++: -- Looking for mmap - found
+C/C++: -- Looking for getrandom
+C/C++: -- Looking for getrandom - not found
+C/C++: -- Looking for arc4random_buf
+C/C++: -- Looking for arc4random_buf - found
+C/C++: -- Looking for 4 include files stdlib.h, ..., float.h
+C/C++: -- Looking for 4 include files stdlib.h, ..., float.h - found
+C/C++: -- Performing Test HAVE_OFF_T
+C/C++: -- Performing Test HAVE_OFF_T - Success
+C/C++: -- Performing Test HAVE_SYSCALL_GETRANDOM
+C/C++: -- Performing Test HAVE_SYSCALL_GETRANDOM - Success
+C/C++: -- Performing Test FLAG_NO_STRICT_ALIASING
+C/C++: -- Performing Test FLAG_NO_STRICT_ALIASING - Success
+C/C++: -- Performing Test FLAG_VISIBILITY
+C/C++: -- Performing Test FLAG_VISIBILITY - Success
+C/C++: -- Looking for cos in m
+C/C++: -- Looking for cos in m - found
+C/C++: -- ===========================================================================
+C/C++: -- 
+C/C++: -- Configuration
+C/C++: --   Generator .................. Ninja
+C/C++: --   Build type ................. Debug
+C/C++: --   Prefix ..................... /usr/local
+C/C++: --   Shared libraries ........... OFF
+C/C++: --   Character type ............. char (UTF-8)
+C/C++: --   Library name postfix ....... 
+C/C++: -- 
+C/C++: --   Build documentation ........ OFF
+C/C++: --   Build examples ............. OFF
+C/C++: --   Build fuzzers .............. OFF
+C/C++: --   Build tests ................ OFF
+C/C++: --   Build tools (xmlwf) ........ OFF
+C/C++: --   Build pkg-config file ...... OFF
+C/C++: --   Install files .............. OFF
+C/C++: -- 
+C/C++: --   Features
+C/C++: --     // Advanced options, changes not advised
+C/C++: --     Attributes info .......... OFF
+C/C++: --     Context bytes ............ 1024
+C/C++: --     DTD support .............. OFF
+C/C++: --     General entities ......... OFF
+C/C++: --     Large size ............... OFF
+C/C++: --     Minimum size ............. OFF
+C/C++: --     Namespace support ........ ON
+C/C++: -- 
+C/C++: --   Entropy sources
+C/C++: --     getrandom ................ 
+C/C++: --     syscall SYS_getrandom .... 1
+C/C++: --     libbsd ................... OFF
+C/C++: --     /dev/random .............. ON
+C/C++: -- 
+C/C++: -- ===========================================================================
+C/C++: -- Performing Test HAS_NO_FORMAT_TRUNCATION
+C/C++: -- Performing Test HAS_NO_FORMAT_TRUNCATION - Success
+C/C++: C compiler: Clang
+C/C++: -- Looking for include file endian.h
+C/C++: -- Looking for include file endian.h - found
+C/C++: -- Looking for include file sched.h
+C/C++: -- Looking for include file sched.h - found
+C/C++: -- Looking for include file sys/param.h
+C/C++: -- Looking for include file sys/param.h - found
+C/C++: -- Looking for include file sys/time.h
+C/C++: -- Looking for include file sys/time.h - found
+C/C++: -- Looking for close
+C/C++: -- Looking for close - found
+C/C++: -- Looking for getpid
+C/C++: -- Looking for getpid - found
+C/C++: -- Looking for gettimeofday
+C/C++: -- Looking for gettimeofday - found
+C/C++: -- Looking for open
+C/C++: -- Looking for open - found
+C/C++: -- Looking for read
+C/C++: -- Looking for read - found
+C/C++: -- Looking for sched_yield
+C/C++: -- Looking for sched_yield - found
+C/C++: -- Looking for stddef.h
+C/C++: -- Looking for stddef.h - found
+C/C++: -- Check size of __int64
+C/C++: -- Check size of __int64 - failed
+C/C++: -- Check size of int64_t
+C/C++: -- Check size of int64_t - done
+C/C++: -- Check size of long long
+C/C++: -- Check size of long long - done
+C/C++: -- Check size of int32_t
+C/C++: -- Check size of int32_t - done
+C/C++: -- Check size of __int32
+C/C++: -- Check size of __int32 - failed
+C/C++: -- Check size of long
+C/C++: -- Check size of long - done
+C/C++: -- Check size of int
+C/C++: -- Check size of int - done
+C/C++: -- Check size of unsigned long
+C/C++: -- Check size of unsigned long - done
+C/C++: -- Check size of unsigned int
+C/C++: -- Check size of unsigned int - done
+C/C++: -- Check size of unsigned short
+C/C++: -- Check size of unsigned short - done
+C/C++: -- Check size of uint32_t
+C/C++: -- Check size of uint32_t - done
+C/C++: -- Check size of __uint32
+C/C++: -- Check size of __uint32 - failed
+C/C++: -- Check size of uint16_t
+C/C++: -- Check size of uint16_t - done
+C/C++: -- Check size of __uint16
+C/C++: -- Check size of __uint16 - failed
+C/C++: -- Check size of uint8_t
+C/C++: -- Check size of uint8_t - done
+C/C++: -- Check size of __uint8
+C/C++: -- Check size of __uint8 - failed
+C/C++: -- Check size of ssize_t
+C/C++: -- Check size of ssize_t - done
+C/C++: -- Check size of SSIZE_T
+C/C++: -- Check size of SSIZE_T - failed
+C/C++: -- Looking for strtoll
+C/C++: -- Looking for strtoll - found
+C/C++: -- Looking for strtoq
+C/C++: -- Looking for strtoq - not found
+C/C++: -- Looking for _strtoi64
+C/C++: -- Looking for _strtoi64 - not found
+C/C++: -- Looking for include file locale.h
+C/C++: -- Looking for include file locale.h - found
+C/C++: -- Looking for setlocale
+C/C++: -- Looking for setlocale - found
+C/C++: -- Performing Test HAVE_INLINE
+C/C++: -- Performing Test HAVE_INLINE - Success
+C/C++: -- Performing Test HAVE___INLINE
+C/C++: -- Performing Test HAVE___INLINE - Success
+C/C++: -- Performing Test HAVE___INLINE__
+C/C++: -- Performing Test HAVE___INLINE__ - Success
+C/C++: -- Performing Test HAVE_SYNC_BUILTINS
+C/C++: -- Performing Test HAVE_SYNC_BUILTINS - Success
+C/C++: -- Performing Test HAVE_ATOMIC_BUILTINS
+C/C++: -- Performing Test HAVE_ATOMIC_BUILTINS - Success
+C/C++: -- Looking for C++ include fnmatch.h
+C/C++: -- Looking for C++ include fnmatch.h - found
+C/C++: -- Check size of uint32_t
+C/C++: -- Check size of uint32_t - done
+C/C++: -- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1")
+C/C++: -- Could NOT find PNG (missing: PNG_LIBRARY PNG_PNG_INCLUDE_DIR) 
+C/C++: -- Could NOT find BZip2 (missing: BZIP2_LIBRARIES BZIP2_INCLUDE_DIR) 
+C/C++: -- Checking for module 'bzip2'
+C/C++: --   Package 'bzip2', required by 'virtual:world', not found
+C/C++: -- Could NOT find BrotliDec (missing: BROTLIDEC_INCLUDE_DIRS BROTLIDEC_LIBRARIES) 
+C/C++: -- SKIP_TESTS: Skipping subdirectory bsdiff/bsdiff_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory opening_hours_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory opening_hours_integration_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory opening_hours_supported_features_tests
+C/C++: -- Found Python3: /usr/bin/python3.12 (found version "3.12.3") found components: Interpreter
+C/C++: -- SKIP_TESTS: Skipping subdirectory base_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory coding_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory descriptions_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory drape_tests
+C/C++: SKIP_TOOLS: Skipping subdirectory fonts_tool
+C/C++: -- SKIP_TESTS: Skipping subdirectory drape_frontend_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory editor_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory editor_tests_support
+C/C++: -- SKIP_TESTS: Skipping subdirectory osm_auth_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory ge0_tests
+C/C++: SKIP_TOOLS: Skipping subdirectory mwm_diff_tool
+C/C++: -- SKIP_TESTS: Skipping subdirectory mwm_diff_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory geometry_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory indexer_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory kml_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory map_integration_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory map_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory mwm_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory style_tests
+C/C++: Building without Qt Positioning
+C/C++: -- SKIP_TESTS: Skipping subdirectory platform_tests_support
+C/C++: -- SKIP_TESTS: Skipping subdirectory platform_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory routing_benchmarks
+C/C++: -- SKIP_TESTS: Skipping subdirectory routing_consistency_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory routing_integration_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory routing_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory routing_common_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory search_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory search_integration_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory shaders_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory storage_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory storage_integration_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory tracking_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory traffic_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory transit_experimental_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory transit_tests
+C/C++: -- SKIP_TESTS: Skipping subdirectory qt_tstfrm
+C/C++: -- Configuring done (3.1s)
+C/C++: -- Generating done (0.1s)
+C/C++: CMake Warning:
+C/C++:   Manually-specified variables were not used by the project:
+C/C++:     OS
+C/C++: -- Build files have been written to: /mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/nativeOutputs/Debug/4yw1i2l2/x86_64
+
+> Task :app:buildCMakeDebug[x86_64][organicmaps]
+C/C++: ninja: Entering directory `/mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/nativeOutputs/Debug/4yw1i2l2/x86_64'
+C/C++: [1/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/appendable.cpp.o
+C/C++: [2/197] Building C object 3party/jansson/jansson/CMakeFiles/jansson.dir/Unity/unity_0_c.c.o
+C/C++: [3/197] Linking C static library 3party/jansson/jansson/lib/libjansson.a
+C/C++: [4/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/cmemory.cpp.o
+C/C++: [5/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/cstring.cpp.o
+C/C++: [6/197] Building C object 3party/expat/expat/CMakeFiles/expat.dir/Unity/unity_0_c.c.o
+C/C++: [7/197] Linking C static library libexpat.a
+C/C++: [8/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/bytestream.cpp.o
+C/C++: [9/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/bytestrie.cpp.o
+C/C++: [10/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/bytesinkutil.cpp.o
+C/C++: [11/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/remtrans.cpp.o
+C/C++: [12/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/bmpset.cpp.o
+C/C++: [13/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ucharstrieiterator.cpp.o
+C/C++: [14/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/charstr.cpp.o
+C/C++: [15/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/edits.cpp.o
+C/C++: [16/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/ucln_in.cpp.o
+C/C++: [17/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/parsepos.cpp.o
+C/C++: [18/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/emojiprops.cpp.o
+C/C++: [19/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/loclikely.cpp.o
+C/C++: [20/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/localebuilder.cpp.o
+C/C++: [21/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/characterproperties.cpp.o
+C/C++: [22/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/loadednormalizer2impl.cpp.o
+C/C++: [23/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/locid.cpp.o
+C/C++: [24/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uarrsort.cpp.o
+C/C++: [25/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/lsr.cpp.o
+C/C++: [26/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/loclikelysubtags.cpp.o
+C/C++: [27/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/locmap.cpp.o
+C/C++: [28/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/locutil.cpp.o
+C/C++: [29/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ubidi.cpp.o
+C/C++: [30/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ubidi_props.cpp.o
+C/C++: [31/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ubidiln.cpp.o
+C/C++: [32/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/resbund_cnv.cpp.o
+C/C++: [33/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/patternprops.cpp.o
+C/C++: [34/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/putil.cpp.o
+C/C++: [35/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/resource.cpp.o
+C/C++: [36/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ubidiwrt.cpp.o
+C/C++: [37/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/resbund.cpp.o
+C/C++: [38/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/stringpiece.cpp.o
+C/C++: [39/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ruleiter.cpp.o
+C/C++: [40/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/normalizer2.cpp.o
+C/C++: [41/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/propname.cpp.o
+C/C++: [42/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/normalizer2impl.cpp.o
+C/C++: [43/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ucmndata.cpp.o
+C/C++: [44/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/umath.cpp.o
+C/C++: [45/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uchar.cpp.o
+C/C++: [46/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ucptrie.cpp.o
+C/C++: [47/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/udataswp.cpp.o
+C/C++: [48/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/udatamem.cpp.o
+C/C++: [49/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/unifunct.cpp.o
+C/C++: [50/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uenum.cpp.o
+C/C++: [51/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/unifilt.cpp.o
+C/C++: [52/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/unistr_case_locale.cpp.o
+C/C++: [53/197] Building CXX object 3party/pugixml/CMakeFiles/pugixml.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [54/197] Linking CXX static library libpugixml.a
+C/C++: [55/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ucharstrie.cpp.o
+C/C++: [56/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ucln_cmn.cpp.o
+C/C++: [57/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uhash.cpp.o
+C/C++: [58/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/umapfile.cpp.o
+C/C++: [59/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ucase.cpp.o
+C/C++: [60/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/umutablecptrie.cpp.o
+C/C++: [61/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uhash_us.cpp.o
+C/C++: [62/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/udata.cpp.o
+C/C++: [63/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uobject.cpp.o
+C/C++: [64/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uloc_keytype.cpp.o
+C/C++: [65/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uloc_tag.cpp.o
+C/C++: [66/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uinvchar.cpp.o
+C/C++: [67/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uloc.cpp.o
+C/C++: [68/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/umutex.cpp.o
+C/C++: [69/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/unames.cpp.o
+C/C++: [70/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/utf_impl.cpp.o
+C/C++: [71/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uniset.cpp.o
+C/C++: [72/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/unistr_case.cpp.o
+C/C++: [73/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uniset_closure.cpp.o
+C/C++: [74/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ushape.cpp.o
+C/C++: [75/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uniset_props.cpp.o
+C/C++: [76/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/unistr.cpp.o
+C/C++: [77/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/unisetspan.cpp.o
+C/C++: [78/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uresdata.cpp.o
+C/C++: [79/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uscript.cpp.o
+C/C++: [80/197] Building C object 3party/freetype/freetype/CMakeFiles/freetype.dir/Unity/unity_0_c.c.o
+C/C++: [81/197] Linking C static library libfreetyped.a
+C/C++: [82/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ustrtrns.cpp.o
+C/C++: [83/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uprops.cpp.o
+C/C++: [84/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uresbund.cpp.o
+C/C++: [85/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uscript_props.cpp.o
+C/C++: [86/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uset.cpp.o
+C/C++: [87/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ustring.cpp.o
+C/C++: [88/197] Building CXX object 3party/protobuf/CMakeFiles/protobuf.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [89/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/utrace.cpp.o
+C/C++: [90/197] Linking CXX static library libprotobuf.a
+C/C++: [91/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/utrie_swap.cpp.o
+C/C++: [92/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/utrie2.cpp.o
+C/C++: [93/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ustrcase_locale.cpp.o
+C/C++: [94/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ustrcase.cpp.o
+C/C++: [95/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uvector.cpp.o
+C/C++: [96/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/uvectr32.cpp.o
+C/C++: [97/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/ustrenum.cpp.o
+C/C++: [98/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/util.cpp.o
+C/C++: [99/197] Building CXX object 3party/icu/CMakeFiles/icuuc.dir/icu/icu4c/source/common/util_props.cpp.o
+C/C++: [100/197] Linking CXX static library libicuuc.a
+C/C++: [101/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/nortrans.cpp.o
+C/C++: [102/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/nultrans.cpp.o
+C/C++: [103/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/casetrn.cpp.o
+C/C++: [104/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/funcrepl.cpp.o
+C/C++: [105/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/name2uni.cpp.o
+C/C++: [106/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/rbt_rule.cpp.o
+C/C++: [107/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/rbt_pars.cpp.o
+C/C++: [108/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/quant.cpp.o
+C/C++: [109/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/esctrn.cpp.o
+C/C++: [110/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/rbt_data.cpp.o
+C/C++: [111/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/rbt.cpp.o
+C/C++: [112/197] Building CXX object 3party/bsdiff-courgette/CMakeFiles/bsdiff.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [113/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/anytrans.cpp.o
+C/C++: [114/197] Linking CXX static library libbsdiff.a
+C/C++: [115/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/rbt_set.cpp.o
+C/C++: [116/197] Building CXX object 3party/agg/CMakeFiles/agg.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [117/197] Linking CXX static library libagg.a
+C/C++: [118/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/titletrn.cpp.o
+C/C++: [119/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/tolowtrn.cpp.o
+C/C++: [120/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/cpdtrans.cpp.o
+C/C++: [121/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/stubdata/stubdata.cpp.o
+C/C++: [122/197] Building C object 3party/minizip/CMakeFiles/minizip.dir/Unity/unity_0_c.c.o
+C/C++: [123/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/strrepl.cpp.o
+C/C++: [124/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/toupptrn.cpp.o
+C/C++: [125/197] Building CXX object 3party/vulkan_wrapper/CMakeFiles/vulkan_wrapper.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [126/197] Linking CXX static library libvulkan_wrapper.a
+C/C++: [127/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/strmatch.cpp.o
+C/C++: [128/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/translit.cpp.o
+C/C++: [129/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/tridpars.cpp.o
+C/C++: [130/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/unesctrn.cpp.o
+C/C++: [131/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/uni2name.cpp.o
+C/C++: [132/197] Building CXX object 3party/icu/CMakeFiles/icui18n.dir/icu/icu4c/source/i18n/transreg.cpp.o
+C/C++: [133/197] Building CXX object 3party/stb_image/CMakeFiles/stb_image.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [134/197] Linking CXX static library libicui18n.a
+C/C++: [135/197] Linking CXX static library libstb_image.a
+C/C++: [136/197] Building CXX object 3party/open-location-code/CMakeFiles/openlocationcode.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [137/197] Linking CXX static library libopenlocationcode.a
+C/C++: [138/197] Building CXX object 3party/minizip/CMakeFiles/minizip.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [139/197] Linking CXX static library libminizip.a
+C/C++: [140/197] Building CXX object generator/mwm_diff/CMakeFiles/mwm_diff.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [141/197] Building CXX object indexer/CMakeFiles/indexer.dir/drules_struct.pb.cc.o
+C/C++: [142/197] Building CXX object cppjansson/CMakeFiles/cppjansson.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [143/197] Building CXX object platform/CMakeFiles/platform.dir/preferred_languages.cpp.o
+C/C++: [144/197] Building CXX object 3party/succinct/CMakeFiles/succinct.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [145/197] Linking CXX static library libsuccinct.a
+C/C++: [146/197] Building CXX object ge0/CMakeFiles/ge0.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [147/197] Building CXX object geometry/CMakeFiles/geometry.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [148/197] Building CXX object descriptions/CMakeFiles/descriptions.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [149/197] Building CXX object drape/CMakeFiles/drape.dir/Unity/unity_1_cxx.cxx.o
+C/C++: [150/197] Building CXX object indexer/CMakeFiles/indexer.dir/Unity/unity_1_cxx.cxx.o
+C/C++: [151/197] Building CXX object base/CMakeFiles/base.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [152/197] Linking CXX static library libbase.a
+C/C++: [153/197] Linking CXX static library libgeometry.a
+C/C++: [154/197] Linking CXX static library libcppjansson.a
+C/C++: [155/197] Building CXX object routing_common/CMakeFiles/routing_common.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [156/197] Building CXX object traffic/CMakeFiles/traffic.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [157/197] Building CXX object coding/CMakeFiles/coding.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [158/197] Building CXX object platform/CMakeFiles/platform.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [159/197] Linking CXX static library libcoding.a
+C/C++: [160/197] Linking CXX static library libmwm_diff.a
+C/C++: [161/197] Linking CXX static library libge0.a
+C/C++: [162/197] Linking CXX static library libplatform.a
+C/C++: [163/197] Building CXX object kml/CMakeFiles/kml.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [164/197] Building CXX object storage/CMakeFiles/storage.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [165/197] Linking CXX static library libstorage.a
+C/C++: [166/197] Building CXX object transit/CMakeFiles/transit.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [167/197] Building CXX object 3party/harfbuzz/CMakeFiles/harfbuzz.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [168/197] Building CXX object drape/CMakeFiles/drape.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [169/197] Linking CXX static library libharfbuzz.a
+C/C++: [170/197] Building CXX object search/CMakeFiles/search.dir/Unity/unity_1_cxx.cxx.o
+C/C++: [171/197] Building CXX object routing/CMakeFiles/routing.dir/Unity/unity_1_cxx.cxx.o
+C/C++: [172/197] Building CXX object indexer/CMakeFiles/indexer.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [173/197] Building CXX object 3party/opening_hours/CMakeFiles/opening_hours.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [174/197] Linking CXX static library libopening_hours.a
+C/C++: [175/197] Building CXX object editor/CMakeFiles/editor.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [176/197] Building CXX object routing/CMakeFiles/routing.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [177/197] Building CXX object search/CMakeFiles/search.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [178/197] Linking CXX static library libsearch.a
+C/C++: [179/197] Linking CXX static library libindexer.a
+C/C++: [180/197] Linking CXX static library libeditor.a
+C/C++: [181/197] Linking CXX static library libdescriptions.a
+C/C++: [182/197] Linking CXX static library librouting_common.a
+C/C++: [183/197] Linking CXX static library libkml.a
+C/C++: [184/197] Linking CXX static library libtransit.a
+C/C++: [185/197] Linking CXX static library libtraffic.a
+C/C++: [186/197] Linking CXX static library libdrape.a
+C/C++: [187/197] Linking CXX static library librouting.a
+C/C++: [188/197] Generating /mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/shaders/gl_shaders.cpp, /mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/shaders/gl_shaders.hpp
+C/C++: ./gl_shaders.hpp was replaced
+C/C++: ./gl_shaders.cpp was replaced
+C/C++: [189/197] Building CXX object shaders/CMakeFiles/shaders.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [190/197] Linking CXX static library libshaders.a
+C/C++: [191/197] Building CXX object android/app/src/main/cpp/CMakeFiles/organicmaps.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [192/197] Building CXX object drape_frontend/CMakeFiles/drape_frontend.dir/Unity/unity_1_cxx.cxx.o
+C/C++: In file included from /mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/nativeOutputs/Debug/4yw1i2l2/x86_64/drape_frontend/CMakeFiles/drape_frontend.dir/Unity/unity_1_cxx.cxx:40:
+C/C++: /mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/drape_frontend/read_manager.cpp:55:5: warning: field 'm_userMarksGenerationCounter' will be initialized after field 'm_mapLangIndex' [-Wreorder-ctor]
+C/C++:    52 |   , m_tasksPool(64, ReadMWMTaskFactory(m_model))
+C/C++:       |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C/C++:       |     m_mapLangIndex(StringUtf8Multilang::kDefaultCode)
+C/C++:    53 |   , m_counter(0)
+C/C++:       |     ~~~~~~~~~~~~
+C/C++:       |     m_tasksPool(64, ReadMWMTaskFactory(m_model))
+C/C++:    54 |   , m_generationCounter(0)
+C/C++:       |     ~~~~~~~~~~~~~~~~~~~~~~
+C/C++:       |     m_counter(0)
+C/C++:    55 |   , m_userMarksGenerationCounter(0)
+C/C++:       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C/C++:       |     m_generationCounter(0)
+C/C++:    56 |   , m_mapLangIndex(StringUtf8Multilang::kDefaultCode)
+C/C++:       |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C/C++:       |     m_userMarksGenerationCounter(0)
+C/C++: 1 warning generated.
+C/C++: [193/197] Building CXX object drape_frontend/CMakeFiles/drape_frontend.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [194/197] Linking CXX static library libdrape_frontend.a
+C/C++: [195/197] Building CXX object map/CMakeFiles/map.dir/Unity/unity_0_cxx.cxx.o
+C/C++: [196/197] Linking CXX static library libmap.a
+C/C++: [197/197] Linking CXX shared library /mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/app/build/intermediates/cxx/Debug/4yw1i2l2/obj/x86_64/liborganicmaps.so
+
+> Task :app:mergeFdroidDebugJniLibFolders
+> Task :app:validateSigningFdroidDebug
+> Task :app:writeFdroidDebugAppMetadata
+> Task :app:writeFdroidDebugSigningConfigVersions
+> Task :app:mergeFdroidDebugNativeLibs
+> Task :app:stripFdroidDebugDebugSymbols
+
+> Task :app:packageFdroidDebug
+There are no .so files available to package in the APK for arm64-v8a, armeabi-v7a.
+
+> Task :app:createFdroidDebugApkListingFileRedirect
+> Task :app:assembleFdroidDebug
+[Incubating] Problems report is available at: file:///mnt/disk2/abner/zdev/nv/mapsme-organicmaps2024-1112/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 2m 2s
+42 actionable tasks: 42 executed
+
+Build Analyzer results available
+
