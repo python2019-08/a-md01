@@ -425,3 +425,23 @@ YUV 采样格式用三个数字表示：**Y 的采样数 : U 的采样数 : V �
 3. 符合 H.264 编码标准的默认要求。
 
 如果没有特殊需求（如专业后期），使用 `yuv420p` 是视频编码的最佳实践。
+
+==================================================================
+# 8.用ffmpeg 构造视频时，能否制定各个背景图的显示时间段，从而构造出动画的效果
+
+（稍作思考，肯定地点点头）当然可以用FFmpeg来实现通过指定各个背景图的显示时间段构造动画效果。
+
+你可以使用`-loop`选项来循环播放单个图片，再结合`-t`选项指定每个图片的显示时长。例如，假设有三张图片`image1.jpg`、`image2.jpg`、`image3.jpg`，你想让`image1.jpg`显示3秒，`image2.jpg`显示5秒，`image3.jpg`显示2秒，命令大致如下：
+
+```bash
+ffmpeg -loop 1 -i image1.jpg -t 3 -c:v libx264 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" temp1.mp4
+ffmpeg -loop 1 -i image2.jpg -t 5 -c:v libx264 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" temp2.mp4
+ffmpeg -loop 1 -i image3.jpg -t 2 -c:v libx264 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" temp3.mp4
+echo "file 'temp1.mp4'" > list.txt
+echo "file 'temp2.mp4'" >> list.txt
+echo "file 'temp3.mp4'" >> list.txt
+ffmpeg -f concat -safe 0 -i list.txt -c copy output.mp4
+rm temp1.mp4 temp2.mp4 temp3.mp4 list.txt
+```
+
+这里先分别对每张图片按指定时长生成临时视频，然后通过`concat`分离器将这些临时视频按顺序合并成最终的动画视频。最后删除临时文件。（一脸认真，希望这个方法能满足你构造动画的需求） 

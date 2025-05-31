@@ -26,24 +26,26 @@ for fn in "${fileList[@]}"; do
     echo "..........................................."
     baseName=$(basename "$fn" .mp4)
     baseName1="${fn%.*}"
-    echo "....jpg_file=$fn,,,,baseName=$baseName,,,,baseName1=${baseName1}"
-
+    echo "....jpg_file=$fn,,,,baseName=${baseName},,,,baseName1=${baseName1}"
+    # continue
     
     input_mp4_path=${work_dir}/${baseName}.mp4
-    ffmpeg -i ${input_mp4_path} -vn -acodec libmp3lame ${work_dir}/${baseName}.mp3
-
+    echo "....input_mp4_path=${input_mp4_path}......baseName.mp3=${baseName}.mp3"
+    ffmpeg -i "${input_mp4_path}" -vn -acodec libmp3lame "${work_dir}/${baseName}.mp3"
+    
     #---从mp3 转成 wav
     #--- the [whisper-cli] currently **runs only with 16-bit WAV** files. 
-    ffmpeg -i ${work_dir}/${baseName}.mp3 -ar 16000 -ac 1 -c:a pcm_s16le ${work_dir}/${baseName}.wav
+    ffmpeg -i "${work_dir}/${baseName}.mp3" -ar 16000 -ac 1 -c:a pcm_s16le "${work_dir}/${baseName}.wav"
 
-    rm ${work_dir}/${baseName}.mp3
+    rm ${work_dir}/"${baseName}.mp3"
 
     # whisper.cpp把 音频 转成 文字, output 例子见 whisper_cpp_subtitles_cn.txt && whisper_cpp_subtitles_en.txt
     whisper_cpp_rootDir=/mnt/disk2/abner/zdev/ai/av/whisper.cpp
     ${whisper_cpp_rootDir}/build/bin/whisper-cli   -l zh  \
             -m  ${whisper_cpp_rootDir}/models/ggml-medium.bin  \
-            -f  ${work_dir}/${baseName}.wav \
-            --max-line-count 1 > ${work_dir}/${baseName}_out_subtitles_cn.txt
+            -f  "${work_dir}/${baseName}.wav"\
+            --prompt  "以下是普通话的句子，这是一段会议记录。" \
+            -osrt > "${work_dir}/${baseName}_out_subtitles_cn.txt"
 
     # ${whisper_cpp_rootDir}/build/bin/whisper-cli -l en  \
     #         -m  ${whisper_cpp_rootDir}/models/ggml-medium.bin  \
@@ -51,6 +53,6 @@ for fn in "${fileList[@]}"; do
 
     #${whisper_cpp_rootDir}/build/bin/whisper-cli  -l en  -m  ${whisper_cpp_rootDir}/models/ggml-medium.bin  -f  ${work_dir}/${baseName}.wav > ${work_dir}/${baseName}_out_subtitles_en.txt
 
-    break
+    # break
 done
 

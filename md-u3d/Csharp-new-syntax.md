@@ -122,3 +122,193 @@ class Program
 
 <-------------------------------------------------------------------->
 <-------------------------------------------------------------------->
+# 4. C# 中类的可见性
+
+在 C# 中，类的可见性（访问修饰符）决定了类在程序中的可访问范围。合理使用访问修饰符有助于封装代码、控制依赖关系和提高安全性。以下是 C# 中类的主要可见性修饰符及其使用规则：
+
+
+### **1. `public`（公共）**
+- **可见范围**：任何代码都可以访问。
+- **适用场景**：作为公共 API 的一部分，允许外部程序集引用。
+- **示例**：
+  ```csharp
+  public class MyPublicClass {
+      // 公共类可以被任何地方访问
+  }
+  ```
+
+
+### **2. `internal`（内部）**
+- **可见范围**：同一程序集（Assembly）内可见，外部程序集无法访问。
+- **适用场景**：封装项目内部的实现细节，隐藏不希望被外部依赖的类。
+- **示例**：
+  ```csharp
+  internal class MyInternalClass {
+      // 只能在当前项目中访问
+  }
+  ```
+
+
+### **3. `private`（私有）**
+- **可见范围**：仅在包含它的类或结构体内部可见。
+- **适用场景**：嵌套类（Nested Class）中使用，隐藏内部实现。
+- **示例**：
+  ```csharp
+  public class OuterClass {
+      private class MyPrivateClass {
+          // 只能在 OuterClass 内部访问
+      }
+  }
+  ```
+
+
+### **4. `protected`（受保护）**
+- **可见范围**：仅在当前类或其派生类中可见。
+- **适用场景**：基类希望派生类能够访问其内部类，但对外部隐藏。
+- **示例**：
+  ```csharp
+  public class BaseClass {
+      protected class MyProtectedClass {
+          // 可在 BaseClass 及其派生类中访问
+      }
+  }
+
+  public class DerivedClass : BaseClass {
+      void AccessProtectedClass() {
+          var obj = new MyProtectedClass(); // 合法
+      }
+  }
+  ```
+
+
+### **5. `protected internal`（受保护的内部）**
+- **可见范围**：同一程序集内的任何代码，或不同程序集的派生类。
+- **示例**：
+  ```csharp
+  protected internal class MyProtectedInternalClass {
+      // 同一程序集或派生类可访问
+  }
+  ```
+
+
+### **6. `private protected`（私有受保护）**
+- **可见范围**：同一程序集内的派生类，且必须通过包含它的类访问。
+- **示例**：
+  ```csharp
+  public class BaseClass {
+      private protected class MyPrivateProtectedClass {
+          // 仅在同一程序集的派生类中通过 BaseClass 访问
+      }
+  }
+  ```
+
+
+### **使用规则**
+1. **顶级类**（非嵌套类）只能使用 `public` 或 `internal`，默认为 `internal`。
+2. **嵌套类**可以使用所有修饰符，其可见性受限于外部类的可见性。
+3. **访问修饰符的限制顺序**：`private` < `private protected` < `protected` < `internal` < `protected internal` < `public`。
+
+
+### **示例：嵌套类的可见性**
+```csharp
+public class OuterClass {
+    // 公共嵌套类，外部可访问
+    public class PublicNestedClass { }
+
+    // 内部嵌套类，同一程序集可访问
+    internal class InternalNestedClass { }
+
+    // 私有嵌套类，仅 OuterClass 可访问
+    private class PrivateNestedClass { }
+
+    // 受保护嵌套类，OuterClass 及其派生类可访问
+    protected class ProtectedNestedClass { }
+}
+```
+
+
+### **最佳实践**
+- **最小化可见性**：默认使用 `internal`，仅对必要的类使用 `public`。
+- **避免过度暴露**：通过接口（`interface`）或抽象类隐藏具体实现。
+- **文档注释**：为 `public` 类添加 XML 注释，说明其用途和限制。
+
+通过合理设置类的可见性，可以提高代码的可维护性和安全性，减少不必要的依赖关系。
+
+================================================
+# 5.$"{action.actionMap}_{action.name}_{bindingIndex}"
+
+这是 C# 中的 **字符串内插（String Interpolation）** 语法，从 C# 6.0 版本开始引入。它提供了一种更简洁、直观的方式来构建字符串，比传统的字符串格式化（如 `string.Format()`）或字符串连接（如 `+` 操作符）更易读。
+
+
+### **语法结构**
+字符串内插的基本形式是在字符串前加一个 `$` 符号，然后在字符串中使用 `{}` 包裹变量或表达式。例如：
+```csharp
+string name = "Alice";
+int age = 30;
+string message = $"Hello, {name}! You are {age} years old.";
+// 输出: "Hello, Alice! You are 30 years old."
+```
+
+
+### **分析示例 `$"{action.actionMap}_{action.name}_{bindingIndex}"`**
+这个表达式将三个值组合成一个字符串：
+1. `action.actionMap`：表示 `action` 对象的 `actionMap` 属性。
+2. `action.name`：表示 `action` 对象的 `name` 属性。
+3. `bindingIndex`：一个变量（可能是整数）。
+
+三个值之间用下划线 `_` 连接，例如：
+- 如果 `action.actionMap = "Player"`，`action.name = "Jump"`，`bindingIndex = 0`，
+- 则结果为 `"Player_Jump_0"`。
+
+
+### **优势**
+1. **更简洁**：无需显式调用 `ToString()` 或使用占位符。
+2. **更易读**：直接在字符串中嵌入变量名，逻辑清晰。
+3. **支持表达式**：可以在 `{}` 中使用任意 C# 表达式。
+
+
+### **进阶用法**
+1. **格式化数值**：
+   ```csharp
+   double price = 9.99;
+   string formatted = $"Price: ${price:F2}"; // 输出: "Price: $9.99"
+   ```
+
+2. **嵌套表达式**：
+   ```csharp
+   string product = "Apple";
+   int count = 3;
+   string result = $"I have {count} {(count == 1 ? "item" : "items")} ({product}).";
+   // 输出: "I have 3 items (Apple)."
+   ```
+
+3. **与对象属性结合**：
+   ```csharp
+   var person = new { Name = "Bob", Age = 25 };
+   string info = $"Name: {person.Name}, Age: {person.Age}";
+   ```
+
+
+### **性能**
+字符串内插在编译时会被转换为 `string.Format()` 或 `StringBuilder`，性能与传统方法相近，但代码更简洁。
+
+
+### **兼容性**
+- 需要 C# 6.0 或更高版本。
+- 在 Unity 中，需要 Unity 2018.3 或更高版本支持。
+
+
+### **与传统方法对比**
+**传统方法**：
+```csharp
+string oldStyle = string.Format("{0}_{1}_{2}", action.actionMap, action.name, bindingIndex);
+// 或
+string concatenated = action.actionMap + "_" + action.name + "_" + bindingIndex;
+```
+
+**字符串内插**：
+```csharp
+string interpolated = $"{action.actionMap}_{action.name}_{bindingIndex}";
+```
+
+通过字符串内插，可以更清晰地表达字符串构建的逻辑，减少错误并提高代码可读性。
