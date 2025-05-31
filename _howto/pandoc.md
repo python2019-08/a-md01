@@ -86,7 +86,8 @@ pandoc xx.docx -f docx -t markdown-smart+hard_line_breaks --atx-headers | \
 
 通过上述方法，你应该能够显著减少 Markdown 中的多余转义字符。
 
-==================================================================
+======================================== 
+======================================== 
 # 2.pandoc 转换docx文档时，图片丢失了
 
 
@@ -189,3 +190,137 @@ pandoc input.docx \
 
 ### **总结**
 Pandoc 处理 DOCX 图片的关键是**手动提取并指定图片存储路径**。根据文档复杂度，选择直接提取目录（方法 1）或强制转换格式（方法 4）通常能解决问题。若仍有问题，可尝试先用办公软件（如 LibreOffice）将 DOCX 另存为 HTML，再用 Pandoc 转换。
+======================================== 
+======================================== 
+# 3.pandoc 把html转换 成md时，html内部的svg 图片的处理
+
+pandoc 把html转换 成md时，html内部的svg 图片没有转成png或jpg而是保持原样，如何处理这个问题？
+
+在使用 Pandoc 将 HTML 转换为 Markdown 时，SVG 图片默认会保留为原始格式（这是因为 Markdown 本身支持直接嵌入 SVG）。若需要将 SVG 转换为 PNG/JPG，可以通过以下方法解决：
+
+
+### **方法1：使用 Pandoc 的过滤器（推荐）**
+通过自定义过滤器在转换过程中自动将 SVG 转换为 PNG。以下是使用 Python 和 Inkscape（或 CairoSVG）实现的方案：
+
+#### **步骤1：安装依赖工具**
+```bash
+# Ubuntu/Debian
+sudo apt-get install inkscape python3 python3-pip
+pip3 install panflute
+
+# macOS (via Homebrew)
+brew install inkscape python3
+pip3 install panflute
+```
+
+#### **步骤2：创建 SVG 转换过滤器（`svg_to_png.py`）**
+```python
+#!/usr/bin/env python3
+import os
+import panflute as pf
+from subprocess import run, PIPE
+
+def svg_to_png(elem, doc):
+    if isinstance(elem, pf.Image) and elem.url.endswith('.svg'):
+        # 创建输出目录
+        output_dir = 'converted_images'
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # 生成新文件名
+        base_name = os.path.basename(elem.url).replace('.svg', '.png')
+        output_path = os.path.join(output_dir, base_name)
+        
+        # 使用 Inkscape 转换 SVG 到 PNG
+        cmd = [
+            'inkscape', 
+            '--export-type=png',
+            '--export-filename=' + output_path,
+            elem.url
+        ]
+        
+        result = run(cmd, stdout=PIPE, stderr=PIPE)
+        if result.returncode != 0:
+            pf.debug(f"Error converting {elem.url}: {result.stderr.decode()}")
+            return elem  # 转换失败，保持原样
+        
+        # 更新图片 URL
+        elem.url = output_path
+        return elem
+
+if __name__ == '__main__':
+    pf.run_filter(svg_to_png)
+```
+
+#### **步骤3：应用过滤器进行转换**
+```bash
+pandoc input.html -o output.md --filter ./svg_to_png.py
+```
+
+
+### **方法2：手动预处理 SVG**
+先将 HTML 中的 SVG 全部转换为 PNG，再用 Pandoc 转换：
+
+#### **步骤1：提取并转换 SVG**
+```bash
+# 使用工具如 svg-to-png 批量转换
+npm install -g svg-to-png
+svg-to-png input_dir/ output_dir/
+```
+
+#### **步骤2：替换 HTML 中的 SVG 引用**
+使用脚本（如 Python/Perl）批量替换 HTML 中的 SVG 标签为 PNG：
+```python
+import re
+
+with open('input.html', 'r') as f:
+    content = f.read()
+
+# 替换 <img src="*.svg"> 为 PNG
+content = re.sub(r'<img[^>]*src="([^"]+\.svg)"[^>]*>', 
+                r'<img src="\1.png">', 
+                content)
+
+with open('input_fixed.html', 'w') as f:
+    f.write(content)
+```
+
+#### **步骤3：使用 Pandoc 转换处理后的 HTML**
+```bash
+pandoc input_fixed.html -o output.md
+```
+
+
+### **方法3：使用其他工具链**
+#### **方案1：Chrome Headless 截图**
+使用 Puppeteer 等工具将 SVG 渲染为 PNG：
+```bash
+npm install -g puppeteer-cli
+puppeteer screenshot input.svg --out output.png
+```
+
+#### **方案2：CairoSVG（纯 Python 方案）**
+```bash
+pip3 install cairosvg
+cairosvg input.svg -o output.png
+```
+
+
+### **优化建议**
+1. **批量处理**：编写脚本自动遍历目录中的所有 HTML 文件，统一转换 SVG 后再用 Pandoc 处理。
+
+2. **保留原始文件**：转换后的 PNG 保存到单独目录，避免覆盖原始文件。
+
+3. **自动化集成**：将转换流程集成到 CI/CD 或构建脚本中，确保每次更新都自动处理 SVG。
+
+4. **质量控制**：通过参数调整 PNG 的分辨率（如 Inkscape 的 `--export-dpi`）。
+
+
+### **最终命令示例**
+```bash
+# 使用过滤器一次性完成转换
+pandoc input.html -o output.md \
+  --filter ./svg_to_png.py \
+  --resource-path=./images  # 指定 SVG 资源路径
+```
+
+通过上述方法，SVG 将被转换为 PNG/JPG 格式，使 Markdown 在不支持 SVG 的平台（如 GitHub、某些文档系统）中也能正常显示图片。
