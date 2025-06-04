@@ -1,4 +1,7 @@
 # 0.数据库的命令窗口
+
+About postgres, please see [postgresql-tutorial](https://www.runoob.com/postgresql/postgresql-tutorial.html) .
+
  
 # 0.1使用 \l 用于查看已经存在的数据库：
 
