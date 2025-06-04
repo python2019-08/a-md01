@@ -59,11 +59,14 @@ Go语言入门教程，Golang入门教程（非常详细）
 [7.13 Go语言error接口 ](l)
     [7.13.1error 基本用法](l)
     [7.13.2自定义错误类型 ](l)
-[7.14 Go语言接口内部实现 ](l)
+
+[7.14 Go语言接口内部实现 ](l*************)
     [7.14.1数据结构 ](l)
     [7.14.2接口调用过程分析](l)
     [7.14.3接口调用代价](l)
     [7.14.4空接口数据结构](l)
+
+
 [7.15 示例：表达式求值器](l)
 [7.16 示例：简单的Web服务器](l)
     [7.16.1Web服务器的工作方式](l)
@@ -143,19 +146,15 @@ Go语言不是一种 “传统” 的面向对象编程语言：它里面没有�
 ### 7.1.2开发中常见的接口及写法
 
 Go语言提供的很多包中都有接口，例如 io 包中提供的 Writer 接口：
-
 1.  type Writer interface {
 2.      Write(p []byte) (n int, err error)
 3.  }
-
 这个接口可以调用 Write() 方法写入一个字节数组（[]byte），返回值告知写入字节数（n int）和可能发生的错误（err error）。  
   
 类似的，还有将一个对象以字符串形式展现的接口，只要实现了这个接口的类型，在调用 String() 方法时，都可以获得对象对应的字符串。在 fmt 包中定义如下：
-
 1.  type Stringer interface {
 2.      String() string
 3.  }
-
 Stringer 接口在Go语言中的使用频率非常高，功能类似于 Java 或者 C# 语言里的 ToString 的操作。  
   
 Go语言的每个接口中的方法数量不会很多。Go语言希望通过一个接口精准描述它自己的功能，而通过多个**接口的嵌入和组合**的方式将简单的接口扩展为复杂的接口。本章后面的小节中会介绍如何使用组合来扩充接口。
@@ -177,158 +176,99 @@ Go语言的每个接口中的方法数量不会很多。Go语言希望通过一�
 数据写入器的抽象：
 
 1.  package main
-
 2.  
-
 3.  import (
-
 4.  "fmt"
-
 5.  )
-
 6.  
-
 7.  // 定义一个数据写入器
-
 8.  type DataWriter interface {
-
-9.  WriteData(data interface{}) error
-
+9.      WriteData(data interface{}) error
 10. }
-
 11. 
-
 12. // 定义文件结构，用于实现DataWriter
-
 13. type file struct {
-
 14. }
-
 15. 
-
 16. // 实现DataWriter接口的WriteData方法
-
 17. func (d *file) WriteData(data interface{}) error {
-
 18. 
-
-19. // 模拟写入数据
-
-20. fmt.Println("WriteData:", data)
-
-21. return nil
-
+19.     // 模拟写入数据
+20.     fmt.Println("WriteData:", data)
+21.     return nil
 22. }
-
 23. 
-
 24. func main() {
-
 25. 
-
-26. // 实例化file
-
-27. f := new(file)
-
+26.     // 实例化file
+27.     f := new(file)
 28. 
-
-29. // 声明一个DataWriter的接口
-
-30. var writer DataWriter
-
+29.     // 声明一个DataWriter的接口
+30.     var writer DataWriter
 31. 
-
-32. // 将接口赋值f，也就是*file类型
-
-33. writer = f
-
+32.     // 将接口赋值f，也就是*file类型
+33.     writer = f
 34. 
-
-35. // 使用DataWriter接口进行数据写入
-
-36. writer.WriteData("data")
-
+35.     // 使用DataWriter接口进行数据写入
+36.     writer.WriteData("data")
 37. }
 
 代码说明如下：
-
 - 第 8 行，定义 DataWriter 接口。这个接口只有一个方法，即 WriteData()，输入一个 interface{} 类型的 data，返回一个 error 结构表示可能发生的错误。
-
 - 第 17 行，file 的 WriteData() 方法使用指针接收器。输入一个 interface{} 类型的 data，返回 error。
-
 - 第 27 行，实例化 file 赋值给 f，f 的类型为 *file。
-
 - 第 30 行，声明 DataWriter 类型的 writer 接口变量。
-
 - 第 33 行，将 *file 类型的 f 赋值给 DataWriter 接口的 writer，虽然两个变量类型不一致。但是 writer 是一个接口，且 f 已经完全实现了 DataWriter() 的所有方法，因此赋值是成功的。
-
 - 第 36 行，DataWriter 接口类型的 writer 使用 WriteData() 方法写入一个字符串。
 
 运行代码，输出如下：
-
 WriteData: data
 
 本例中调用及实现关系如下图所示。
-
 <img src="./media07/media/image1.jpeg" style="width:5.80972in;height:0.77639in" alt="IMG_256" />  
 图：WriteWriter的实现过程
 
 当类型无法实现接口时，编译器会报错，下面列出常见的几种接口无法实现的错误。
-
 #### 1) 函数名不一致导致的报错
 
 在以上代码的基础上尝试修改部分代码，造成编译错误，通过编译器的报错理解如何实现接口的方法。首先，修改 file 结构的 WriteData() 方法名，将这个方法签名（第17行）修改为：
-
 1.  func (d *file) WriteDataX(data interface{}) error {
 
 编译代码，报错：
-
 cannot use f (type *file) as type DataWriter in assignment:  
         *file does not implement DataWriter (missing WriteData method)
 
-报错的位置在第 33 行。报错含义是：不能将 f 变量（类型*file）视为 DataWriter 进行赋值。原因：*file 类型未实现 DataWriter 接口（丢失 WriteData 方法）。  
-  
+报错的位置在第 33 行。报错含义是：不能将 f 变量（类型*file）视为 DataWriter 进行赋值。原因：*file 类型未实现 DataWriter 接口（丢失 WriteData 方法）。    
 WriteDataX 方法的签名本身是合法的。但编译器扫描到第 33 行代码时，发现尝试将 *file 类型赋值给 DataWriter 时，需要检查 *file 类型是否完全实现了 DataWriter 接口。显然，编译器因为没有找到 DataWriter 需要的 WriteData() 方法而报错。
 
 #### 2) 实现接口的方法签名不一致导致的报错
 
 将修改的代码恢复后，再尝试修改 WriteData() 方法，把 data 参数的类型从 interface{} 修改为 int 类型，代码如下：
-
 1.  func (d *file) WriteData(data int) error {
 
 编译代码，报错：
-
 cannot use f (type *file) as type DataWriter in assignment:  
         *file does not implement DataWriter (wrong type for WriteData method)  
                 have WriteData(int) error  
                 want WriteData(interface {}) error
 
-这次未实现 DataWriter 的理由变为（错误的 WriteData() 方法类型）发现 WriteData(int)error，期望 WriteData(interface{})error。  
-  
+这次未实现 DataWriter 的理由变为（错误的 WriteData() 方法类型）发现 WriteData(int)error，期望 WriteData(interface{})error。    
 这种方式的报错就是由实现者的方法签名与接口的方法签名不一致导致的。
 
 ### 7.2.2接口被实现的条件二：接口中所有方法均被实现
 
-当一个接口中有多个方法时，只有这些方法都被实现了，接口才能被正确编译并使用。  
-  
+当一个接口中有多个方法时，只有这些方法都被实现了，接口才能被正确编译并使用。    
 在本节开头的代码中，为 DataWriter中 添加一个方法，代码如下：
 
 1.  // 定义一个数据写入器
-
 2.  type DataWriter interface {
-
-3.  WriteData(data interface{}) error
-
+3.      WriteData(data interface{}) error
 4.  
-
-5.  // 能否写入
-
-6.  CanWrite() bool
-
+5.      // 能否写入
+6.      CanWrite() bool
 7.  }
 
 新增 CanWrite() 方法，返回 bool。此时再次编译代码，报错：
-
 cannot use f (type *file) as type DataWriter in assignment:  
         *file does not implement DataWriter (missing CanWrite method)
 
@@ -350,48 +290,31 @@ Go语言的接口实现是隐式的，无须让实现接口的类型写出实现
 
 ### 7.3.1一个类型可以实现多个接口
 
-一个类型可以同时实现多个接口，而接口间彼此独立，不知道对方的实现。  
-  
-网络上的两个程序通过一个双向的通信连接实现数据的交换，连接的一端称为一个 Socket。Socket 能够同时读取和写入数据，这个特性与文件类似。因此，开发中把文件和 Socket 都具备的读写特性抽象为独立的读写器概念。  
-  
-Socket 和文件一样，在使用完毕后，也需要对资源进行释放。  
-  
+一个类型可以同时实现多个接口，而接口间彼此独立，不知道对方的实现。    
+网络上的两个程序通过一个双向的通信连接实现数据的交换，连接的一端称为一个 Socket。Socket 能够同时读取和写入数据，这个特性与文件类似。因此，开发中把文件和 Socket 都具备的读写特性抽象为独立的读写器概念。    
+Socket 和文件一样，在使用完毕后，也需要对资源进行释放。   
+
 把 Socket 能够写入数据和需要关闭的特性使用接口来描述，请参考下面的代码：
 
 1.  type Socket struct {
-
 2.  }
-
 3.  
-
 4.  func (s *Socket) Write(p []byte) (n int, err error) {
-
-5.  return 0, nil
-
+5.      return 0, nil
 6.  }
-
 7.  
-
 8.  func (s *Socket) Close() error {
-
-9.  return nil
-
+9.      return nil
 10. }
 
 Socket 结构的 Write() 方法实现了 io.Writer 接口：
-
 1.  type Writer interface {
-
-2.  Write(p []byte) (n int, err error)
-
+2.      Write(p []byte) (n int, err error)
 3.  }
 
 同时，Socket 结构也实现了 io.Closer 接口：
-
 1.  type Closer interface {
-
-2.  Close() error
-
+2.      Close() error
 3.  }
 
 使用 Socket 实现的 Writer 接口的代码，无须了解 Writer 接口的实现者是否具备 Closer 接口的特性。同样，使用 Closer 接口的代码也并不知道 Socket 已经实现了 Writer 接口，如下图所示。
@@ -400,43 +323,24 @@ Socket 结构的 Write() 方法实现了 io.Writer 接口：
 图：接口的使用和实现过程
 
 在代码中使用 Socket 结构实现的 Writer 接口和 Closer 接口代码如下：
-
 1.  // 使用io.Writer的代码, 并不知道Socket和io.Closer的存在
-
 2.  func usingWriter( writer io.Writer){
-
-3.  writer.Write( nil )
-
+3.      writer.Write( nil )
 4.  }
-
 5.  
-
 6.  // 使用io.Closer, 并不知道Socket和io.Writer的存在
-
 7.  func usingCloser( closer io.Closer) {
-
-8.  closer.Close()
-
+8.      closer.Close()
 9.  }
-
 10. 
-
 11. func main() {
-
 12. 
-
-13. // 实例化Socket
-
-14. s := new(Socket)
-
+13.     // 实例化Socket
+14.     s := new(Socket)
 15. 
-
-16. usingWriter(s)
-
+16.     usingWriter(s)
 17. 
-
-18. usingCloser(s)
-
+18.     usingCloser(s)
 19. }
 
 usingWriter() 和 usingCloser() 完全独立，互相不知道对方的存在，也不知道自己使用的接口是 Socket 实现的。
@@ -448,41 +352,23 @@ usingWriter() 和 usingCloser() 完全独立，互相不知道对方的存在，
 Service 接口定义了两个方法：一个是开启服务的方法（Start()），一个是输出日志的方法（Log()）。使用 GameService 结构体来实现 Service，GameService 自己的结构只能实现 Start() 方法，而 Service 接口中的 Log() 方法已经被一个能输出日志的日志器（Logger）实现了，无须再进行 GameService 封装，或者重新实现一遍。所以，选择将 Logger 嵌入到 GameService 能最大程度地避免代码冗余，简化代码结构。详细实现过程如下：
 
 1.  // 一个服务需要满足能够开启和写日志的功能
-
 2.  type Service interface {
-
-3.  Start() // 开启服务
-
-4.  Log(string) // 日志输出
-
+3.      Start() // 开启服务
+4.      Log(string) // 日志输出
 5.  }
-
 6.  
-
 7.  // 日志器
-
 8.  type Logger struct {
-
 9.  }
-
 10. 
-
 11. // 实现Service的Log()方法
-
 12. func (g *Logger) Log(l string) {
-
 13. 
-
 14. }
-
 15. 
-
 16. // 游戏服务
-
 17. type GameService struct {
-
-18. Logger // 嵌入日志器
-
+18.     Logger // 嵌入日志器
 19. }
 
 20. 
@@ -494,25 +380,16 @@ Service 接口定义了两个方法：一个是开启服务的方法（Start()�
 23. }
 
 代码说明如下：
-
 - 第 2 行，定义服务接口，一个服务需要实现 Start() 方法和日志方法。
-
 - 第 8 行，定义能输出日志的日志器结构。
-
 - 第 12 行，为 Logger 添加 Log() 方法，同时实现 Service 的 Log() 方法。
-
 - 第 17 行，定义 GameService 结构。
-
 - 第 18 行，在 GameService 中嵌入 Logger 日志器，以实现日志功能。
-
 - 第 22 行，GameService 的 Start() 方法实现了 Service 的 Start() 方法。
 
 此时，实例化 GameService，并将实例赋给 Service，代码如下：
-
 1.  var s Service = new(GameService)
-
 2.  s.Start()
-
 3.  s.Log(“hello”)
 
 s 就可以使用 Start() 方法和 Log() 方法，其中，Start() 由 GameService 实现，Log() 方法由 Logger 实现。
@@ -539,42 +416,31 @@ Go语言是近年来较为流行的编程语言，在其语法中，提供了一
 
 以下为Go语言中一个使用接口的例子：
 
+```go
 type Output interface {
-
-Output()
-
+    Output()
 }
 
 type OutputData struct {
-
-data string
-
+    data string
 }
 
 func (o *OutputData) Output() {
-
-println(o.data)
-
+    println(o.data)
 }
 
 func Test(t *testing.T) {
+    var output Output
 
-var output Output
+    if rand.Intn(10) % 2 == 0 {
+        output = &OutputData{"first line"}
+    }
 
-if rand.Intn(10) % 2 == 0 {
-
-output = &OutputData{"first line"}
-
+    if output != nil {
+        output.Output()
+    }
 }
-
-if output != nil {
-
-output.Output()
-
-}
-
-}
-
+```
 在上面的例子中，我们使用了一个接口Output，并在OutputData中实现了它的方法。在Test函数中，首先定义了一个Output类型的变量output。通过随机的方式，将OutputData{"first line"}赋值给output变量。在调用Output接口的方法Output()之前，需要判断output是否为nil，否则调用Output()方法时会产生空指针异常。
 
 在上述例子中，我们将OutputData{"first line"}赋值给了output变量。也可以不赋值，将output变量的值设为nil。这样，当执行if output != nil { output.Output() }时，会因为output为nil而不会执行。此外，在Go语言中，我们可以通过类型断言判断接口变量是否为某种类型。
@@ -1919,25 +1785,15 @@ Go语言空接口类型（interface{}）
 ### 7.10.1将值保存到空接口
 
 空接口的赋值如下：
-
 1.  var any interface{}
-
 2.  
-
 3.  any = 1
-
 4.  fmt.Println(any)
-
 5.  
-
 6.  any = "hello"
-
 7.  fmt.Println(any)
-
 8.  
-
 9.  any = false
-
 10. fmt.Println(any)
 
 代码输出如下：
@@ -1949,13 +1805,9 @@ false
 对代码的说明：
 
 - 第 1 行，声明 any 为 interface{} 类型的变量。
-
 - 第 3 行，为 any 赋值一个整型 1。
-
 - 第 4 行，打印 any 的值，提供给 fmt.Println 的类型依然是 interface{}。
-
 - 第 6 行，为 any 赋值一个字符串 hello。此时 any 内部保存了一个字符串。但类型依然是 interface{}。
-
 - 第 9 行，赋值布尔值。
 
 ### 7.10.2从空接口获取值
@@ -1963,89 +1815,57 @@ false
 保存到空接口的值，如果直接取出指定类型的值时，会发生编译错误，代码如下：
 
 1.  // 声明a变量, 类型int, 初始值为1
-
 2.  var a int = 1
-
 3.  
-
 4.  // 声明i变量, 类型为interface{}, 初始值为a, 此时i的值变为1
-
 5.  var i interface{} = a
-
 6.  
-
 7.  // 声明b变量, 尝试赋值i
-
 8.  var b int = i
 
 第8行代码编译报错：
-
 cannot use i (type interface {}) as type int in assignment: need type assertion
-
 编译器告诉我们，不能将i变量视为int类型赋值给b。  
   
-在代码第 15 行中，将 a 的值赋值给 i 时，虽然 i 在赋值完成后的内部值为 int，但 i 还是一个 interface{} 类型的变量。类似于无论集装箱装的是茶叶还是烟草，集装箱依然是金属做的，不会因为所装物的类型改变而改变。  
+在代码第 5行中，将 a 的值赋值给 i 时，虽然 i 在赋值完成后的内部值为 int，但 i 还是一个 interface{} 类型的变量。类似于无论集装箱装的是茶叶还是烟草，集装箱依然是金属做的，不会因为所装物的类型改变而改变。  
   
-为了让第 8 行的操作能够完成，编译器提示我们得使用 type assertion，意思就是类型断言。  
-  
+为了让第 8 行的操作能够完成，编译器提示我们得使用 type assertion，意思就是类型断言。    
 使用类型断言修改第 8 行代码如下：
-
 1.  var b int = i.(int)
-
 修改后，代码可以编译通过，并且 b 可以获得 i 变量保存的 a 变量的值：1。
 
 ### 7.10.3空接口的值比较
-
 空接口在保存不同的值后，可以和其他变量值一样使用==进行比较操作。空接口的比较有以下几种特性。
 
 #### 1) 类型不同的空接口间的比较结果不相同
-
 保存有类型不同的值的空接口进行比较时，Go语言会优先比较值的类型。因此类型不同，比较结果也是不相同的，代码如下：
 
 1.  // a保存整型
-
 2.  var a interface{} = 100
-
 3.  
-
 4.  // b保存字符串
-
 5.  var b interface{} = "hi"
-
 6.  
-
 7.  // 两个空接口不相等
-
 8.  fmt.Println(a == b)
 
 代码输出如下：
-
 false
 
 #### 2) 不能比较空接口中的动态值
 
 当接口中保存有动态类型的值时，运行时将触发错误，代码如下：
-
 1.  // c保存包含10的整型切片
-
 2.  var c interface{} = []int{10}
-
 3.  
-
 4.  // d保存包含20的整型切片
-
 5.  var d interface{} = []int{20}
-
 6.  
-
 7.  // 这里会发生崩溃
-
 8.  fmt.Println(c == d)
 
 代码运行到第8行时发生崩溃：
-
 panic: runtime error: comparing uncomparable type []int
-
 这是一个运行时错误，提示 []int 是不可比较的类型。下表中列举出了类型及比较的几种情况。
 
 |                   |                                                                           |
@@ -2739,269 +2559,180 @@ Wrong!!!,because "-13.000000" is a negative number
 #### iface 数据结构
 
 非空接口初始化的过程就是初始化一个 iface 类型的结构，示例如下：
-
+```go
 //src/runtime/runtime2.go
-
 type iface struct {
-
-tab *itab //itab 存放类型及方法指针信息
-
-data unsafe.Pointer //数据信息
-
+    tab *itab //itab 存放类型及方法指针信息
+    data unsafe.Pointer //数据信息
 }
-
+```
 可以看到 iface 结构很简单，有两个指针类型字段。
-
-- itab：用来存放接口自身类型和绑定的实例类型及实例相关的函数指针，具体内容后面有详细介绍。
-
-- 数据指针 data：指向接口绑定的实例的副本，接口的初始化也是一种值拷贝。
+- itab：用来存放 接口自身类型 和 绑定的实例类型及实例相关的函数指针，具体内容后面有详细介绍。
+- 数据指针 data：指向接口  绑定的实例的副本，接口的初始化也是一种  值拷贝。
 
 data 指向具体的实例数据，如果传递给接口的是值类型，则 data 指向的是实例的副本；如果传递给接口的是指针类型，则 data 指向指针的副本。总而言之，无论接口的转换，还是函数调用，Go 遵循一样的规则——值传递。
 
 接下来看一下 itab 数据结构，itab 是接口内部实现的核心和基础。示例如下：
-
+```go
 //src/runtime/runtime2.go
-
 type itab struct {
+    inter *interfacetype //接口自身的静态类型
+    _type *_type //_type 就是接口存放的具体实例的类型（动态类型）
 
-inter *interfacetype //接口自身的静态类型
-
-_type *_type //_type 就是接口存放的具体实例的类型（动态类型）
-
-//hash 存放具体类型的 Hash 值
-
-hash uint32 // copy of _type.hash. Used for type switches.
-
-_ [4]byte
-
-fun [1]uintptr // variable sized. fun[0]==0 means _type does not implement inter.
-
+    //hash 存放具体类型的 Hash 值
+    hash uint32 // copy of _type.hash. Used for type switches.
+    _ [4]byte
+    fun [1]uintptr // variable sized. fun[0]==0 means _type does not implement inter.
 }
-
-itab 有 5 个字段：
-
-- inner：是指向接口类型元信息的指针。
-
-- _type：是指向接口存放的具体类型元信息的指针，iface 里的 data 指针指向的是该类型的值。一个是类型信息，另一个是类型的值。
-
-- hash：是具体类型的 Hash 值，_type 里面也有 hash，这里冗余存放主要是为了接口断言或类型查询时快速访问。
-
-- fun：是一个函数指针，可以理解为C++对象模型里面的虚拟函数指针，这里虽然只有一个元素，实际上指针数组的大小是可变的，编译器负责填充，运行时使用底层指针进行访问，不会受 struct 类型越界检查的约束，这些指针指向的是具体类型的方法。
+```
+itab 有 5个字段：
+- inner： 是指向接口类型元信息的指针。
+- _type： 是指向接口存放的具体类型元信息的指针，iface 里的 data 指针指向的是该类型的值。一个是类型信息，另一个是类型的值。
+- hash： 是具体类型的 Hash 值，_type 里面也有 hash，这里冗余存放主要是为了接口断言或类型查询时快速访问。
+- fun： 是一个函数指针，可以理解为C++对象模型里面的虚拟函数指针，这里虽然只有一个元素，实际上指针数组的大小是可变的，编译器负责填充，运行时使用底层指针进行访问，不会受 struct 类型越界检查的约束，这些指针指向的是具体类型的方法。
 
 itab 这个数据结构是非空接口实现动态调用的基础，itab 的信息被编译器和链接器保存了下来，存放在可执行文件的只读存储段（.rodata）中。itab 存放在静态分配的存储空间中，不受 GC 的限制，其内存不会被回收。
 
 接下来介绍 _type 数据结构，Go语言是一种强类型的语言，编译器在编译时会做严格的类型校验。所以 Go 必然为每种类型维护一个类型的元信息，这个元信息在运行和反射时都会用到，Go语言的类型元信息的通用结构是 _type（代码位于 src/runtime/type.go）， 其他类型都是以 _type 为内嵌宇段封装而成的结构体。
-
+```go
 //src/runtime/type.go
+type _type struct {
+    size uintptr // 大小
+    ptrdata uintptr //size of memory prefix holding all pointers
+    hash uint32 // 类型Hash
+    tflag tflag // 类型的特征标记
+    align uint8 // _type 作为整体交量存放时的对齐字节数
+    fieldalign uint8 // 当前结构字段的对齐字节数
+    kind uint8 // 基础类型枚举值和反射中的 Kind 一致，kind 决定了如何解析该类型
+    alg *typeAlg // 指向一个函数指针表，该表有两个函数，一个是计算类型 Hash 函
+                // 数，另一个是比较两个类型是否相同的 equal 函数
+                // gcdata stores the GC type data for the garbage collector.
+                // If the KindGCProg bit is set in kind, gcdata is a GC program.
+                // Otherwise it is a ptrmask bitmap. See mbitmap.go for details.
+    gcdata *byte //GC 相关信息
+    str nameOff //str 用来表示类型名称字符串在编译后二进制文件中某个 section
+                //的偏移量
+                //由链接器负责填充
 
-type type struct {
-
-size uintptr // 大小
-
-ptrdata uintptr //size of memory prefix holding all pointers
-
-hash uint32 //类型Hash
-
-tflag tflag //类型的特征标记
-
-align uint8 //_type 作为整体交量存放时的对齐字节数
-
-fieldalign uint8 //当前结构字段的对齐字节数
-
-kind uint8 //基础类型枚举值和反射中的 Kind 一致，kind 决定了如何解析该类型
-
-alg *typeAlg //指向一个函数指针表，该表有两个函数，一个是计算类型 Hash 函
-
-//数，另一个是比较两个类型是否相同的 equal 函数
-
-//gcdata stores the GC type data for the garbage collector.
-
-//If the KindGCProg bit is set in kind, gcdata is a GC program.
-
-//Otherwise it is a ptrmask bitmap. See mbitmap.go for details.
-
-gcdata *byte //GC 相关信息
-
-str nameOff //str 用来表示类型名称字符串在编译后二进制文件中某个 section
-
-//的偏移量
-
-//由链接器负责填充
-
-ptrToThis typeOff //ptrToThis 用来表示类型元信息的指针在编译后二进制文件中某个
-
-//section 的偏移量
-
-//由链接器负责填充
-
+    ptrToThis typeOff //ptrToThis 用来表示类型元信息的指针在编译后二进制文件中某个
+                    //section 的偏移量
+                    //由链接器负责填充
 }
-
+```
 _type 包含所有类型的共同元信息，编译器和运行时可以根据该元信息解析具体类型、类型名存放位置、类型的 Hash 值等基本信息。
 
 这里需要说明一下：＿type 里面的 nameOff 和 typeOff 最终是由链接器负责确定和填充的，它们都是一个偏移量（offset），类型的名称和类型元信息实际上存放在连接后可执行文件的某个段（section）里，这两个值是相对于段内的偏移量，运行时提供两个转换查找函数。例如：
-
+```go
 //src/runtime/type.go
-
 //获取 _type 的 name
-
 func resolveNameOff(ptrInModule unsafe.Pointer , off nameOff) name {}
-
 //获取 _type 的副本
-
 func resolveTypeOff(ptrInModule unsafe.Pointer , off typeOff) *_type {}
-
+```
 > 注意：Go语言类型元信息最初由编译器负责构建，并以表的形式存放在编译后的对象文件中，再由链接器在链接时进行段合并、符号重定向（填充某些值）。这些类型信息在接口的动态调用和反射中被运行时引用。
 
 接下来看一下接口的类型元信息的数据结构。示例如下：
-
-//描述接口的类型
-
+```go
+// 描述接口的类型
 type interfacetype struct {
-
-typ _type //类型通用部分
-
-pkgpath name //接口所属包的名字信息， name 内存放的不仅有名称，还有描述信息
-
-mhdr []imethod //接口的方法
-
+    typ _type // 类型通用部分
+    pkgpath name // 接口所属包的名字信息， name 内存放的不仅有名称，还有描述信息
+    mhdr []imethod // 接口的方法
 }
 
 //接口方法元信息
-
 type imethod struct {
-
-name nameOff //方法名在编译后的 section 里面的偏移量
-
-ityp typeOff //方法类型在编译后的 section 里面的偏移量
-
+    name nameOff //方法名在编译后的 section 里面的偏移量
+    ityp typeOff //方法类型在编译后的 section 里面的偏移量
 }
+```
 
 ### 7.14.2接口调用过程分析
 
 前面讨论了接口内部的基本数据结构，下面就来通过跟踪接口实例化和动态调用过程，使用 Go 源码和反汇编代码相结合的方式进行研究。下面是一段非常简单的接口调用代码。
 
+```go
 //iface.go
-
 package main
 
 type Caler interface {
-
-Add (a , b int) int
-
-Sub (a , b int) int
-
+    Add (a , b int) int
+    Sub (a , b int) int
 }
 
-type Adder struct ｛id int }
+type Adder struct {id int }
 
 //go:noinline
-
 func (adder Adder) Add(a, b int) int { return a + b }
 
 //go:noinline
-
 func (adder Adder) Sub(a , b int) int { return a - b }
 
 func main () {
-
-var m Caler=Adder{id: 1234}
-
-m.Add(10, 32)
-
+    var m Caler=Adder{id: 1234}
+    m.Add(10, 32)
 }
-
+```
 生成汇编代码：
-
 go build -gcflags= "-S - N -l" iface.go >iface.s 2>&1
 
 接下来分析 main 函数的汇编代码，非关键逻辑已经去掉：
-
 "".main STEXT size=151 args=0x0 locals=0x40
-
 ...
-
 0x000f 00015 (src/iface.go:16) SUBQ $64, SP
-
 0x0013 00019 (src/iface.go:16) MOVQ BP, 56(SP)
-
 0x0018 00024 (src/iface.go:16) LEAQ 56(SP), BP
 
 为 main 函数堆战开辟空间并保存原来的 BP 指针，这是函数调用前编译器的固定动作。
-
 var m Caler = Adder {id: 1234} 语句汇编代码分析：
-
 0x00ld 00029 (src/iface.go:17) MOVQ $0, ""..autotmp_1+32(SP)
-
 0x0026 00038 (src/iface.go:17) MOVQ $1234, ""..autotmp_1+32(SP)
 
 在堆上初始化局部对象 Adder，先初始化为 0，后初始化为 1234。
-
 0x002f 00047 (src/iface.go:17) LEAQ go.itab."".Adder,"".Caler(SB),AX 0x0036 00054 (src/iface.go:17) MOVQ AX, (SP)
 
 这两条语句非常关键，首先 LEAQ 指令是一个获取地址的指令，go.itab."".Adder,"".Caler(SB) 是一个全局符号引用，通过该符号能够获取接口初始化时 itab 数据结构的地址。
 
 注意：这个标号在链接器链接的过程中会替换为具体的地址。我们知道 (SP) 里面存放的是指向 itab(Caler,Adder) 的元信息的地址，这里 (SP) 是函数调用第一个参数的位置。示例如下：
-
 0x003a 00058 (src/iface.go:17) LEAQ ""..autotmp\\1+32(SP), AX
-
 0x003f 00063 (src/iface.go:17) MOVQ AX, 8(SP)
-
 0x0044 00068 (src/iface.go:17) PCDATA $0, $0
 
 复制刚才的 Adder 类型对象的地址到 8(SP)，8(SP) 是函数调用的第二个参数位置。示例如下：
-
 0x0044 00068 (src/iface.go:17) CALL runtime.convT2I64(SB)
 
 runtime.convT2I64 函数是运行时接口动态调用的核心函数。runtime 中有一类这样的函数，看一下 runtime.convT2I64 的源码：
-
+```go
 func convT2I64(tab *itab, elem unsafe.Pointer) (i iface) {
 
-t := tab._type
+    t := tab._type
+    if raceenabled {
+        raceReadObjectPC(t, elem, getcallerpc(unsafe.Pointer(&tab)), funcPC(convT2I64))
+    }
 
-if raceenabled {
+    if msanenabled {
+        msanread (elem, t.size)
+    }
 
-raceReadObjectPC(t, elem, getcallerpc(unsafe.Pointer(&tab)), funcPC(convT2I64))
+    var x unsafe.Pointer
+    if *(uint64) (elem) == 0 {
+        x = unsafe.Pointer(&zeroVal[0])
+    } else {
+        x = mallocgc(8, t, false)
+        *(*uint64) (x) = *(*uint64) (elem)
+    }
 
+    i.tab = tab
+    i.data = x
+    Return
 }
-
-if msanenabled {
-
-msanread (elem, t.size)
-
-}
-
-var x unsafe.Pointer
-
-if *(uint64) (elem) == 0 {
-
-x = unsafe.Pointer(&zeroVal[0])
-
-} else {
-
-x = mallocgc(8, t, false)
-
-*(*uint64) (x) = *(*uint64) (elem)
-
-}
-
-i.tab = tab
-
-i.data = x
-
-Return
-
-}
-
+```
 从上述源码可以清楚地看出，runtime.convT2I64 的两个参数分别是 *itab 和 unsafe.Pointer 类型，这两个参数正是上文传递进去的两个参数值：go.itab."".Adder, "".Caler(SB) 和指向 Adder 对象复制的指针。
 
 runtime.convT2I64 的返回值是一个 iface 数据结构，其意义就是根据 itab 元信息和对象值复制的指针构建和初始化 iface 数据结构，iface 数据结构是实现接口动态调用的关键。至此己经完成了接口初始化的工作，即完成了 iface 数据结构的构建过程。下一步就是接口方法调用了。示例如下：
-
 0x0049 00073 (src/iface.go:17) MOVQ 24(SP), AX
-
 0x004e 00078 (src/iface.go:17) MOVQ 16(SP), CX
-
 0x0053 00083 (src/iface.go:17 ) MOVQ CX, "".m+40(SP)
-
 0x0058 00088 (src/iface.go:17 ) MOVQ AX, "".m+48(SP)
 
 16(SP) 和 24(SP) 存放的是函数 runtime.convT2I64 的返回值，分别是指向 itab 和 data 的指针，将指向 itab 的指针复制到 40(SP)，将指向对象 data 的指针复制到 48(SP) 位置。
@@ -3009,87 +2740,54 @@ runtime.convT2I64 的返回值是一个 iface 数据结构，其意义就是根�
 m.Add(10, 32) 对应的汇编代码如下：
 
 0x00Sd 00093 (src/iface.go:18) MOVQ "".m+40(SP), AX
-
 0x0062 00098 (src/iface.go:18) MOVQ 32(AX), AX
-
 0x0066 00102 (src/iface.go:18) MOVQ "".m+48(SP), ex
-
 0x006b 00107 (src/iface.go:18) MOVQ $10, 8(SP)
-
 0x0074 00116 (src/iface.go:18) MOVQ $32, 16(SP)
-
 0x007d 00125 (src/iface.go:18) MOVQ CX, (SP)
-
 0x0081 00129 (src/iface.go:18) PCDATA $0, $0
-
 0x0081 00129 (src/iface.go:18) CALL AX
 
 第 1 条指令是将 itab 的指针（位于 40(SP)）复制到 AX 寄存器。第 2 条指令是 AX 将 itab 的偏移 32 字节的值复制到 AX。再来看一下 itab 的数据结构：
 
 type itab struct {
-
 inter *interfacetype
-
-_type *type
-
-link *itab
-
-hash uint32 //copy of _type.hash.Used for type switches.
-
-bad bool //type does not implement interface
-
-inhash bool //has this itab been added to hash?
-
-unused [2]byte
-
-fun [1] uintptr //variable sized
-
+    _type *type
+    link *itab
+    hash uint32 //copy of _type.hash.Used for type switches.
+    bad bool //type does not implement interface
+    inhash bool //has this itab been added to hash?
+    unused [2]byte
+    fun [1] uintptr //variable sized
 }
 
 32(AX) 正好是函数指针的位置， 即存放 Adder *Add() 方法指针的地址（注意：编译器将接收者为值类型的 Add 方法转换为指针的 Add 方法，编译器的这种行为是为了方便调用和优化）。
-
 第 3 条指令和第 6 条指令是将对象指针作为接下来函数调用的第 1 个参数。
-
 第 4 条和第 5 条指令是准备函数的第 2、第 3 个参数。
-
 第 8 条指令是调用 Adder 类型的 Add 方法。
 
 此函数调用时，对象的值的副本作为第 1 个参数，调用格式可以表述为func(reciver, param1, param2)。
 
 至此，整个接口的动态调用完成。从中可以清楚地看到，接口的动态调用分为两个阶段：
-
 - 第一阶段就是构建 iface 动态数据结构，这一阶段是在接口实例化的时候完成的，映射到 Go 语句就是var m Caler = Adder{id: 1234}。
-
 - 第二阶段就是通过函数指针间接调用接口绑定的实例方法的过程，映射到 Go 语句就是 m.Add(10, 32)。
 
 接下来看一下 go.itab. "".Adder, "".Caler(SB) 这个符号在哪里？我们使用 readelf 工具来静态地分析编译后的 ELF 格式的可执行程序。例如：
 
 #编译
-
 #go build -gcflag s= "-N -l" iface.go
-
 #readelf -s -W iface legrep 'itab'
-
 60:000000000047b220 0 OBJECT LOCAL DEFAULT 5 runtime.itablink
-
 61:000000000047b230 0 OBJECT LOCAL DEFAULT 5 runtime.eitablink
-
 88:00000000004aa100 48 OBJECT GLOBAL DEFAULT 8 go.itab.main.Adder, main.Caler
-
 214:00000000004aa080 40 OBJECT GLOBAL DEFAULT 8 go.itab.runtime.errorString, error
-
 418:00000000004095e0 1129 FUNC GLOBAL DEFAULT 1 runtime.getitab
-
 419:0000000000409a50 1665 FUNC GLOBAL DEFAULT 1 runtime.additab
-
 420:000000000040a0e0 257 FUNC GLOBAL DEFAULT 1 runtime.itabsinit
 
 可以看到符号表里面 go.itab.main.Adder, main.Caler 对应本程序里面 itab 的元信息，它被存放在第 8 个段中。我们来看一下第 8 个段是什么段？
-
 #readelf -S -W iface |egrep '＼[8 | I Nr'
-
 [Nr Name Type Address Off Size ES Flg Lk Inf Al
-
 8. noptrdata PROGBITS 00000000004aa000 OaaOOO 000a78 00 WA 0 0 32
 
 可以看到这个接口动态转换的数据元信息存放在 .noptrdata 段中，它是由链接器负责初始化的。可以进一步使用 dd 工具读取井分析其内容，本书就不再继续深入这个细节，留给感兴趣的读者继续分析。
@@ -3103,9 +2801,92 @@ fun [1] uintptr //variable sized
 #### 测试用例
 
 直接选用 GitHub 上的一个测试用例，稍作改写，代码如下。
+```go
 
-package mainimport ( "testing")type identifier interface { idInline() int32 idNoInline() int32}type id32 struct{ id int32 }func (id *id32) idinline() int32 { return id.id }//go:noinlinefunc (id *id32) idNoinline() int32 { return id.id }var escapeMePlease *id32//主要作用是强制变量内存在 heap 上分配//go:noinlinefunc escapeToHeap(id *id32) identifier { escapeMePlease = id return escapeMePlease}//直接调用func BenchmarkMethodCall_direct(b *testing.B) { // var myID int32 b.Run("single/noinline", func(b *testing.B) { m := escapeToHeap(&id32{id: 6754}).(*id32) b.ResetTimer () for i :＝ 0; i ＜ b.N; i++ { //CALL "".(*id32).idNoinline(SB) //MOVL 8(SP), AX //MOVQ "".&myID+40(SP), CX //MOVL AX, (CX) myID = m.idNoInline() } } b.Run ("single/inline", func(b *testing.B) { m := escapeToHeap(＆id32{id: 6754}).(*id32) b.ResetTimer() for i: ＝ 0; i < b.N; i++ { //MOVL (DX), SI //MOVL SI, (CX) myID = m.idinline() } })}//接口调用func BenchmarkMethodCall_interface(b *testing.B) { // var myID int32 b.Run("single/noinline", func(b *testing.B) { m := escapeToHeap(＆id32{id: 6754}) b.ResetTimer() for i := 0; i < b.N ; i++ { // MOVQ 32(AX), CX // MOVQ "".m.data+40(SP), DX // MOVQ DX, (SP) // CALL CX // MOVL 8(SP), AX // MOVQ "".&myID+48(SP), CX // MOVL AX, (CX) myID = m.idNoInline() } }) b.Run("single/inline", func(b *testing.B) { m := escapeToHeap(&id32{id: 6754}) b.ResetTimer() for i := 0; i < b.N; i++ { //MOVQ 24(AX), CX //MOVQ "".m.data+40(SP), DX //MOVQ DX, (SP) //CALL CX //MOVL 8(SP), AX //MOVQ "". &myID+48(SP), ex //MOVL AX, (CX) myID = m.idinline() } })} //func main() {}
+package main
+import ( 
+	"testing"
+)
+type identifier interface { 
+	idInline() int32 
+	idNoInline() int32
+}
+type id32 struct{ 
+	id int32 
+}
+func (id *id32) idinline() int32 { 
+	return id.id 
+}
+//go:noinline
+func (id *id32) idNoinline() int32 { 
+	return id.id 
+}
 
+var escapeMePlease *id32
+//主要作用是强制变量内存在 heap 上分配
+//go:noinline
+func escapeToHeap(id *id32) identifier { 
+	escapeMePlease = id 
+	return escapeMePlease
+}
+//直接调用
+func BenchmarkMethodCall_direct(b *testing.B) { 
+	// var myID int32 
+	b.Run("single/noinline", func(b *testing.B) { 
+		m := escapeToHeap(&id32{id: 6754}).(*id32) 
+		b.ResetTimer () 
+		for i := 0; i < b.N; i++ { 
+			//CALL "".(*id32).idNoinline(SB) 
+			//MOVL 8(SP), AX 
+			//MOVQ "".&myID+40(SP), CX 
+			//MOVL AX, (CX) 
+			myID = m.idNoInline() 
+		} 
+	} 
+	
+	b.Run ("single/inline", func(b *testing.B) { 
+		m := escapeToHeap(＆id32{id: 6754}).(*id32) 
+		b.ResetTimer() 
+		for i:= 0; i < b.N; i++ { 
+			//MOVL (DX), SI 
+			//MOVL SI, (CX) 
+			myID = m.idinline() 
+			} 
+		})
+	}
+	//接口调用
+	func BenchmarkMethodCall_interface(b *testing.B) { 
+		// var myID int32 
+		b.Run("single/noinline", func(b *testing.B) { 
+			m := escapeToHeap(＆id32{id: 6754}) 
+			b.ResetTimer() 
+			for i := 0; i < b.N ; i++ { 
+				// MOVQ 32(AX), CX 
+				// MOVQ "".m.data+40(SP), DX 
+				// // MOVQ DX, (SP) 
+				// // CALL CX 
+				// // MOVL 8(SP), AX 
+				// // MOVQ "".&myID+48(SP), CX 
+				// // MOVL AX, (CX) 
+				myID = m.idNoInline() 
+				} 
+			}
+		) 
+		b.Run("single/inline", func(b *testing.B) { 
+			m := escapeToHeap(&id32{id: 6754}) 
+			b.ResetTimer() 
+			for i := 0; i < b.N; i++ { 
+				//MOVQ 24(AX), CX 
+				// //MOVQ "".m.data+40(SP), DX 
+				// //MOVQ DX, (SP) 
+				// //CALL CX 
+				// //MOVL 8(SP), AX 
+				// //MOVQ "". &myID+48(SP), ex 
+				// //MOVL AX, (CX) myID = m.idinline() 
+			} })
+} 
+//// func main() {}
+```
 #### 测试过程和结果
 
 //直接调用#go test -bench= 'BenchmarkMethodCall_direct/single/noinline' -cpu=1 -count=5 iface_bench_test.gogoos:linuxgoarch:amd64BenchmarkMethodCall_direct/single/noinline 2000000000 2.00 ns/opBenchmarkMethodCall_direct/single/noinline 2000000000 1.97 ns/opBenchmarkMethodCall_direct/single/noinline 2000000000 1.97 ns/opBenchmarkMethodCall_direct/single/noinline 2000000000 1.94 ns/opBenchmarkMethodCall_direct/single/noinline 2000000000 1.97 ns/opPASSok command-line-arguments 20.682s//接口调用#go test -bench='BenchmarkMethodCall_interface/single/noinline' －cpu=1 -count=5 iface_bench_test.gogoos:linuxgoarch:amd64BenchmarkMethodCall_interface/single/noinline 1000000000 2.18 ns/opBenchmarkMethodCall_interface/single/noinline 1000000000 2.16 ns/opBenchmarkMethodCall_interface/single/noinline 1000000000 2.17 ns/opBenchmarkMethodCall_interface/single/noinline 1000000000 2.15 ns/opBenchmarkMethodCall_interface/single/noinline 1000000000 2.16 ns/opPASSok command-line-arguments 11.930s
@@ -3121,20 +2902,24 @@ package mainimport ( "testing")type identifier interface { idInline() int32 idNo
 ### 7.14.4空接口数据结构
 
 前面我们了解到空接口 interface{} 是没有任何方法集的接口，所以空接口内部不需要维护和动态内存分配相关的数据结构 itab 。空接口只关心存放的具体类型是什么，具体类型的值是什么，所以空接口的底层数据结构也很简单，具体如下：
+```go
+//go/src/runtime/runtime2.go
+// 空接口
+type eface struct { 
+    _type *_type 
+    data unsafe.Pointer
+}
+```
+从 eface 的数据结构可以看出，空接口不是真的为空，其保留了 **具体实例的类型和值拷贝**，即便存放的具体类型是空的，空接口也不是空的。
 
-//go/src/runtime/runtime2.go//空接口type eface struct { _type *_type data unsafe.Pointer}
-
-从 eface 的数据结构可以看出，空接口不是真的为空，其保留了具体实例的类型和值拷贝，即便存放的具体类型是空的，空接口也不是空的。
-
-由于空接口自身没有方法集，所以空接口变量实例化后的真正用途不是接口方法的动态调用。空接口在Go语言中真正的意义是支持多态，有如下几种方式使用了空接口（将空接口类型还原）：
-
+由于空接口自身没有方法集，所以空接口变量实例化后的真正用途不是接口方法的动态调用。**空接口**在Go语言中真正的意义是**支持多态**，有如下几种方式使用了空接口（将空接口类型还原）：
 - 通过接口类型断言
-
 - 通过接口类型查询
-
 - 通过反射
 
 至此，接口内部实现原理全部讲完，大家在了解和学习接口内部实现的知识的同时，更应该学习和思考分析过程中的方法和技巧，使用该方法可以继续分析接口断言、接口查询和接口赋值的内部实现机制。
+
+
 
 ## 7.15 [示例：表达式求值器](http://c.biancheng.net/view/vip_7332.html)
 
