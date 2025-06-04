@@ -6,7 +6,7 @@ Go语言入门教程，Golang入门教程（非常详细）
 
 <https://www.xinbaoku.com/archive/2DHvuPFr.html>
 
-# 目录
+# 0.目录
 
 [3.容器（container）](\l)
 
@@ -28,7 +28,7 @@ Go语言入门教程，Golang入门教程（非常详细）
 [3.6.2从中间位置删除](\l)
 [3.6.3从尾部删除](\l)
 [3.7 range关键字](\l)
-[3.8 多维切片 [28](#多维切片)](\l)
+[3.8 多维切片](\l)
     [3.8+1 golang 切片和数组 作为函数参数](\l)
     [3.8+2 golang切片和数组 是值类型还是引用类型](\l)
 
@@ -321,97 +321,63 @@ Go语言中切片的内部结构包含地址、大小和容量，切片一般用
 图：切片结构和内存分配
 
 ### 3.3.1从数组或切片生成新的切片
-
 切片默认指向一段连续内存区域，可以是数组，也可以是切片本身。  
   
 从连续内存区域生成切片是常见的操作，格式如下：
-
-slice \[开始位置 : 结束位置\]
+slice [开始位置 : 结束位置]
 
 语法说明如下：
-
 - slice：表示目标切片对象；
-
 - 开始位置：对应目标切片对象的索引；
-
 - 结束位置：对应目标切片的结束索引。
 
 从数组生成切片，代码如下：
+1.  var a = [3]int{1, 2, 3}
+2.  fmt.Println(a, a[1:2])
 
-1.  var a = \[3\]int{1, 2, 3}
-
-2.  fmt.Println(a, a\[1:2\])
-
-其中 a 是一个拥有 3 个整型元素的数组，被初始化为数值 1 到 3，使用 a\[1:2\] 可以生成一个新的切片，代码运行结果如下：
-
-\[1 2 3\]  \[2\]
-
-其中 \[2\] 就是 a\[1:2\] 切片操作的结果。  
+其中 a 是一个拥有 3 个整型元素的数组，被初始化为数值 1 到 3，使用 a[1:2] 可以生成一个新的切片，代码运行结果如下：
+[1 2 3]  [2]
+其中 [2] 就是 a[1:2] 切片操作的结果。  
   
 从数组或切片生成新的切片拥有如下特性：
-
 - 取出的元素数量为：结束位置 - 开始位置；
-
-- 取出元素不包含结束位置对应的索引，切片最后一个元素使用 slice\[len(slice)\] 获取；
-
+- 取出元素不包含结束位置对应的索引，切片最后一个元素使用 slice[len(slice)] 获取；
 - 当缺省开始位置时，表示从连续区域开头到结束位置；
-
 - 当缺省结束位置时，表示从开始位置到整个连续区域末尾；
-
 - 两者同时缺省时，与切片本身等效；
-
 - 两者同时为 0 时，等效于空切片，一般用于切片复位。
 
 根据索引位置取切片 slice 元素值时，取值范围是（0～len(slice)-1），超界会报运行时错误，生成切片时，结束位置可以填写 len(slice) 但不会报错。  
   
 下面通过实例来熟悉切片的特性。
-
 #### 1) 从指定范围中生成切片
-
 切片和数组密不可分，如果将数组理解为一栋办公楼，那么切片就是把不同的连续楼层出租给使用者，出租的过程需要选择开始楼层和结束楼层，这个过程就会生成切片，示例代码如下：
 
-1.  var highRiseBuilding \[30\]int
-
+1.  var highRiseBuilding [30]int
 2.  
-
-3.  for i := 0; i \< 30; i++ {
-
-4.  highRiseBuilding\[i\] = i + 1
-
+3.  for i := 0; i < 30; i++ {
+4.      highRiseBuilding[i] = i + 1
 5.  }
-
 6.  
-
 7.  // 区间
-
-8.  fmt.Println(highRiseBuilding\[10:15\])
-
+8.  fmt.Println(highRiseBuilding[10:15])
 9.  
-
 10. // 中间到尾部的所有元素
-
-11. fmt.Println(highRiseBuilding\[20:\])
-
+11. fmt.Println(highRiseBuilding[20:])
 12. 
-
 13. // 开头到中间指定位置的所有元素
-
-14. fmt.Println(highRiseBuilding\[:2\])
+14. fmt.Println(highRiseBuilding[:2])
 
 代码输出如下：
-
-\[11 12 13 14 15\]  
-\[21 22 23 24 25 26 27 28 29 30\]  
-\[1 2\]
+[11 12 13 14 15]  
+[21 22 23 24 25 26 27 28 29 30]  
+[1 2]
 
 代码中构建了一个 30 层的高层建筑，数组的元素值从 1 到 30，分别代表不同的独立楼层，输出的结果是不同的租售方案。  
   
 代码说明如下：
-
 - 第 8 行，尝试出租一个区间楼层。
-
 - 第 11 行，出租 20 层以上。
-
 - 第 14 行，出租 2 层以下，一般是商用铺面。
 
 切片有点像C语言里的指针，指针可以做运算，但代价是内存操作越界，切片在指针的基础上增加了大小，约束了切片对应的内存区域，切片使用中无法对切片内部的地址和大小进行手动调整，因此切片比指针更安全、强大。
@@ -420,96 +386,64 @@ slice \[开始位置 : 结束位置\]
 
 生成切片的格式中，当开始和结束位置都被忽略时，生成的切片将表示和原切片一致的切片，并且生成的切片与原切片在数据内容上也是一致的，代码如下：
 
-1.  a := \[\]int{1, 2, 3}
+1.  a := []int{1, 2, 3}
+2.  fmt.Println(a[:])
 
-2.  fmt.Println(a\[:\])
+a 是一个拥有 3 个元素的切片，将 a 切片使用 a[:] 进行操作后，得到的切片与 a 切片一致，代码输出如下：
 
-a 是一个拥有 3 个元素的切片，将 a 切片使用 a\[:\] 进行操作后，得到的切片与 a 切片一致，代码输出如下：
-
-\[1 2 3\]
+[1 2 3]
 
 #### 3) 重置切片，清空拥有的元素
 
 把切片的开始和结束位置都设为 0 时，生成的切片将变空，代码如下：
 
-1.  a := \[\]int{1, 2, 3}
-
-2.  fmt.Println(a\[0:0\])
+1.  a := []int{1, 2, 3}
+2.  fmt.Println(a[0:0])
 
 代码输出如下：
-
-\[\]
+[]
 
 ### 3.3.2直接声明新的切片
 
 除了可以从原有的数组或者切片中生成切片外，也可以声明一个新的切片，每一种类型都可以拥有其切片类型，表示多个相同类型元素的连续集合，因此切片类型也可以被声明，切片类型声明格式如下：
-
-var name \[\]Type
-
+        var name []Type
 其中 name 表示切片的变量名，Type 表示切片对应的元素类型。  
   
 下面代码展示了切片声明的使用过程：
-
 1.  // 声明字符串切片
-
-2.  var strList \[\]string
-
+2.  var strList []string
 3.  
-
 4.  // 声明整型切片
-
-5.  var numList \[\]int
-
+5.  var numList []int
 6.  
-
 7.  // 声明一个空切片
-
-8.  var numListEmpty = \[\]int{}
-
+8.  var numListEmpty = []int{}
 9.  
-
 10. // 输出3个切片
-
 11. fmt.Println(strList, numList, numListEmpty)
-
 12. 
-
 13. // 输出3个切片大小
-
 14. fmt.Println(len(strList), len(numList), len(numListEmpty))
-
 15. 
-
 16. // 切片判定空的结果
-
 17. fmt.Println(strList == nil)
-
 18. fmt.Println(numList == nil)
-
 19. fmt.Println(numListEmpty == nil)
 
 代码输出结果：
-
-\[\] \[\] \[\]  
+[] [] []  
 0 0 0  
 true  
 true  
 false
 
 代码说明如下：
-
 - 第 2 行，声明一个字符串切片，切片中拥有多个字符串。
-
 - 第 5 行，声明一个整型切片，切片中拥有多个整型数值。
-
 - 第 8 行，将 numListEmpty 声明为一个整型切片，本来会在{}中填充切片的初始化元素，这里没有填充，所以切片是空的，但是此时的 numListEmpty 已经被分配了内存，只是还没有元素。
-
 - 第 11 行，切片均没有任何元素，3 个切片输出元素内容均为空。
-
 - 第 14 行，没有对切片进行任何操作，strList 和 numList 没有指向任何数组或者其他切片。
-
 - 第 17 行和第 18 行，声明但未使用的切片的默认值是 nil，strList 和 numList 也是 nil，所以和 nil 比较的结果是 true。
-
 - 第 19 行，numListEmpty 已经被分配到了内存，但没有元素，因此和 nil 比较时是 false。
 
 **切片是动态结构，只能与 nil 判定相等，不能互相判定相等。**声明新的切片后，可以使用** append() **函数向切片中添加元素。
@@ -517,30 +451,22 @@ false
 ### 3.3.3使用 make() 函数构造切片
 
 如果需要动态地创建一个切片，可以使用 make() 内建函数，格式如下：
-
-make( \[\]Type, size, cap )
+make( []Type, size, cap )
 
 其中 Type 是指切片的元素类型，size 指的是为这个类型分配多少个元素，cap 为预分配的元素数量，这个值设定后不影响 size，只是能提前分配空间，降低多次分配空间造成的性能问题。  
   
 示例如下：
-
-1.  a := make(\[\]int, 2)
-
-2.  b := make(\[\]int, 2, 10)
-
+1.  a := make([]int, 2)
+2.  b := make([]int, 2, 10)
 3.  
-
 4.  fmt.Println(a, b)
-
 5.  fmt.Println(len(a), len(b))
 
 代码输出如下：
-
-\[0 0\] \[0 0\]  
+[0 0] [0 0]  
 2 2
 
-其中 a 和 b 均是预分配 2 个元素的切片，只是 b 的内部存储空间已经分配了 10 个，但实际使用了 2 个元素。  
-  
+其中 a 和 b 均是预分配 2 个元素的切片，只是 b 的内部存储空间已经分配了 10 个，但实际使用了 2 个元素。    
 容量不会影响当前的元素个数，因此 a 和 b 取 len 都是 2。
 
 #### 温馨提示
@@ -551,28 +477,19 @@ make( \[\]Type, size, cap )
 
 Go语言的内建函数 append() 可以为切片动态添加元素，代码如下所示：
 
-1.  var a \[\]int
-
+1.  var a []int
 2.  a = append(a, 1) // 追加1个元素
-
 3.  a = append(a, 1, 2, 3) // 追加多个元素, 手写解包方式
+4.  a = append(a, []int{1,2,3}...) // 追加一个切片, 切片需要解包
 
-4.  a = append(a, \[\]int{1,2,3}...) // 追加一个切片, 切片需要解包
-
-不过需要注意的是，在使用 append() 函数为切片动态添加元素时，如果空间不足以容纳足够多的元素，切片就会进行**“扩容”**，此时新切片的长度会发生改变。  
-  
+不过需要注意的是，在使用 append() 函数为切片动态添加元素时，如果空间不足以容纳足够多的元素，切片就会进行**“扩容”**，此时新切片的长度会发生改变。    
 **切片在扩容时**，容量的扩展规律是**按容量的 2 倍数进行扩充**，例如 1、2、4、8、16……，代码如下：
 
-1.  var numbers \[\]int
-
+1.  var numbers []int
 2.  
-
-3.  for i := 0; i \< 10; i++ {
-
-4.  numbers = append(numbers, i)
-
-5.  fmt.Printf("len: %d cap: %d pointer: %p\n", len(numbers), cap(numbers), numbers)
-
+3.  for i := 0; i < 10; i++ {
+4.      numbers = append(numbers, i)
+5.      fmt.Printf("len: %d cap: %d pointer: %p\n", len(numbers), cap(numbers), numbers)
 6.  }
 
 代码输出如下：
@@ -589,11 +506,8 @@ len: 9  cap: 16 pointer: 0xc042074000
 len: 10  cap: 16 pointer: 0xc042074000
 
 代码说明如下：
-
 - 第 1 行，声明一个整型切片。
-
 - 第 4 行，循环向 numbers 切片中添加 10 个数。
-
 - 第 5 行，打印输出切片的长度、容量和指针变化，使用函数 len() 查看切片拥有的元素个数，使用函数 cap() 查看切片的容量情况。
 
 通过查看代码输出，可以发现一个有意思的规律：切片长度 len 并不等于切片的容量 cap。  
@@ -601,34 +515,26 @@ len: 10  cap: 16 pointer: 0xc042074000
 往一个切片中不断添加元素的过程，类似于公司搬家，公司发展初期，资金紧张，人员很少，所以只需要很小的房间即可容纳所有的员工，随着业务的拓展和收入的增加就需要扩充工位，但是办公地的大小是固定的，无法改变，因此公司只能选择搬家，每次搬家就需要将所有的人员转移到新的办公点。
 
 - 员工和工位就是切片中的元素。
-
 - 办公地就是分配好的内存。
-
 - 搬家就是重新分配内存。
-
 - 无论搬多少次家，公司名称始终不会变，代表外部使用切片的变量名不会修改。
-
 - 由于搬家后地址发生变化，因此内存“地址”也会有修改。
 
 除了在切片的尾部追加，我们还可以在切片的开头添加元素：
 
-1.  var a = \[\]int{1,2,3}
-
-2.  a = append(\[\]int{0}, a...) // 在开头添加1个元素
-
-3.  a = append(\[\]int{-3,-2,-1}, a...) // 在开头添加1个切片
+1.  var a = []int{1,2,3}
+2.  a = append([]int{0}, a...) // 在开头添加1个元素
+3.  a = append([]int{-3,-2,-1}, a...) // 在开头添加1个切片
 
 在切片开头添加元素一般都会导致**内存的重新分配**，而且会导致已有**元素**全部被**复制** 1 次，因此，**从切片的开头添加元素的性能要比从尾部追加元素的性能差很多**。  
   
 因为 append 函数返回新切片的特性，所以切片也支持**链式操作**，我们可以将多个 append 操作组合起来，实现**在切片中间插入元素**：
 
-1.  var a \[\]int
+1.  var a []int
+2.  a = append(a[:i], append([]int{x}, a[i:]...)...) // 在第i个位置插入x
+3.  a = append(a[:i], append([]int{1,2,3}, a[i:]...)...) // 在第i个位置插入切片
 
-2.  a = append(a\[:i\], append(\[\]int{x}, a\[i:\]...)...) // 在第i个位置插入x
-
-3.  a = append(a\[:i\], append(\[\]int{1,2,3}, a\[i:\]...)...) // 在第i个位置插入切片
-
-每个添加操作中的第二个 append 调用都会创建一个临时切片，并将 a\[i:\] 的内容复制到新创建的切片中，然后将临时创建的切片再追加到 a\[:i\] 中。
+每个添加操作中的第二个 append 调用都会创建一个临时切片，并将 a[i:] 的内容复制到新创建的切片中，然后将临时创建的切片再追加到 a[:i] 中。
 
 ## 3.5 [切片复制](http://c.biancheng.net/view/29.html)
 
@@ -639,19 +545,15 @@ Go语言copy()：切片复制（切片拷贝）
 Go语言的内置函数 copy() 可以将一个数组切片复制到另一个数组切片中，如果加入的两个数组切片不一样大，就会按照其中较小的那个数组切片的元素个数进行复制。
 
 copy() 函数的使用格式如下：
-
-copy( destSlice, srcSlice \[\]T) int
+    copy( destSlice, srcSlice []T) int
 
 其中 srcSlice 为数据来源切片，destSlice 为复制的目标（也就是将 srcSlice 复制到 destSlice），目标切片必须分配过空间且足够承载复制的元素个数，并且来源和目标的类型必须一致，copy() 函数的返回值表示实际发生复制的元素个数。  
   
 下面的代码展示了使用 copy() 函数将一个切片复制到另一个切片的过程：
 
-1.  slice1 := \[\]int{1, 2, 3, 4, 5}
-
-2.  slice2 := \[\]int{5, 4, 3}
-
+1.  slice1 := []int{1, 2, 3, 4, 5}
+2.  slice2 := []int{5, 4, 3}
 3.  copy(slice2, slice1) // 只会复制slice1的前3个元素到slice2中
-
 4.  copy(slice1, slice2) // 只会复制slice2的3个元素到slice1的前3个位置
 
 虽然通过循环复制切片元素更直接，不过内置的 copy() 函数使用起来更加方便，copy() 函数的第一个参数是要复制的目标 slice，第二个参数是源 slice，两个 slice 可以共享同一个底层数组，甚至有重叠也没有问题。  
@@ -659,109 +561,61 @@ copy( destSlice, srcSlice \[\]T) int
 【示例】通过代码演示对切片的引用和复制操作后对切片元素的影响。
 
 1.  package main
-
 2.  
-
 3.  import "fmt"
-
 4.  
-
 5.  func main() {
-
 6.  
-
 7.  // 设置元素数量为1000
-
 8.  const elementCount = 1000
-
 9.  
-
 10. // 预分配足够多的元素切片
-
-11. srcData := make(\[\]int, elementCount)
-
+11. srcData := make([]int, elementCount)
 12. 
-
 13. // 将切片赋值
-
-14. for i := 0; i \< elementCount; i++ {
-
-15. srcData\[i\] = i
-
+14. for i := 0; i < elementCount; i++ {
+15. srcData[i] = i
 16. }
 
 17. 
 
 18. // 引用切片数据
-
 19. refData := srcData
-
 20. 
-
 21. // 预分配足够多的元素切片
-
-22. copyData := make(\[\]int, elementCount)
-
+22. copyData := make([]int, elementCount)
 23. // 将数据复制到新的切片空间中
-
 24. copy(copyData, srcData)
-
 25. 
-
 26. // 修改原始数据的第一个元素
-
-27. srcData\[0\] = 999
-
+27. srcData[0] = 999
 28. 
-
 29. // 打印引用切片的第一个元素
-
-30. fmt.Println(refData\[0\])
-
+30. fmt.Println(refData[0])
 31. 
-
 32. // 打印复制切片的第一个和最后一个元素
-
-33. fmt.Println(copyData\[0\], copyData\[elementCount-1\])
-
+33. fmt.Println(copyData[0], copyData[elementCount-1])
 34. 
-
 35. // 复制原始数据从4到6(不包含)
-
-36. copy(copyData, srcData\[4:6\])
-
+36. copy(copyData, srcData[4:6])
 37. 
-
-38. for i := 0; i \< 5; i++ {
-
-39. fmt.Printf("%d ", copyData\[i\])
-
+38. for i := 0; i < 5; i++ {
+39. fmt.Printf("%d ", copyData[i])
 40. }
-
 41. }
 
 代码说明如下：
 
 - 第 8 行，定义元素总量为 1000。
-
 - 第 11 行，预分配拥有 1000 个元素的整型切片，这个切片将作为原始数据。
-
 - 第 14～16 行，将 srcData 填充 0～999 的整型值。
-
 - 第 19 行，将 refData 引用 srcData，切片不会因为等号操作进行元素的复制。
-
 - 第 22 行，预分配与 srcData 等大（大小相等）、同类型的切片 copyData。
-
 - 第 24 行，使用 copy() 函数将原始数据复制到 copyData 切片空间中。
-
 - 第 27 行，修改原始数据的第一个元素为 999。
-
 - 第 30 行，引用数据的第一个元素将会发生变化。
-
 - 第 33 行，打印复制数据的首位数据，由于数据是复制的，因此不会发生变化。
-
 - 第 36 行，将 srcData 的局部数据复制到 copyData 中。
-
 - 第 38～40 行，打印复制局部数据后的 copyData 元素。
 
 ## 3.6 [从切片中删除元素](http://c.biancheng.net/view/30.html)
@@ -772,109 +626,72 @@ Go语言并没有对删除切片元素提供专用的语法或者接口，需要
 
 删除开头的元素可以直接移动数据指针：
 
-1.  a = \[\]int{1, 2, 3}
-
-2.  a = a\[1:\] // 删除开头1个元素
-
-3.  a = a\[N:\] // 删除开头N个元素
+1.  a = []int{1, 2, 3}
+2.  a = a[1:] // 删除开头1个元素
+3.  a = a[N:] // 删除开头N个元素
 
 也可以不移动数据指针，但是将后面的数据向开头移动，可以用 append 原地完成（所谓原地完成是指在原有的切片数据对应的内存区间内完成，不会导致内存空间结构的变化）：
 
-1.  a = \[\]int{1, 2, 3}
-
-2.  a = append(a\[:0\], a\[1:\]...) // 删除开头1个元素
-
-3.  a = append(a\[:0\], a\[N:\]...) // 删除开头N个元素
+1.  a = []int{1, 2, 3}
+2.  a = append(a[:0], a[1:]...) // 删除开头1个元素
+3.  a = append(a[:0], a[N:]...) // 删除开头N个元素
 
 还可以用 copy() 函数来删除开头的元素：
-
-1.  a = \[\]int{1, 2, 3}
-
-2.  a = a\[:copy(a, a\[1:\])\] // 删除开头1个元素
-
-3.  a = a\[:copy(a, a\[N:\])\] // 删除开头N个元素
+1.  a = []int{1, 2, 3}
+2.  a = a[:copy(a, a[1:])] // 删除开头1个元素
+3.  a = a[:copy(a, a[N:])] // 删除开头N个元素
 
 ### 3.6.2从中间位置删除
 
 对于删除中间的元素，需要对剩余的元素进行一次整体挪动，同样可以用 append 或 copy 原地完成：
 
-1.  a = \[\]int{1, 2, 3, ...}
-
-2.  a = append(a\[:i\], a\[i+1:\]...) // 删除中间1个元素
-
-3.  a = append(a\[:i\], a\[i+N:\]...) // 删除中间N个元素
-
-4.  a = a\[:i+copy(a\[i:\], a\[i+1:\])\] // 删除中间1个元素
-
-5.  a = a\[:i+copy(a\[i:\], a\[i+N:\])\] // 删除中间N个元素
+1.  a = []int{1, 2, 3, ...}
+2.  a = append(a[:i], a[i+1:]...) // 删除中间1个元素
+3.  a = append(a[:i], a[i+N:]...) // 删除中间N个元素
+4.  a = a[:i+copy(a[i:], a[i+1:])] // 删除中间1个元素
+5.  a = a[:i+copy(a[i:], a[i+N:])] // 删除中间N个元素
 
 ### 3.6.3从尾部删除
 
-1.  a = \[\]int{1, 2, 3}
-
-2.  a = a\[:len(a)-1\] // 删除尾部1个元素
-
-3.  a = a\[:len(a)-N\] // 删除尾部N个元素
+1.  a = []int{1, 2, 3}
+2.  a = a[:len(a)-1] // 删除尾部1个元素
+3.  a = a[:len(a)-N] // 删除尾部N个元素
 
 删除开头的元素和删除尾部的元素都可以认为是删除中间元素操作的特殊情况，下面来看一个示例。  
   
 【示例】删除切片指定位置的元素。
 
 1.  package main
-
 2.  
-
 3.  import "fmt"
-
 4.  
-
 5.  func main() {
-
-6.      seq := \[\]string{"a", "b", "c", "d", "e"}
-
+6.      seq := []string{"a", "b", "c", "d", "e"}
 7.  
-
 8.      // 指定删除位置
-
 9.      index := 2
-
 10. 
-
 11.     // 查看删除位置之前的元素和之后的元素
-
-12.     fmt.Println(seq\[:index\], seq\[index+1:\])
-
+12.     fmt.Println(seq[:index], seq[index+1:])
 13. 
-
 14.     // 将删除点前后的元素连接起来
-
-15.     seq = append(seq\[:index\], seq\[index+1:\]...)
-
+15.     seq = append(seq[:index], seq[index+1:]...)
 16. 
-
 17.     fmt.Println(seq)
-
 18. }
 
 代码输出结果：
-
-\[a b\] \[d e\]  
-\[a b d e\]
+[a b] [d e]  
+[a b d e]
 
 代码说明如下：
-
 - 第 1 行，声明一个整型切片，保存含有从 a 到 e 的字符串。
-
 - 第 4 行，为了演示和讲解方便，使用 index 变量保存需要删除的元素位置。
-
-- 第 7 行，seq\[:index\] 表示的就是被删除元素的前半部分，值为 \[1 2\]，seq\[index+1:\] 表示的是被删除元素的后半部分，值为 \[4 5\]。
-
+- 第 7 行，seq[:index] 表示的就是被删除元素的前半部分，值为 [1 2]，seq[index+1:] 表示的是被删除元素的后半部分，值为 [4 5]。
 - 第 10 行，使用 append() 函数将两个切片连接起来。
-
 - 第 12 行，输出连接好的新切片，此时，索引为 2 的元素已经被删除。
 
 代码的删除过程可以使用下图来描述。
-
 <img src="./media03/media/image4.jpeg" style="width:5.33333in;height:5.0625in" alt="IMG_256" />  
 图：切片删除元素的操作过程
 
@@ -893,15 +710,10 @@ Go语言range关键字：循环迭代切片
 通过前面的学习我们了解到切片其实就是多个相同类型元素的连续集合，既然切片是一个集合，那么我们就可以迭代其中的元素，Go语言有个特殊的关键字 range，它可以配合关键字 for 来迭代切片里的每一个元素，如下所示：
 
 1.  // 创建一个整型切片，并赋值
-
-2.  slice := \[\]int{10, 20, 30, 40}
-
+2.  slice := []int{10, 20, 30, 40}
 3.  // 迭代每一个元素，并显示其值
-
 4.  for index, value := range slice {
-
-5.  fmt.Printf("Index: %d Value: %d\n", index, value)
-
+5.      fmt.Printf("Index: %d Value: %d\n", index, value)
 6.  }
 
 第 4 行中的 index 和 value 分别用来接收 range 关键字返回的切片中每个元素的索引和值，这里的 index 和 value 不是固定的，读者也可以定义成其它的名字。  
@@ -909,7 +721,6 @@ Go语言range关键字：循环迭代切片
 关于 for 的详细使用我们将在下一章《Go语言流程控制》中为大家详细介绍。  
   
 上面代码的输出结果为：
-
 Index: 0 Value: 10  
 Index: 1 Value: 20  
 Index: 2 Value: 30  
@@ -925,40 +736,29 @@ Index: 3 Value: 40
 【示例 1】range 提供了每个元素的副本
 
 1.  // 创建一个整型切片，并赋值
-
-2.  slice := \[\]int{10, 20, 30, 40}
-
+2.  slice := []int{10, 20, 30, 40}
 3.  // 迭代每个元素，并显示值和地址
-
 4.  for index, value := range slice {
-
-5.  fmt.Printf("Value: %d Value-Addr: %X ElemAddr: %X\n", value, &value, &slice\[index\])
-
+5.      fmt.Printf("Value: %d Value-Addr: %X ElemAddr: %X\n", value, &value, &slice[index])
 6.  }
 
 输出结果为：
-
 Value: 10 Value-Addr: 10500168 ElemAddr: 1052E100  
 Value: 20 Value-Addr: 10500168 ElemAddr: 1052E104  
 Value: 30 Value-Addr: 10500168 ElemAddr: 1052E108  
 Value: 40 Value-Addr: 10500168 ElemAddr: 1052E10C
 
-因为迭代返回的变量是一个在迭代过程中根据切片依次赋值的新变量，所以 value 的地址总是相同的，要想获取每个元素的地址，需要使用切片变量和索引值（例如上面代码中的 &slice\[index\]）。  
+因为迭代返回的变量是一个在迭代过程中根据切片依次赋值的新变量，所以 value 的地址总是相同的，要想获取每个元素的地址，需要使用切片变量和索引值（例如上面代码中的 &slice[index]）。  
   
 如果不需要索引值，也可以使用下划线_来忽略这个值，代码如下所示。  
   
 【示例 2】使用空白标识符（下划线）来忽略索引值
 
 1.  // 创建一个整型切片，并赋值
-
-2.  slice := \[\]int{10, 20, 30, 40}
-
+2.  slice := []int{10, 20, 30, 40}
 3.  // 迭代每个元素，并显示其值
-
-4.  for \_, value := range slice {
-
-5.  fmt.Printf("Value: %d\n", value)
-
+4.  for _, value := range slice {
+5.      fmt.Printf("Value: %d\n", value)
 6.  }
 
 输出结果为：
@@ -974,13 +774,13 @@ Value: 40
 
 1.  // 创建一个整型切片，并赋值
 
-2.  slice := \[\]int{10, 20, 30, 40}
+2.  slice := []int{10, 20, 30, 40}
 
 3.  // 从第三个元素开始迭代每个元素
 
-4.  for index := 2; index \< len(slice); index++ {
+4.  for index := 2; index < len(slice); index++ {
 
-5.  fmt.Printf("Index: %d Value: %d\n", index, slice\[index\])
+5.  fmt.Printf("Index: %d Value: %d\n", index, slice[index])
 
 6.  }
 
@@ -1001,25 +801,25 @@ Go语言多维切片简述
 
 Go语言中同样允许使用多维切片，声明一个多维数组的语法格式如下：
 
-var sliceName \[\]\[\]...\[\]sliceType
+var sliceName [][]...[]sliceType
 
-其中，sliceName 为切片的名字，sliceType为切片的类型，每个\[ \]代表着一个维度，切片有几个维度就需要几个\[ \]。  
+其中，sliceName 为切片的名字，sliceType为切片的类型，每个[ ]代表着一个维度，切片有几个维度就需要几个[ ]。  
   
 下面以二维切片为例，声明一个二维切片并赋值，代码如下所示。
 
 1.  //声明一个二维切片
 
-2.  var slice \[\]\[\]int
+2.  var slice [][]int
 
 3.  //为二维切片赋值
 
-4.  slice = \[\]\[\]int{{10}, {100, 200}}
+4.  slice = [][]int{{10}, {100, 200}}
 
 上面的代码也可以简写为下面的样子。
 
 1.  // 声明一个二维整型切片并赋值
 
-2.  slice := \[\]\[\]int{{10}, {100, 200}}
+2.  slice := [][]int{{10}, {100, 200}}
 
 上面的代码中展示了一个包含两个元素的外层切片，同时每个元素包又含一个内层的整型切片，切片 slice 的值如下图所示。
 
@@ -1034,11 +834,11 @@ var sliceName \[\]\[\]...\[\]sliceType
 
 1.  // 声明一个二维整型切片并赋值
 
-2.  slice := \[\]\[\]int{{10}, {100, 200}}
+2.  slice := [][]int{{10}, {100, 200}}
 
 3.  // 为第一个切片追加值为 20 的元素
 
-4.  slice\[0\] = append(slice\[0\], 20)
+4.  slice[0] = append(slice[0], 20)
 
 Go语言里使用 append() 函数处理追加的方式很简明，先增长切片，再将新的整型切片赋值给外层切片的第一个元素，当上面代码中的操作完成后，再将切片复制到外层切片的索引为 0 的元素，如下图所示。
 
@@ -1153,9 +953,7 @@ slice2[0] = 100 // 这会影响 slice1，因为它们指向相同的底层数组
 在切片被复制给另一个变量时，如果你希望它们独立，你可以使用 copy 函数来复制切片内容，这样两个切片将指向不同的底层数组。
 
 var slice1 []int = []int{1, 2, 3, 4, 5}
-
 var slice2 = make([]int, len(slice1))
-
 copy(slice2, slice1) // 现在 slice1 和 slice2 是完全独立的
 
 ## 3.9 [map（映射）](http://c.biancheng.net/view/31.html)
@@ -1171,15 +969,11 @@ map 这种数据结构在其他编程语言中也称为字典（Python）、hash
 ### 3.9.1map 概念
 
 map 是引用类型，可以使用如下方式声明：
-
 var mapname map[keytype]valuetype
 
 其中：
-
 - mapname 为 map 的变量名。
-
 - keytype 为键类型。
-
 - valuetype 是键对应的值类型。
 
 > 提示：[keytype] 和 valuetype 之间允许有空格。
@@ -1188,189 +982,134 @@ var mapname map[keytype]valuetype
   
 【示例】
 
+```go
 1.  package main
-
 2.  import "fmt"
-
 3.  
-
 4.  func main() {
+5.      var mapLit map[string]int
+6.      //var mapCreated map[string]float32
+7.      var mapAssigned map[string]int
 
-5.  var mapLit map[string]int
+8.      mapLit = map[string]int{"one": 1, "two": 2}
+9.      mapCreated := make(map[string]float32)
 
-6.  //var mapCreated map[string]float32
+10.     mapAssigned = mapLit
 
-7.  var mapAssigned map[string]int
+11.     mapCreated["key1"] = 4.5
+12.     mapCreated["key2"] = 3.14159
 
-8.  mapLit = map[string]int{"one": 1, "two": 2}
+13.     mapAssigned["two"] = 3
 
-9.  mapCreated := make(map[string]float32)
-
-10. mapAssigned = mapLit
-
-11. mapCreated["key1"] = 4.5
-
-12. mapCreated["key2"] = 3.14159
-
-13. mapAssigned["two"] = 3
-
-14. fmt.Printf("Map literal at \\one\\ is: %d\n", mapLit["one"])
-
-15. fmt.Printf("Map created at \\key2\\ is: %f\n", mapCreated["key2"])
-
-16. fmt.Printf("Map assigned at \\two\\ is: %d\n", mapLit["two"])
-
-17. fmt.Printf("Map literal at \\ten\\ is: %d\n", mapLit["ten"])
+14.     fmt.Printf("Map literal at \"one\" is: %d\n", mapLit["one"])
+15.     fmt.Printf("Map created at \"key2\" is: %f\n", mapCreated["key2"])
+16.     fmt.Printf("Map assigned at \"two\" is: %d\n", mapLit["two"])
+17.     fmt.Printf("Map literal at \"ten\" is: %d\n", mapLit["ten"])
 
 18. }
-
+```
 输出结果：
 
+```
 Map literal at "one" is: 1  
 Map created at "key2" is: 3.14159  
 Map assigned at "two" is: 3  
 Map literal at "ten" is: 0
-
-示例中 mapLit 演示了使用{key1: value1, key2: value2}的格式来初始化 map ，就像数组和结构体一样。  
-  
-上面代码中的 mapCreated 的创建方式mapCreated := make(map[string]float)等价于mapCreated := map[string]float{} 。  
-  
+```
+示例中 mapLit 演示了使用{key1: value1, key2: value2}的格式来初始化 map ，就像数组和结构体一样。    
+上面代码中的 mapCreated 的创建方式mapCreated := make(map[string]float)等价于mapCreated := map[string]float{} 。    
 mapAssigned 是 mapList 的引用，对 mapAssigned 的修改也会影响到 mapLit 的值。  
   
-注意：可以使用 make()，但不能使用 new() 来构造 map，如果错误的使用 new() 分配了一个引用对象，会获得一个空引用的指针，相当于声明了一个未初始化的变量并且取了它的地址：
-
-mapCreated := new(map[string]float)
-
+  
+注意：可以使用 make()，但不能使用 new() 来构造 map，如果错误的使**用 new() 分配了一个引用对象，会获得一个空引用的指针**，相当于声明了一个未初始化的变量并且取了它的地址：
+    mapCreated := new(map[string]float)
 接下来当我们调用mapCreated["key1"] = 4.5的时候，编译器会报错：
-
-invalid operation: mapCreated["key1"] (index of type *map[string]float).
+    invalid operation: mapCreated["key1"] (index of type *map[string]float).
 
 ### 3.9.2map 容量
 
 和数组不同，map 可以根据新增的 key-value 动态的伸缩，因此它不存在固定长度或者最大限制，但是也可以选择标明 map 的初始容量 capacity，格式如下：
-
-make(map[keytype]valuetype, cap)
+    make(map[keytype]valuetype, cap)
 
 例如：
-
-map2 := make(map[string]float, 100)
+    map2 := make(map[string]float, 100)
 
 当 map 增长到容量上限的时候，如果再增加新的 key-value，map 的大小会自动加 1，所以出于性能的考虑，对于大的 map 或者会快速扩张的 map，即使只是大概知道容量，也最好先标明。  
   
 这里有一个 map 的具体例子，即将音阶和对应的音频映射起来：
-
+```go
 1.  noteFrequency := map[string]float32 {
-
 2.  "C0": 16.35, "D0": 18.35, "E0": 20.60, "F0": 21.83,
-
 3.  "G0": 24.50, "A0": 27.50, "B0": 30.87, "A4": 440}
+```
 
 ### 3.9.3用切片作为 map 的值
 
 既然一个 key 只能对应一个 value，而 value 又是一个原始类型，那么如果一个 key 要对应多个值怎么办？例如，当我们要处理 unix 机器上的所有进程，以父进程（pid 为整形）作为 key，所有的子进程（以所有子进程的 pid 组成的切片）作为 value。通过将 value 定义为 []int 类型或者其他类型的切片，就可以优雅的解决这个问题，示例代码如下所示：
-
+```go
 1.  mp1 := make(map[int][]int)
-
 2.  mp2 := make(map[int]*[]int)
-
+```
 ## 3.10 [遍历map](http://c.biancheng.net/view/32.html)
 
 Go语言遍历map（访问map中的每一个键值对）
-
 ---------------------------------------------------------------------
 
 map 的遍历过程使用 for range 循环完成，代码如下：
-
+```go
 1.  scene := make(map[string]int)
-
 2.  
-
 3.  scene["route"] = 66
-
 4.  scene["brazil"] = 4
-
 5.  scene["china"] = 960
-
 6.  
-
 7.  for k, v := range scene {
-
-8.  fmt.Println(k, v)
-
+8.      fmt.Println(k, v)
 9.  }
-
+```
 遍历对于Go语言的很多对象来说都是差不多的，直接使用 for range 语法即可，遍历时，可以同时获得键和值，如只遍历值，可以使用下面的形式：
-
 1.  for _, v := range scene {
-
 将不需要的键使用 _ 改为匿名变量形式。  
-  
+
 只遍历键时，使用下面的形式：
-
 1.  for k := range scene {
-
 无须将值改为匿名变量形式，忽略值即可。
 
 > 注意：遍历输出元素的顺序与填充顺序无关，**不能期望 map 在遍历时返回某种期望顺序的结果**。
 
 如果需要特定顺序的遍历结果，正确的做法是先排序，代码如下：
-
+```go
 1.  scene := make(map[string]int)
-
 2.  
-
 3.  // 准备map数据
-
 4.  scene["route"] = 66
-
 5.  scene["brazil"] = 4
-
 6.  scene["china"] = 960
-
 7.  
-
 8.  // 声明一个切片保存map数据
-
 9.  var sceneList []string
-
 10. 
-
 11. // 将map数据遍历复制到切片中
-
 12. for k := range scene {
-
-13. sceneList = append(sceneList, k)
-
+13.     sceneList = append(sceneList, k)
 14. }
-
 15. 
-
 16. // 对切片进行排序
-
 17. sort.Strings(sceneList)
-
 18. 
-
 19. // 输出
-
 20. fmt.Println(sceneList)
-
+```
 代码输出如下：
-
 [brazil china route]
 
 代码说明如下：
 
 - 第 1 行，创建一个 map 实例，键为字符串，值为整型。
-
 - 第 4～6 行，将 3 个键值对写入 map 中。
-
 - 第 9 行，声明 sceneList 为字符串切片，以缓冲和排序 map 中的所有元素。
-
 - 第 12 行，将 map 中元素的键遍历出来，并放入切片中。
-
 - 第 17 行，对 sceneList 字符串切片进行排序，排序时，sceneList 会被修改。
-
 - 第 20 行，输出排好序的 map 的键。
 
 sort.Strings 的作用是对传入的字符串切片进行字符串字符的升序排列，排序接口的使用将在后面的章节中介绍。
@@ -1382,39 +1121,25 @@ Go语言提供了一个内置函数 delete()，用于删除容器内的元素，
 ### 3.11.1使用 delete() 函数从 map 中删除键值对
 
 使用 delete() 内建函数从 map 中删除一组键值对，delete() 函数的格式如下：
-
-delete(map, 键)
-
+    delete(map, 键)
 其中 map 为要删除的 map 实例，键为要删除的 map 中键值对的键。  
   
 从 map 中删除一组键值对可以通过下面的代码来完成：
 
 1.  scene := make(map[string]int)
-
 2.  
-
 3.  // 准备map数据
-
 4.  scene["route"] = 66
-
 5.  scene["brazil"] = 4
-
 6.  scene["china"] = 960
-
 7.  
-
 8.  delete(scene, "brazil")
-
 9.  
-
 10. for k, v := range scene {
-
-11. fmt.Println(k, v)
-
+11.     fmt.Println(k, v)
 12. }
 
 代码输出如下：
-
 route 66  
 china 960
 
@@ -1427,49 +1152,30 @@ china 960
 ## 3.12 map的多键索引
 
 Go语言map的多键索引——多个数值条件可以同时查询
-
 -------------------------------------------------------------------------------
-
 xyz 于 2021-09-02 23:40:50 发布
 
 在大多数的编程语言中，映射容器的键必须以单一值存在。这种映射方法经常被用在诸如信息检索上，如根据通讯簿的名字进行检索。但随着查询条件越来越复杂，检索也会变得越发困难。下面例子中涉及通讯簿的结构，结构如下：
 
 1.  // 人员档案
-
 2.  type Profile struct {
-
-3.  Name string // 名字
-
-4.  Age int // 年龄
-
-5.  Married bool // 已婚
-
+3.      Name string // 名字
+4.      Age int // 年龄
+5.      Married bool // 已婚
 6.  }
 
 7.  并且准备好了一堆原始数据，需要算法实现构建索引和查询的过程，代码如下：
-
 8.  func main() {
-
 9.  
-
 10. list := []*Profile{
-
-11. {Name: "张三", Age: 30, Married: true},
-
-12. {Name: "李四", Age: 21},
-
-13. {Name: "王麻子", Age: 21},
-
+11.     {Name: "张三", Age: 30, Married: true},
+12.     {Name: "李四", Age: 21},
+13.     {Name: "王麻子", Age: 21},
 14. }
-
 15. 
-
 16. buildIndex(list)
-
 17. 
-
 18. queryData("张三", 30)
-
 19. }
 
 需要用算法实现 buildIndex() 构建索引函数及 queryData() 查询数据函数，查询到结果后将数据打印出来。  
@@ -1479,9 +1185,7 @@ xyz 于 2021-09-02 23:40:50 发布
 ### 3.12.1基于哈希值的多键索引及查询
 
 传统的数据索引过程是将输入的数据做特征值。这种特征值有几种常见做法：
-
 - 将特征使用某种算法转为整数，即哈希值，使用整型值做索引。
-
 - 将特征转为字符串，使用字符串做索引。
 
 数据都基于特征值构建好索引后，就可以进行查询。查询时，重复这个过程，将查询条件转为特征值，使用特征值进行查询得到结果。  
@@ -1491,41 +1195,25 @@ xyz 于 2021-09-02 23:40:50 发布
 <span class="mark">本套教程所有源码下载地址： <https://pan.baidu.com/s/1ORFVTOLEYYqDhRzeq0zIiQ>    提取密码：hfyf</span>
 
 1) 字符串转哈希值
-
 本例中，查询键（classicQueryKey）的特征值需要将查询键中每一个字段转换为整型，字符串也需要转换为整型值，这里使用一种简单算法将字符串转换为需要的哈希值，代码如下：
 
 1.  func simpleHash(str string) (ret int) {
-
 2.  
-
 3.  // 遍历字符串中的每一个ASCII字符
-
 4.  for i := 0; i < len(str); i++ {
-
-5.  // 取出字符
-
-6.  c := str[i]
-
+5.      // 取出字符
+6.      c := str[i]
 7.  
-
-8.  // 将字符的ASCII码相加
-
-9.  ret += int(c)
-
+8.      // 将字符的ASCII码相加
+9.      ret += int(c)
 10. }
-
 11. 
-
 12. return
-
 13. }
 
 代码说明如下：
-
 - 第 1 行传入需要计算哈希值的字符串。
-
 - 第 4 行，根据字符串的长度，遍历这个字符串的每一个字符，以 ASCII 码为单位。
-
 - 第 9 行，c 变量的类型为 uint8，将其转为 int 类型并累加。
 
 哈希算法有很多，这里只是选用一种大家便于理解的算法。哈希算法的选用的标准是尽量减少重复键的发生，俗称“哈希冲撞”，即同样两个字符串的哈希值重复率降到最低。
@@ -1533,303 +1221,175 @@ xyz 于 2021-09-02 23:40:50 发布
 2) 查询键
 
 有了哈希算法函数后，将哈希函数用在查询键结构中。查询键结构如下：
-
 1.  // 查询键
-
 2.  type classicQueryKey struct {
-
-3.  Name string // 要查询的名字
-
-4.  Age int // 要查询的年龄
-
+3.      Name string // 要查询的名字
+4.      Age int // 要查询的年龄
 5.  }
-
 6.  
-
 7.  // 计算查询键的哈希值
-
 8.  func (c *classicQueryKey) hash() int {
-
-9.  // 将名字的Hash和年龄哈希合并
-
-10. return simpleHash(c.Name) + c.Age*1000000
-
+9.      // 将名字的Hash和年龄哈希合并
+10.     return simpleHash(c.Name) + c.Age*1000000
 11. }
 
 代码说明如下：
-
 - 第 2 行，声明查询键的结构，查询键包含需要索引和查询的字段。
-
 - 第 8 行，查询键的成员方法哈希，通过调用这个方法获得整个查询键的哈希值。
-
 - 第 10 行，查询键哈希的计算方法：使用 simpleHash() 函数根据给定的名字字符串获得其哈希值。同时将年龄乘以 1000000 与名字哈希值相加。
 
 哈希值构建过程如下图所示
-
 <img src="./media03/media/image8.png" style="width:5.76806in;height:2.48819in" />
 
 3) 构建索引
 
 本例需要快速查询，因此需要提前对已有的数据构建索引。前面已经准备好了数据查询键，使用查询键获得哈希即可对数据进行快速索引，参考下面的代码：
-
 1.  // 创建哈希值到数据的索引关系
-
 2.  var mapper = make(map[int][]*Profile)
-
 3.  
-
 4.  // 构建数据索引
-
 5.  func buildIndex(list []*Profile) {
-
 6.  
-
-7.  // 遍历所有的数据
-
-8.  for _, profile := range list {
-
+7.      // 遍历所有的数据
+8.      for _, profile := range list {
 9.  
-
-10. // 构建数据的查询索引
-
-11. key := classicQueryKey{profile.Name, profile.Age}
-
+10.         // 构建数据的查询索引
+11.         key := classicQueryKey{profile.Name, profile.Age}
 12. 
-
-13. // 计算数据的哈希值, 取出已经存在的记录
-
-14. existValue := mapper[key.hash()]
-
+13.         // 计算数据的哈希值, 取出已经存在的记录
+14.         existValue := mapper[key.hash()]
 15. 
-
-16. // 将当前数据添加到已经存在的记录切片中
-
-17. existValue = append(existValue, profile)
-
+16.         // 将当前数据添加到已经存在的记录切片中
+17.         existValue = append(existValue, profile)
 18. 
-
-19. // 将切片重新设置到映射中
-
-20. mapper[key.hash()] = existValue
-
-21. }
-
+19.         // 将切片重新设置到映射中
+20.         mapper[key.hash()] = existValue
+21.     }
 22. }
 
 代码说明如下：
-
 - 第 2 行，实例化一个 map，键类型为整型，保存哈希值；值类型为 *Profile，为通讯簿的数据格式。
-
 - 第 5 行，构建索引函数入口，传入数据切片。
-
 - 第 8 行，遍历数据切片的所有数据元素。
-
 - 第 11 行，使用查询键（classicQueryKey）来辅助计算哈希值，查询键需要填充两个字段，将数据中的名字和年龄赋值到查询键中进行保存。
-
 - 第 14 行，使用查询键的哈希方法计算查询键的哈希值。通过这个值在 mapper 索引中查找相同哈希值的数据切片集合。因为哈希函数不能保证不同数据的哈希值一定完全不同，因此要考虑在发生哈希值重复时的处理办法。
-
 - 第 17 行，将当前数据添加到可能存在的切片中。
-
 - 第 20 行，将新添加好的数据切片重新赋值到相同哈希的 mapper 中。
-
 具体哈希结构如下图所示。
-
 <img src="./media03/media/image9.png" style="width:4.95208in;height:1.90556in" />
-
 图：哈希结构
 
 这种多键的算法就是哈希算法。map 的多个元素对应哈希的“桶”。哈希函数的选择决定桶的映射好坏，如果哈希冲撞很厉害，那么就需要将发生冲撞的相同哈希值的元素使用切片保存起来。
 
 4) 查询逻辑
-
 从已经构建好索引的数据中查询需要的数据流程如下：
 
 1.  给定查询条件（名字、年龄）。
-
 2.  根据查询条件构建查询键。
-
 3.  查询键生成哈希值。
-
 4.  根据哈希值在索引中查找数据集合。
-
 5.  遍历数据集合逐个与条件比对。
-
 6.  获得结果。
 
 <!-- -->
 
 1.  func queryData(name string, age int) {
-
 2.  
-
 3.  // 根据给定查询条件构建查询键
-
 4.  keyToQuery := classicQueryKey{name, age}
-
 5.  
-
 6.  // 计算查询键的哈希值并查询, 获得相同哈希值的所有结果集合
-
 7.  resultList := mapper[keyToQuery.hash()]
-
 8.  
-
 9.  // 遍历结果集合
-
 10. for _, result := range resultList {
-
 11. 
-
 12. // 与查询结果比对, 确认找到打印结果
-
 13. if result.Name == name && result.Age == age {
-
-14. fmt.Println(result)
-
-15. return
-
+14.     fmt.Println(result)
+15.     return
 16. }
-
 17. }
-
 18. 
-
 19. // 没有查询到时, 打印结果
-
 20. fmt.Println("no found")
-
 21. 
-
 22. }
 
 代码说明如下：
 
 - 第 1 行，查询条件（名字、年龄）。
-
 - 第 4 行，根据查询条件构建查询键。
-
 - 第 7 行，使用查询键计算哈希值，使用哈希值查询相同哈希值的所有数据集合。
-
 - 第 10 行，遍历所有相同哈希值的数据集合。
-
 - 第 13 行，将每个数据与查询条件进行比对，如果一致，表示已经找到结果，打印并返回。
-
 - 第 20 行，没有找到记录时，打印 no found。
 
 ### 3.12.2利用 map 特性的多键索引及查询
 
-使用结构体进行多键索引和查询比传统的写法更为简单，最主要的区别是无须准备哈希函数及相应的字段无须做哈希合并。看下面的实现流程。  
-  
+使用结构体进行多键索引和查询比传统的写法更为简单，最主要的区别是无须准备哈希函数及相应的字段无须做哈希合并。看下面的实现流程。    
 利用map特性的多键索引和查询的代码位于./src/chapter12/multikey/multikey.go，下面是对各个部分的分析。
-
 <span class="mark">本套教程所有源码下载地址： <https://pan.baidu.com/s/1ORFVTOLEYYqDhRzeq0zIiQ>    提取密码：hfyf</span>
 
 1) 构建索引
-
 代码如下：
-
 1.  // 查询键
 
 2.  type queryKey struct {
-
-3.  Name string
-
-4.  Age int
-
+3.      Name string
+4.      Age int
 5.  }
-
 6.  
-
 7.  // 创建查询键到数据的映射
-
 8.  var mapper = make(map[queryKey]*Profile)
-
 9.  
-
 10. // 构建查询索引
-
 11. func buildIndex(list []*Profile) {
-
 12. 
-
-13. // 遍历所有数据
-
-14. for _, profile := range list {
-
+13.     // 遍历所有数据
+14.     for _, profile := range list {
 15. 
-
-16. // 构建查询键
-
-17. key := queryKey{
-
-18. Name: profile.Name,
-
-19. Age: profile.Age,
-
-20. }
-
+16.         // 构建查询键
+17.         key := queryKey{
+18.             Name: profile.Name,
+19.             Age: profile.Age,
+20.         }
 21. 
-
-22. // 保存查询键
-
-23. mapper[key] = profile
-
-24. }
-
+22.         // 保存查询键
+23.         mapper[key] = profile
+24.     }
 25. }
 
 代码说明如下：
-
 - 第 2 行，与基于哈希值的查询键的结构相同。
-
 - 第 8 行，在 map 的键类型上，直接使用了查询键结构体。注意，这里不使用查询键的指针。同时，结果只有 *Profile 类型，而不是 *Profile 切片，表示查到的结果唯一。
-
 - 第 17 行，类似的，使用遍历到的数据的名字和年龄构建查询键。
-
 - 第 23 行，更简单的，直接将查询键保存对应的数据。
 
 2) 查询逻辑
 
 1.  // 根据条件查询数据
-
 2.  func queryData(name string, age int) {
-
 3.  
-
-4.  // 根据查询条件构建查询键
-
-5.  key := queryKey{name, age}
-
+4.      // 根据查询条件构建查询键
+5.      key := queryKey{name, age}
 6.  
-
-7.  // 根据键值查询数据
-
-8.  result, ok := mapper[key]
-
+7.      // 根据键值查询数据
+8.      result, ok := mapper[key]
 9.  
-
-10. // 找到数据打印出来
-
-11. if ok {
-
-12. fmt.Println(result)
-
-13. } else {
-
-14. fmt.Println("no found")
-
-15. }
-
+10.     // 找到数据打印出来
+11.     if ok {
+12.         fmt.Println(result)
+13.     } else {
+14.         fmt.Println("no found")
+15.     }
 16. }
 
 代码说明如下：
 
 - 第 5 行，根据查询条件（名字、年龄）构建查询键。
-
 - 第 8 行，直接使用查询键在 map 中查询结果。
-
 - 第 12 行，找到结果直接打印。
-
 - 第 14 行，没有找到结果打印 no found。
 
 ### 3.12.3总结
@@ -1837,25 +1397,17 @@ xyz 于 2021-09-02 23:40:50 发布
 基于哈希值的多键索引查询和利用 map 特性的多键索引查询的代码复杂程度显而易见。聪明的程序员都会利用 Go语言的特性进行快速的多键索引查询。  
   
 其实，利用 map 特性的例子中的 map 类型即便修改为下面的格式，也一样可以获得同样的结果：
-
 1.  var mapper = make(map[interface{}]*Profile)
-
 代码量大大减少的关键是：Go语言的底层会为 map 的键自动构建哈希值。**能够构建哈希值的类型必须是**非动态类型、非指针、函数、闭包。
-
 - 非动态类型：可用数组，不能用切片。
-
 - 非指针：每个指针数值都不同，失去哈希意义。
-
 - 函数、闭包不能作为 map 的键。
 
 ## 3.12+1 Golang的map是引用类型。
 
 在Golang中，map是引用类型。
-
 在Golang中，map是一种特殊的引用类型，它以键值对的方式存储数据。map的键可以是任何可以使用==进行比较的数据类型，如int、string、bool等，而值可以是任意类型。
-
 由于map是引用类型，它在使用前必须进行初始化。map的零值为nil，表示一个未初始化的map。
-
 此外，**map是无序的**，即每次遍历获取的顺序可能不一致。
 
 ## 3.13 [sync.Map](http://c.biancheng.net/view/34.html)
@@ -1864,158 +1416,92 @@ Go语言sync.Map（在并发环境中使用的map）
 
 -----------------------------------------------------------------
 
-Go语言中的 map 在并发情况下，只读是线程安全的，同时读写是线程不安全的。  
-  
+Go语言中的 map 在并发情况下，只读是线程安全的，同时读写是线程不安全的。    
 下面来看下并发情况下读写 map 时会出现的问题，代码如下：
 
 1.  // 创建一个int到int的映射
-
 2.  m := make(map[int]int)
-
 3.  
-
 4.  // 开启一段并发代码
-
 5.  go func() {
-
 6.  
-
-7.  // 不停地对map进行写入
-
-8.  for {
-
-9.  m[1] = 1
-
-10. }
-
+7.      // 不停地对map进行写入
+8.      for {
+9.          m[1] = 1
+10.     }
 11. 
-
 12. }()
 
 13. 
-
 14. // 开启一段并发代码
 
 15. go func() {
-
 16. 
-
 17. // 不停地对map进行读取
-
 18. for {
-
-19. _ = m[1]
-
+19.     _ = m[1]
 20. }
-
 21. 
-
 22. }()
-
 23. 
-
 24. // 无限循环, 让并发程序在后台执行
-
 25. for {
-
 26. 
-
 27. }
 
 运行代码会报错，输出如下：
-
 fatal error: concurrent map read and map write
-
 错误信息显示，并发的 map 读和 map 写，也就是说使用了两个并发函数不断地对 map 进行读和写而发生了竞态问题，map 内部会对这种并发操作进行检查并提前发现。  
   
 需要并发读写时，一般的做法是加锁，但这样性能并不高，Go语言在 1.9 版本中提供了一种效率较高的并发安全的 sync.Map，sync.Map 和 map 不同，不是以语言原生形态提供，而是在 sync 包下的特殊结构。  
-  
+
 sync.Map 有以下特性：
-
 - 无须初始化，直接声明即可。
-
 - sync.Map 不能使用 map 的方式进行取值和设置等操作，而是使用 sync.Map 的方法进行调用，Store 表示存储，Load 表示获取，Delete 表示删除。
-
 - 使用 Range 配合一个回调函数进行遍历操作，通过回调函数返回内部遍历出来的值，Range 参数中回调函数的返回值在需要继续迭代遍历时，返回 true，终止迭代遍历时，返回 false。
 
 并发安全的 sync.Map 演示代码如下：
-
 1.  package main
-
 2.  
-
 3.  import (
-
-4.  "fmt"
-
-5.  "sync"
-
+4.      "fmt"
+5.      "sync"
 6.  )
-
 7.  
-
 8.  func main() {
-
 9.  
-
-10. var scene sync.Map
-
+10.     var scene sync.Map
 11. 
-
-12. // 将键值对保存到sync.Map
-
-13. scene.Store("greece", 97)
-
-14. scene.Store("london", 100)
-
-15. scene.Store("egypt", 200)
-
+12.     // 将键值对保存到sync.Map
+13.     scene.Store("greece", 97)
+14.     scene.Store("london", 100)
+15.     scene.Store("egypt", 200)
 16. 
-
-17. // 从sync.Map中根据键取值
-
-18. fmt.Println(scene.Load("london"))
-
+17.     // 从sync.Map中根据键取值
+18.     fmt.Println(scene.Load("london"))
 19. 
-
-20. // 根据键删除对应的键值对
-
-21. scene.Delete("london")
-
+20.     // 根据键删除对应的键值对
+21.     scene.Delete("london")
 22. 
-
-23. // 遍历所有sync.Map中的键值对
-
-24. scene.Range(func(k, v interface{}) bool {
-
+23.     // 遍历所有sync.Map中的键值对
+24.     scene.Range(func(k, v interface{}) bool {
 25. 
-
-26. fmt.Println("iterate:", k, v)
-
-27. return true
-
-28. })
-
+26.         fmt.Println("iterate:", k, v)
+27.         return true
+28.     })
 29. 
-
 30. }
 
 代码输出如下：
-
 100 true  
 iterate: egypt 200  
 iterate: greece 97
 
 代码说明如下：
-
 - 第 10 行，声明 scene，类型为 sync.Map，注意，sync.Map 不能使用 make 创建。
-
 - 第 13～15 行，将一系列键值对保存到 sync.Map 中，sync.Map 将键和值以 interface{} 类型进行保存。
-
 - 第 18 行，提供一个 sync.Map 的键给 scene.Load() 方法后将查询到键对应的值返回。
-
 - 第 21 行，sync.Map 的 Delete 可以使用指定的键将对应的键值对删除。
-
 - 第 24 行，Range() 方法可以遍历 sync.Map，遍历需要提供一个匿名函数，参数为 k、v，类型为 interface{}，每次 Range() 在遍历一个元素时，都会调用这个匿名函数把结果返回。
 
 sync.Map 没有提供获取 map 数量的方法，替代方法是在获取 sync.Map 时遍历自行计算数量，sync.Map 为了保证并发安全有一些性能损失，因此在非并发情况下，使用 map 相比使用 sync.Map 会有更好的性能。
@@ -2025,66 +1511,50 @@ sync.Map 没有提供获取 map 数量的方法，替代方法是在获取 sync.
 列表是一种非连续的存储容器，由多个节点组成，节点通过一些变量记录彼此之间的关系，列表有多种实现方法，如单链表、双链表等。  
   
 列表的原理可以这样理解：假设 A、B、C 三个人都有电话号码，如果 A 把号码告诉给 B，B 把号码告诉给 C，这个过程就建立了一个单链表结构，如下图所示。
-
 <img src="./media03/media/image10.jpeg" style="width:6in;height:1.5in" alt="IMG_256" />  
 图：三人单向通知电话号码形成单链表结构
 
 如果在这个基础上，再从 C 开始将自己的号码告诉给自己所知道号码的主人，这样就形成了双链表结构，如下图所示。
-
 <img src="./media03/media/image11.jpeg" style="width:6in;height:1.47917in" alt="IMG_257" />  
 图：三人相互通知电话号码形成双链表结构
 
 那么如果需要获得所有人的号码，只需要从 A 或者 C 开始，要求他们将自己的号码发出来，然后再通知下一个人如此循环，这样就构成了一个列表遍历的过程。  
   
 如果 B 换号码了，他需要通知 A 和 C，将自己的号码移除，这个过程就是列表元素的删除操作，如下图所示。
-
 <img src="./media03/media/image12.jpeg" style="width:6in;height:2.80208in" alt="IMG_258" />  
 图：从双链表中删除一人的电话号码
 
-在Go语言中，列表使用 container/list 包来实现，内部的实现原理是双链表，列表能够高效地进行任意位置的元素插入和删除操作。
+在Go语言中，列表使用 container/list 包来实现，内部的实现原理是**双链表**，列表能够高效地进行任意位置的元素插入和删除操作。
 
 ### 3.14.1初始化列表
 
 list 的初始化有两种方法：分别是使用 New() 函数和 var 关键字声明，两种方法的初始化效果都是一致的。  
   
 1) 通过 container/list 包的 New() 函数初始化 list
-
-变量名 := list.New()
+    变量名 := list.New()
 
 2) 通过 var 关键字声明初始化 list
-
-var 变量名 list.List
+    var 变量名 list.List
 
 列表与切片和 map 不同的是，列表并没有具体元素类型的限制，因此，**列表的元素可以是任意类型**，这既带来了便利，也引来一些问题，例如给列表中放入了一个 interface{} 类型的值，取出值后，如果要将 interface{} 转换为其他类型将会发生宕机。
 
 ### 3.14.2在列表中插入元素
-
 双链表支持从队列前方或后方插入元素，分别对应的方法是 PushFront 和 PushBack。
-
 #### 提示
-
 这两个方法都会返回一个 *list.Element 结构，如果在以后的使用中需要删除插入的元素，则只能通过 *list.Element 配合 Remove() 方法进行删除，这种方法可以让删除更加效率化，同时也是双链表特性之一。  
   
 下面代码展示如何给 list 添加元素：
-
 1.  l := list.New()
-
 2.  
-
 3.  l.PushBack("fist")
-
 4.  l.PushFront(67)
 
 代码说明如下：
-
 - 第 1 行，创建一个列表实例。
-
 - 第 3 行，将 fist 字符串插入到列表的尾部，此时列表是空的，插入后只有一个元素。
-
 - 第 4 行，将数值 67 放入列表，此时，列表中已经存在 fist 元素，67 这个元素将被放在 fist 的前面。
 
 列表插入元素的方法如下表所示。
-
 |                                                         |                                                   |
 |---------------------------------------------------------|---------------------------------------------------|
 | **方  法**                                              | **功  能**                                        |
@@ -2098,55 +1568,30 @@ var 变量名 list.List
 列表插入函数的返回值会提供一个 *list.Element 结构，这个结构记录着列表元素的值以及与其他节点之间的关系等信息，从列表中删除元素时，需要用到这个结构进行快速删除。  
   
 列表操作元素：
-
 1.  package main
-
 2.  
-
 3.  import "container/list"
-
 4.  
-
 5.  func main() {
-
-6.  l := list.New()
-
+6.      l := list.New()
 7.  
-
-8.  // 尾部添加
-
-9.  l.PushBack("canon")
-
+8.      // 尾部添加
+9.      l.PushBack("canon")
 10. 
-
-11. // 头部添加
-
-12. l.PushFront(67)
-
+11.     // 头部添加
+12.     l.PushFront(67)
 13. 
-
-14. // 尾部添加后保存元素句柄
-
-15. element := l.PushBack("fist")
-
+14.     // 尾部添加后保存元素句柄
+15.     element := l.PushBack("fist")
 16. 
-
-17. // 在fist之后添加high
-
-18. l.InsertAfter("high", element)
-
+17.     // 在fist之后添加high
+18.     l.InsertAfter("high", element)
 19. 
-
-20. // 在fist之前添加noon
-
-21. l.InsertBefore("noon", element)
-
+20.     // 在fist之前添加noon
+21.     l.InsertBefore("noon", element)
 22. 
-
-23. // 使用
-
-24. l.Remove(element)
-
+23.     // 使用
+24.     l.Remove(element)
 25. }
 
 代码说明如下：  
@@ -2176,42 +1621,26 @@ var 变量名 list.List
 遍历双链表需要配合 Front() 函数获取头元素，遍历时只要元素不为空就可以继续进行，每一次遍历都会调用元素的 Next() 函数，代码如下所示。
 
 1.  l := list.New()
-
 2.  
-
 3.  // 尾部添加
-
 4.  l.PushBack("canon")
-
 5.  
-
 6.  // 头部添加
-
 7.  l.PushFront(67)
-
 8.  
-
 9.  for i := l.Front(); i != nil; i = i.Next() {
-
-10. fmt.Println(i.Value)
-
+10.     fmt.Println(i.Value)
 11. }
 
 代码输出如下：
-
 67  
 canon
 
 代码说明如下：
-
 - 第 1 行，创建一个列表实例。
-
 - 第 4 行，将 canon 放入列表尾部。
-
 - 第 7 行，在队列头部放入 67。
-
 - 第 9 行，使用 for 语句进行遍历，其中 i:=l.Front() 表示初始赋值，只会在一开始执行一次，每次循环会进行一次 i != nil 语句判断，如果返回 false，表示退出循环，反之则会执行 i = i.Next()。
-
 - 第 10 行，使用遍历返回的 *list.Element 的 Value 成员取得放入列表时的原值。
 
 ## 3.15 [nil：空值/零值](http://c.biancheng.net/view/4776.html)
@@ -2430,30 +1859,19 @@ true
 
 7.  func main() {
 
-8.  var m map[int]string
+8.      var m map[int]string
+9.      var ptr *int
+10.     var c chan int
+11.     var sl []int
+12.     var f func()
+13.     var i interface{}
 
-9.  var ptr *int
-
-10. var c chan int
-
-11. var sl []int
-
-12. var f func()
-
-13. var i interface{}
-
-14. fmt.Printf("%#v\n", m)
-
-15. fmt.Printf("%#v\n", ptr)
-
-16. fmt.Printf("%#v\n", c)
-
-17. fmt.Printf("%#v\n", sl)
-
-18. fmt.Printf("%#v\n", f)
-
-19. fmt.Printf("%#v\n", i)
-
+14.     fmt.Printf("%#v\n", m)
+15.     fmt.Printf("%#v\n", ptr)
+16.     fmt.Printf("%#v\n", c)
+17.     fmt.Printf("%#v\n", sl)
+18.     fmt.Printf("%#v\n", f)
+19.     fmt.Printf("%#v\n", i)
 20. }
 
 运行结果如下所示：
