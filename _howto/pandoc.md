@@ -4,11 +4,11 @@
 ### **0.**
 ```bash
 # mq: my best practice   08package.md
-inputPrefix=08package
+inputPrefix=12go-build
 docxName=${inputPrefix}.docx
 outMdName=${inputPrefix}.md
 
-outMediaPath=./media08
+outMediaPath=./media12
 pandoc ${docxName} -f docx -t gfm -o ${outMdName} --extract-media=${outMediaPath} --wrap=none
 ```
 

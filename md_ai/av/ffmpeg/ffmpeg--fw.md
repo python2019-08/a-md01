@@ -80,13 +80,13 @@ remote: Total 694571 (delta 141), reused 226 (delta 138), pack-reused 694337
 
 ### 2.2、编译安装
 
-(1)、执行X86下需执行：./configure \--disable-x86asm命令进行配置\
-(2)、执行make -j16命令进行编译。\
+(1)、执行X86下需执行：./configure --disable-x86asm 命令进行配置 
+(2)、执行 make -j16 命令进行编译。 
 (3)、执行sudo make install命令进行安装。
 
   执行过程中会有如下内容输出：
 
-```
+```sh
 xxx@xxx:~/workspace/learn/FFmpeg/FFmpeg$ ./configure --disable-x86asm
 install prefix            /usr/local
 source path               .
@@ -151,9 +151,9 @@ License: LGPL version 2.1 or later
 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061
 ```
 
-  4、执行ffmpeg -version命令查看版本信息
+  4、执行 ffmpeg -version 命令查看版本信息
 
-``` {.set-code-show .prettyprint index="2"}
+```sh
 xxx@xxx:~/workspace/learn/FFmpeg/FFmpeg$ ffmpeg -version
 ffmpeg version N-111280-gd51b0580e4 Copyright (c) 2000-2023 the FFmpeg developers
 built with gcc 7 (Ubuntu 7.5.0-3ubuntu1~18.04)
