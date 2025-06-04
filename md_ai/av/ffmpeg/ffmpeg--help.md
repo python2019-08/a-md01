@@ -1,5 +1,7 @@
 # 1. ffmpeg --help
 
+```sh
+(base) abner@abner-XPS:~$ ffmpeg --help
 
 ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
   built with gcc 13 (Ubuntu 13.2.0-23ubuntu3)
@@ -126,10 +128,12 @@ Subtitle options:
 -fix_sub_duration   fix subtitles duration
 -canvas_size size   set canvas size (WxH or abbreviation)
 -spre preset        set the subtitle options to the indicated preset
-
+```
 ===========================================
 ===========================================
 # 2.ffmpeg -h full
+
+```sh
 Hyper fast Audio and Video encoder
 usage: ffmpeg [options] [[infile options] -i infile]... {[outfile options] outfile}...
 
@@ -16214,4 +16218,4 @@ h266_metadata_bsf AVOptions:
      pass            0            ...V....B..
      insert          1            ...V....B..
      remove          2            ...V....B..
-
+```

@@ -350,3 +350,6 @@ gitRoot.AddCommand(
 
 ### **总结**
 `cobra.Command.AddCommand` 是构建复杂 CLI 工具的基础，通过它可以轻松实现层级化的命令结构，让你的 CLI 工具既强大又易用。结合 `cobra` 的其他特性（如 flags、persistent flags），可以打造出专业级的命令行应用。
+
+==================================================
+# 一个go工程下,有超过1个main函数,如何编译

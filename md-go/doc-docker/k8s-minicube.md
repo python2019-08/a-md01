@@ -137,3 +137,12 @@ https://kubernetes.io/zh-cn/docs/tutorials/kubernetes-basics/
 
 [00:08:27.440]  那今天视频我们就暂时讲到这里，最后感谢大家观看，我是罗斯我们下期再见
 
+=================================================================
+# 2.单机模拟k8s的技术，除了minikube，还有
+除了Minikube，以下技术也可用于单机模拟K8S：
+- **Kind（Kubernetes in Docker）**：轻量级工具，使用Docker容器作为节点来运行Kubernetes集群。适用于CI/CD测试场景，能方便地在容器中模拟多个节点，快速创建和销毁集群，便于进行各种测试。
+- **MicroK8s**：是Ubuntu优化版的Kubernetes发行版，支持插件，如Istio等。适合边缘计算、轻量级集群场景，提供了生产级别的Kubernetes体验，同时占用资源相对较少，可在资源有限的设备上运行。
+- **Kwork**：由Kubernetes社区新推出，可在几秒内建立包含数千个节点的模拟集群，资源占用率低。主要用于在没有基础设施的条件下进行Kubernetes控制器大规模测试和学习，能模拟假节点、Pod和其他Kubernetes API资源的生命周期。
+- **Rancher Desktop**：是一款开源的桌面版K8s和容器管理工具，支持在Windows、macOS和Linux上使用。它提供了图形化界面，方便用户进行操作，对于不熟悉命令行操作的用户来说更加友好，安装过程相对简单，可自动安装K8s环境。
+- **Docker Desktop**：如果使用的是Mac或Windows系统，Docker Desktop提供了内置的Kubernetes集群管理器，只需在Docker Desktop的设置中启用Kubernetes，即可轻松启动一个单节点的Kubernetes集群，适合开发和测试用途。
+

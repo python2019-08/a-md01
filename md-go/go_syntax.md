@@ -811,3 +811,237 @@ type Book struct {
 
 合理使用这些标签可以让 JSON 序列化和反序列化更加灵活，满足各种复杂场景的需求。
 
+# 7.golang的结构体数组和结构体指针数组的初始化方法一样的？
+
+
+```go
+type sType1 struct {
+	a int
+	b string
+}
+
+func Test_struct() {
+	// pointer of struct
+	var stP *sType1 = &sType1{1, "1"}
+	fmt.Println("stP *sType1=", stP)
+
+	// slice of struct
+	var stSlice [4]sType1 = [4]sType1{
+		{1, "1"},
+		{2, "2"},
+	}
+	fmt.Println("stSlice [4]sType1=", stSlice)
+
+	// slice of struct pointer
+	var stpSlice [4]*sType1 = [4]*sType1{
+		{1, "1"},
+		{2, "2"},
+	}
+	fmt.Println("stpSlice [4]*sType1", stpSlice)
+}
+```
+如上述代码所示，golang的结构体数组和结构体指针数组的初始化方法一样的？
+
+
+
+在Go语言中，结构体数组和结构体指针数组的初始化方法是不同的。你的代码中已经展示了正确的结构体数组初始化方式，但结构体指针数组的初始化存在错误。让我来解释一下：
+
+### 结构体数组 vs 结构体指针数组
+
+1. **结构体数组**：直接存储结构体实例
+2. **结构体指针数组**：存储指向结构体实例的指针
+
+### 错误分析
+
+你的代码中这部分存在错误：
+
+```go
+// slice of struct pointer
+var stpSlice [4]*sType1 = [4]*sType1{
+    {1, "1"},
+    {2, "2"},
+}
+```
+
+这里的问题是，结构体指针数组需要存储指针值（如`&sType1{...}`），而不是直接存储结构体字面量。
+
+### 正确的初始化方式
+
+以下是修复后的完整代码：
+```go
+package main
+
+import "fmt"
+
+type sType1 struct {
+	a int
+	b string
+}
+
+func Test_struct() {
+	// 结构体指针
+	var stP *sType1 = &sType1{1, "1"}
+	fmt.Println("stP *sType1=", stP)
+
+	// 结构体数组
+	var stSlice [4]sType1 = [4]sType1{
+		{1, "1"},
+		{2, "2"},
+	}
+	fmt.Println("stSlice [4]sType1=", stSlice)
+
+	// 结构体指针数组 (正确初始化)
+	var stpSlice [4]*sType1 = [4]*sType1{
+		&sType1{1, "1"},
+		&sType1{2, "2"},
+	}
+	fmt.Println("stpSlice [4]*sType1=", stpSlice)
+}
+
+func main() {
+	Test_struct()
+}
+
+```
+
+    
+
+
+### 其他初始化方式
+
+除了上述方法，还有几种常见的初始化方式：
+
+```go
+// 使用var声明后逐个赋值
+var arr1 [2]*sType1
+arr1[0] = &sType1{1, "1"}
+arr1[1] = &sType1{2, "2"}
+
+// 使用make创建切片并追加元素
+slice := make([]*sType1, 0, 4)
+slice = append(slice, &sType1{1, "1"})
+slice = append(slice, &sType1{2, "2"})
+
+// 使用复合字面量初始化切片
+slice2 := []*sType1{
+    &sType1{1, "1"},
+    &sType1{2, "2"},
+}
+```
+
+### 主要区别
+
+- **结构体数组**：存储的是结构体的副本，修改数组中的元素不会影响原始结构体
+- **结构体指针数组**：存储的是指针，修改指针指向的结构体内容会影响原始结构体
+
+在实际应用中，结构体指针数组更适合处理大型结构体或需要共享数据的场景，因为它避免了结构体复制的开销。
+
+==============================================================
+# 8.redundant type from array, slice, or map composite
+
+vscode针对
+```go
+	var stpSlice [4]*sType1 = [4]*sType1{
+		&sType1{1, "1"},
+		&sType1{2, "2"},
+	}
+```    
+中的&sType1{1, "1"}和&sType1{2, "2"}提示 redundant type from array, slice, or map composite
+
+
+你遇到的这个提示 `redundant type from array, slice, or map composite` 是 Go 语言中常见的一个静态检查警告，它表示你在复合字面量中显式指定的类型是多余的。
+
+### 警告原因
+
+在 Go 中，当你已经在变量声明中指定了类型时，复合字面量（如 `[4]*sType1{...}`）中的类型声明通常是多余的。这是因为 Go 编译器已经知道变量的类型，所以不需要在初始化时再次指定。
+
+### 解决方法
+
+你可以通过两种方式解决这个问题：
+
+1. **省略复合字面量中的类型**（推荐方式）：
+   ```go
+   var stpSlice [2]*sType1 = [...] *sType1{
+       &sType1{1, "1"},
+       &sType1{2, "2"},
+   }
+   ```
+
+2. **使用短变量声明**（`:=`）：
+   ```go
+   stpSlice := [...] *sType1{
+       &sType1{1, "1"},
+       &sType1{2, "2"},
+   }
+   ```
+
+### 完整修正代码
+
+下面是修正后的完整代码，移除了冗余的类型声明：
+```go
+package main
+
+import "fmt"
+
+type sType1 struct {
+	a int
+	b string
+}
+
+func Test_struct() {
+	// 结构体指针
+	var stP *sType1 = &sType1{1, "1"}
+	fmt.Println("stP *sType1=", stP)
+
+	// 结构体数组
+	var stSlice [2]sType1 = [...]sType1{
+		{1, "1"},
+		{2, "2"},
+	}
+	fmt.Println("stSlice [4]sType1=", stSlice)
+
+	// 结构体指针数组 (修正冗余类型声明)
+	var stpSlice [2]*sType1 = [...] *sType1{
+		&sType1{1, "1"},
+		&sType1{2, "2"},
+	}
+	fmt.Println("stpSlice [4]*sType1=", stpSlice)
+}
+
+func main() {
+	Test_struct()
+}
+```    
+
+### 说明
+
+- 当使用 `:=` 声明变量时，Go 会自动推断变量类型，所以不需要指定 `[4]*sType1`。
+- 当使用 `var` 声明变量时，类型已经在变量名后指定，复合字面量中可以使用 `[...]` 代替显式类型。
+- 这个警告不会影响代码的功能，但移除冗余代码可以提高可读性和符合 Go 的编码风格。
+
+如果你想完全消除警告，可以采用上述任一方式修改代码。
+
+# 9.[go语言 golint警告]redundant type from array, slice, or map composite literal
+
+haunan 于 2021-06-29 18:55:07 发布 
+原文链接：https://blog.csdn.net/Huanan_z/article/details/118341605
+
+**问题：**碰到golint 提示redundant type from array, slice, or map composite literal。
+翻译：数组、切片或映射复合文字中的冗余类型。
+
+原因：
+var foo = map[int][]int{
+	0: []int{1, 2},
+	1: []int{1, 2},
+}
+ 
+如上面代码改所示，foo的类型已经通过声明知道是map[int][]int。
+很明显，foo的键值对中的值一定为[]int，所以不需要 额外声明键值对中的值的类型。直接使用{},而不是[]int{}。
+解决做法：
+
+var foo = map[int][]int{
+	0: {1, 2},
+	1: {1, 2},
+}
+ 
+去除掉多余的类型声明，解决了golint报错的问题。 
