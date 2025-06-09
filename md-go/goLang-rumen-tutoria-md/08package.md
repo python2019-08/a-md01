@@ -308,11 +308,8 @@ import \_ "fmt"
 图：Go 包的初始化
 
 Go语言包的初始化有如下特点：
-
 - 包初始化程序从 main 函数引用的包开始，逐级查找包的引用，直到找到没有引用其他包的包，最终生成一个包引用的有向无环图。
-
 - Go 编译器会将有向无环图转换为一棵树，然后从树的叶子节点开始逐层向上对包进行初始化。
-
 - 单个包的初始化过程如上图所示，先初始化常量，然后是全局变量，最后执行包的 init 函数。
 
 ## 8.2 [Go语言封装简介及实现细节](http://c.biancheng.net/view/5715.html)
@@ -320,172 +317,101 @@ Go语言包的初始化有如下特点：
 在Go语言中封装就是把抽象出来的字段和对字段的操作封装在一起，数据被保护在内部，程序的其它包只能通过被授权的方法，才能对字段进行操作。  
   
 封装的好处：
-
 - 隐藏实现细节；
-
 - 可以对数据进行验证，保证数据安全合理。
 
 如何体现封装：
-
 - 对结构体中的属性进行封装；
-
 - 通过方法，包，实现封装。
 
 封装的实现步骤：
-
 - 将结构体、字段的首字母小写；
-
 - 给结构体所在的包提供一个工厂模式的函数，首字母大写，类似一个构造函数；
-
 - 提供一个首字母大写的 Set 方法（类似其它语言的 public），用于对属性判断并赋值；
-
 - 提供一个首字母大写的 Get 方法（类似其它语言的 public），用于获取属性的值。
 
 【示例】对于员工，不能随便查看年龄，工资等隐私，并对输入的年龄进行合理的验证。代码结构如下：
-
 <img src="./media08/media/image2.GIF" style="width:2.48958in;height:1.26042in" alt="IMG_256" />
 
 person.go 中的代码如下所示：
-
 1.  package model
-
 2.  
-
 3.  import "fmt"
-
 4.  
-
 5.  type person struct {
-
-6.  Name string
-
-7.  age int //其它包不能直接访问..
-
-8.  sal float64
-
+6.    Name string
+7.    age int //其它包不能直接访问..
+8.    sal float64
 9.  }
-
 10. 
-
 11. //写一个工厂模式的函数，相当于构造函数
-
-12. func NewPerson(name string) \*person {
-
-13. return &person{
-
-14. Name : name,
-
-15. }
-
+12. func NewPerson(name string)  *person {
+13.   return &person{
+14.     Name : name,
+15.   }
 16. }
-
 17. 
-
 18. //为了访问age 和 sal 我们编写一对SetXxx的方法和GetXxx的方法
-
-19. func (p \*person) SetAge(age int) {
-
-20. if age \>0 && age \<150 {
-
-21. p.age = age
-
-22. } else {
-
-23. fmt.Println("年龄范围不正确..")
-
-24. //给程序员给一个默认值
-
-25. }
-
+19. func (p  *person) SetAge(age int) {
+20.   if age  >0 && age  <150 {
+21.     p.age = age
+22.   } else {
+23.     fmt.Println("年龄范围不正确..")
+24.     //给程序员给一个默认值
+25.   }
 26. }
-
 27. func (p \*person) GetAge() int {
-
-28. return p.age
-
+28.   return p.age
 29. }
-
 30. 
-
 31. func (p \*person) SetSal(sal float64) {
-
-32. if sal \>= 3000 && sal \<= 30000 {
-
-33. p.sal = sal
-
-34. } else {
-
-35. fmt.Println("薪水范围不正确..")
-
-36. }
-
+32.   if sal \>= 3000 && sal \<= 30000 {
+33.     p.sal = sal
+34.   } else {
+35.     fmt.Println("薪水范围不正确..")
+36.   }
 37. }
-
 38. 
-
 39. func (p \*person) GetSal() float64 {
-
-40. return p.sal
-
+40.   return p.sal
 41. }
 
 main.go 中的代码如下所示：
-
 1.  package main
-
 2.  
-
 3.  import (
-
 4.  "fmt"
-
 5.  "../model"
-
 6.  )
-
 7.  
-
 8.  func main() {
-
 9.  
-
 10. p := model.NewPerson("smith")
-
-11. p.SetAge(18)
-
-12. p.SetSal(5000)
-
-13. fmt.Println(p)
-
-14. fmt.Println(p.Name, " age =", p.GetAge(), " sal = ", p.GetSal())
-
+11.   p.SetAge(18)
+12.   p.SetSal(5000)
+13.   fmt.Println(p)
+14.   fmt.Println(p.Name, " age =", p.GetAge(), " sal = ", p.GetSal())
 15. }
 
 执行效果如下图所示：
-
 <img src="./media08/media/image3.GIF" style="width:4.63542in;height:1.09375in" alt="IMG_257" />
 
 ## 8.3 [Go语言GOPATH](http://c.biancheng.net/view/88.html)
-
 Go语言GOPATH详解（Go语言工作目录）
 
 ----------------------------------------------------------
-
-GOPATH 是 Go语言中使用的一个环境变量，它使用绝对路径提供项目的工作目录。  
-  
-工作目录是一个工程开发的相对参考目录，好比当你要在公司编写一套服务器代码，你的工位所包含的桌面、计算机及椅子就是你的工作区。工作区的概念与工作目录的概念也是类似的。如果不使用工作目录的概念，在多人开发时，每个人有一套自己的目录结构，读取配置文件的位置不统一，输出的二进制运行文件也不统一，这样会导致开发的标准不统一，影响开发效率。  
-  
+GOPATH 是 Go语言中使用的一个环境变量，它使用绝对路径提供项目的工作目录。    
+工作目录是一个工程开发的相对参考目录，好比当你要在公司编写一套服务器代码，你的工位所包含的桌面、计算机及椅子就是你的工作区。工作区的概念与工作目录的概念也是类似的。如果不使用工作目录的概念，在多人开发时，每个人有一套自己的目录结构，读取配置文件的位置不统一，输出的二进制运行文件也不统一，这样会导致开发的标准不统一，影响开发效率。    
 GOPATH 适合处理大量 Go语言源码、多个包组合而成的复杂工程。
 
 #### 提示
-
 C、C++、Java、C# 及其他语言发展到后期，都拥有自己的 IDE（集成开发环境），并且工程（Project）、解决方案（Solution）和工作区（Workspace）等概念将源码和资源组织了起来，方便编译和输出。
 
 ### 8.3.1使用命令行查看GOPATH信息
 
 在《安装Go语言开发包》一节中我们已经介绍过 Go语言的安装方法。在安装过 Go 开发包的操作系统中，可以使用命令行查看 Go 开发包的环境变量配置信息，这些配置信息里可以查看到当前的 GOPATH 路径设置情况。在命令行中运行go env后，命令行将提示以下信息：
 
-\$ go env  
+$ go env  
 GOARCH="amd64"  
 GOBIN=""  
 GOEXE=""  
@@ -509,23 +435,15 @@ CGO_LDFLAGS="-g -O2"
 PKG_CONFIG="pkg-config"
 
 命令行说明如下：
-
 - 第 1 行，执行 go env 指令，将输出当前 Go 开发包的环境变量状态。
-
 - 第 2 行，GOARCH 表示目标处理器架构。
-
 - 第 3 行，GOBIN 表示编译器和链接器的安装位置。
-
 - 第 7 行，GOOS 表示目标操作系统。
-
 - 第 8 行，GOPATH 表示当前工作目录。
-
 - 第 10 行，GOROOT 表示 Go 开发包的安装目录。
-
 从命令行输出中，可以看到 GOPATH 设定的路径为：/home/davy/go（davy 为笔者的用户名）。  
   
 在 Go 1.8 版本之前，GOPATH 环境变量默认是空的。从 Go 1.8 版本开始，Go 开发包在安装完成后，将 GOPATH 赋予了一个默认的目录，参见下表。
-
 |                               |                   |                    |
 |-------------------------------|-------------------|--------------------|
 | GOPATH 在不同平台上的安装路径 |                   |                    |
@@ -4652,13 +4570,11 @@ BackgroundColor color.Color
 ## 8.20 [Go语言Context（上下文）](http://c.biancheng.net/view/vip_7342.html)
 
 Context 在 Go1.7 之后就加入到了Go语言标准库中，准确说它是 Goroutine 的上下文，包含 Goroutine 的运行状态、环境、现场等信息。
-
 随着 Context 包的引入，标准库中很多接口因此加上了 Context 参数，例如 database/sql 包，Context 几乎成为了并发控制和超时控制的标准做法。
 
 ### 8.20.1什么是 Context
 
 Context 也叫作“上下文”，是一个比较抽象的概念，一般理解为程序单元的一个运行状态、现场、快照。其中上下是指存在上下层的传递，上会把内容传递给下，程序单元则指的是 Goroutine。
-
 每个 Goroutine 在执行之前，都要先知道程序当前的执行状态，通常将这些执行状态封装在一个 Context 变量中，传递给要执行的 Goroutine 中。
 
 在网络编程下，当接收到一个网络请求 Request，在处理 Request 时，我们可能需要开启不同的 Goroutine 来获取数据与逻辑处理，即一个请求 Request，会在多个 Goroutine 中处理。而这些 Goroutine 可能需要共享 Request 的一些信息，同时当 Request 被取消或者超时的时候，所有从这个 Request 创建的所有 Goroutine 也应该被结束。
@@ -4666,175 +4582,113 @@ Context 也叫作“上下文”，是一个比较抽象的概念，一般理解
 ### 8.20.2Context 接口
 
 Context 包的核心就是 Context 接口，其定义如下：
-
+```go
 type Context interface {
-
-Deadline() (deadline time.Time, ok bool)
-
-Done() \<-chan struct{}
-
-Err() error
-
-Value(key interface{}) interface{}
-
+  Deadline() (deadline time.Time, ok bool)
+  Done() <-chan struct{}
+  Err() error
+  Value(key interface{}) interface{}
 }
+```
 
 其中：
-
 - Deadline 方法需要返回当前 Context 被取消的时间，也就是完成工作的截止时间（deadline）；
-
 - Done 方法需要返回一个 Channel，这个 Channel 会在当前工作完成或者上下文被取消之后关闭，多次调用 Done 方法会返回同一个Channel；
-
 - Err 方法会返回当前 Context 结束的原因，它只会在 Done 返回的 Channel 被关闭时才会返回非空的值：
-
-- 如果当前 Context 被取消就会返回 Canceled 错误；
-
-- 如果当前 Context 超时就会返回 DeadlineExceeded 错误；
-
+  * 如果当前 Context 被取消就会返回 Canceled 错误；
+  * 如果当前 Context 超时就会返回 DeadlineExceeded 错误；
 - Value 方法会从 Context 中返回键对应的值，对于同一个上下文来说，多次调用 Value 并传入相同的 Key 会返回相同的结果，该方法仅用于传递跨 API 和进程间跟请求域的数据。
 
 #### 1）Background()和TODO()
-
 Go语言内置两个函数：Background() 和 TODO()，这两个函数分别返回一个实现了 Context 接口的 background 和 todo。
 
-Background() 主要用于 main 函数、初始化以及测试代码中，作为 Context 这个树结构的最顶层的 Context，也就是根 Context。
-
+Background() 主要用于 main函数、初始化以及测试代码中，作为 Context 这个树结构的最顶层的 Context，也就是 **根Context**。
 TODO()，它目前还不知道具体的使用场景，在不知道该使用什么 Context 的时候，可以使用这个。
 
 background 和 todo 本质上都是 emptyCtx 结构体类型，是一个不可取消，没有设置截止时间，没有携带任何值的 Context。
 
 #### 2）With 系列函数
-
 此外，Context 包中还定义了四个 With 系列函数。
-
 ##### 2.1）WithCancel
-
 WithCancel 的函数签名如下：
-
-func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
-
+    func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
 WithCancel 返回带有新 Done 通道的父节点的副本，当调用返回的 cancel 函数或当关闭父上下文的 Done 通道时，将关闭返回上下文的 Done 通道，无论先发生什么情况。
 
 取消此上下文将释放与其关联的资源，因此代码应该在此上下文中运行的操作完成后立即调用 cancel，示例代码如下：
+```go
+package main
 
-<span class="mark">package main</span>
+import (
+    "context"
+    "fmt"
+)
 
-<span class="mark">import (</span>
+func main() {
+    gen := func(ctx context.Context) <-chan int {
+        dst := make(chan int)
+        n := 1
+        go func() {
+            for {
+                select {
 
-<span class="mark">    "context"</span>
+                case <-ctx.Done():
+                    return // return结束该goroutine，防止泄露
+                case dst <- n:
+                    n++
+                }
+            }
+        }()
+        return dst
+    }
+    ctx, cancel := context.WithCancel(context.Background())
 
-<span class="mark">    "fmt"</span>
-
-<span class="mark">)</span>
-
-<span class="mark">func main() {</span>
-
-<span class="mark">    gen := func(ctx context.Context) \<-chan int {</span>
-
-<span class="mark">        dst := make(chan int)</span>
-
-<span class="mark">        n := 1</span>
-
-<span class="mark">        go func() {</span>
-
-<span class="mark">            for {</span>
-
-<span class="mark">                select {</span>
-
-<span class="mark">                case \<-ctx.Done():</span>
-
-<span class="mark">                    return // return结束该goroutine，防止泄露</span>
-
-<span class="mark">                case dst \<- n:</span>
-
-<span class="mark">                    n++</span>
-
-<span class="mark">                }</span>
-
-<span class="mark">            }</span>
-
-<span class="mark">        }()</span>
-
-<span class="mark">        return dst</span>
-
-<span class="mark">    }</span>
-
-<span class="mark">    ctx, cancel := context.WithCancel(context.Background())</span>
-
-<span class="mark">    defer cancel() // 当我们取完需要的整数后调用cancel</span>
-
-<span class="mark">    for n := range gen(ctx) {</span>
-
-<span class="mark">        fmt.Println(n)</span>
-
-<span class="mark">        if n == 5 {</span>
-
-<span class="mark">            break</span>
-
-<span class="mark">        }</span>
-
-<span class="mark">    }</span>
-
-<span class="mark">}</span>
-
+    defer cancel() // 当我们取完需要的整数后调用cancel
+    for n := range gen(ctx) {
+        fmt.Println(n)
+        if n == 5 {
+            break
+        }
+    }
+}
+```
 上面的代码中，gen 函数在单独的 Goroutine 中生成整数并将它们发送到返回的通道，gen 的调用者在使用生成的整数之后需要取消上下文，以免 gen 启动的内部 Goroutine 发生泄漏。
 
 运行结果如下：
-
 go run main.go 1 2 3 4 5
 
 #### 2.2）WithDeadline
 
 WithDeadline 的函数签名如下：
-
-func WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc)
-
+    func WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc)
 WithDeadline 函数会返回父上下文的副本，并将 deadline 调整为不迟于 d。如果父上下文的 deadline 已经早于 d，则 WithDeadline(parent, d) 在语义上等同于父上下文。当截止日过期时，当调用返回的 cancel 函数时，或者当父上下文的 Done 通道关闭时，返回上下文的 Done 通道将被关闭，以最先发生的情况为准。
 
 取消此上下文将释放与其关联的资源，因此代码应该在此上下文中运行的操作完成后立即调用 cancel，示例代码如下：
-
+```go
 package main
 
 import (
-
-"context"
-
-"fmt"
-
-"time"
-
+  "context"
+  "fmt"
+  "time"
 )
 
 func main() {
+  d := time.Now().Add(50 * time.Millisecond)
+  ctx, cancel := context.WithDeadline(context.Background(), d)
+  // 尽管ctx会过期，但在任何情况下调用它的cancel函数都是很好的实践。
+  // 如果不这样做，可能会使上下文及其父类存活的时间超过必要的时间。
+  defer cancel()
 
-d := time.Now().Add(50 \* time.Millisecond)
-
-ctx, cancel := context.WithDeadline(context.Background(), d)
-
-// 尽管ctx会过期，但在任何情况下调用它的cancel函数都是很好的实践。
-
-// 如果不这样做，可能会使上下文及其父类存活的时间超过必要的时间。
-
-defer cancel()
-
-select {
-
-case \<-time.After(1 \* time.Second):
-
-fmt.Println("overslept")
-
-case \<-ctx.Done():
-
-fmt.Println(ctx.Err())
-
+  select {
+  case <-time.After(1 * time.Second):
+    fmt.Println("overslept")
+  case <-ctx.Done():
+    fmt.Println(ctx.Err())
+  }
 }
-
-}
-
+```
 运行结果如下：
-
 go run main.go
-
 context deadline exceeded
 
 上面的代码中，定义了一个 50 毫秒之后过期的 deadline，然后我们调用 context.WithDeadline(context.Background(), d) 得到一个上下文（ctx）和一个取消函数（cancel），然后使用一个 select 让主程序陷入等待，等待 1 秒后打印 overslept 退出或者等待 ctx 过期后退出。因为 ctx 50 秒后就过期，所以 ctx.Done() 会先接收到值，然后打印 ctx.Err() 取消原因。
@@ -4842,129 +4696,89 @@ context deadline exceeded
 #### 2.3）WithTimeout
 
 WithTimeout 的函数签名如下：
-
-func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
-
+  func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
 WithTimeout 函数返回 WithDeadline(parent, time.Now().Add(timeout))。
 
 取消此上下文将释放与其相关的资源，因此代码应该在此上下文中运行的操作完成后立即调用 cancel，示例代码如下：
-
+```go
 package main
 
 import (
-
-"context"
-
-"fmt"
-
-"time"
-
+  "context"
+  "fmt"
+  "time"
 )
 
 func main() {
 
-// 传递带有超时的上下文
+  // 传递带有超时的上下文
+  // 告诉阻塞函数在超时结束后应该放弃其工作。
+  ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
+  defer cancel()
 
-// 告诉阻塞函数在超时结束后应该放弃其工作。
-
-ctx, cancel := context.WithTimeout(context.Background(), 50\*time.Millisecond)
-
-defer cancel()
-
-select {
-
-case \<-time.After(1 \* time.Second):
-
-fmt.Println("overslept")
-
-case \<-ctx.Done():
-
-fmt.Println(ctx.Err()) // 终端输出"context deadline exceeded"
+  select {
+    case <-time.After(1 * time.Second):
+      fmt.Println("overslept")
+    case <-ctx.Done():
+      fmt.Println(ctx.Err()) // 终端输出"context deadline exceeded"
+  }
 
 }
-
-}
-
+```
 运行结果如下：
-
 go run main.go
-
 context deadline exceeded
 
 #### 2.4）WithValue
 
 WithValue 函数能够将请求作用域的数据与 Context 对象建立关系。函数声明如下：
-
-func WithValue(parent Context, key, val interface{}) Context
+  func WithValue(parent Context, key, val interface{}) Context
 
 WithValue 函数接收 context 并返回派生的 context，其中值 val 与 key 关联，并通过 context 树与 context 一起传递。这意味着一旦获得带有值的 context，从中派生的任何 context 都会获得此值。不建议使用 context 值传递关键参数，函数应接收签名中的那些值，使其显式化。
 
 所提供的键必须是可比较的，并且不应该是 string 类型或任何其他内置类型，以避免使用上下文在包之间发生冲突。WithValue 的用户应该为键定义自己的类型，为了避免在分配给接口{ }时进行分配，上下文键通常具有具体类型 struct{}。或者，导出的上下文关键变量的静态类型应该是指针或接口。
-
+```go
 package main
 
 import (
-
-"context"
-
-"fmt"
-
+  "context"
+  "fmt"
 )
 
 func main() {
 
-type favContextKey string // 定义一个key类型
+  type favContextKey string // 定义一个key类型
+  // f:一个从上下文中根据key取value的函数
+  f := func(ctx context.Context, k favContextKey) {
 
-// f:一个从上下文中根据key取value的函数
+    if v := ctx.Value(k); v != nil {
+      fmt.Println("found value:", v)
+      return
+    }
 
-f := func(ctx context.Context, k favContextKey) {
+    fmt.Println("key not found:", k)
+  }
 
-if v := ctx.Value(k); v != nil {
-
-fmt.Println("found value:", v)
-
-return
-
+  k := favContextKey("language")
+  // 创建一个携带key为k，value为"Go"的上下文
+  ctx := context.WithValue(context.Background(), k, "Go")
+  f(ctx, k)
+  f(ctx, favContextKey("color"))
 }
-
-fmt.Println("key not found:", k)
-
-}
-
-k := favContextKey("language")
-
-// 创建一个携带key为k，value为"Go"的上下文
-
-ctx := context.WithValue(context.Background(), k, "Go")
-
-f(ctx, k)
-
-f(ctx, favContextKey("color"))
-
-}
-
+```
 运行结果如下：
-
 go run main.go
-
 found value: Go
-
 key not found: color
 
 使用 Context 的注意事项：
-
 - 不要把 Context 放在结构体中，要以参数的方式显示传递；
-
 - 以 Context 作为参数的函数方法，应该把 Context 作为第一个参数；
-
 - 给一个函数方法传递 Context 的时候，不要传递 nil，如果不知道传递什么，就使用 context.TODO；
-
 - Context 的 Value 相关方法应该传递请求域的必要数据，不应该用于传递可选参数；
-
 - Context 是线程安全的，可以放心的在多个 Goroutine 中传递。
 
 ### 8.20.3总结
-
 Go语言中的 Context 的主要作用还是在多个 Goroutine 或者模块之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费，虽然传值也是它的功能之一，但是这个功能我们还是很少用到。
 
 在真正使用传值的功能时我们也应该非常谨慎，不能将请求的所有参数都使用 Context 进行传递，这是一种非常差的设计，比较常见的使用场景是传递请求对应用户的认证令牌以及用于进行分布式追踪的请求 ID。
@@ -4974,394 +4788,249 @@ Go语言中的 Context 的主要作用还是在多个 Goroutine 或者模块之�
 本节带领大家实现一个基于文本界面的客户关系管理软件，该软件可以实现对客户的插入、修改和删除，并且可以打印客户信息明细表。
 
 软件由一下三个模块组成：
-
 <img src="./media08/media/image13.GIF" style="width:5.69792in;height:3.3125in" alt="IMG_256" />
 
 项目结构如下所示：
-
 <img src="./media08/media/image14.GIF" style="width:2.51042in;height:1.625in" alt="IMG_257" />
 
 在 costumer.go 中，代码如下：
-
+```go
 package model
 
 import (
-
 "fmt"
-
 )
 
 //声明一个Customer结构体，表示一个客户信息
-
 type Customer struct {
-
-Id int
-
-Name string
-
-Gender string
-
-Age int
-
-Phone string
-
-Email string
-
+  Id int
+  Name string
+  Gender string
+  Age int
+  Phone string
+  Email string
 }
 
 //使用工厂模式，返回一个Customer的实例
-
-func NewCustomer(id int, name string, gender string, age int, phone string, email string ) Customer {
-
-return Customer{
-
-Id : id,
-
-Name : name,
-
-Gender : gender,
-
-Age : age,
-
-Phone : phone,
-
-Email : email,
-
-}
-
+func NewCustomer(id int, name string, 
+                gender string, age int, 
+                phone string, email string ) Customer {
+  return Customer{
+    Id : id,
+    Name : name,
+    Gender : gender,
+    Age : age,
+    Phone : phone,
+    Email : email,
+  }
 }
 
 //第二种创建Customer实例方法，不带id
 
 func NewCustomer2(name string, gender string,
-
-age int, phone string, email string ) Customer {
-
-return Customer{
-
-Name : name,
-
-Gender : gender,
-
-Age : age,
-
-Phone : phone,
-
-Email : email,
-
-}
-
+  age int, phone string, email string ) Customer {
+  return Customer{
+    Name : name,
+    Gender : gender,
+    Age : age,
+    Phone : phone,
+    Email : email,
+  }
 }
 
 //返回用户的信息,格式化的字符串
-
 func (this Customer) GetInfo() string {
-
-info := fmt.Sprintf("%v\t %v\t %v\t %v\t %v\t %v\t", this.Id,
-
-this.Name, this.Gender,this.Age, this.Phone, this.Email)
-
-return info
-
+  info := fmt.Sprintf("%v\t %v\t %v\t %v\t %v\t %v\t", this.Id,
+  this.Name, this.Gender,this.Age, this.Phone, this.Email)
+  return info
 }
+```
 
 在 costumerService.go 中，代码如下：
-
+```go
 package service
 
 import (
-
 "../model"
-
 )
 
 //该CustomerService， 完成对Customer的操作,包括//增删改查
-
 type CustomerService struct {
-
-customers \[\]model.Customer
-
-//声明一个字段，表示当前切片含有多少个客户
-
-//该字段后面，还可以作为新客户的id+1
-
-customerNum int
-
+  customers []model.Customer
+  //声明一个字段，表示当前切片含有多少个客户
+  //该字段后面，还可以作为新客户的id+1
+  customerNum int
 }
 
-//编写一个方法，可以返回 \*CustomerService
-
-func NewCustomerService() \*CustomerService {
-
-//为了能够看到有客户在切片中，我们初始化一个客户
-
-customerService := &CustomerService{}
-
-customerService.customerNum = 1
-
-customer := model.NewCustomer(1, "张三", "男", 20, "010-56253825", "zs@sohu.com")
-
-customerService.customers = append(customerService.customers, customer)
-
-return customerService
-
+//编写一个方法，可以返回 *CustomerService
+func NewCustomerService() *CustomerService {
+  //为了能够看到有客户在切片中，我们初始化一个客户
+  customerService := &CustomerService{}
+  customerService.customerNum = 1
+  customer := model.NewCustomer(1, "张三", "男", 20, "010-56253825", "zs@sohu.com")
+  customerService.customers = append(customerService.customers, customer)
+  return customerService
 }
 
 //返回客户切片
-
-func (this \*CustomerService) List() \[\]model.Customer {
-
-return this.customers
-
+func (this *CustomerService) List() []model.Customer {
+  return this.customers
 }
 
 //添加客户到customers切片
-
-func (this \*CustomerService) Add(customer model.Customer) bool {
-
-//我们确定一个分配id的规则,就是添加的顺序
-
-this.customerNum++
-
-customer.Id = this.customerNum
-
-this.customers = append(this.customers, customer)
-
-return true
-
+func (this *CustomerService) Add(customer model.Customer) bool {
+  //我们确定一个分配id的规则,就是添加的顺序
+  this.customerNum++
+  customer.Id = this.customerNum
+  this.customers = append(this.customers, customer)
+  return true
 }
 
 //根据id删除客户(从切片中删除)
+func (this *CustomerService) Delete(id int) bool {
+  index := this.FindById(id)
+  //如果index == -1, 说明没有这个客户
+  if index == -1 {
+    return false
+  }
 
-func (this \*CustomerService) Delete(id int) bool {
-
-index := this.FindById(id)
-
-//如果index == -1, 说明没有这个客户
-
-if index == -1 {
-
-return false
-
-}
-
-//如何从切片中删除一个元素
-
-this.customers = append(this.customers\[:index\], this.customers\[index+1:\]...)
-
-return true
-
+  //如何从切片中删除一个元素
+  this.customers = append(this.customers[:index], this.customers[index+1:]...)
+  return true
 }
 
 //根据id查找客户在切片中对应下标,如果没有该客户，返回-1
+func (this *CustomerService) FindById(id int) int {
+  index := -1
+  //遍历this.customers 切片
 
-func (this \*CustomerService) FindById(id int) int {
+  for i := 0; i < len(this.customers); i++ {
+    if this.customers[i].Id == id {
+    //找到
+    index = i
+    }
+  }
 
-index := -1
-
-//遍历this.customers 切片
-
-for i := 0; i \< len(this.customers); i++ {
-
-if this.customers\[i\].Id == id {
-
-//找到
-
-index = i
-
+  return index
 }
+```
 
-}
-
-return index
-
-}
 
 在 costumerView.go 中，代码如下：
-
+```go
 package main
 
 import (
-
 "fmt"
-
 "../model"
-
 "../service"
-
 )
 
 type customerView struct {
-
-//定义必要字段
-
-key string //接收用户输入...
-
-loop bool //表示是否循环的显示主菜单
-
-//增加一个字段customerService
-
-customerService \*service.CustomerService
-
+  //定义必要字段
+  key string //接收用户输入...
+  loop bool //表示是否循环的显示主菜单
+  //增加一个字段customerService
+  customerService *service.CustomerService
 }
 
 //显示所有的客户信息
+func (this *customerView) list() {
+  //首先，获取到当前所有的客户信息(在切片中)
+  customers := this.customerService.List()
+  //显示
+  fmt.Println("---------------------------客户列表---------------------------")
+  fmt.Println("编号\t姓名\t性别\t年龄\t电话\t邮箱")
+  for i := 0; i < len(customers); i++ {
+    //fmt.Println(customers[i].Id,"\t", customers[i].Name...)
+    fmt.Println(customers[i].GetInfo())
+  }
 
-func (this \*customerView) list() {
-
-//首先，获取到当前所有的客户信息(在切片中)
-
-customers := this.customerService.List()
-
-//显示
-
-fmt.Println("---------------------------客户列表---------------------------")
-
-fmt.Println("编号\t姓名\t性别\t年龄\t电话\t邮箱")
-
-for i := 0; i \< len(customers); i++ {
-
-//fmt.Println(customers\[i\].Id,"\t", customers\[i\].Name...)
-
-fmt.Println(customers\[i\].GetInfo())
-
-}
-
-fmt.Printf("\n-------------------------客户列表完成-------------------------\n\n")
-
+  fmt.Printf("\n-------------------------客户列表完成-------------------------\n\n")
 }
 
 //得到用户的输入，信息构建新的客户，并完成添加
 
-func (this \*customerView) add() {
+func (this *customerView) add() {
+  fmt.Println("---------------------添加客户---------------------")
+  fmt.Print("姓名:")
+  name := ""
+  fmt.Scanln(&name)
+  fmt.Print("性别:")
+  gender := ""
+  fmt.Scanln(&gender)
+  fmt.Print("年龄:")
+  age := 0
+  fmt.Scanln(&age)
+  fmt.Print("电话:")
+  phone := ""
+  fmt.Scanln(&phone)
+  fmt.Print("邮箱:")
+  email := ""
+  fmt.Scanln(&email)
 
-fmt.Println("---------------------添加客户---------------------")
+  //构建一个新的Customer实例
+  //注意: id号，没有让用户输入，id是唯一的，需要系统分配
+  customer := model.NewCustomer2(name, gender, age, phone, email)
 
-fmt.Print("姓名:")
-
-name := ""
-
-fmt.Scanln(&name)
-
-fmt.Print("性别:")
-
-gender := ""
-
-fmt.Scanln(&gender)
-
-fmt.Print("年龄:")
-
-age := 0
-
-fmt.Scanln(&age)
-
-fmt.Print("电话:")
-
-phone := ""
-
-fmt.Scanln(&phone)
-
-fmt.Print("邮箱:")
-
-email := ""
-
-fmt.Scanln(&email)
-
-//构建一个新的Customer实例
-
-//注意: id号，没有让用户输入，id是唯一的，需要系统分配
-
-customer := model.NewCustomer2(name, gender, age, phone, email)
-
-//调用
-
-if this.customerService.Add(customer) {
-
-fmt.Println("---------------------添加完成---------------------")
-
-} else {
-
-fmt.Println("---------------------添加失败---------------------")
-
-}
+  //调用
+  if this.customerService.Add(customer) {
+    fmt.Println("---------------------添加完成---------------------")
+  } else {
+    fmt.Println("---------------------添加失败---------------------")
+  }
 
 }
 
 //得到用户的输入id，删除该id对应的客户
+func (this *customerView) delete() {
+  fmt.Println("---------------------删除客户---------------------")
+  fmt.Print("请选择待删除客户编号(-1退出)：")
 
-func (this \*customerView) delete() {
+  id := -1
+  fmt.Scanln(&id)
+  if id == -1 {
+    return //放弃删除操作
+  }
 
-fmt.Println("---------------------删除客户---------------------")
-
-fmt.Print("请选择待删除客户编号(-1退出)：")
-
-id := -1
-
-fmt.Scanln(&id)
-
-if id == -1 {
-
-return //放弃删除操作
-
-}
-
-fmt.Println("确认是否删除(Y/N)：")
-
-//这里同学们可以加入一个循环判断，直到用户输入 y 或者 n,才退出..
-
-choice := ""
-
-fmt.Scanln(&choice)
-
-if choice == "y" \|\| choice == "Y" {
-
-//调用customerService 的 Delete方法
-
-if this.customerService.Delete(id) {
-
-fmt.Println("---------------------删除完成---------------------")
-
-} else {
-
-fmt.Println("---------------------删除失败，输入的id号不存在----")
-
-}
-
-}
-
+  fmt.Println("确认是否删除(Y/N)：")
+  //这里同学们可以加入一个循环判断，直到用户输入 y 或者 n,才退出..
+  choice := ""
+  fmt.Scanln(&choice)
+  if choice == "y" || choice == "Y" {
+    //调用customerService 的 Delete方法
+    if this.customerService.Delete(id) {
+      fmt.Println("---------------------删除完成---------------------")
+    } else {
+      fmt.Println("---------------------删除失败，输入的id号不存在----")
+    }
+  }
 }
 
 //退出软件
 
-func (this \*customerView) exit() {
+  func (this *customerView) exit() {
 
-fmt.Print("确认是否退出(Y/N)：")
+  fmt.Print("确认是否退出(Y/N)：")
 
-for {
+  for {
+    fmt.Scanln(&this.key)
+    if this.key == "Y" || this.key == "y" || this.key == "N" || this.key == "n" {
+      break
+    }
 
-fmt.Scanln(&this.key)
+    fmt.Print("你的输入有误，确认是否退出(Y/N)：")
+  }
 
-if this.key == "Y" \|\| this.key == "y" \|\| this.key == "N" \|\| this.key == "n" {
-
-break
-
-}
-
-fmt.Print("你的输入有误，确认是否退出(Y/N)：")
-
-}
-
-if this.key == "Y" \|\| this.key == "y" {
-
-this.loop = false
-
-}
+  if this.key == "Y" || this.key == "y" {
+    this.loop = false
+  }
 
 }
 
 //显示主菜单
 
-func (this \*customerView) mainMenu() {
+func (this *customerView) mainMenu() {
 
 for {
 
@@ -5382,31 +5051,18 @@ fmt.Print("请选择(1-5)：")
 fmt.Scanln(&this.key)
 
 switch this.key {
-
-case "1" :
-
-this.add()
-
-case "2" :
-
-fmt.Println("修 改 客 户")
-
-case "3" :
-
-this.delete()
-
-case "4" :
-
-this.list()
-
-case "5" :
-
-this.exit()
-
-default :
-
-fmt.Println("你的输入有误，请重新输入...")
-
+  case "1" :
+    this.add()
+  case "2" :
+    fmt.Println("修 改 客 户")
+  case "3" :
+    this.delete()
+  case "4" :
+    this.list()
+  case "5" :
+    this.exit()
+  default :
+    fmt.Println("你的输入有误，请重新输入...")
 }
 
 if !this.loop {
@@ -5442,71 +5098,42 @@ customerView.customerService = service.NewCustomerService()
 customerView.mainMenu()
 
 }
-
+```
 执行结果如下所示：
 
-D:\\code\\demo\\view\>go run customerView.go
-
-\\----------------客户信息管理软件-----------------
-
+D:\code\demo\view\>go run customerView.go
+----------------客户信息管理软件-----------------
 1 添 加 客 户
-
 2 修 改 客 户
-
 3 删 除 客 户
-
 4 客 户 列 表
-
 5 退 出
-
 请选择(1-5)：1
-
-\\--------------------添加客户---------------------
-
+--------------------添加客户---------------------
 姓名:李四
-
 性别:男
-
 年龄:22
-
 电话:15611112222
-
 邮箱:lisi@qq.com
+--------------------添加完成---------------------
 
-\\--------------------添加完成---------------------
-
-\\----------------客户信息管理软件-----------------
-
+----------------客户信息管理软件-----------------
 1 添 加 客 户
-
 2 修 改 客 户
-
 3 删 除 客 户
-
 4 客 户 列 表
-
 5 退 出
-
 请选择(1-5)：4
-
-\\--------------------------客户列表---------------------------
-
+--------------------------客户列表---------------------------
 编号 姓名 性别 年龄 电话 邮箱 1 张三 男 20 010-56253825 zs@sohu.com 2 李四 男 22 15611112222 lisi@qq.com
+------------------------客户列表完成-------------------------
 
-\\------------------------客户列表完成-------------------------
-
-\\----------------客户信息管理软件-----------------
-
+----------------客户信息管理软件-----------------
 1 添 加 客 户
-
 2 修 改 客 户
-
 3 删 除 客 户
-
 4 客 户 列 表
-
 5 退 出
-
 请选择(1-5)：
 
 ## 8.22 [示例：使用Go语言发送电子邮件](http://c.biancheng.net/view/vip_7344.html)

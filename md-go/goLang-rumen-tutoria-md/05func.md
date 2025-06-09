@@ -18,7 +18,7 @@ Go语言入门教程，Golang入门教程（非常详细）
 [5.3 示例：函数中的参数传递效果测试](\l)
     [1) 测试数据类型 ](\l)
     [2) 值传递的测试函数 ](\l)
-    [3) 测试流程 [16](#测试流程)](\l)
+    [3) 测试流程](\l)
 
 [5.4 Go语言函数变量 ](\l)
     [5.4.1 golang 函数变量（百度ai智能回答）](\l)
@@ -48,7 +48,7 @@ Go语言入门教程，Golang入门教程（非常详细）
     [5.9.2任意类型的可变参数](\l)
     [5.9.3遍历可变参数列表——获取每一个参数的值](\l)
     [5.9.4获得可变参数类型——获得每一个参数的类型](\l)
-    [5.9.5\*在多个可变参数函数中传递参数](\l)
+    [5.9.5* 在多个可变参数函数中传递参数](\l)
 
 [5.10 Go语言defer（延迟执行语句）](\l)
     [5.10.1多个延迟执行语句的处理顺序](\l)
@@ -166,19 +166,12 @@ x 和 y 是形参名，3 和 4 是调用时的传入的实数，函数返回了�
 下面，我们给出 4 种方法声明拥有 2 个 int 型参数和 1 个 int 型返回值的函数，空白标识符_可以强调某个参数未被使用。
 
 1.  func add(x int, y int) int {return x + y}
-
 2.  func sub(x, y int) (z int) { z = x - y; return}
-
 3.  func first(x int, \_ int) int { return x }
-
 4.  func zero(int, int) int { return 0 }
-
 5.  fmt.Printf("%T\n", add) // "func(int, int) int"
-
 6.  fmt.Printf("%T\n", sub) // "func(int, int) int"
-
 7.  fmt.Printf("%T\n", first) // "func(int, int) int"
-
 8.  fmt.Printf("%T\n", zero) // "func(int, int) int"
 
 函数的类型被称为函数的标识符，如果两个函数形式参数列表和返回值列表中的变量类型一一对应，那么这两个函数被认为有相同的类型和标识符，形参和返回值的变量名不影响函数标识符也不影响它们是否可以以省略参数类型的形式表示。  
@@ -636,53 +629,31 @@ Go语言函数变量——把函数作为值保存到变量中
 在Go语言中，函数也是一种类型，可以和其他类型一样保存在变量中，下面的代码定义了一个函数变量 f，并将一个函数名为 fire() 的函数赋给函数变量 f，这样调用函数变量 f 时，实际调用的就是 fire() 函数，代码如下：
 
 1.  package main
-
 2.  
-
 3.  import (
-
-4.  "fmt"
-
+4.      "fmt"
 5.  )
-
 6.  
-
 7.  func fire() {
-
-8.  fmt.Println("fire")
-
+8.      fmt.Println("fire")
 9.  }
-
 10. 
-
 11. func main() {
-
 12. 
-
-13. var f func()
-
+13.     var f func()
 14. 
-
-15. f = fire
-
+15.     f = fire
 16. 
-
-17. f()
-
+17.     f()
 18. }
 
 代码输出结果：
-
 fire
 
 代码说明：
-
 - 第 7 行，定义了一个 fire() 函数。
-
 - 第 13 行，将变量 f 声明为 func() 类型，此时 f 就被俗称为“回调函数”，此时 f 的值为 nil。
-
 - 第 15 行，将 fire() 函数作为值，赋给函数变量 f，此时 f 的值为 fire() 函数。
-
 - 第 17 行，使用函数变量 f 进行函数调用，实际调用的是 fire() 函数。
 
 ### 5.4.1 golang 函数变量（百度ai智能回答）
@@ -692,133 +663,91 @@ fire
 以下是一些示例：
 
 1.函数作为变量赋值：
-
+```go
 package main
 
 import (
-
 "fmt"
-
 )
 
 func add(a, b int) int {
-
-return a + b
-
+    return a + b
 }
-
 func subtract(a, b int) int {
-
-return a - b
-
+    return a - b
 }
 
 func main() {
+    var mathOperation func(int, int) int
+    mathOperation = add
+    fmt.Println(mathOperation(1, 1)) // 输出：2
 
-var mathOperation func(int, int) int
-
-mathOperation = add
-
-fmt.Println(mathOperation(1, 1)) // 输出：2
-
-mathOperation = subtract
-
-fmt.Println(mathOperation(1, 1)) // 输出：0
-
+    mathOperation = subtract
+    fmt.Println(mathOperation(1, 1)) // 输出：0
 }
-
+```
 在上述代码中，我们定义了两个函数 add 和 subtract，然后将这两个函数的地址分别赋值给了变量 mathOperation。然后我们调用 mathOperation 并传递参数，这样就可以执行 add 或 subtract 函数。
 
 2.函数作为其他函数的返回值：
-
+```go
 package main
 
 import (
-
-"fmt"
-
+    "fmt"
 )
 
 func add(a, b int) int {
-
-return a + b
-
+    return a + b
 }
 
 func subtract(a, b int) int {
-
-return a - b
-
+    return a - b
 }
 
 func getOperation(op string) func(int, int) int {
-
-switch op {
-
-case "+":
-
-return add
-
-case "-":
-
-return subtract
-
-default:
-
-return nil
-
-}
-
+    switch op {
+    case "+":
+        return add
+    case "-":
+        return subtract
+    default:
+        return nil
+    }
 }
 
 func main() {
-
-operation := getOperation("+")
-
-fmt.Println(operation(1, 1)) // 输出：2
-
+    operation := getOperation("+")
+    fmt.Println(operation(1, 1)) // 输出：2
 }
-
+```
 在上述代码中，我们定义了一个函数 getOperation，这个函数接收一个字符串参数，然后根据这个字符串参数返回一个函数。
 
 **3.函数作为其他函数的参数**：
-
+```go
 package main
 
 import (
-
-"fmt"
-
+    "fmt"
 )
 
 func add(a, b int) int {
-
-return a + b
-
+    return a + b
 }
 
 func subtract(a, b int) int {
-
-return a - b
-
+    return a - b
 }
 
 func operate(a, b int, operation func(int, int) int ) int {
-
-return operation(a, b)
-
+    return operation(a, b)
 }
 
 func main() {
-
-fmt.Println(operate(1, 1, add)) // 输出：2
-
-fmt.Println(operate(1, 1, subtract)) // 输出：0
-
+    fmt.Println(operate(1, 1, add)) // 输出：2
+    fmt.Println(operate(1, 1, subtract)) // 输出：0
 }
-
+```
 在上述代码中，我们定义了一个函数 operate，这个函数接收三个参数，其中最后一个参数是一个函数，然后我们调用这个参数函数。
-
 以上就是 Go 语言中函数作为变量的一些示例。
 
 ## 5.5 [Go语言字符串的链式处理](http://c.biancheng.net/view/vip_7317.html)
@@ -832,99 +761,61 @@ Go语言字符串的链式处理——操作与数据分离的设计技巧
 对数据的操作进行多步骤的处理被称为链式处理，本例中使用多个字符串作为数据集合，然后对每个字符串进行一系列的处理，用户可以通过系统函数或者自定义函数对链式处理中的每个环节进行自定义。
 
 首先给出本节完整代码：
-
+```go
 package main
 
 import (
-
-"fmt"
-
-"strings"
-
+    "fmt"
+    "strings"
 )
 
 // 字符串处理函数，传入字符串切片和处理链
-
 func StringProccess(list \[\]string, chain \[\]func(string) string) {
-
-// 遍历每一个字符串
-
-for index, str := range list {
-
-// 第一个需要处理的字符串
-
-result := str
-
-// 遍历每一个处理链
-
-for \_, proc := range chain {
-
-// 输入一个字符串进行处理，返回数据作为下一个处理链的输入。
-
-result = proc(result)
-
-}
-
-// 将结果放回切片
-
-list\[index\] = result
-
-}
-
+    // 遍历每一个字符串
+    for index, str := range list {
+        // 第一个需要处理的字符串
+        result := str
+        // 遍历每一个处理链
+        for \_, proc := range chain {
+        // 输入一个字符串进行处理，返回数据作为下一个处理链的输入。
+        result = proc(result)
+        }
+        // 将结果放回切片
+        list\[index\] = result
+    }
 }
 
 // 自定义的移除前缀的处理函数
-
 func removePrefix(str string) string {
-
-return strings.TrimPrefix(str, "go")
-
+    return strings.TrimPrefix(str, "go")
 }
 
 func main() {
+    // 待处理的字符串列表
+    list := \[\]string{
+    "go scanner",
+    "go parser",
+    "go compiler",
+    "go printer",
+    "go formater",
+    }
 
-// 待处理的字符串列表
+    // 处理函数链
+    chain := \[\]func(string) string{
+        removePrefix,
+        strings.TrimSpace,
+        strings.ToUpper,
+    }
 
-list := \[\]string{
+    // 处理字符串
+    StringProccess(list, chain)
 
-"go scanner",
-
-"go parser",
-
-"go compiler",
-
-"go printer",
-
-"go formater",
-
+    // 输出处理好的字符串
+    for \_, str := range list {
+    fmt.Println(str)
+    }
 }
-
-// 处理函数链
-
-chain := \[\]func(string) string{
-
-removePrefix,
-
-strings.TrimSpace,
-
-strings.ToUpper,
-
-}
-
-// 处理字符串
-
-StringProccess(list, chain)
-
-// 输出处理好的字符串
-
-for \_, str := range list {
-
-fmt.Println(str)
-
-}
-
-}
-
+```
 ### 1) 字符串处理函数
 
 字符串处理函数（StringProccess）需要外部提供数据源，一个字符串切片（list\[\]string），另外还要提供一个链式处理函数的切片（chain\[\]func(string)string），链式处理切片中的一个处理函数的定义如下：
@@ -1000,13 +891,9 @@ return strings.TrimPrefix(str, "go")
 ### 3) 字符串处理主流程
 
 字符串处理的主流程包含以下几个步骤：
-
 1.  准备要处理的字符串列表。
-
 2.  准备字符串处理链。
-
 3.  处理字符串列表。
-
 4.  打印输出后的字符串列表。
 
 详细流程参考下面的代码：
@@ -1014,31 +901,20 @@ return strings.TrimPrefix(str, "go")
 func main() {
 
 // 待处理的字符串列表
-
 list := \[\]string{
-
 "go scanner",
-
 "go parser",
-
 "go compiler",
-
 "go printer",
-
 "go formater",
-
 }
 
 // 处理函数链
 
 chain := \[\]func(string) string{
-
 removePrefix,
-
 strings.TrimSpace,
-
 strings.ToUpper,
-
 }
 
 // 处理字符串
@@ -1046,21 +922,15 @@ strings.ToUpper,
 StringProccess(list, chain)
 
 // 输出处理好的字符串
-
 for \_, str := range list {
-
 fmt.Println(str)
-
 }}
 
 代码说明如下：
 
 - 第 4 行，定义字符串切片，字符串包含 go 前缀及空格。
-
 - 第 13 行，准备处理每个字符串的处理链，处理的顺序与函数在切片中的位置一致，removePrefix() 为自定义的函数，功能是移除 go 前缀，移除前缀的字符串左边有一个空格，使用 strings.TrimSpace 移除，这个函数的定义刚好符合处理函数的格式 func(string)string，strings.ToUpper 用于将字符串转为大写。
-
 - 第 20 行，传入字符串切片和字符串处理链，通过 StringProcess() 函数对字符串进行处理。
-
 - 第 23 行，遍历字符串切片的每一个字符串，打印处理好的字符串结果。
 
 #### 提示
@@ -1258,125 +1128,66 @@ Go语言函数类型实现接口——把函数作为接口来调用
 首先给出本节完整的代码：
 
 1.  package main
-
 2.  
-
 3.  import (
-
-4.  "fmt"
-
+4.      "fmt"
 5.  )
-
 6.  
-
 7.  // 调用器接口
-
 8.  type Invoker interface {
-
-9.  // 需要实现一个Call方法
-
-10. Call(interface{})
-
+9.      // 需要实现一个Call方法
+10.     Call( interface{} )
 11. }
-
 12. 
-
 13. // 结构体类型
-
 14. type Struct struct {
-
 15. }
-
 16. 
-
 17. // 实现Invoker的Call
-
-18. func (s \*Struct) Call(p interface{}) {
-
-19. fmt.Println("from struct", p)
-
+18. func (s *Struct) Call(p interface{}) {
+19.     fmt.Println("from struct", p)
 20. }
-
 21. 
-
 22. // 函数定义为类型
-
 23. type FuncCaller func(interface{})
-
 24. 
-
 25. // 实现Invoker的Call
-
-26. func (f FuncCaller) Call(p interface{}) {
-
-27. 
-
-28. // 调用f函数本体
-
-29. f(p)
-
+26. func (f FuncCaller) Call(p interface{}) {27. 
+28.     // 调用f函数本体
+29.     f(p)
 30. }
-
 31. 
-
 32. func main() {
-
 33. 
-
-34. // 声明接口变量
-
-35. var invoker Invoker
-
+34.     // 声明接口变量
+35.     var invoker Invoker
 36. 
-
-37. // 实例化结构体
-
-38. s := new(Struct)
-
+37.     // 实例化结构体
+38.     s := new(Struct)
 39. 
-
-40. // 将实例化的结构体赋值到接口
-
-41. invoker = s
-
+40.     // 将实例化的结构体赋值到接口
+41.     invoker = s
 42. 
-
-43. // 使用接口调用实例化结构体的方法Struct.Call
-
-44. invoker.Call("hello")
-
+43.     // 使用接口调用实例化结构体的方法Struct.Call
+44.     invoker.Call("hello")
 45. 
-
-46. // 将匿名函数转为FuncCaller类型，再赋值给接口
-
-47. invoker = FuncCaller(func(v interface{}) {
-
-48. fmt.Println("from function", v)
-
-49. })
-
+46.     // 将匿名函数转为FuncCaller类型，再赋值给接口
+47.     invoker = FuncCaller(func(v interface{}) {
+48.         fmt.Println("from function", v)
+49.     })
 50. 
-
-51. // 使用接口调用FuncCaller.Call，内部会调用函数本体
-
-52. invoker.Call("hello")
-
+51.     // 使用接口调用FuncCaller.Call，内部会调用函数本体
+52.     invoker.Call("hello")
 53. }
 
 有如下一个接口：
-
 1.  // 调用器接口
-
 2.  type Invoker interface {
-
-3.  // 需要实现一个Call()方法
-
-4.  Call(interface{})
-
+3.      // 需要实现一个Call()方法
+4.      Call(interface{})
 5.  }
 
-这个接口需要实现 Call() 方法，调用时会传入一个 interface{} 类型的变量，这种类型的变量表示任意类型的值。  
-  
+这个接口需要实现 Call() 方法，调用时会传入一个 interface{} 类型的变量，这种类型的变量表示任意类型的值。    
 接下来，使用结构体进行接口实现。
 
 ### 5.7.1结构体实现接口
@@ -1384,65 +1195,40 @@ Go语言函数类型实现接口——把函数作为接口来调用
 结构体实现 Invoker 接口的代码如下：
 
 1.  // 结构体类型
-
 2.  type Struct struct {
-
 3.  }
-
 4.  
-
 5.  // 实现Invoker的Call
-
 6.  func (s \*Struct) Call(p interface{}) {
-
-7.  fmt.Println("from struct", p)
-
+7.      fmt.Println("from struct", p)
 8.  }
 
 代码说明如下：
-
 - 第 2 行，定义结构体，该例子中的结构体无须任何成员，主要展示实现 Invoker 的方法。
-
 - 第 6 行，Call() 为结构体的方法，该方法的功能是打印 from struct 和传入的 interface{} 类型的值。
 
 将定义的 Struct 类型实例化，并传入接口中进行调用，代码如下：
-
 1.  // 声明接口变量
-
 2.  var invoker Invoker
-
 3.  
-
 4.  // 实例化结构体
-
 5.  s := new(Struct)
-
 6.  
-
 7.  // 将实例化的结构体赋值到接口
-
 8.  invoker = s
-
 9.  
-
 10. // 使用接口调用实例化结构体的方法Struct.Call
-
 11. invoker.Call("hello")
 
 代码说明如下：
-
 - 第 2 行，声明 Invoker 类型的变量。
-
 - 第 5 行，使用 new 将结构体实例化，此行也可以写为 s:=&Struct。
-
 - 第 8 行，s 类型为 \*Struct，已经实现了 Invoker 接口类型，因此赋值给 invoker 时是成功的。
-
 - 第 11 行，通过接口的 Call() 方法，传入 hello，此时将调用 Struct 结构体的 Call() 方法。
 
 接下来，对比下函数实现结构体的差异。  
   
 代码输出如下：
-
 from struct hello
 
 ### 5.7.2函数体实现接口
@@ -1450,63 +1236,39 @@ from struct hello
 函数的声明不能直接实现接口，需要将函数定义为类型后，使用类型实现结构体，当类型方法被调用时，还需要调用函数本体。
 
 1.  // 函数定义为类型
-
 2.  type FuncCaller func(interface{})
-
 3.  
-
 4.  // 实现Invoker的Call
-
 5.  func (f FuncCaller) Call(p interface{}) {
-
 6.  
-
-7.  // 调用f()函数本体
-
-8.  f(p)
-
+7.      // 调用f()函数本体
+8.      f(p)
 9.  }
 
 代码说明如下：
-
 - 第 2 行，将 func(interface{}) 定义为 FuncCaller 类型。
-
 - 第 5 行，FuncCaller 的 Call() 方法将实现 Invoker 的 Call() 方法。
-
 - 第 8 行，FuncCaller 的 Call() 方法被调用与 func(interface{}) 无关，还需要手动调用函数本体。
 
 上面代码只是定义了函数类型，需要函数本身进行逻辑处理，FuncCaller 无须被实例化，只需要将函数转换为 FuncCaller 类型即可，函数来源可以是命名函数、匿名函数或闭包，参见下面代码：
 
 1.  // 声明接口变量
-
 2.  var invoker Invoker
-
 3.  
-
 4.  // 将匿名函数转为FuncCaller类型, 再赋值给接口
-
 5.  invoker = FuncCaller(func(v interface{}) {
-
-6.  fmt.Println("from function", v)
-
+6.      fmt.Println("from function", v)
 7.  })
-
 8.  
-
 9.  // 使用接口调用FuncCaller.Call, 内部会调用函数本体
-
 10. invoker.Call("hello")
 
 代码说明如下：
-
 - 第 2 行，声明接口变量。
-
 - 第 5 行，将 func(v interface{}){} 匿名函数转换为 FuncCaller 类型（函数签名才能转换），此时 FuncCaller 类型实现了 Invoker 的 Call() 方法，赋值给 invoker 接口是成功的。
-
 - 第 10 行，使用接口方法调用。
 
 代码输出如下：
-
 from function hello
 
 ### 5.7.3HTTP包中的例子
@@ -1514,41 +1276,27 @@ from function hello
 HTTP 包中包含有 Handler 接口定义，代码如下：
 
 1.  type Handler interface {
-
-2.  ServeHTTP(ResponseWriter, \*Request)
-
+2.      ServeHTTP(ResponseWriter, \*Request)
 3.  }
 
 Handler 用于定义每个 HTTP 的请求和响应的处理过程。  
   
 同时，也可以使用处理函数实现接口，定义如下：
-
 1.  type HandlerFunc func(ResponseWriter, \*Request)
-
 2.  
-
 3.  func (f HandlerFunc) ServeHTTP(w ResponseWriter, r \*Request) {
-
-4.  f(w, r)
-
+4.      f(w, r)
 5.  }
 
 要使用闭包实现默认的 HTTP 请求处理，可以使用 http.HandleFunc() 函数，函数定义如下：
-
 1.  func HandleFunc(pattern string, handler func(ResponseWriter, \*Request)) {
-
-2.  DefaultServeMux.HandleFunc(pattern, handler)
-
+2.      DefaultServeMux.HandleFunc(pattern, handler)
 3.  }
 
 而 DefaultServeMux 是 ServeMux 结构，拥有 HandleFunc() 方法，定义如下：
-
 1.  func (mux \*ServeMux) HandleFunc(pattern string, handler func
-
 2.  (ResponseWriter, \*Request)) {
-
-3.  mux.Handle(pattern, HandlerFunc(handler))
-
+3.      mux.Handle(pattern, HandlerFunc(handler))
 4.  }
 
 上面代码将外部传入的函数 handler() 转为 HandlerFunc 类型，HandlerFunc 类型实现了 Handler 的 ServeHTTP 方法，底层可以同时使用各种类型来实现 Handler 接口进行处理。
@@ -1559,23 +1307,24 @@ Go语言闭包（Closure）——引用了外部变量的匿名函数
 
 -------------------------------------------------------------------------------
 
-Go语言中闭包是引用了自由变量的函数，被引用的自由变量和函数一同存在，即使已经离开了自由变量的环境也不会被释放或者删除，在闭包中可以继续使用这个自由变量，因此，简单的说：
-
+Go语言中闭包是**引用了自由变量的函数**，被引用的自由变量和函数一同存在，即使已经离开了自由变量的环境也不会被释放或者删除，在闭包中可以继续使用这个自由变量，因此，简单的说：
 函数 + 引用环境 = 闭包
 
 同一个函数与不同引用环境组合，可以形成不同的实例，如下图所示。
-
 <img src="./media05/media/image1.jpeg" style="width:5.33333in;height:2.13542in" alt="IMG_256" />  
 图：闭包与函数引用
 
-一个函数类型就像结构体一样，可以被实例化，函数本身不存储任何信息，只有与引用环境结合后形成的闭包才具有“记忆性”，函数是编译期静态的概念，而闭包是运行期动态的概念。
+一个函数类型就像结构体一样，可以被实例化，函数本身不存储任何信息，只有与引用环境结合后形成的闭包才具有“记忆性”，**函数是编译期静态的概念**，而**闭包是运行期动态的概念**。
 
 #### 其它编程语言中的闭包
 
-闭包（Closure）在某些编程语言中也被称为 Lambda 表达式。  
+闭包（Closure）在某些编程语言中也被称为 Lambda 表达式。 
+
 闭包对环境中变量的引用过程也可以被称为“捕获”，在 C++11 标准中，捕获有两种类型，分别是引用和复制，可以改变引用的原值叫做“引用捕获”，捕获的过程值被复制到闭包中使用叫做“复制捕获”。  
+
 在 Lua 语言中，将被捕获的变量起了一个名字叫做 Upvalue，因为捕获过程总是对闭包上方定义过的自由变量进行引用。  
 闭包在各种语言中的实现也是不尽相同的，在 Lua 语言中，无论闭包还是函数都属于 Prototype 概念，被捕获的变量以 Upvalue 的形式引用到闭包中。  
+
 C++ 与 C# 中为闭包创建了一个类，而被捕获的变量在编译时放到类中的成员中，闭包在访问被捕获的变量时，实际上访问的是闭包隐藏类的成员。
 
 ### 5.8.1在闭包内部修改引用的变量
@@ -1583,41 +1332,24 @@ C++ 与 C# 中为闭包创建了一个类，而被捕获的变量在编译时�
 闭包对它作用域上部的变量可以进行修改，修改引用的变量会对变量进行实际修改，通过下面的例子来理解：
 
 1.  // 准备一个字符串
-
 2.  str := "hello world"
-
 3.  
-
 4.  // 创建一个匿名函数
-
-5.  foo := func() {
-
-6.  
-
-7.  // 匿名函数中访问str
-
-8.  str = "hello dude"
-
+5.  foo := func() {6.  
+7.      // 匿名函数中访问str
+8.      str = "hello dude"
 9.  }
-
 10. 
-
 11. // 调用匿名函数
-
 12. foo()
 
 代码说明如下：
-
 - 第 2 行，准备一个字符串用于修改。
-
 - 第 5 行，创建一个匿名函数。
-
 - 第 8 行，在匿名函数中并没有定义 str，str 的定义在匿名函数之前，此时，str 就被引用到了匿名函数中形成了闭包。
-
 - 第 12 行，执行闭包，此时 str 发生修改，变为 hello dude。
 
 代码输出：
-
 hello dude
 
 ### 5.8.2示例：闭包的记忆效应
@@ -1625,109 +1357,59 @@ hello dude
 被捕获到闭包中的变量让闭包本身拥有了记忆效应，闭包中的逻辑可以修改闭包捕获的变量，变量会跟随闭包生命期一直存在，闭包本身就如同变量一样拥有了记忆效应。  
   
 累加器的实现：
-
 1.  package main
-
 2.  
-
 3.  import (
-
-4.  "fmt"
-
+4.      "fmt"
 5.  )
-
 6.  
-
 7.  // 提供一个值, 每次调用函数会指定对值进行累加
-
 8.  func Accumulate(value int) func() int {
-
 9.  
-
-10. // 返回一个闭包
-
-11. return func() int {
-
+10.     // 返回一个闭包
+11.     return func() int {
 12. 
-
-13. // 累加
-
-14. value++
-
+13.         // 累加
+14.         value++
 15. 
-
-16. // 返回一个累加值
-
-17. return value
-
-18. }
-
+16.         // 返回一个累加值
+17.         return value
+18.     }
 19. }
-
 20. 
-
 21. func main() {
-
 22. 
-
-23. // 创建一个累加器, 初始值为1
-
-24. accumulator := Accumulate(1)
-
+23.     // 创建一个累加器, 初始值为1
+24.     accumulator := Accumulate(1)
 25. 
-
-26. // 累加1并打印
-
-27. fmt.Println(accumulator())
-
+26.     // 累加1并打印
+27.     fmt.Println(accumulator())
 28. 
-
-29. fmt.Println(accumulator())
-
+29.     fmt.Println(accumulator())
 30. 
-
-31. // 打印累加器的函数地址
-
-32. fmt.Printf("%p\n", &accumulator)
-
+31.     // 打印累加器的函数地址
+32.     fmt.Printf("%p\n", &accumulator)
 33. 
-
-34. // 创建一个累加器, 初始值为1
-
-35. accumulator2 := Accumulate(10)
-
+34.     // 创建一个累加器, 初始值为1
+35.     accumulator2 := Accumulate(10)
 36. 
-
-37. // 累加1并打印
-
-38. fmt.Println(accumulator2())
-
+37.     // 累加1并打印
+38.     fmt.Println(accumulator2())
 39. 
-
-40. // 打印累加器的函数地址
-
-41. fmt.Printf("%p\n", &accumulator2)
-
+40.     // 打印累加器的函数地址
+41.     fmt.Printf("%p\n", &accumulator2)
 42. }
 
 代码说明如下：
-
 - 第 8 行，累加器生成函数，这个函数输出一个初始值，调用时返回一个为初始值创建的闭包函数。
-
 - 第 11 行，返回一个闭包函数，每次返回会创建一个新的函数实例。
-
 - 第 14 行，对引用的 Accumulate 参数变量进行累加，注意 value 不是第 11 行匿名函数定义的，但是被这个匿名函数引用，所以形成闭包。
-
 - 第 17 行，将修改后的值通过闭包的返回值返回。
-
 - 第 24 行，创建一个累加器，初始值为 1，返回的 accumulator 是类型为 func()int 的函数变量。
-
 - 第 27 行，调用 accumulator() 时，代码从 11 行开始执行匿名函数逻辑，直到第 17 行返回。
-
 - 第 32 行，打印累加器的函数地址。
 
-对比输出的日志发现 accumulator 与 accumulator2 输出的函数地址不同，因此它们是两个不同的闭包实例。  
-  
+对比输出的日志发现 accumulator 与 accumulator2 输出的函数地址不同，因此它们是两个不同的闭包实例。    
 每调用一次 accumulator 都会自动对引用的变量进行累加。
 
 ### 5.8.3示例：闭包实现生成器
@@ -1737,81 +1419,45 @@ hello dude
 玩家生成器的实现：
 
 1.  package main
-
 2.  
-
 3.  import (
-
 4.  "fmt"
-
 5.  )
-
 6.  
-
 7.  // 创建一个玩家生成器, 输入名称, 输出生成器
-
 8.  func playerGen(name string) func() (string, int) {
-
 9.  
-
-10. // 血量一直为150
-
-11. hp := 150
-
+10.     // 血量一直为150
+11.     hp := 150
 12. 
-
-13. // 返回创建的闭包
-
-14. return func() (string, int) {
-
+13.     // 返回创建的闭包
+14.     return func() (string, int) {
 15. 
-
-16. // 将变量引用到闭包中
-
-17. return name, hp
-
-18. }
-
+16.         // 将变量引用到闭包中
+17.         return name, hp
+18.     }
 19. }
-
 20. 
-
 21. func main() {
-
 22. 
-
-23. // 创建一个玩家生成器
-
-24. generator := playerGen("high noon")
-
+23.     // 创建一个玩家生成器
+24.     generator := playerGen("high noon")
 25. 
-
-26. // 返回玩家的名字和血量
-
-27. name, hp := generator()
-
+26.     // 返回玩家的名字和血量
+27.     name, hp := generator()
 28. 
-
-29. // 打印值
-
-30. fmt.Println(name, hp)
-
+29.     // 打印值
+30.     fmt.Println(name, hp)
 31. }
 
 代码输出如下：
-
 high noon 150
 
 代码说明如下：
-
 - 第 8 行，playerGen() 需要提供一个名字来创建一个玩家的生成函数。
-
 - 第 11 行，声明并设定 hp 变量为 150。
-
 - 第 14～18 行，将 hp 和 name 变量引用到匿名函数中形成闭包。
-
 - 第 24 行中，通过 playerGen 传入参数调用后获得玩家生成器。
-
 - 第 27 行，调用这个玩家生成器函数，可以获得玩家的名称和血量。
 
 闭包还具有一定的封装性，第 11 行的变量是 playerGen 的局部变量，playerGen 的外部无法直接访问及修改这个变量，这种特性也与面向对象中强调的封装性类似。
@@ -1819,58 +1465,42 @@ high noon 150
 ## 5.9 [Go语言可变参数](http://c.biancheng.net/view/60.html)
 
 Go语言可变参数（变参函数）
-
 -----------------------------------------
 
-在C语言时代大家一般都用过 printf() 函数，从那个时候开始其实已经在感受可变参数的魅力和价值，如同C语言中的 printf() 函数，Go语言标准库中的 fmt.Println() 等函数的实现也依赖于语言的可变参数功能。  
-  
+在C语言时代大家一般都用过 printf() 函数，从那个时候开始其实已经在感受可变参数的魅力和价值，如同C语言中的 printf() 函数，Go语言标准库中的 fmt.Println() 等函数的实现也依赖于语言的可变参数功能。    
 本节我们将介绍可变参数的用法。合适地使用可变参数，可以让代码简单易用，尤其是输入输出类函数，比如日志函数等。
 
 ### 5.9.1可变参数类型
-
 可变参数是指函数传入的参数个数是可变的，为了做到这点，首先需要将函数定义为可以接受可变参数的类型：
 
 1.  func myfunc(args ...int) {
-
-2.  for \_, arg := range args {
-
-3.  fmt.Println(arg)
-
-4.  }
-
+2.      for _, arg := range args {
+3.          fmt.Println(arg)
+4.      }
 5.  }
 
 上面这段代码的意思是，函数 myfunc() 接受不定数量的参数，这些参数的类型全部是 int，所以它可以用如下方式调用：
-
 myfunc(2, 3, 4)  
 myfunc(1, 3, 7, 13)
 
-形如 ...type 格式的类型只能作为函数的参数类型存在，并且必须是最后一个参数，它是一个语法糖（syntactic sugar），即这种语法对语言的功能并没有影响，但是更方便程序员使用，通常来说，使用语法糖能够增加程序的可读性，从而减少程序出错的可能。  
+形如 ...type 格式的类型**只能作为函数的参数类型存在，并且必须是最后一个参数**，它是一个语法糖（syntactic sugar），即这种语法对语言的功能并没有影响，但是更方便程序员使用，通常来说，使用语法糖能够增加程序的可读性，从而减少程序出错的可能。  
   
-从内部实现机理上来说，类型 ...type 本质上是一个数组切片，也就是\[\]type，这也是为什么上面的参数 args 可以用 for 循环来获得每个传入的参数。  
+从内部实现机理上来说，类型 ...type **本质上是一个数组切片**，也就是 []type ，这也是为什么上面的参数 args 可以用 for 循环来获得每个传入的参数。  
   
 假如没有...type这样的语法糖，开发者将不得不这么写：
-
-1.  func myfunc2(args \[\]int) {
-
-2.  for \_, arg := range args {
-
-3.  fmt.Println(arg)
-
-4.  }
+1.  func myfunc2(args []int) {
+2.      for _, arg := range args {
+3.          fmt.Println(arg)
+4.      }
 
 5.  }
 
 从函数的实现角度来看，这没有任何影响，该怎么写就怎么写，但从调用方来说，情形则完全不同：
-
-myfunc2(\[\]int{1, 3, 7, 13})
-
-大家会发现，我们不得不加上\[\]int{}来构造一个数组切片实例，但是有了...type这个语法糖，我们就不用自己来处理了。
+myfunc2([]int{1, 3, 7, 13})
+大家会发现，我们不得不加上[]int{}来构造一个数组切片实例，但是有了...type这个语法糖，我们就不用自己来处理了。
 
 ### 5.9.2任意类型的可变参数
-
 之前的例子中将可变参数类型约束为 int，如果你希望传任意类型，可以指定类型为 interface{}，下面是Go语言标准库中 fmt.Printf() 的函数原型：
-
 func Printf(format string, args ...interface{}) {  
     // ...  
 }
@@ -1878,49 +1508,28 @@ func Printf(format string, args ...interface{}) {
 用 interface{} 传递任意类型数据是Go语言的惯例用法，使用 interface{} 仍然是类型安全的，这和 C/C++ 不太一样，下面通过示例来了解一下如何分配传入 interface{} 类型的数据。
 
 1.  package main
-
 2.  import "fmt"
-
 3.  func MyPrintf(args ...interface{}) {
-
-4.  for \_, arg := range args {
-
-5.  switch <span class="mark">arg.(type)</span> {
-
-6.  case int:
-
-7.  fmt.Println(arg, "is an int value.")
-
-8.  case string:
-
-9.  fmt.Println(arg, "is a string value.")
-
-10. case int64:
-
-11. fmt.Println(arg, "is an int64 value.")
-
-12. default:
-
-13. fmt.Println(arg, "is an unknown type.")
-
-14. }
-
-15. }
-
+4.      for _, arg := range args {
+5.      switch arg.(type) {
+6.      case int:
+7.          fmt.Println(arg, "is an int value.")
+8.      case string:
+9.          fmt.Println(arg, "is a string value.")
+10.     case int64:
+11.         fmt.Println(arg, "is an int64 value.")
+12.     default:
+13.         fmt.Println(arg, "is an unknown type.")
+14.     }
+15.     }
 16. }
 
 17. func main() {
-
 18. var v1 int = 1
-
 19. var v2 int64 = 234
-
 20. var v3 string = "hello"
-
 21. var v4 float32 = 1.234
-
 22. MyPrintf(v1, v2, v3, v4)
-
 23. }
 
 该程序的输出结果为：
@@ -1935,76 +1544,43 @@ hello is a string value.
 可变参数列表的数量不固定，传入的参数是一个切片，如果需要获得每一个参数的具体值时，可以对可变参数变量进行遍历，参见下面代码：
 
 1.  package main
-
 2.  
-
 3.  import (
-
-4.  "bytes"
-
-5.  "fmt"
-
+4.      "bytes"
+5.      "fmt"
 6.  )
-
 7.  // 定义一个函数, 参数数量为0~n, 类型约束为字符串
-
 8.  func joinStrings(slist ...string) string {
-
 9.  
-
-10. // 定义一个字节缓冲, 快速地连接字符串
-
-11. var b bytes.Buffer
-
-12. // 遍历可变参数列表slist, 类型为\[\]string
-
-13. for \_, s := range slist {
-
-14. // 将遍历出的字符串连续写入字节数组
-
-15. b.WriteString(s)
-
-16. }
-
+10.     // 定义一个字节缓冲, 快速地连接字符串
+11.     var b bytes.Buffer
+12.     // 遍历可变参数列表slist, 类型为[]string
+13.     for _, s := range slist {
+14.         // 将遍历出的字符串连续写入字节数组
+15.         b.WriteString(s)
+16.     }
 17. 
-
-18. // 将连接好的字节数组转换为字符串并输出
-
-19. return b.String()
-
+18.     // 将连接好的字节数组转换为字符串并输出
+19.     return b.String()
 20. }
-
 21. 
-
 22. func main() {
-
-23. // 输入3个字符串, 将它们连成一个字符串
-
-24. fmt.Println(joinStrings("pig ", "and", " rat"))
-
-25. fmt.Println(joinStrings("hammer", " mom", " and", " hawk"))
-
+23.     // 输入3个字符串, 将它们连成一个字符串
+24.     fmt.Println(joinStrings("pig ", "and", " rat"))
+25.     fmt.Println(joinStrings("hammer", " mom", " and", " hawk"))
 26. }
 
 代码输出如下：
-
 pig and rat  
 hammer mom and hawk
 
 代码说明如下：
-
-- 第 8 行，定义了一个可变参数的函数，slist 的类型为 \[\]string，每一个参数的类型都是 string，也就是说，该函数只接受字符串类型作为参数。
-
+- 第 8 行，定义了一个可变参数的函数，slist 的类型为 []string，每一个参数的类型都是 string，也就是说，该函数只接受字符串类型作为参数。
 - 第 11 行，bytes.Buffer 在这个例子中的作用类似于 StringBuilder，可以高效地进行字符串连接操作。
-
 - 第 13 行，遍历 slist 可变参数，s 为每个参数的值，类型为 string。
-
 - 第 15 行，将每一个传入参数放到 bytes.Buffer 中。
-
 - 第 19 行，将 bytes.Buffer 中的数据转换为字符串作为函数返回值返回。
-
 - 第 24 行，输入 3 个字符串，使用 joinStrings() 函数将参数连接为字符串输出。
-
 - 第 25 行，输入 4 个字符串，连接后输出。
 
 如果要获取可变参数的数量，可以使用 len() 函数对可变参数变量对应的切片进行求长度操作，以获得可变参数数量。
@@ -2016,140 +1592,77 @@ hammer mom and hawk
 打印类型及值：
 
 1.  package main
-
 2.  
-
 3.  import (
-
 4.  "bytes"
-
 5.  "fmt"
-
 6.  )
-
 7.  
-
 8.  func printTypeValue(slist ...interface{}) string {
-
 9.  
-
-10. // 字节缓冲作为快速字符串连接
-
-11. var b bytes.Buffer
-
+10.     // 字节缓冲作为快速字符串连接
+11.     var b bytes.Buffer
 12. 
-
-13. // 遍历参数
-
-14. for \_, s := range slist {
-
+13.     // 遍历参数
+14.     for _, s := range slist {
 15. 
-
-16. // 将interface{}类型格式化为字符串
-
-17. str := fmt.Sprintf("%v", s)
-
+16.         // 将interface{}类型格式化为字符串
+17.         str := fmt.Sprintf("%v", s)
 18. 
-
-19. // 类型的字符串描述
-
-20. var typeString string
-
+19.         // 类型的字符串描述
+20.         var typeString string
 21. 
-
-22. // 对s进行类型断言
-
-23. switch s.(type) {
-
-24. case bool: // 当s为布尔类型时
-
-25. typeString = "bool"
-
-26. case string: // 当s为字符串类型时
-
-27. typeString = "string"
-
-28. case int: // 当s为整型类型时
-
-29. typeString = "int"
-
-30. }
-
+22.         // 对s进行类型断言
+23.         switch s.(type) {
+24.         case bool: // 当s为布尔类型时
+25.             typeString = "bool"
+26.         case string: // 当s为字符串类型时
+27.             typeString = "string"
+28.         case int: // 当s为整型类型时
+29.             typeString = "int"
+30.         }
 31. 
-
-32. // 写字符串前缀
-
-33. b.WriteString("value: ")
-
+32.         // 写字符串前缀
+33.         b.WriteString("value: ")
 34. 
-
-35. // 写入值
-
-36. b.WriteString(str)
-
+35.         // 写入值
+36.         b.WriteString(str)
 37. 
-
-38. // 写类型前缀
-
-39. b.WriteString(" type: ")
-
+38.         // 写类型前缀
+39.         b.WriteString(" type: ")
 40. 
-
-41. // 写类型字符串
-
-42. b.WriteString(typeString)
-
+41.         // 写类型字符串
+42.         b.WriteString(typeString)
 43. 
-
-44. // 写入换行符
-
-45. b.WriteString("\n")
-
+44.         // 写入换行符
+45.         b.WriteString("\n")
 46. 
-
-47. }
-
-48. return b.String()
-
+47.     }
+48.     return b.String()
 49. }
-
 50. 
-
 51. func main() {
-
 52. 
-
-53. // 将不同类型的变量通过printTypeValue()打印出来
-
-54. fmt.Println(printTypeValue(100, "str", true))
-
+53.     // 将不同类型的变量通过printTypeValue()打印出来
+54.     fmt.Println(printTypeValue(100, "str", true))
 55. }
 
 代码输出如下：
-
 value: 100 type: int  
 value: str type: string  
 value: true type: bool
 
 代码说明如下：
-
 - 第 8 行，printTypeValue() 输入不同类型的值并输出类型和值描述。
-
 - 第 11 行，bytes.Buffer 字节缓冲作为快速字符串连接。
-
 - 第 14 行，遍历 slist 的每一个元素，类型为 interface{}。
-
 - 第 17 行，使用 fmt.Sprintf 配合%v动词，可以将 interface{} 格式的任意值转为字符串。
-
 - 第 20 行，声明一个字符串，作为变量的类型名。
-
 - 第 23 行，switch s.(type) 可以对 interface{} 类型进行类型断言，也就是判断变量的实际类型。
-
 - 第 24～29 行为 s 变量可能的类型，将每种类型的对应类型字符串赋值到 typeString 中。
-
 - 第 33～42 行为写输出格式的过程。
 
-### 5.9.5\*在多个可变参数函数中传递参数
+### 5.9.5*在多个可变参数函数中传递参数
 
 可变参数变量是一个包含所有参数的切片，如果要将这个含有可变参数的变量<span class="mark">传递给</span>下一个可变参数函数，可以在传递时给可变参数变量后面添加...，这样就可以将切片中的元素进行传递，而不是传递可变参数变量本身。  
   
@@ -2158,59 +1671,33 @@ value: true type: bool
 可变参数传递：
 
 1.  package main
-
 2.  
-
 3.  import "fmt"
-
 4.  
-
 5.  // 实际打印的函数
-
 6.  func rawPrint(rawList ...interface{}) {
-
 7.  
-
-8.  // 遍历可变参数切片
-
-9.  for \_, a := range rawList {
-
+8.      // 遍历可变参数切片
+9.      for _, a := range rawList {
 10. 
-
-11. // 打印参数
-
-12. fmt.Println(a)
-
-13. }
-
+11.         // 打印参数
+12.         fmt.Println(a)
+13.     }
 14. }
-
 15. 
-
 16. // 打印函数封装
-
 17. func print(slist ...interface{}) {
-
 18. 
-
-19. // 将slist可变参数切片完整传递给下一个函数
-
-20. <span class="mark">rawPrint(slist...)</span>
-
+19.     // 将slist可变参数切片完整传递给下一个函数
+20.     rawPrint(slist...)
 21. }
-
 22. 
-
 23. func main() {
-
 24. 
-
-25. print(1, 2, 3)
-
+25.     print(1, 2, 3)
 26. }
 
 代码输出如下：
-
 1  
 2  
 3
@@ -2218,86 +1705,61 @@ value: true type: bool
 对代码的说明：
 
 - 第 9～13 行，遍历 rawPrint() 的参数列表 rawList 并打印。
-
 - 第 20 行，将变量在 print 的可变参数列表中添加...后传递给 rawPrint()。
-
 - 第 25 行，传入 1、2、3 这 3 个整型值并进行打印。
 
 如果尝试将第 20 行修改为：
-
 1.  rawPrint("fmt", slist)
-
 再次执行代码，将输出：
+[1 2 3]
 
-\[1 2 3\]
-
-此时，slist（类型为 \[\]interface{}）将被作为一个整体传入 rawPrint()，rawPrint() 函数中遍历的变量也就是 slist 的切片值。  
-  
+此时，slist（类型为 []interface{}）将被作为一个整体传入 rawPrint()，rawPrint() 函数中遍历的变量也就是 slist 的切片值。    
 可变参数使用...进行传递与切片间使用 append 连接是同一个特性。
 
-#### 5.9.5.1 a = append(a\[:i\], a\[i+1:\]...) 为什么加...
+#### 5.9.5.1 a = append(a[:i], a[i+1:]...) 为什么加...
 
-\`\`\`go
-
-a := \[\]int{1, 2, 3, 4, 5, 6, 7, 8}
-
+```go
+a := []int{1, 2, 3, 4, 5, 6, 7, 8}
 i := 3
-
-a = append(a\[:i\], a\[i+1:\]...)
-
-\`\`\`
-
+a = append(a[:i], a[i+1:]...)
+```
 为什么加... ?
+<--------->
+你给出的代码是 Go 语言代码，`append` 函数调用里使用 `...` 是为了把切片展开。下面为你详细解释：
+### 代码功能概述
+你给出的代码要实现从切片 `a` 里移除索引为 `i` 的元素。具体来说，它把索引 `i` 之前的元素和索引 `i` 之后的元素重新组合成一个新的切片。
 
-\<-----------------------------------\>
+### `...` 的作用
+在 Go 语言里，`...` 是一个特殊的运算符，也被称作“切片展开运算符”。它的主要作用是把切片展开成一个个独立的元素。
 
-你给出的代码是 Go 语言代码，\`append\` 函数调用里使用 \`...\` 是为了把切片展开。下面为你详细解释：
+`append` 函数的定义如下：
+```go
+func append(slice []Type, elems ...Type) []Type
+```
+此函数的第一个参数是切片，后续的参数是要追加到切片里的元素。当你要把另一个切片追加到当前切片时，就需要使用 `...` 运算符把切片展开成一个个独立的元素。
 
-\### 代码功能概述
+### 示例代码分析
 
-你给出的代码要实现从切片 \`a\` 里移除索引为 \`i\` 的元素。具体来说，它把索引 \`i\` 之前的元素和索引 \`i\` 之后的元素重新组合成一个新的切片。
-
-\### \`...\` 的作用
-
-在 Go 语言里，\`...\` 是一个特殊的运算符，也被称作“切片展开运算符”。它的主要作用是把切片展开成一个个独立的元素。
-
-\`append\` 函数的定义如下：
-
-\`\`\`go
-
-func append(slice \[\]Type, elems ...Type) \[\]Type
-
-\`\`\`
-
-此函数的第一个参数是切片，后续的参数是要追加到切片里的元素。当你要把另一个切片追加到当前切片时，就需要使用 \`...\` 运算符把切片展开成一个个独立的元素。
-
-\### 示例代码分析
-
-\`\`\`go
-
+```go
 package main
 
 import "fmt"
 
 func main() {
+    a := []int{1, 2, 3, 4, 5, 6, 7, 8}
+    i := 3 // 移除索引为 i 的元素
+    a = append(a[:i], a[i+1:]...)
+    fmt.Println(a) 
+}
 
-a := \[\]int{1, 2, 3, 4, 5, 6, 7, 8}
+```
 
-i := 3 // 移除索引为 i 的元素
+在这段代码里，`a[:i]` 是一个包含索引 `i` 之前所有元素的切片，`a[i+1:]` 是一个包含索引 `i` 之后所有元素的切片。`append(a[:i], a[i+1:]...)` 把 `a[i+1:]` 切片展开成一个个独立的元素，再追加到 `a[:i]` 切片后面，最终返回一个新的切片。
 
-a = append(a\[:i\], a\[i+1:\]...)
+要是不使用 `...` 运算符，代码就会报错，因为 `append` 函数期望的是一个个独立的元素，而不是一个切片。
 
-fmt.Println(a) }
-
-\`\`\`
-
-在这段代码里，\`a\[:i\]\` 是一个包含索引 \`i\` 之前所有元素的切片，\`a\[i+1:\]\` 是一个包含索引 \`i\` 之后所有元素的切片。\`append(a\[:i\], a\[i+1:\]...)\` 把 \`a\[i+1:\]\` 切片展开成一个个独立的元素，再追加到 \`a\[:i\]\` 切片后面，最终返回一个新的切片。
-
-要是不使用 \`...\` 运算符，代码就会报错，因为 \`append\` 函数期望的是一个个独立的元素，而不是一个切片。
-
-\### 总结
-
-\`...\` 运算符在 Go 语言里用于把切片展开成一个个独立的元素，这样就能将一个切片追加到另一个切片里。在你给出的代码中，\`...\` 运算符保证了 \`a\[i+1:\]\` 切片里的所有元素能正确追加到 \`a\[:i\]\` 切片后面。
+### 总结
+`...` 运算符在 Go 语言里用于把切片展开成一个个独立的元素，这样就能将一个切片追加到另一个切片里。在你给出的代码中，`...` 运算符保证了 `a[i+1:]` 切片里的所有元素能正确追加到 `a[:i]` 切片后面。
 
 ## 5.10 [Go语言defer（延迟执行语句）](http://c.biancheng.net/view/61.html)
 
@@ -2310,39 +1772,22 @@ Go语言的 defer 语句会将其后面跟随的语句进行延迟处理，在 d
 当有多个 defer 行为被注册时，它们会以逆序执行（类似栈，即后进先出），下面的代码是将一系列的数值打印语句按顺序延迟处理，如下所示：
 
 1.  package main
-
 2.  
-
 3.  import (
-
 4.  "fmt"
-
 5.  )
-
 6.  
-
 7.  func main() {
-
 8.  
-
 9.  fmt.Println("defer begin")
-
 10. 
-
 11. // 将defer放入延迟调用栈
-
 12. defer fmt.Println(1)
-
 13. 
-
 14. defer fmt.Println(2)
-
 15. 
-
 16. // 最后一个放入, 位于栈顶, 最先调用
-
 17. defer fmt.Println(3)
-
 18. 
 
 19. fmt.Println("defer end")
@@ -2377,7 +1822,7 @@ defer 语句正好是在函数退出时执行的语句，所以使用 defer 能�
 
 2.  // 一个演示用的映射
 
-3.  valueByKey = make(map\[string\]int)
+3.  valueByKey = make(map[string]int)
 
 4.  // 保证使用映射时的并发安全的互斥锁
 
@@ -2397,7 +1842,7 @@ defer 语句正好是在函数退出时执行的语句，所以使用 defer 能�
 
 12. // 取值
 
-13. v := valueByKey\[key\]
+13. v := valueByKey[key]
 
 14. // 对共享资源解锁
 
@@ -2441,7 +1886,7 @@ defer 语句正好是在函数退出时执行的语句，所以使用 defer 能�
 
 7.  
 
-8.  return valueByKey\[key\]
+8.  return valueByKey[key]
 
 9.  }
 
@@ -2619,7 +2064,7 @@ defer 语句正好是在函数退出时执行的语句，所以使用 defer 能�
 
 4.  result := 0
 
-5.  for i := 1; i \<= 10; i++ {
+5.  for i := 1; i <= 10; i++ {
 
 6.  result = fibonacci(i)
 
@@ -2631,7 +2076,7 @@ defer 语句正好是在函数退出时执行的语句，所以使用 defer 能�
 
 10. func fibonacci(n int) (res int) {
 
-11. if n \<= 2 {
+11. if n <= 2 {
 
 12. res = 1
 
@@ -2676,9 +2121,9 @@ fibonacci(10) is: 55
 
 5.  func Factorial(n uint64) (result uint64) {
 
-6.  if n \> 0 {
+6.  if n > 0 {
 
-7.  result = n \* Factorial(n-1)
+7.  result = n * Factorial(n-1)
 
 8.  return result
 
@@ -2754,7 +2199,7 @@ Go语言中也可以使用相互调用的递归函数，多个函数之间相互
 
 24. func RevSign(nr int) int {
 
-25. if nr \< 0 {
+25. if nr < 0 {
 
 26. return -nr
 
@@ -2802,7 +2247,7 @@ net.Dial 拥有两个返回值，即 Conn 和 error，这个函数是阻塞的�
 
 1.  type Writer interface {
 
-2.  Write(p \[\]byte) (n int, err error)
+2.  Write(p []byte) (n int, err error)
 
 3.  }
 
@@ -2860,7 +2305,7 @@ Go语言的 errors 中对 New 的定义非常简单，代码如下：
 
 11. // 返回发生何种错误
 
-12. func (e \*errorString) Error() string {
+12. func (e *errorString) Error() string {
 
 13. return e.s
 
@@ -2974,7 +2419,7 @@ Go语言的 errors 中对 New 的定义非常简单，代码如下：
 
 13. // 实现error接口，返回错误描述
 
-14. func (e \*ParseError) Error() string {
+14. func (e *ParseError) Error() string {
 
 15. return fmt.Sprintf("%s:%d", e.Filename, e.Line)
 
@@ -3014,7 +2459,7 @@ Go语言的 errors 中对 New 的定义非常简单，代码如下：
 
 33. switch detail := e.(type) {
 
-34. case \*ParseError: // 这是一个解析错误
+34. case *ParseError: // 这是一个解析错误
 
 35. fmt.Printf("Filename: %s Line: %d\n", detail.Filename, detail.Line)
 
@@ -3041,13 +2486,13 @@ Filename: main.go Line: 1
 
 - 第 25 行，声明一个错误接口类型。
 
-- 第 27 行，创建一个实例，这个错误接口内部是 \*ParserError 类型，携带有文件名 main.go 和行号 1。
+- 第 27 行，创建一个实例，这个错误接口内部是 *ParserError 类型，携带有文件名 main.go 和行号 1。
 
 - 第 30 行，调用 Error() 方法，通过第 15 行返回错误的详细信息。
 
 - 第 33 行，通过错误断言，取出发生错误的详细类型。
 
-- 第 34 行，通过分析这个错误的类型，得知错误类型为 \*ParserError，此时可以获取到详细的错误信息。
+- 第 34 行，通过分析这个错误的类型，得知错误类型为 *ParserError，此时可以获取到详细的错误信息。
 
 - 第 36 行，如果不是我们能够处理的错误类型，会打印出其他错误做出其他的处理。
 
@@ -3089,7 +2534,7 @@ Go语言程序在宕机时，会将堆栈和 goroutine 信息输出到控制台�
 
 panic: crash  
   
-goroutine 1 \[running\]:  
+goroutine 1 [running]:  
 main.main()  
     D:/code/main.go:4 +0x40  
 exit status 2
@@ -3104,23 +2549,23 @@ regexp 是Go语言的正则表达式包，正则表达式需要编译后才能�
   
 编译正则表达式函数有两种，具体如下：
 
-#### 1) func Compile(expr string) (\*Regexp, error)
+#### 1) func Compile(expr string) (*Regexp, error)
 
 编译正则表达式，发生错误时返回编译错误同时返回 Regexp 为 nil，该函数适用于在编译错误时获得编译错误进行处理，同时继续后续执行的环境。
 
-#### 2) func MustCompile(str string) \*Regexp
+#### 2) func MustCompile(str string) *Regexp
 
 当编译正则表达式发生错误时，使用 panic 触发宕机，该函数适用于直接使用正则表达式而无须处理正则表达式错误的情况。  
   
 MustCompile 的代码如下：
 
-1.  func MustCompile(str string) \*Regexp {
+1.  func MustCompile(str string) *Regexp {
 
 2.  regexp, error := Compile(str)
 
 3.  if error != nil {
 
-4.  panic(\`regexp: Compile(\` + quote(str) + \`): \` + error.Error())
+4.  panic(`regexp: Compile(` + quote(str) + `): ` + error.Error())
 
 5.  }
 
@@ -3168,7 +2613,7 @@ MustCompile 的代码如下：
 宕机后要做的事情1  
 panic: 宕机  
   
-goroutine 1 \[running\]:  
+goroutine 1 [running]:  
 main.main()  
     D:/code/main.go:8 +0xf8  
 exit status 2
@@ -3313,9 +2758,9 @@ Go语言没有异常系统，其使用 panic 触发宕机类似于其他语言�
 
 55. 
 
-56. var a \*int
+56. var a *int
 
-57. \*a = 1
+57. *a = 1
 
 58. 
 
@@ -3391,7 +2836,7 @@ Since() 函数返回从 t 到现在经过的时间，等价于time.Now().Sub(t)�
 8.  func test() {
 9.      start := time.Now() // 获取当前时间
 10.     sum := 0
-11.     for i := 0; i \< 100000000; i++ {
+11.     for i := 0; i < 100000000; i++ {
 12.         sum++
 13.     }
 14.     elapsed := time.Since(start)
@@ -3418,7 +2863,7 @@ Since() 函数返回从 t 到现在经过的时间，等价于time.Now().Sub(t)�
 8.  func test() {
 9.      start := time.Now() // 获取当前时间
 10.     sum := 0
-11.     for i := 0; i \< 100000000; i++ {
+11.     for i := 0; i < 100000000; i++ {
 12.         sum++
 13.     }
 14.     elapsed := time.Now().Sub(start)
@@ -3462,7 +2907,7 @@ result := 0
 
 start := time.Now()
 
-for i := 1; i \<= 40; i++ {
+for i := 1; i <= 40; i++ {
 
 result = fibonacci(i)
 
@@ -3480,7 +2925,7 @@ fmt.Printf("程序的执行时间为: %s\n", delta)
 
 func fibonacci(n int) (res int) {
 
-if n \<= 2 {
+if n <= 2 {
 
 res = 1
 
@@ -3528,7 +2973,7 @@ import (
 
 const LIM = 41
 
-var fibs \[LIM\]uint64
+var fibs [LIM]uint64
 
 func main() {
 
@@ -3536,7 +2981,7 @@ var result uint64 = 0
 
 start := time.Now()
 
-for i := 1; i \< LIM; i++ {
+for i := 1; i < LIM; i++ {
 
 result = fibonacci(i)
 
@@ -3556,15 +3001,15 @@ func fibonacci(n int) (res uint64) {
 
 // 记忆化：检查数组中是否已知斐波那契（n）
 
-if fibs\[n\] != 0 {
+if fibs[n] != 0 {
 
-res = fibs\[n\]
+res = fibs[n]
 
 return
 
 }
 
-if n \<= 2 {
+if n <= 2 {
 
 res = 1
 
@@ -3574,7 +3019,7 @@ res = fibonacci(n-1) + fibonacci(n-2)
 
 }
 
-fibs\[n\] = res
+fibs[n] = res
 
 Return
 
@@ -3620,17 +3065,17 @@ TestString := "Hi, pandaman!"
 
 Md5Inst := md5.New()
 
-Md5Inst.Write(\[\]byte(TestString))
+Md5Inst.Write([]byte(TestString))
 
-Result := Md5Inst.Sum(\[\]byte(""))
+Result := Md5Inst.Sum([]byte(""))
 
 fmt.Printf("%x\n\n", Result)
 
 ShalInst := sha1.New()
 
-ShalInst.Write(\[\]byte(TestString))
+ShalInst.Write([]byte(TestString))
 
-Result = ShalInst.Sum(\[\]byte(""))
+Result = ShalInst.Sum([]byte(""))
 
 fmt.Printf("%x\n\n", Result)
 
@@ -3672,13 +3117,13 @@ md5h := md5.New()
 
 io.Copy(md5h, infile)
 
-fmt.Printf("%x %s\n", md5h.Sum(\[\]byte("")), TestFile)
+fmt.Printf("%x %s\n", md5h.Sum([]byte("")), TestFile)
 
 sha1h := sha1.New()
 
 io.Copy(sha1h, infile)
 
-fmt.Printf("%x %s\n", sha1h.Sum(\[\]byte("")), TestFile)
+fmt.Printf("%x %s\n", sha1h.Sum([]byte("")), TestFile)
 
 } else {
 
@@ -3705,39 +3150,27 @@ Go语言函数使用的是 caller-save 的模式，即由调用者负责保存�
 主调函数保存和恢复现场的通用逻辑如下：
 
 //开辟栈空间，压栈 BP 保存现场
-
-SUBQ \$x, SP //为函数开辟裁空间
-
+SUBQ $x, SP //为函数开辟裁空间
 MOVQ BP, y(SP) //保存当前函数 BP 到 y(SP）位直， y 为相对 SP 的偏移量
-
 LEAQ y(SP), BP //重直 BP，使其指向刚刚保存 BP 旧值的位置，这里主要
-
 //是方便后续 BP 的恢复
-
 //弹出栈，恢复 BP
-
 MOVQ y(SP), BP //恢复 BP 的值为调用前的值
-
-ADDQ \$x, SP //恢复 SP 的值为函数开始时的位
+ADDQ $x, SP //恢复 SP 的值为函数开始时的位
 
 ### 5.18.2汇编基础
 
 Go 编译器产生的汇编代码是一种中间抽象态，它不是对机器码的映射，而是和平台无关的一个中间态汇编描述，所以汇编代码中有些寄存器是真实的，有些是抽象的，几个抽象的寄存器如下：
 
 - SB (Static base pointer)：静态基址寄存器，它和全局符号一起表示全局变量的地址。
-
 - FP (Frame pointer)：栈帧寄存器，该寄存器指向当前函数调用栈帧的栈底位置。
-
 - PC (Program counter)：程序计数器，存放下一条指令的执行地址，很少直接操作该寄存器，一般是 CALL、RET 等指令隐式的操作。
-
 - SP (Stack pointer)：栈顶寄存器，一般在函数调用前由主调函数设置 SP 的值对栈空间进行分配或回收。
 
 #### Go 汇编简介
 
 1.  Go 汇编器采用 AT&T 风格的汇编，早期的实现来自 plan9 汇编器，源操作数在前，目的操作数在后。
-
 2.  Go 内嵌汇编和反汇编产生的代码并不是一一对应的，汇编编译器对内嵌汇编程序自动做了调整，主要差别就是增加了保护现场，以及函数调用前的保持 PC 、SP 偏移地址重定位等逻辑，反汇编代码更能反映程序的真实执行逻辑。
-
 3.  Go 的汇编代码并不是和具体硬件体系结构的机器码一一对应的，而是一种半抽象的描述，寄存器可能是抽象的，也可能是具体的。
 
 下面代码的分析基于 AMD64 位架构下的Linux环境。
@@ -3745,127 +3178,74 @@ Go 编译器产生的汇编代码是一种中间抽象态，它不是对机器�
 ### 5.18.3多值返回分析
 
 多值返回函数 swap 的源码如下：
-
+```go
 package main
 
 func swap (a, b int) (x int, y int) {
-
-x = b
-
-y = a
-
-Return
-
+    x = b
+    y = a
+    Return
 }
 
 func main() {
-
-swap(10, 20)
-
+    swap(10, 20)
 }
+```
 
 编译生成汇编如下
-
-//- S 产生汇编的代码
-
-//- N 禁用优化
-
-//- 1 禁用内联
-
-GOOS=linux GOARCH=amd64 go tool compile -1 -N -S swap.go \>swap.s 2\>&1
+//-S 产生汇编的代码
+//-N 禁用优化
+//-1 禁用内联
+GOOS=linux GOARCH=amd64 go tool compile -1 -N -S swap.go >swap.s 2>&1
 
 汇编代码分析
-
 1.  swap 函数和 main 函数汇编代码分析。例如：
-
 "".swap STEXT nosplit size=39 args=0x20 locals=0x0
-
-0x0000 00000 (swap.go:4) TEXT "".swap(SB), NOSPLIT, \$0 - 32
-
-0x0000 00000 (swap.go:4) FUNCDATA \$0, gclocals.ff19ed39bdde8a01a800918ac3ef0ec7(SB)
-
-0x0000 00000 (swap.go:4) FUNCDATA \$1, gclocals.33cdeccccebe80329flfdbee7f5874cb(SB)
-
-0x0000 00000 (swap.go:4) MOVQ \$0, "".x+24(SP)
-
-0x0009 00009 (swap.go:4) MOVQ \$0, "".y+32(SP)
-
+0x0000 00000 (swap.go:4) TEXT "".swap(SB), NOSPLIT, $0 - 32
+0x0000 00000 (swap.go:4) FUNCDATA $0, gclocals.ff19ed39bdde8a01a800918ac3ef0ec7(SB)
+0x0000 00000 (swap.go:4) FUNCDATA $1, gclocals.33cdeccccebe80329flfdbee7f5874cb(SB)
+0x0000 00000 (swap.go:4) MOVQ $0, "".x+24(SP)
+0x0009 00009 (swap.go:4) MOVQ $0, "".y+32(SP)
 0x0012 00018 (swap.go:5) MOVQ "".b+16(SP), AX
-
 0x0017 00023 (swap.go:5) MOVQ AX, "".x+24(SP)
-
 0xOO1c 00028 (swap.go:6) MOVQ "".a+8(SP), AX
-
 0x0021 00033 (swap.go:6) MOVQ AX, "".y+32(SP)
-
 0x0026 00038 (swap.go:7) RET
-
 "".main STEXT size=68 args=0x0 locals=0x28
-
-0x0000 00000 (swap.go:10) TEXT "".main(SB), \$40 - 0
-
+0x0000 00000 (swap.go:10) TEXT "".main(SB), $40 - 0
 0x0000 00000 (swap.go:10) MOVQ (TLS), CX
-
 0x0009 00009 (swap.go:10) CMPQ SP, 16(CX)
-
 0x000d 00013 (swap.go:10) JLS 61
-
-0x000f 00015 (swap.go:10) SUBQ \$40, SP
-
+0x000f 00015 (swap.go:10) SUBQ $40, SP
 0x0013 00019 (swap.go:10) MOVQ BP, 32 (SP)
-
 0x0018 00024 (swap.go:10) LEAQ 32(SP), BP
-
-0x001d 00029 (swap.go:10) FUNCDATA \$0, gclocals ·33cdeccccebe80329flfdbee7f5874cb(SB)
-
-0x001d 00029 (swap.go:10) FUNCDATA \$1, gclocals ·33cdeccccebe80329flfdbee7f5874cb(SB)
-
-0x001d 00029 (swap.go:11) MOVQ \$10, (SP)
-
-0x0025 00037 (swap.go:11) MOVQ \$20 , 8 (SP)
-
-0x002e 00046 (swap.go:11) PCDATA \$0 , \$0
-
+0x001d 00029 (swap.go:10) FUNCDATA $0, gclocals ·33cdeccccebe80329flfdbee7f5874cb(SB)
+0x001d 00029 (swap.go:10) FUNCDATA $1, gclocals ·33cdeccccebe80329flfdbee7f5874cb(SB)
+0x001d 00029 (swap.go:11) MOVQ $10, (SP)
+0x0025 00037 (swap.go:11) MOVQ $20 , 8 (SP)
+0x002e 00046 (swap.go:11) PCDATA $0 , $0
 0x002e 00046 (swap.go:11) CALL "". swap(SB)
-
 0x0033 00051 (swap.go:12) MOVQ 32(SP), BP
-
-0x0038 00056 (swap.go:12) ADDQ \$40, SP
-
+0x0038 00056 (swap.go:12) ADDQ $40, SP
 0x003c 00060 (swap.go:12) RET
-
 0x003d 00061 (swap.go:12) NOP
-
-0x003d 00061 (swap.go:10) PCDATA \$0, \$ - 1
+0x003d 00061 (swap.go:10) PCDATA $0, $ - 1
 
 - 第 5 行初始化返回值 x 为 0。
-
 - 第 6 行初始化返回值 y 为 0。
-
 - 第 7～8 行取第 2 个参数赋值给返回值 x。
-
 - 第 9～10 行取第 1 个参数赋值给返回值 y。
-
 - 第 11 行函数返回，同时进行栈回收，FUNCDATA 和垃圾收集可以忽略。
-
 - 第 15～24 行 main 函数堆栈初始化：开辟栈空间，保存 BP 寄存器。
-
 - 第 25 行初始化 add 函数的调用参数 1 的值为 10。
-
 - 第 26 行初始化 add 函数的调用参数 2 的值为 20。
-
 - 第 28 行调用 swap 函数，注意 call 隐含一个将 swap 下一条指令地址压栈的动作，即 sp=sp+8。
-
 - 所以可以看到在 swap 里面的所有变量的相对位置都发生了变化，都在原来的地址上 ＋8。
-
 - 第 29～30 行恢复措空间。
 
 从汇编的代码得知：
-
 - 函数的调用者负责环境准备，包括为参数和返回值开辟栈空间。
-
 - 寄存器的保存和恢复也由调用方负责。
-
 - 函数调用后回收栈空间，恢复 BP 也由主调函数负责。
 
 函数的多值返回实质上是在栈上开辟多个地址分别存放返回值，这个并没有什么特别的地方，如果返回值是存放到堆上的，则多了一个复制的动作。
@@ -3878,21 +3258,13 @@ main 调用 swap 函数栈的结构如下图所示。
 函数调用前己经为返回值和参数分配了栈空间，分配顺序是从右向左的，先是返回值，然后是参数，通用的栈模型如下：
 
 ＋------------＋
-
-\| 返回值 y \|
-
-\|------------\|
-
-\| 返回值 x \|
-
-\|------------\|
-
-\| 参数 b \|
-
-\|------------\|
-
-\| 参数 a \|
-
+| 返回值 y |
+|------------|
+| 返回值 x |
+|------------|
+| 参数 b |
+|------------|
+| 参数 a |
 ＋------------＋
 
 函数的多返回值是主调函数预先分配好空间来存放返回值，被调函数执行时将返回值复制到该返回位置来实现的。
@@ -3921,7 +3293,7 @@ f ()}
 
 编译汇编如下：
 
-GOOS=linux GOARCH=amd64 go tool compile -S c2\\7\\4a.go \>c2\\7\\4a.s 2&1
+GOOS=linux GOARCH=amd64 go tool compile -S c2\7\4a.go >c2\7\4a.s 2&1
 
 关键汇编代码及分析如下：
 
@@ -3929,7 +3301,7 @@ GOOS=linux GOARCH=amd64 go tool compile -S c2\\7\\4a.go \>c2\\7\\4a.s 2&1
 
 "".a STEXT size=91 args=0x10 locals=0x18
 
-0x0000 00000 (c2_7_4a.go:3) TEXT "".a(SB), \$24-16
+0x0000 00000 (c2_7_4a.go:3) TEXT "".a(SB), $24-16
 
 0x0000 00000 (c2_7_4a.go:3) MOVQ (TLS), CX
 
@@ -3937,21 +3309,21 @@ GOOS=linux GOARCH=amd64 go tool compile -S c2\\7\\4a.go \>c2\\7\\4a.s 2&1
 
 0x000d 00013 (c2_7_4a.go:3) JLS 84
 
-0x000f 00015 (c2_7_4a.go:3) SUBQ \$24, SP
+0x000f 00015 (c2_7_4a.go:3) SUBQ $24, SP
 
 0x0013 00019 (c2_7_4a.go:3) MOVQ BP , 16(SP)
 
 0x0018 00024 (c2_7_4a.go:3) LEAQ 16(SP), BP
 
-0x001d 00029 (c2_7_4a.go:3) FUNCDATA \$0, gclocals·f207267fbf96a0178e8758c6e3e0ce28(SB)
+0x001d 00029 (c2_7_4a.go:3) FUNCDATA $0, gclocals·f207267fbf96a0178e8758c6e3e0ce28(SB)
 
-0x001d 00029 (c2_7_4a.go:3) FUNCDATA \$1, gclocals·33cdeccccebe80329flfdbee7f5874cb (SB)
+0x001d 00029 (c2_7_4a.go:3) FUNCDATA $1, gclocals·33cdeccccebe80329flfdbee7f5874cb (SB)
 
 0x001d 00029 (c2_7_4a.go:4) LEAQ type.noalg.struct{ F uintptr; "".i int}(SB), AX
 
 0x0024 00036 (c2_7_4a.go:4) MOVQ AX, (SP)
 
-0x0028 00040 (c2_7_4a.go:4) PCDATA \$0, \$0
+0x0028 00040 (c2_7_4a.go:4) PCDATA $0, $0
 
 0x0028 00040 (c2_7_4a.go:4) CALL runtime.newobject(SB)
 
@@ -3969,9 +3341,9 @@ GOOS=linux GOARCH=amd64 go tool compile -S c2\\7\\4a.go \>c2\\7\\4a.s 2&1
 
 0x004a 00074 (c2_7_4a.go:4) MOVQ 16(SP), BP
 
-0x004f 00079 (c2_7_4a.go:4) ADDQ \$24, SP"".main STEXT size=69 args=0x0 locals=0x18
+0x004f 00079 (c2_7_4a.go:4) ADDQ $24, SP"".main STEXT size=69 args=0x0 locals=0x18
 
-0x0000 00000 (c2_7_4a.go:9) TEXT "".main(SB), \$24-0
+0x0000 00000 (c2_7_4a.go:9) TEXT "".main(SB), $24-0
 
 0x0000 00000 (c2_7_4a.go:9) MOVQ (TLS), CX
 
@@ -3979,91 +3351,68 @@ GOOS=linux GOARCH=amd64 go tool compile -S c2\\7\\4a.go \>c2\\7\\4a.s 2&1
 
 0x000d 00013 (c2_7_4a.go:9) JLS 62
 
-0x000f 00015 (c2_7_4a.go:9) SUBQ \$24, SP
+0x000f 00015 (c2_7_4a.go:9) SUBQ $24, SP
 
 0x0013 00019 (c2_7_4a.go:9) MOVQ BP, 16(SP)
 
 0x0018 00024 (c2_7_4a.go:9) LEAQ 16(SP), BP
 
-0x00ld 00029 (c2_7_4a.go:9) FUNCDATA \$0, gclocals·33cdeccccebe80329flfdbee7f5874cb(SB)
+0x00ld 00029 (c2_7_4a.go:9) FUNCDATA $0, gclocals·33cdeccccebe80329flfdbee7f5874cb(SB)
 
-0x00ld 00029 (c2_7_4a.go:9) FUNCDATA \$1, gclocals·33cdeccccebe80329flfdbee7f5874cb(SB)
+0x00ld 00029 (c2_7_4a.go:9) FUNCDATA $1, gclocals·33cdeccccebe80329flfdbee7f5874cb(SB)
 
-0x00ld 00029 (c2_7_4a.go:10) MOVQ \$1, (SP)
+0x00ld 00029 (c2_7_4a.go:10) MOVQ $1, (SP)
 
-0x0025 00037 (c2_7_4a.go:10) PCDATA \$0, \$0
+0x0025 00037 (c2_7_4a.go:10) PCDATA $0, $0
 
 0x0025 00037 (c2_7_4a.go:10) CALL "".a(SB)
 
 0x002a 00042 (c2_7_4a.go:10) MOVQ 8(SP), DX
 
 0x002f 00047 (c2_7_4a.go:11) MOVQ (DX), AX
-
-0x0032 00050 (c2_7_4a.go:11) PCDATA \$0, \$0
-
+0x0032 00050 (c2_7_4a.go:11) PCDATA $0, $0
 0x0032 00050 (c2_7_4a.go:11) CALL AX
-
 0x0034 00052 (c2_7_4a.go:15) MOVQ 16(SP), BP
-
-0x0039 00057 (c2_7_4a.go:15) ADDQ \$24, SP
-
+0x0039 00057 (c2_7_4a.go:15) ADDQ $24, SP
 0x003d 00061 (c2_7_4a.go:15) RET
 
 #### func a() 函数分析
 
 - 第 1～10 行环境准备。
-
 - 第 11 行这里我们看到type.noalg.struct { F uintptr; "".i int }(SB)这个符号是一个闭包类型的数据，闭包类型的数据结构如下：
 
 type Closure struct {
-
-F uintptr
-
-i int }
+    F uintptr
+    i int 
+}
 
 闭包的结构很简单，一个是函数指针，另一个是对外部环境的引用。注意，这里仅仅是打印 i，并没有修改 i，Go语言编译器并没有传递地址而是传递值。
-
 - 第 11 行将闭包类型元信息放到 (SP) 位置，(SP) 地址存放的是 CALL 函数调用的第一个参数。
-
 - 第 14 行创建闭包对象，我们来看一下 runtime.newobject 的函数原型，该函数的输入参数是一个类型信息，返回值是根据该类型信息构造出来的对象地址。
-
-// src/runtime/malloc.go
-
-func newobject(typ \\\\type) unsafe.Pointer
-
+    // src/runtime/malloc.go
+    func newobject(typ \\type) unsafe.Pointer
 - 第 15 行将 newobject 返回的对象地址复制给 AX 寄存器。
-
 - 第 16 行将 a 函数里面的匿名函数 a.func 指针复制到 CX 寄存器。
-
 - 第 17 行将 CX 寄存器中存放的 a.func 函数指针复制到闭包对象的函数指针位置。
-
 - 第 18、19 行将外部闭包变量 i 的值复制到闭包对象的 i 处。
-
 - 第 20 行复制闭包对象指针值到函数返回值位置 "".～r1+40(SP)。
 
 #### main() 函数分析
 
 - 第 23～32 行准备环境。
-
 - 第 33 行将立即数 1 复制到 (SP) 位置，为后续的 CALL 指令准备参数。
-
 - 第 35 行调用函数 a()。
-
 - 第 36 行复制函数返回值到 DX 寄存器。
-
 - 第 37 行间接寻址，复制闭包对象中的函数指针到 AX 寄存器。
-
 - 第 39 行调用 AX 寄存器指向的函数。
-
 - 第 40～42 行恢复环境，并返回。
 
 通过汇编代码的分析，我们清楚地看到 Go 实现闭包是通过返回一个如下的结构来实现的。
 
 type Closure struct {
-
-F uintptr
-
-env \*Type }
+    F uintptr
+    env *Type 
+}
 
 F 是返回的匿名函数指针，env 是对外部环境变量的引用集合，如果闭包内没有修改外部变量，则 Go 编译器直接优化为值传递，如上面的例子中的代码所示，反之则是通过指针传递的。
 
@@ -4083,7 +3432,7 @@ Go语言自带了 testing 测试包，可以进行自动化的单元测试，输
 
 要开始一个单元测试，需要准备一个 go 源码文件，在命名文件时文件名必须以_test.go结尾，单元测试源码文件可以由多个测试用例（可以理解为函数）组成，每个测试用例的名称需要以 Test 为前缀，例如：
 
-func TestXxx( t \*testing.T ){  
+func TestXxx( t *testing.T ){  
     //......  
 }
 
@@ -4097,7 +3446,7 @@ func TestXxx( t \*testing.T ){
 
 - 测试函数的名称要以Test或Benchmark开头，后面可以跟任意字母组成的字符串，但第一个字母必须大写，例如 TestAbc()，一个测试用例文件中可以包含多个测试函数；
 
-- 单元测试则以(t \*testing.T)作为参数，性能测试以(t \*testing.B)做为参数；
+- 单元测试则以(t *testing.T)作为参数，性能测试以(t *testing.B)做为参数；
 
 - 测试用例文件使用go test命令来执行，源码中不需要 main() 函数作为入口，所有以_test.go结尾的源码文件内以Test开头的函数都会自动执行。
 
@@ -4121,7 +3470,7 @@ demo.go：
 
 4.  func GetArea(weight int, height int) int {
 
-5.  return weight \* height
+5.  return weight * height
 
 6.  }
 
@@ -4135,7 +3484,7 @@ demo_test.go：
 
 4.  
 
-5.  func TestGetArea(t \*testing.T) {
+5.  func TestGetArea(t *testing.T) {
 
 6.  area := GetArea(40, 50)
 
@@ -4153,7 +3502,7 @@ PS D:\code\> go test -v
 === RUN   TestGetArea  
 --- PASS: TestGetArea (0.00s)  
 PASS  
-ok      \_/D\_/code       0.435s
+ok      _/D_/code       0.435s
 
 ### 5.19.4性能（压力）测试
 
@@ -4167,11 +3516,11 @@ ok      \_/D\_/code       0.435s
 
 4.  
 
-5.  func BenchmarkGetArea(t \*testing.B) {
+5.  func BenchmarkGetArea(t *testing.B) {
 
 6.  
 
-7.  for i := 0; i \< t.N; i++ {
+7.  for i := 0; i < t.N; i++ {
 
 8.  GetArea(40, 50)
 
@@ -4186,7 +3535,7 @@ goos: windows
 goarch: amd64  
 BenchmarkGetArea-4      2000000000               0.35 ns/op  
 PASS  
-ok      \_/D\_/code       1.166s
+ok      _/D_/code       1.166s
 
 上面信息显示了程序执行 2000000000 次，共耗时 0.35 纳秒。
 
@@ -4204,7 +3553,7 @@ ok      \_/D\_/code       1.166s
 
 4.  
 
-5.  func TestGetArea(t \*testing.T) {
+5.  func TestGetArea(t *testing.T) {
 
 6.  area := GetArea(40, 50)
 
@@ -4218,11 +3567,11 @@ ok      \_/D\_/code       1.166s
 
 11. 
 
-12. func BenchmarkGetArea(t \*testing.B) {
+12. func BenchmarkGetArea(t *testing.B) {
 
 13. 
 
-14. for i := 0; i \< t.N; i++ {
+14. for i := 0; i < t.N; i++ {
 
 15. GetArea(40, 50)
 
@@ -4235,4 +3584,4 @@ ok      \_/D\_/code       1.166s
 PS D:\code\> go test -cover  
 PASS  
 coverage: 100.0% of statements  
-ok      \_/D\_/code       0.437s
+ok      _/D_/code       0.437s

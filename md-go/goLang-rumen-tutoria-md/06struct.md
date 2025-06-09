@@ -10,7 +10,7 @@ Go语言入门教程，Golang入门教程（非常详细）
 > [6.结构体 [3](#结构体)](l)
 > 
 > [6.1 Go语言结构体定义 ](l)
->     [6.1.1 golang结构体标签（struct tags） ](l)
+>      
 > [6.2 Go语言实例化结构体 ](l)
 >     [6.2.1基本的实例化形式 ](l)
 >     [6.2.2创建指针类型的结构体 ](l)
@@ -41,7 +41,6 @@ Go语言入门教程，Golang入门教程（非常详细）
 > [6.8 类型内嵌和结构体内嵌 ](l)
 >     [6.8.1内嵌结构体 ](l)
 >     [6.8.2结构内嵌特性 ](l)
->     6.8+1结构体嵌入的 指针嵌入和值嵌入
 > [6.9 结构体内嵌模拟类的继承 ](\l)
 > [6.10 初始化内嵌结构体 ](\l)
 >     [6.10.1初始化内嵌匿名结构体 ](\l)
@@ -66,7 +65,7 @@ Go语言入门教程，Golang入门教程（非常详细）
 > [6.16.3Writer 对象](\l)
 >     [创建 Writer 对象 ](\l)
 >     [操作 Writer 对象](\l)
-> appendix01 golang 的结构体 是 值类型还是引用类型
+>  
 
 # 6.[结构体](http://c.biancheng.net/golang/struct/)
 
@@ -142,57 +141,6 @@ type 类型名 struct {
 
 结构体的定义只是一种内存布局的描述，只有当结构体实例化时，才会真正地分配内存，我们将在下一节《实例化结构体》中详细为大家介绍。
 
-### 6.1.1 golang结构体标签（struct tags）
-
-**下面的golang结构体 定义中，每行的最后字符串是什么语法**
-
-type User struct {
-
-Id int64 \`gorm:"primary_key" json:"id"\`
-
-Name string // 默认字符串对应的是数据库的longtext文本类型
-
-CreatedAt \*time.Time \`json:"createdAt" gorm:"column:create_at"\`
-
-Email string \`gorm:"type:varchar(255);unique_index"\` // 使用type字段定义类型，并设置为唯一索引
-
-Role string \`gorm:"size:255"\` // 设置字段的大小为255个字节
-
-MemberNumber \*string \`gorm:"unique;not null"\` // 设置memberNumber 字段唯一且不为空
-
-Num int \`gorm:"AUTO_INCREMENT"\` // 设置 Num字段自增
-
-Address string \`gorm:"index:addr"\` // 给Address 创建一个名字是 \`addr\`的索引
-
-IgnoreMe int \`gorm:"-"\` // 忽略这个字段
-
-}
-
-------------------------
-
-在给出的Golang结构体定义中，每行字段声明后面的字符串是结构体标签（struct tags）。结构体标签是Go语言的一个特性，允许在结构体字段后面附加元数据。这些标签通常用于控制结构体字段在JSON、XML或其他格式中的编码和解码行为，或者用于ORM（对象关系映射）工具中定义数据库表的列属性。
-
-具体来说，这些标签的语法是反引号（\`）括起来的一系列键值对，键值对之间用空格分隔。例如：
-
-- gorm:"primary_key"：这是一个用于GORM ORM框架的标签，表示该字段是数据库表的主键。
-
-- json:"id"：这是一个用于json编码/解码的标签，表示在JSON数据中，该字段应该映射为id。
-
-- gorm:"column:create_at"：GORM标签，表示数据库中对应的列名是create_at（注意这里可能是个笔误，通常应该是created_at）。
-
-- gorm:"type:varchar(255);unique_index"：GORM标签，表示数据库字段类型为VARCHAR(255)，并设置唯一索引。
-
-- gorm:"size:255"：GORM标签，表示数据库字段的大小为255个字节。
-
-- gorm:"unique;not null"：GORM标签，表示该字段在数据库中是唯一的且不允许为空。
-
-- gorm:"AUTO_INCREMENT"：GORM标签，表示该字段是自增的。
-
-- gorm:"index:addr"：GORM标签，表示创建一个名为addr的索引。
-
-- gorm:"-"：GORM标签，表示忽略该字段，不在数据库表中创建对应的列。
-
-这些标签为开发者提供了强大的灵活性，允许在不改变结构体字段本身的情况下，控制字段的多种行为。
 
 ## 6.2 [Go语言实例化结构体](http://c.biancheng.net/view/66.html)
 
@@ -1621,143 +1569,7 @@ Go语言的结构体内嵌有如下特性。
 4.  c.BasicColor.B = 0
 一个结构体只能嵌入一个同类型的成员，无须担心结构体重名和错误赋值的情况，编译器在发现可能的赋值歧义时会报错。
 
-
-
-
-## 6.8+1结构体嵌入的 指针嵌入和值嵌入
-
-```go
-type HelloServiceClient struct {
-	*rpc.Client
-}
-```
-这里，*rpc.Client是golang的什么语法?
-
-doubaoAI:
-
-在 Go 语言中，`*rpc.Client` 这种语法表示 **结构体嵌入（Struct Embedding）**，也称为 **匿名组合（Anonymous Composition）**。这是 Go 语言实现继承和代码复用的一种方式，允许一个结构体直接包含另一个结构体的字段和方法。
-
-
-### **一、语法解析**
-```go
-type HelloServiceClient struct {
-    *rpc.Client  // 嵌入指针类型的结构体
-}
-```
-- **含义**：`HelloServiceClient` 结构体**隐式包含**了 `rpc.Client` 的所有字段和方法。
-- **类型**：嵌入的是 `*rpc.Client`（指针类型），而非 `rpc.Client`（值类型）。
-
-
-### **二、核心特性**
-#### **1. 方法和字段的继承**
-`HelloServiceClient` 可以直接调用 `rpc.Client` 的方法，无需显式转发：
-```go
-client := &HelloServiceClient{rpc.Dial("tcp", "localhost:1234")}
-client.Call("Service.Method", args, &reply)  // 直接调用 rpc.Client 的方法
-```
-
-#### **2. 访问控制**
-- 嵌入结构体的**导出字段和方法**（首字母大写）会被提升为外部结构体的字段和方法。
-- 未导出的字段和方法（首字母小写）无法直接访问。
-
-#### **3. 指针 vs 值嵌入**
-- **指针嵌入（`*rpc.Client`）**：多个实例共享同一个底层对象，修改会影响所有引用。
-- **值嵌入（`rpc.Client`）**：每个实例有独立的副本，修改不会相互影响。
-
-
-### **三、使用场景**
-#### **1. 扩展已有类型**
-为 `rpc.Client` 添加额外功能，同时保留原有接口：
-```go
-type LoggedClient struct {
-    *rpc.Client
-    logger *log.Logger
-}
-
-// 添加新方法
-func (c *LoggedClient) LoggedCall(serviceMethod string, args, reply interface{}) error {
-    c.logger.Printf("Calling %s", serviceMethod)
-    return c.Client.Call(serviceMethod, args, reply)  // 调用嵌入的方法
-}
-```
-
-#### **2. 实现接口组合**
-通过嵌入多个结构体，组合多个接口的功能：
-```go
-type HTTPRequest struct {
-    *bytes.Buffer  // 嵌入 io.Reader 和 io.Writer 接口的实现
-    url.URL
-}
-```
-
-
-### **四、与传统继承的区别**
-| 特性               | Go 结构体嵌入                | 传统继承（如 Java）         |
-|--------------------|------------------------------|----------------------------|
-| 语法               | 显式嵌入结构体               | 通过 `extends` 关键字       |
-| 实现方式           | 组合（Composition）          | 继承（Inheritance）         |
-| 类型关系           | 无类型关系，仅方法提升       | 子类是父类的子类型         |
-| 多重继承           | 支持嵌入多个结构体           | 不支持多重继承             |
-| 方法重写           | 通过定义同名方法覆盖         | 通过 `override` 关键字      |
-
-
-### **五、注意事项**
-1. **命名冲突**：若嵌入多个结构体存在同名方法，需显式指定调用路径：
-   ```go
-   client.rpc.Client.Call(...)  // 明确指定调用 rpc.Client 的方法
-   ```
-
-2. **初始化**：嵌入指针类型时，需确保指针已初始化：
-   ```go
-   client := &HelloServiceClient{
-       Client: rpc.Dial("tcp", "localhost:1234"),  // 显式初始化
-   }
-   ```
-
-3. **接口实现**：若嵌入的结构体实现了某个接口，外部结构体也会被视为实现了该接口。
-
-
-### **六、示例代码**
-```go
-package main
-
-import (
-    "fmt"
-    "net/rpc"
-)
-
-// 定义服务客户端
-type HelloServiceClient struct {
-    *rpc.Client
-}
-
-// 添加新方法
-func (c *HelloServiceClient) SayHello(name string) (string, error) {
-    var reply string
-    err := c.Client.Call("HelloService.Say", name, &reply)
-    return reply, err
-}
-
-func main() {
-    // 初始化客户端
-    rpcClient, _ := rpc.Dial("tcp", "localhost:1234")
-    client := &HelloServiceClient{rpcClient}
-
-    // 调用嵌入的方法
-    client.Close()
-
-    // 调用自定义方法
-    reply, _ := client.SayHello("World")
-    fmt.Println(reply)
-}
-```
-
-
-### **总结**
-`*rpc.Client` 在 Go 中是**结构体嵌入语法**，允许 `HelloServiceClient` 直接使用 `rpc.Client` 的所有功能，同时可以添加新方法或修改行为。这是 Go 语言实现代码复用和接口组合的核心机制之一，相比传统继承更灵活、更清晰。
-
-
-
+ 
 ## 6.9 [结构体内嵌模拟类的继承](http://c.biancheng.net/view/vip_7325.html)
 
 Go语言结构体内嵌模拟类的继承
@@ -3742,133 +3554,4 @@ func (b *Writer) WriteString(s string) (int, error)
 
 C语言中文网 16 <nil>
 
-========================================================
-## appendix01 golang 的结构体 是 值类型还是引用类型
-
-在 Go 语言中，**结构体（struct）是值类型**，但可以通过指针实现类似引用类型的行为。以下是详细解释和示例：
-
-
-### **一、结构体是值类型**
-1. **赋值和传参时复制值**  
-   当结构体被赋值给另一个变量或作为参数传递时，会复制整个结构体的内容：
-   ```go
-   type Point struct {
-       X, Y int
-   }
-
-   func main() {
-       p1 := Point{1, 2}
-       p2 := p1       // 复制 p1 的值到 p2
-       p2.X = 100     // 修改 p2 不会影响 p1
-       fmt.Println(p1) // 输出: {1 2}
-       fmt.Println(p2) // 输出: {100 2}
-   }
-   ```
-
-2. **函数内修改不影响原结构体**  
-   函数参数接收的是结构体的副本，修改副本不会影响原始值：
-   ```go
-   func modify(p Point) {
-       p.X = 100      // 修改的是副本
-   }
-
-   func main() {
-       p := Point{1, 2}
-       modify(p)
-       fmt.Println(p) // 输出: {1 2}（未被修改）
-   }
-   ```
-
-
-### **二、通过指针实现引用行为**
-1. **结构体指针的赋值和传参**  
-   使用指针时，赋值和传参传递的是内存地址，而非值的副本：
-   ```go
-   func modifyByPtr(p *Point) {
-       p.X = 100      // 通过指针修改原始值
-   }
-
-   func main() {
-       p := &Point{1, 2}
-       modifyByPtr(p)
-       fmt.Println(p) // 输出: &{100 2}（已被修改）
-   }
-   ```
-
-2. **结构体包含指针字段**  
-   结构体内部的指针字段不会被深拷贝：
-   ```go
-   type Person struct {
-       Name string
-       Age  *int    // 指针字段
-   }
-
-   func main() {
-       age := 30
-       p1 := Person{Name: "Alice", Age: &age}
-       p2 := p1       // 复制结构体，但 Age 指向同一内存地址
-       *p2.Age = 31   // 修改指针指向的值
-       fmt.Println(*p1.Age) // 输出: 31（p1 也被修改）
-   }
-   ```
-
-
-### **三、值类型 vs 引用类型对比**
-| **特性**               | **值类型（结构体）**         | **引用类型（切片、映射）**    |
-|------------------------|-----------------------------|-----------------------------|
-| 赋值/传参时的行为      | 复制整个值                  | 复制引用（共享底层数据）      |
-| 修改是否影响原值       | 否                          | 是                          |
-| 内存占用               | 与字段数量和大小成正比       | 固定大小（指针+元数据）       |
-| 零值                   | 各字段的零值组合            | nil                         |
-
-
-### **四、常见场景选择**
-1. **使用值类型的情况**  
-   - 结构体较小且无需修改原值。  
-   - 需要保持数据的不可变性。  
-   - 作为 map 的键（必须是可比较的类型）。
-
-2. **使用指针类型的情况**  
-   - 结构体较大，频繁传递时为避免复制开销。  
-   - 需要在函数内部修改原始结构体。  
-   - 实现接口时（接口方法接收者为指针）。
-
-
-### **五、示例对比**
-#### **值类型行为**
-```go
-type Rectangle struct {
-    Width, Height float64
-}
-
-func (r Rectangle) Area() float64 {
-    return r.Width * r.Height
-}
-
-func main() {
-    r1 := Rectangle{10, 20}
-    r2 := r1
-    r2.Width = 100
-    fmt.Println(r1.Area()) // 输出: 200（r1 未被修改）
-}
-```
-
-#### **引用类型行为（通过指针）**
-```go
-func (r *Rectangle) SetWidth(w float64) {
-    r.Width = w
-}
-
-func main() {
-    r1 := &Rectangle{10, 20}
-    r2 := r1
-    r2.SetWidth(100)
-    fmt.Println(r1.Area()) // 输出: 2000（r1 被修改）
-}
-```
-
-
-### **总结**
-- **结构体本身是值类型**，赋值和传参时会复制整个值。  
-- **通过指针**可以实现引用语义，避免复制开销并修改原始数据。  
-- **选择值类型还是指针类型**取决于具体场景，需权衡性能和语义需求。
+ 
