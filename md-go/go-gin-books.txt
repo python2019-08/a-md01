@@ -135,3 +135,16 @@ Gin实践 番外 请入门 Makefile
  
 
  ====================================
+7 days-golang
+
+The-Golang-Standard-Library-by-example
+
+Advanced-go-programming-book
+
+LeetCold-Go
+
+Gin-vue-admin
+Jwt鉴权
+动态路由
+动态菜单
+Casbin鉴权表单生成器代码生成器
