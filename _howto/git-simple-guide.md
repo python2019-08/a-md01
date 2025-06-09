@@ -403,3 +403,115 @@ git pull --recurse-submodules
 ```
 
 通过使用 `--recurse-submodules` 选项，你能够更方便地管理包含子模块的 Git 仓库。 
+
+===========================================================
+# 8.git 如何查看 某个commit 的修改
+
+### Git查看特定commit修改的方法
+
+在Git中，查看特定commit的修改是一项常见操作，这对于理解代码变更历史、排查问题或进行代码审查非常有用。以下是几种常用的方法：
+
+### 1. 使用`git show`命令
+
+这是最常用的查看commit修改的方法：
+
+```bash
+git show <commit哈希值>
+```
+
+例如：
+
+```bash
+git show abc1234
+```
+
+这个命令会显示：
+- commit的基本信息（作者、日期、提交信息）
+- 该commit引入的所有文件修改
+- 每个文件的具体变更（使用统一差异格式）
+
+### 2. 查看特定文件在某个commit的修改
+
+如果你只想查看某个特定文件在特定commit中的修改：
+
+```bash
+git show <commit哈希值> <文件路径>
+```
+
+例如：
+
+```bash
+git show abc1234 src/main.go
+```
+
+### 3. 使用`git diff`命令
+
+你可以使用`git diff`来比较两个commit之间的差异：
+
+```bash
+git diff <commit1> <commit2>
+```
+
+或者查看某个commit相对于其父commit的差异：
+
+```bash
+git diff <commit>^ <commit>
+```
+
+### 4. 只查看文件列表，不显示具体内容
+
+如果你只关心哪些文件被修改了，而不关心具体修改内容：
+
+```bash
+git show --name-only <commit哈希值>
+```
+
+### 5. 使用`git log -p`查看最近几次修改
+
+这个命令可以查看最近几次commit的详细修改：
+
+```bash
+git log -p -n 3  # 查看最近3次commit的详细修改
+```
+
+### 6. 图形化查看修改
+
+对于更喜欢图形界面的用户，可以使用：
+
+```bash
+gitk <commit哈希值>
+```
+
+或者使用现代的Git GUI工具，如GitKraken、SourceTree等。
+
+### 7. 查看某个文件的修改历史
+
+如果你想查看某个文件的完整修改历史：
+
+```bash
+git log -p <文件路径>
+```
+
+### 8. 查看某个文件在特定时间范围内的修改
+
+```bash
+git log --since="2 weeks ago" --until="yesterday" -p <文件路径>
+```
+
+### 9. 查看二进制文件的修改
+
+对于二进制文件（如图像、文档），可以使用：
+
+```bash
+git show --pretty=oneline --name-only <commit哈希值>
+```
+
+或者使用专门的二进制文件比较工具。
+
+### 实用技巧
+
+- 使用`git log --oneline`先获取commit哈希值的简短列表
+- 使用`HEAD~1`、`HEAD~2`等表示最近的第几个commit
+- 可以结合`--stat`参数查看修改的统计信息
+
+这些命令可以帮助你全面了解代码库中的任何历史修改，对于理解项目发展历程和进行代码审查非常有价值。
