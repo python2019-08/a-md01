@@ -64,7 +64,6 @@ Go语言入门教程，Golang入门教程（非常详细）
 
 [13.11Go语言如何搭建网站程序](\l)
     [13.11.1 net/http 包简介](\l)
-
 [13.12Go语言开发一个简单的相册网站](\l)
     [13.12.1新建工程](\l)
     [13.12.2使用 net/http 包提供网络服务](\l)
@@ -259,83 +258,83 @@ ListenTCP 函数会在本地 TCP 地址 laddr 上声明并返回一个 \*TCPList
 
 下面我们实现一个简单的时间同步服务：
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark">import (</span>
+import (
 
-<span class="mark">    "fmt"</span>
+    "fmt"
 
-<span class="mark">    "log"</span>
+    "log"
 
-<span class="mark">    "net"</span>
+    "net"
 
-<span class="mark">    "os"</span>
+    "os"
 
-<span class="mark">    "time"</span>
+    "time"
 
-<span class="mark">)</span>
+)
 
-<span class="mark">func echo(conn \*net.TCPConn) {</span>
+func echo(conn \*net.TCPConn) {
 
-<span class="mark">    tick := time.Tick(5 \* time.Second) // 五秒的心跳间隔</span>
+    tick := time.Tick(5 \* time.Second) // 五秒的心跳间隔
 
-<span class="mark">    for now := range tick {</span>
+    for now := range tick {
 
-<span class="mark">        n, err := conn.Write( \[\]byte(now.String()) )</span>
+        n, err := conn.Write( \[\]byte(now.String()) )
 
-<span class="mark">        if err != nil {</span>
+        if err != nil {
 
-<span class="mark">            log.Println(err)</span>
+            log.Println(err)
 
-<span class="mark">            conn.Close()</span>
+            conn.Close()
 
-<span class="mark">            return</span>
+            return
 
-<span class="mark">        }</span>
+        }
 
-<span class="mark">        fmt.Printf("send %d bytes to %s\n", n, conn.RemoteAddr())</span>
+        fmt.Printf("send %d bytes to %s\n", n, conn.RemoteAddr())
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">}</span>
+}
 
-<span class="mark">func main() {</span>
+func main() {
 
-<span class="mark">    address := net.TCPAddr{</span>
+    address := net.TCPAddr{
 
-<span class="mark">        IP:   net.ParseIP("127.0.0.1"), // 把字符串IP地址转换为net.IP类型</span>
+        IP:   net.ParseIP("127.0.0.1"), // 把字符串IP地址转换为net.IP类型
 
-<span class="mark">        Port: 8000,</span>
+        Port: 8000,
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">    listener, err := net.ListenTCP("tcp4", &address) // 创建TCP4服务器端监听器</span>
+    listener, err := net.ListenTCP("tcp4", &address) // 创建TCP4服务器端监听器
 
-<span class="mark">    if err != nil {</span>
+    if err != nil {
 
-<span class="mark">        log.Fatal(err) // Println +</span>
+        log.Fatal(err) // Println +
 
-<span class="mark">        os.Exit(1)</span>
+        os.Exit(1)
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">    for {</span>
+    for {
 
-<span class="mark">        conn, err := listener.AcceptTCP()</span>
+        conn, err := listener.AcceptTCP()
 
-<span class="mark">        if err != nil {</span>
+        if err != nil {
 
-<span class="mark">            log.Fatal(err) // 错误直接退出</span>
+            log.Fatal(err) // 错误直接退出
 
-<span class="mark">        }</span>
+        }
 
-<span class="mark">        fmt.Println("remote address:", conn.RemoteAddr())</span>
+        fmt.Println("remote address:", conn.RemoteAddr())
 
-<span class="mark">        go echo(conn)</span>
+        go echo(conn)
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">}</span>
+}
 
 上面的服务端程序运行起来之后，它将会一直在那里等待，直到有客户端请求到达。
 
@@ -363,55 +362,55 @@ func DialTCP(net string, laddr, raddr \*TCPAddr) (c \*TCPConn, err os.Error)
 
 客户端代码如下所示：
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark">import (</span>
+import (
 
-<span class="mark">    "log"</span>
+    "log"
 
-<span class="mark">    "net"</span>
+    "net"
 
-<span class="mark">    "os"</span>
+    "os"
 
-<span class="mark">)</span>
+)
 
-<span class="mark">func main() {</span>
+func main() {
 
-<span class="mark">    if len(os.Args) != 2 {</span>
+    if len(os.Args) != 2 {
 
-<span class="mark">        log.Fatalf("Usage: %s host:port", os.Args\[0\])</span>
+        log.Fatalf("Usage: %s host:port", os.Args\[0\])
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">    service := os.Args\[1\]</span>
+    service := os.Args\[1\]
 
-<span class="mark">    tcpAddr, err := net.ResolveTCPAddr("tcp4", service)</span>
+    tcpAddr, err := net.ResolveTCPAddr("tcp4", service)
 
-<span class="mark">    if err != nil {</span>
+    if err != nil {
 
-<span class="mark">        log.Fatal(err)</span>
+        log.Fatal(err)
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">    conn, err := net.DialTCP("tcp4", nil, tcpAddr)</span>
+    conn, err := net.DialTCP("tcp4", nil, tcpAddr)
 
-<span class="mark">    if err != nil {</span>
+    if err != nil {
 
-<span class="mark">        log.Fatal(err)</span>
+        log.Fatal(err)
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">    n, err := conn.Write(\[\]byte("HEAD / HTTP/1.1\r\n\r\n"))</span>
+    n, err := conn.Write(\[\]byte("HEAD / HTTP/1.1\r\n\r\n"))
 
-<span class="mark">    if err != nil {</span>
+    if err != nil {
 
-<span class="mark">        log.Fatal(err)</span>
+        log.Fatal(err)
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">    log.Fatal(n)</span>
+    log.Fatal(n)
 
-<span class="mark">}</span>
+}
 
 在 CMD 窗口中运行前面的服务端程序，正如前面所说的，服务端程序只是占用当前的窗口并没有任何输出内容。
 
@@ -454,131 +453,131 @@ func (c \*UDPConn) WriteToUDP(b \[\]byte, addr \*UDPAddr) (n int, err os.Error)
 
 一个 UDP 的客户端代码如下所示，我们可以看到不同的就是 TCP 换成了 UDP 而已：
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark">import (</span>
+import (
 
-<span class="mark">    "fmt"</span>
+    "fmt"
 
-<span class="mark">    "net"</span>
+    "net"
 
-<span class="mark">    "os"</span>
+    "os"
 
-<span class="mark">)</span>
+)
 
-<span class="mark">func main() {</span>
+func main() {
 
-<span class="mark">    if len(os.Args) != 2 {</span>
+    if len(os.Args) != 2 {
 
-<span class="mark">        fmt.Fprintf(os.Stderr, "Usage: %s host:port", os.Args\[0\])</span>
+        fmt.Fprintf(os.Stderr, "Usage: %s host:port", os.Args\[0\])
 
-<span class="mark">        os.Exit(1)</span>
+        os.Exit(1)
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">    service := os.Args\[1\]</span>
+    service := os.Args\[1\]
 
-<span class="mark">    udpAddr, err := net.ResolveUDPAddr("udp4", service)</span>
+    udpAddr, err := net.ResolveUDPAddr("udp4", service)
 
-<span class="mark">    checkError(err)</span>
+    checkError(err)
 
-<span class="mark">    conn, err := net.DialUDP("udp", nil, udpAddr)</span>
+    conn, err := net.DialUDP("udp", nil, udpAddr)
 
-<span class="mark">    checkError(err)</span>
+    checkError(err)
 
-<span class="mark">    \_, err = conn.Write( \[\]byte("anything") )</span>
+    \_, err = conn.Write( \[\]byte("anything") )
 
-<span class="mark">    checkError(err)</span>
+    checkError(err)
 
-<span class="mark">    var buf \[512\]byte</span>
+    var buf \[512\]byte
 
-<span class="mark">    n, err := conn.Read( buf\[0:\] )</span>
+    n, err := conn.Read( buf\[0:\] )
 
-<span class="mark">    checkError(err)</span>
+    checkError(err)
 
-<span class="mark">fmt.Println(string( buf\[0:n\]) )</span>
+fmt.Println(string( buf\[0:n\]) )
 
-<span class="mark">    os.Exit(0)</span>
+    os.Exit(0)
 
-<span class="mark">}</span>
+}
 
-<span class="mark">func checkError(err error) {</span>
+func checkError(err error) {
 
-<span class="mark">    if err != nil {</span>
+    if err != nil {
 
-<span class="mark">        fmt.Fprintf(os.Stderr, "Fatal error ", err.Error())</span>
+        fmt.Fprintf(os.Stderr, "Fatal error ", err.Error())
 
-<span class="mark">        os.Exit(1)</span>
+        os.Exit(1)
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">}</span>
+}
 
 我们再来看一下 UDP 服务器端如何来处理：
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark">import (</span>
+import (
 
-<span class="mark">    "fmt"</span>
+    "fmt"
 
-<span class="mark">    "net"</span>
+    "net"
 
-<span class="mark">    "os"</span>
+    "os"
 
-<span class="mark">    "time"</span>
+    "time"
 
-<span class="mark">)</span>
+)
 
-<span class="mark">func main() {</span>
+func main() {
 
-<span class="mark">    service := ":1200"</span>
+    service := ":1200"
 
-<span class="mark">    udpAddr, err := net.ResolveUDPAddr("udp4", service)</span>
+    udpAddr, err := net.ResolveUDPAddr("udp4", service)
 
-<span class="mark">    checkError(err)</span>
+    checkError(err)
 
-<span class="mark">    conn, err := net.ListenUDP("udp", udpAddr)</span>
+    conn, err := net.ListenUDP("udp", udpAddr)
 
-<span class="mark">checkError(err)</span>
+checkError(err)
 
-<span class="mark">    for {</span>
+    for {
 
-<span class="mark">        handleClient(conn)</span>
+        handleClient(conn)
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">}</span>
+}
 
-<span class="mark">func handleClient(conn \*net.UDPConn) {</span>
+func handleClient(conn \*net.UDPConn) {
 
-<span class="mark">    var buf \[512\]byte</span>
+    var buf \[512\]byte
 
-<span class="mark">    \_, addr, err := conn.ReadFromUDP(buf\[0:\])</span>
+    \_, addr, err := conn.ReadFromUDP(buf\[0:\])
 
-<span class="mark">    if err != nil {</span>
+    if err != nil {
 
-<span class="mark">        return</span>
+        return
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">    daytime := time.Now().String()</span>
+    daytime := time.Now().String()
 
-<span class="mark">    conn.WriteToUDP(\[\]byte(daytime), addr)</span>
+    conn.WriteToUDP(\[\]byte(daytime), addr)
 
-<span class="mark">}</span>
+}
 
-<span class="mark">func checkError(err error) {</span>
+func checkError(err error) {
 
-<span class="mark">    if err != nil {</span>
+    if err != nil {
 
-<span class="mark">        fmt.Fprintf(os.Stderr, "Fatal error ", err.Error())</span>
+        fmt.Fprintf(os.Stderr, "Fatal error ", err.Error())
 
-<span class="mark">        os.Exit(1)</span>
+        os.Exit(1)
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">}</span>
+}
 
 运行结果如下：
 
@@ -646,119 +645,119 @@ https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xml。
 
 【示例】通过建立 TCP 连接来实现简单的 HTTP 协议，通过向网络主机发送 HTTP Head 请求，读取网络主机返回的信息：
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark">import (    </span>
+import (    
 
-<span class="mark">    "bytes"    </span>
+    "bytes"    
 
-<span class="mark">    "fmt"    </span>
+    "fmt"    
 
-<span class="mark">    "io"    </span>
+    "io"    
 
-<span class="mark">    "net"    </span>
+    "net"    
 
-<span class="mark">    "os"</span>
+    "os"
 
-<span class="mark">)</span>
+)
 
-<span class="mark">func main() {    </span>
+func main() {    
 
-<span class="mark">   if len(os.Args) != 2 {        </span>
+   if len(os.Args) != 2 {        
 
-<span class="mark">      fmt.Fprintf(os.Stderr,</span>
+      fmt.Fprintf(os.Stderr,
 
-<span class="mark">         "Usage: %s host:port", os.Args\[0\])        </span>
+         "Usage: %s host:port", os.Args\[0\])        
 
-<span class="mark">      os.Exit(1)    </span>
+      os.Exit(1)    
 
-<span class="mark">   }    </span>
+   }    
 
-<span class="mark">   // 从参数中读取主机信息    </span>
+   // 从参数中读取主机信息    
 
-<span class="mark">   service := os.Args\[1\]    </span>
+   service := os.Args\[1\]    
 
-<span class="mark">   // 建立网络连接    </span>
+   // 建立网络连接    
 
-<span class="mark">   conn, err := net.Dial("tcp", service)    </span>
+   conn, err := net.Dial("tcp", service)    
 
-<span class="mark">   // 连接出错则打印错误消息并退出程序    </span>
+   // 连接出错则打印错误消息并退出程序    
 
-<span class="mark">   checkError(err)    </span>
+   checkError(err)    
 
-<span class="mark">   // 调用返回的连接对象提供的 Write 方法发送请求    </span>
+   // 调用返回的连接对象提供的 Write 方法发送请求    
 
-<span class="mark">   \_, err = conn.Write(\[\]byte("HEAD / HTTP/1.0\r\n\r\n"))    </span>
+   \_, err = conn.Write(\[\]byte("HEAD / HTTP/1.0\r\n\r\n"))    
 
-<span class="mark">   checkError(err)  </span>
+   checkError(err)  
 
-<span class="mark">   // 通过连接对象提供的 Read 方法读取所有响应数据    </span>
+   // 通过连接对象提供的 Read 方法读取所有响应数据    
 
-<span class="mark">   result, err := readFully(conn)    </span>
+   result, err := readFully(conn)    
 
-<span class="mark">   checkError(err)    </span>
+   checkError(err)    
 
-<span class="mark">   // 打印响应数据    </span>
+   // 打印响应数据    
 
-<span class="mark">   fmt.Println(string(result))    os.Exit(0)</span>
+   fmt.Println(string(result))    os.Exit(0)
 
-<span class="mark">}</span>
+}
 
-<span class="mark">func checkError(err error) {    </span>
+func checkError(err error) {    
 
-<span class="mark">   if err != nil {        </span>
+   if err != nil {        
 
-<span class="mark">      fmt.Fprintf(os.Stderr, "Fatal error: %s", err.Error())        </span>
+      fmt.Fprintf(os.Stderr, "Fatal error: %s", err.Error())        
 
-<span class="mark">      os.Exit(1)    </span>
+      os.Exit(1)    
 
-<span class="mark">   }</span>
+   }
 
-<span class="mark">}</span>
+}
 
-<span class="mark"></span>
 
-<span class="mark">func readFully(conn net.Conn) (\[\]byte, error) {    </span>
 
-<span class="mark">   // 读取所有响应数据后主动关闭连接    </span>
+func readFully(conn net.Conn) (\[\]byte, error) {    
 
-<span class="mark">   defer conn.Close()    </span>
+   // 读取所有响应数据后主动关闭连接    
 
-<span class="mark">   result := bytes.NewBuffer(nil)</span>
+   defer conn.Close()    
 
-<span class="mark"></span>
+   result := bytes.NewBuffer(nil)
 
-<span class="mark">   var buf \[512\]byte    </span>
 
-<span class="mark">   for {        </span>
 
-<span class="mark">      n, err := conn.Read(buf\[0:\])        </span>
+   var buf \[512\]byte    
 
-<span class="mark">      result.Write(buf\[0:n\])        </span>
+   for {        
 
-<span class="mark">     </span>
+      n, err := conn.Read(buf\[0:\])        
 
-<span class="mark"></span>
+      result.Write(buf\[0:n\])        
 
-<span class="mark">      if err != nil {            </span>
+     
 
-<span class="mark">         if err == io.EOF {                </span>
 
-<span class="mark">            break            </span>
 
-<span class="mark">         }            </span>
+      if err != nil {            
 
-<span class="mark">         return nil, err        </span>
+         if err == io.EOF {                
 
-<span class="mark">      }    </span>
+            break            
 
-<span class="mark">   }    </span>
+         }            
 
-<span class="mark"></span>
+         return nil, err        
 
-<span class="mark">   return result.Bytes(), nil</span>
+      }    
 
-<span class="mark">}</span>
+   }    
+
+
+
+   return result.Bytes(), nil
+
+}
 
 运行结果如下：
 
@@ -1068,87 +1067,60 @@ func DialIP(netProto string, laddr, raddr \*IPAddr) (\*IPConn, error)
 func DialUnix(net string, laddr, raddr \*UnixAddr) (c \*UnixConn, err error)
 
 之前基于 TCP 发送的 HTTP 请求，读取服务器信息并返回 HTTP Head 的示例程序也可以使用下面的方式实现：
+```go
+package main
 
-<span class="mark">package main</span>
+import (    
+    "net"    
+    "os"    
+    "fmt"    
+    "io/ioutil"
+)
 
-<span class="mark">import (    </span>
+func main() {    
 
-<span class="mark">    "net"    </span>
+    if len(os.Args) != 2 {       
+        fmt.Fprintf(os.Stderr, "Usage: %s host:port", os.Args\[0\])       
+        os.Exit(1)    
+    }    
+   
 
-<span class="mark">    "os"    </span>
+    service := os.Args\[1\]  
+    tcpAddr, err := net.ResolveTCPAddr("tcp4", service) 
+    checkError(err)       
 
-<span class="mark">    "fmt"    </span>
+    conn, err := net.DialTCP("tcp", nil, tcpAddr)   
+    checkError(err)       
 
-<span class="mark">    "io/ioutil"</span>
+    _, err = conn.Write(\[\]byte("HEAD / HTTP/1.0\r\n\r\n"))   
+    checkError(err)    
 
-<span class="mark">)</span>
+   
 
-<span class="mark">func main() {    </span>
+    result, err := ioutil.ReadAll(conn)   
+    checkError(err)    
 
-<span class="mark">    if len(os.Args) != 2 {        </span>
+    fmt.Println(string(result))  
+    os.Exit(0)
+}
 
-<span class="mark">        fmt.Fprintf(os.Stderr, "Usage: %s host:port", os.Args\[0\])        </span>
+func checkError(err error) {   
 
-<span class="mark">        os.Exit(1)    </span>
+    if err != nil { 
+        fmt.Fprintf(os.Stderr,
+            "Fatal error: %s", err.Error()
+            )        
 
-<span class="mark">    }    </span>
-
-<span class="mark">   </span>
-
-<span class="mark">    service := os.Args\[1\]    </span>
-
-<span class="mark">    tcpAddr, err := net.ResolveTCPAddr("tcp4", service)    </span>
-
-<span class="mark">    checkError(err)    </span>
-
-<span class="mark">   </span>
-
-<span class="mark">    conn, err := net.DialTCP("tcp", nil, tcpAddr)    </span>
-
-<span class="mark">    checkError(err)    </span>
-
-<span class="mark">   </span>
-
-<span class="mark">    \_, err = conn.Write(\[\]byte("HEAD / HTTP/1.0\r\n\r\n"))    </span>
-
-<span class="mark">    checkError(err)    </span>
-
-<span class="mark">   </span>
-
-<span class="mark">    result, err := ioutil.ReadAll(conn)    </span>
-
-<span class="mark">    checkError(err)    </span>
-
-<span class="mark">    fmt.Println(string(result))    </span>
-
-<span class="mark">    os.Exit(0)</span>
-
-<span class="mark">}</span>
-
-<span class="mark">func checkError(err error) {    </span>
-
-<span class="mark">    if err != nil {        </span>
-
-<span class="mark">        fmt.Fprintf(os.Stderr,</span>
-
-<span class="mark">            "Fatal error: %s", err.Error()</span>
-
-<span class="mark">            )        </span>
-
-<span class="mark">        os.Exit(1)    </span>
-
-<span class="mark">    }</span>
-
-<span class="mark">}</span>
-
+        os.Exit(1)    
+    }
+}
+```
 与之前使用 Dail() 的例子相比，有两个不同点：
 
 - net.ResolveTCPAddr() 用于解析地址和端口号；
-
 - net.DialTCP() 用于建立链接。
 
 提示：这两个函数在 Dial() 函数中都得到了封装。
-
 运行结果如下：
 
 go run main.go baidu.com:80  
@@ -1167,15 +1139,12 @@ Content-Type: text/html
 此外，net 包中还包含了一系列的工具函数，合理地使用这些函数可以更好地保障程序的质量。
 
 验证 IP 地址有效性的函数如下：
-
 func net.ParseIP()
 
 创建子网掩码的函数如下：
-
 func IPv4Mask(a, b, c, d byte) IPMask
 
 获取默认子网掩码的函数如下：
-
 func (ip IP) DefaultMask() IPMask
 
 根据域名查找 IP 的函数如下：
@@ -1207,39 +1176,39 @@ func (c \*Client) Do(req \*Request) (resp \*Response, err error)
 
 要请求一个资源，只需调用 http.Get() 方法（等价于 http.DefaultClient.Get()）即可，示例代码如下：
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark"></span>
 
-<span class="mark">import (</span>
 
-<span class="mark">    "fmt"</span>
+import (
 
-<span class="mark">    "io/ioutil"</span>
+    "fmt"
 
-<span class="mark">    "net/http"</span>
+    "io/ioutil"
 
-<span class="mark">)</span>
+    "net/http"
 
-<span class="mark"></span>
+)
 
-<span class="mark">func main() {</span>
 
-<span class="mark">    resp, err := http.Get("http://c.biancheng.net")</span>
 
-<span class="mark">    if err != nil {</span>
+func main() {
 
-<span class="mark">        fmt.Println(err)</span>
+    resp, err := http.Get("http://c.biancheng.net")
 
-<span class="mark">    }</span>
+    if err != nil {
 
-<span class="mark">    defer resp.Body.Close()</span>
+        fmt.Println(err)
 
-<span class="mark">    body, err := ioutil.ReadAll(resp.Body)</span>
+    }
 
-<span class="mark">    fmt.Println(string(body))</span>
+    defer resp.Body.Close()
 
-<span class="mark">}</span>
+    body, err := ioutil.ReadAll(resp.Body)
+
+    fmt.Println(string(body))
+
+}
 
 上面这段代码请求一个网站首页，并将其网页内容打印出来，如下所示：
 
@@ -1281,29 +1250,29 @@ http.Get() 方法的返回值有两个，分别是一个响应对象和一个 er
 
 下面的示例代码演示了如何上传一张图片：
 
-<span class="mark">resp, err := http.Post("http://c.biancheng.net/upload",</span>
+resp, err := http.Post("http://c.biancheng.net/upload",
 
-<span class="mark">"image/jpeg", &buf)</span>
+"image/jpeg", &buf)
 
-<span class="mark">if err != nil {</span>
+if err != nil {
 
-<span class="mark">    fmt.Println(err)</span>
+    fmt.Println(err)
 
-<span class="mark">}</span>
+}
 
-<span class="mark">defer resp.Body.Close()</span>
+defer resp.Body.Close()
 
-<span class="mark"></span>
 
-<span class="mark">body, err := ioutil.ReadAll(resp.Body)</span>
 
-<span class="mark">if err != nil {</span>
+body, err := ioutil.ReadAll(resp.Body)
 
-<span class="mark">    fmt.Println(err)</span>
+if err != nil {
 
-<span class="mark">}</span>
+    fmt.Println(err)
 
-<span class="mark">fmt.Println(string(body))</span>
+}
+
+fmt.Println(string(body))
 
 其中 &buf 为图片的资源。
 
@@ -1311,51 +1280,51 @@ http.Get() 方法的返回值有两个，分别是一个响应对象和一个 er
 
 http.PostForm() 方法实现了标准编码格式为“application/x-www-form-urlencoded”的**表单提交**，下面的示例代码模拟了 HTML 表单向后台提交信息的过程：
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark"></span>
 
-<span class="mark">import (</span>
 
-<span class="mark">    "fmt"</span>
+import (
 
-<span class="mark">    "io/ioutil"</span>
+    "fmt"
 
-<span class="mark">    "net/http"</span>
+    "io/ioutil"
 
-<span class="mark">    "net/url"</span>
+    "net/http"
 
-<span class="mark">)</span>
+    "net/url"
 
-<span class="mark"></span>
+)
 
-<span class="mark">func main() {</span>
 
-<span class="mark">    resp, err := http.PostForm("http://www.baidu.com",</span>
 
-<span class="mark">        url.Values{"wd": {"golang"}})</span>
+func main() {
 
-<span class="mark">    if err != nil {</span>
+    resp, err := http.PostForm("http://www.baidu.com",
 
-<span class="mark">        fmt.Println(err)</span>
+        url.Values{"wd": {"golang"}})
 
-<span class="mark">    }</span>
+    if err != nil {
 
-<span class="mark">defer resp.Body.Close()</span>
+        fmt.Println(err)
 
-<span class="mark"></span>
+    }
 
-<span class="mark">    body, err := ioutil.ReadAll(resp.Body)</span>
+defer resp.Body.Close()
 
-<span class="mark">    if err != nil {</span>
 
-<span class="mark">        fmt.Println(err)</span>
 
-<span class="mark">    }</span>
+    body, err := ioutil.ReadAll(resp.Body)
 
-<span class="mark">    fmt.Println(string(body))</span>
+    if err != nil {
 
-<span class="mark">}</span>
+        fmt.Println(err)
+
+    }
+
+    fmt.Println(string(body))
+
+}
 
 注意：POST 请求参数需要通过 url.Values 方法进行编码和封装。
 
@@ -1365,43 +1334,43 @@ HTTP 的 Head 请求表示只请求目标 URL 的响应头信息，不返回响�
 
 下面的示例代码请求一个网站首页的 HTTP Header 信息：
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark"></span>
 
-<span class="mark">import (</span>
 
-<span class="mark">    "fmt"</span>
+import (
 
-<span class="mark">    "net/http"</span>
+    "fmt"
 
-<span class="mark">)</span>
+    "net/http"
 
-<span class="mark"></span>
+)
 
-<span class="mark">func main() {</span>
 
-<span class="mark">    resp, err := http.Head("http://c.biancheng.net")</span>
 
-<span class="mark">    if err != nil {</span>
+func main() {
 
-<span class="mark">        fmt.Println("Request Failed: ", err.Error())</span>
+    resp, err := http.Head("http://c.biancheng.net")
 
-<span class="mark">        return</span>
+    if err != nil {
 
-<span class="mark">    }</span>
+        fmt.Println("Request Failed: ", err.Error())
 
-<span class="mark">    defer resp.Body.Close()</span>
+        return
 
-<span class="mark">    // 打印头信息</span>
+    }
 
-<span class="mark">    for key, value := range resp.Header {</span>
+    defer resp.Body.Close()
 
-<span class="mark">        fmt.Println(key, ":", value)</span>
+    // 打印头信息
 
-<span class="mark">    }</span>
+    for key, value := range resp.Header {
 
-<span class="mark">}</span>
+        fmt.Println(key, ":", value)
+
+    }
+
+}
 
 运行结果如下：
 
@@ -1429,73 +1398,73 @@ X-Cache : \[HIT TCP_MEM_HIT dirn:11:355030002\]
 
 此时可以通过 http.Client 类提供的 Do() 方法来实现，使用该方法时，就不再是通过缺省的 DefaultClient 对象调用 http.Client 类中的方法了，而是需要我们手动实例化 Client 对象并传入添加了自定义请求头信息的请求对象来发起 HTTP 请求：
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark"></span>
 
-<span class="mark">import (</span>
 
-<span class="mark">    "fmt"</span>
+import (
 
-<span class="mark">    "io"</span>
+    "fmt"
 
-<span class="mark">    "net/http"</span>
+    "io"
 
-<span class="mark">    "os"</span>
+    "net/http"
 
-<span class="mark">)</span>
+    "os"
 
-<span class="mark"></span>
+)
 
-<span class="mark">func main() {</span>
 
-<span class="mark">    // 初始化客户端请求对象</span>
 
-<span class="mark">    req, err := http.NewRequest("GET",</span>
+func main() {
 
-<span class="mark">        "http://c.biancheng.net", nil)</span>
+    // 初始化客户端请求对象
 
-<span class="mark">    if err != nil {</span>
+    req, err := http.NewRequest("GET",
 
-<span class="mark">        fmt.Println(err)</span>
+        "http://c.biancheng.net", nil)
 
-<span class="mark">        return</span>
+    if err != nil {
 
-<span class="mark">}</span>
+        fmt.Println(err)
 
-<span class="mark">    // 添加自定义请求头</span>
+        return
 
-<span class="mark">req.Header.Add("Custom-Header", "Custom-Value")</span>
+}
 
-<span class="mark"></span>
+    // 添加自定义请求头
 
-<span class="mark"></span>
+req.Header.Add("Custom-Header", "Custom-Value")
 
-<span class="mark">    // 其它请求头配置</span>
 
-<span class="mark">    client := &http.Client{</span>
 
-<span class="mark">        // 设置客户端属性</span>
 
-<span class="mark">    }</span>
 
-<span class="mark">    resp, err := client.Do(req)</span>
+    // 其它请求头配置
 
-<span class="mark">    if err != nil {</span>
+    client := &http.Client{
 
-<span class="mark">        fmt.Println(err)</span>
+        // 设置客户端属性
 
-<span class="mark">        return</span>
+    }
 
-<span class="mark">    }</span>
+    resp, err := client.Do(req)
 
-<span class="mark">defer resp.Body.Close()</span>
+    if err != nil {
 
-<span class="mark"></span>
+        fmt.Println(err)
 
-<span class="mark">    io.Copy(os.Stdout, resp.Body)</span>
+        return
 
-<span class="mark">}</span>
+    }
+
+defer resp.Body.Close()
+
+
+
+    io.Copy(os.Stdout, resp.Body)
+
+}
 
 运行结果如下：
 
@@ -1567,67 +1536,67 @@ Jar 可用于在 HTTP Client 中设定 Cookie，Jar 的类型必须实现了 htt
 
 使用自定义的 http.Client 及其 Do() 方法，我们可以非常灵活地控制 HTTP 请求，比如发送自定义 HTTP Header 或是改写重定向策略等。创建自定义的 HTTP Client 非常简单，具体代码如下：
 
-<span class="mark">client := &http.Client {    </span>
+client := &http.Client {    
 
-<span class="mark">    CheckRedirect: redirectPolicyFunc,</span>
+    CheckRedirect: redirectPolicyFunc,
 
-<span class="mark">}</span>
+}
 
-<span class="mark">resp, err := client.Get("http://example.com")</span>
+resp, err := client.Get("http://example.com")
 
-<span class="mark">// ...</span>
+// ...
 
-<span class="mark">req, err := http.NewRequest("GET", "http://example.com", nil)</span>
+req, err := http.NewRequest("GET", "http://example.com", nil)
 
-<span class="mark">// ...</span>
+// ...
 
-<span class="mark">req.Header.Add("User-Agent", "Our Custom User-Agent")</span>
+req.Header.Add("User-Agent", "Our Custom User-Agent")
 
-<span class="mark">req.Header.Add("If-None-Match", \`W/"TheFileEtag"\`)</span>
+req.Header.Add("If-None-Match", \`W/"TheFileEtag"\`)
 
-<span class="mark">resp, err := client.Do(req)</span>
+resp, err := client.Do(req)
 
-<span class="mark">// ...</span>
+// ...
 
 #### 2) 自定义 http.Transport
 
 在 http.Client 类型的结构定义中，我们看到的第一个数据成员就是一个 http.Transport 对象，该对象指定执行一个 HTTP 请求时的运行规则。下面我们来看看 http.Transport 类型的具体结构：
 
-<span class="mark">type Transport struct {</span>
+type Transport struct {
 
-<span class="mark">    // Proxy指定用于针对特定请求返回代理的函数。</span>
+    // Proxy指定用于针对特定请求返回代理的函数。
 
-<span class="mark">    // 如果该函数返回一个非空的错误，请求将终止并返回该错误。</span>
+    // 如果该函数返回一个非空的错误，请求将终止并返回该错误。
 
-<span class="mark">    // 如果Proxy为空或者返回一个空的URL指针，将不使用代理</span>
+    // 如果Proxy为空或者返回一个空的URL指针，将不使用代理
 
-<span class="mark">    Proxy func(\*Request) (\*url.URL, error)</span>
+    Proxy func(\*Request) (\*url.URL, error)
 
-<span class="mark">    // Dial指定用于创建TCP连接的dail()函数。</span>
+    // Dial指定用于创建TCP连接的dail()函数。
 
-<span class="mark">    // 如果Dial为空，将默认使用net.Dial()函数</span>
+    // 如果Dial为空，将默认使用net.Dial()函数
 
-<span class="mark">    Dial func(net, addr string) (c net.Conn, err error)</span>
+    Dial func(net, addr string) (c net.Conn, err error)
 
-<span class="mark">    // TLSClientConfig指定用于tls.Client的TLS配置。</span>
+    // TLSClientConfig指定用于tls.Client的TLS配置。
 
-<span class="mark">    // 如果为空则使用默认配置</span>
+    // 如果为空则使用默认配置
 
-<span class="mark">    TLSClientConfig    \*tls.Config</span>
+    TLSClientConfig    \*tls.Config
 
-<span class="mark">    DisableKeepAlives  bool</span>
+    DisableKeepAlives  bool
 
-<span class="mark">    DisableCompression bool</span>
+    DisableCompression bool
 
-<span class="mark">    // 如果MaxIdleConnsPerHost为非零值，它用于控制每个host所需要</span>
+    // 如果MaxIdleConnsPerHost为非零值，它用于控制每个host所需要
 
-<span class="mark">    // 保持的最大空闲连接数。如果该值为空，则使用DefaultMaxIdleConnsPerHost</span>
+    // 保持的最大空闲连接数。如果该值为空，则使用DefaultMaxIdleConnsPerHost
 
-<span class="mark">    MaxIdleConnsPerHost int</span>
+    MaxIdleConnsPerHost int
 
-<span class="mark">    // ...</span>
+    // ...
 
-<span class="mark">}</span>
+}
 
 在上面的代码中，我们定义了 http.Transport 类型中的公开数据成员，下面详细说明其中的各行代码。
 
@@ -1665,17 +1634,17 @@ MaxIdleConnsPerHost int
 
 自定义 http.Transport 也很简单，如下列代码所示：
 
-<span class="mark">tr := &http.Transport{    </span>
+tr := &http.Transport{    
 
-<span class="mark">    TLSClientConfig: &tls.Config{RootCAs: pool},    </span>
+    TLSClientConfig: &tls.Config{RootCAs: pool},    
 
-<span class="mark">    DisableCompression: true,</span>
+    DisableCompression: true,
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">client := &http.Client{Transport: tr}</span>
+client := &http.Client{Transport: tr}
 
-<span class="mark">resp, err := client.Get("https://example.com")</span>
+resp, err := client.Get("https://example.com")
 
 Client 和 Transport 在执行多个 goroutine 的并发过程中都是安全的，但出于性能考虑，应当创建一次后反复使用。
 
@@ -1685,29 +1654,29 @@ Client 和 Transport 在执行多个 goroutine 的并发过程中都是安全的
 
 下面我们来看看 http.RoundTripper 接口的具体定义：
 
-<span class="mark">type RoundTripper interface {</span>
+type RoundTripper interface {
 
-<span class="mark">    // RoundTrip执行一个单一的HTTP事务，返回相应的响应信息。</span>
+    // RoundTrip执行一个单一的HTTP事务，返回相应的响应信息。
 
-<span class="mark">    // RoundTrip函数的实现不应试图去理解响应的内容。如果RoundTrip得到一个响应，</span>
+    // RoundTrip函数的实现不应试图去理解响应的内容。如果RoundTrip得到一个响应，
 
-<span class="mark">    // 无论该响应的HTTP状态码如何，都应将返回的err设置为nil。非空的err</span>
+    // 无论该响应的HTTP状态码如何，都应将返回的err设置为nil。非空的err
 
-<span class="mark">    // 只意味着没有成功获取到响应。</span>
+    // 只意味着没有成功获取到响应。
 
-<span class="mark">    // 类似地，RoundTrip也不应试图处理更高级别的协议，比如重定向、认证和</span>
+    // 类似地，RoundTrip也不应试图处理更高级别的协议，比如重定向、认证和
 
-<span class="mark">    // Cookie等。</span>
+    // Cookie等。
 
-<span class="mark">    //</span>
+    //
 
-<span class="mark">    // RoundTrip不应修改请求内容, 除非了是为了理解Body内容。每一个请求</span>
+    // RoundTrip不应修改请求内容, 除非了是为了理解Body内容。每一个请求
 
-<span class="mark">    // 的URL和Header域都应被正确初始化</span>
+    // 的URL和Header域都应被正确初始化
 
-<span class="mark">    RoundTrip(\*Request) (\*Response, error)</span>
+    RoundTrip(\*Request) (\*Response, error)
 
-<span class="mark">}</span>
+}
 
 从上述代码中可以看到，http.RoundTripper 接口很简单，只定义了一个名为 RoundTrip 的方法。任何实现了 RoundTrip() 方法的类型即可实现 http.RoundTripper 接口。前面我们看到的 http.Transport 类型正是实现了 RoundTrip() 方法继而实现了该接口。
 
@@ -1719,65 +1688,65 @@ http.RoundTripper 接口定义的 RoundTrip() 方法用于执行一个独立的 
 
 通常，我们可以在默认的 http.Transport 之上包一层 Transport 并实现 RoundTrip() 方法，代码如下所示。
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark">import (</span>
+import (
 
-<span class="mark">    "net/http"</span>
+    "net/http"
 
-<span class="mark">)</span>
+)
 
-<span class="mark">type OurCustomTransport struct {</span>
+type OurCustomTransport struct {
 
-<span class="mark">    Transport http.RoundTripper</span>
+    Transport http.RoundTripper
 
-<span class="mark">}</span>
+}
 
-<span class="mark">func (t \*OurCustomTransport) transport() http.RoundTripper {</span>
+func (t \*OurCustomTransport) transport() http.RoundTripper {
 
-<span class="mark">    if t.Transport != nil {</span>
+    if t.Transport != nil {
 
-<span class="mark">        return t.Transport</span>
+        return t.Transport
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">    return http.DefaultTransport</span>
+    return http.DefaultTransport
 
-<span class="mark">}</span>
+}
 
-<span class="mark">func (t \*OurCustomTransport) RoundTrip(req \*http.Request) (\*http.Response, error) {</span>
+func (t \*OurCustomTransport) RoundTrip(req \*http.Request) (\*http.Response, error) {
 
-<span class="mark">    // 处理一些事情 ...</span>
+    // 处理一些事情 ...
 
-<span class="mark">    // 发起HTTP请求</span>
+    // 发起HTTP请求
 
-<span class="mark">    // 添加一些域到req.Header中</span>
+    // 添加一些域到req.Header中
 
-<span class="mark">    return t.transport().RoundTrip(req)</span>
+    return t.transport().RoundTrip(req)
 
-<span class="mark">}</span>
+}
 
-<span class="mark">func (t \*OurCustomTransport) Client() \*http.Client {</span>
+func (t \*OurCustomTransport) Client() \*http.Client {
 
-<span class="mark">    return &http.Client{Transport: t}</span>
+    return &http.Client{Transport: t}
 
-<span class="mark">}</span>
+}
 
-<span class="mark">func main() {</span>
+func main() {
 
-<span class="mark">    t := &OurCustomTransport{</span>
+    t := &OurCustomTransport{
 
-<span class="mark">        //...</span>
+        //...
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">    c := t.Client()</span>
+    c := t.Client()
 
-<span class="mark">    resp, err := c.Get("http://example.com")</span>
+    resp, err := c.Get("http://example.com")
 
-<span class="mark">    // ...</span>
+    // ...
 
-<span class="mark">}</span>
+}
 
 因为实现了 http.RoundTripper 接口的代码通常需要在多个 goroutine 中并发执行，因此我们必须确保实现代码的线程安全性。
 
@@ -1815,77 +1784,77 @@ func ListenAndServe(addr string, handler Handler) error
 
 ListenAndServe 方法有两个参数，其中第一个参数 addr 即监听地址，第二个参数表示服务端处理程序，通常为空。第二个参数为空时，意味着服务端调用 http.DefaultServeMux 进行处理，而服务端编写的业务逻辑处理程序 http.Handle() 或 http.HandleFunc() 默认注入 http.DefaultServeMux 中，代码如下所示：
 
-<span class="mark">http.Handle("/foo", fooHandler)</span>
+http.Handle("/foo", fooHandler)
 
-<span class="mark">http.HandleFunc("/bar",</span>
+http.HandleFunc("/bar",
 
-<span class="mark">    func(w http.ResponseWriter, r \*http.Request) {    </span>
+    func(w http.ResponseWriter, r \*http.Request) {    
 
-<span class="mark">        fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))</span>
+        fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">)</span>
+)
 
-<span class="mark"></span>
 
-<span class="mark">log.Fatal(http.ListenAndServe(":8080", nil))</span>
+
+log.Fatal(http.ListenAndServe(":8080", nil))
 
 如果想更多地控制服务端的行为，可以自定义 http.Server，代码如下所示：
 
-<span class="mark">s := &http.Server{    </span>
+s := &http.Server{    
 
-<span class="mark">    Addr: ":8080",    </span>
+    Addr: ":8080",    
 
-<span class="mark">    Handler: myHandler,    </span>
+    Handler: myHandler,    
 
-<span class="mark">    ReadTimeout: 10 \* time.Second,    </span>
+    ReadTimeout: 10 \* time.Second,    
 
-<span class="mark">    WriteTimeout: 10 \* time.Second,    </span>
+    WriteTimeout: 10 \* time.Second,    
 
-<span class="mark">    MaxHeaderBytes: 1 \<\< 20,</span>
+    MaxHeaderBytes: 1 \<\< 20,
 
-<span class="mark">}</span>
+}
 
-<span class="mark">log.Fatal(s.ListenAndServe())</span>
+log.Fatal(s.ListenAndServe())
 
 下面通过一个简单的服务端示例来演示一下Go语言是如何处理 HTTP 请求的，代码如下所示：
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark">import (</span>
+import (
 
-<span class="mark">    "io"</span>
+    "io"
 
-<span class="mark">    "log"</span>
+    "log"
 
-<span class="mark">    "net/http"</span>
+    "net/http"
 
-<span class="mark">)</span>
+)
 
-<span class="mark"></span>
 
-<span class="mark">func HelloServer(w http.ResponseWriter, req \*http.Request) {</span>
 
-<span class="mark">    io.WriteString(w, "C语言中文网\n")</span>
+func HelloServer(w http.ResponseWriter, req \*http.Request) {
 
-<span class="mark">}</span>
+    io.WriteString(w, "C语言中文网\n")
 
-<span class="mark"></span>
+}
 
-<span class="mark">func main() {</span>
 
-<span class="mark">    http.HandleFunc("/hello", HelloServer)</span>
 
-<span class="mark">    err := http.ListenAndServe(":12345", nil)</span>
+func main() {
 
-<span class="mark">    if err != nil {</span>
+    http.HandleFunc("/hello", HelloServer)
 
-<span class="mark">        log.Fatal("ListenAndServe: ", err)</span>
+    err := http.ListenAndServe(":12345", nil)
 
-<span class="mark">    }</span>
+    if err != nil {
 
-<span class="mark">}</span>
+        log.Fatal("ListenAndServe: ", err)
+
+    }
+
+}
 
 成功运行上面的代码会占用 12345 端口，我们可以使用浏览器访问http://localhost:12345/hello来查看运行结果，如下所示：
 
@@ -1903,79 +1872,79 @@ ListenAndServeTLS 函数和 ListenAndServe 函数的行为基本一致，区别�
 
 开启 SSL 监听服务也很简单，如下列代码所示：
 
-<span class="mark">http.Handle("/foo", fooHandler)</span>
+http.Handle("/foo", fooHandler)
 
-<span class="mark">http.HandleFunc("/bar",</span>
+http.HandleFunc("/bar",
 
-<span class="mark">    func(w http.ResponseWriter, r \*http.Request) {    </span>
+    func(w http.ResponseWriter, r \*http.Request) {    
 
-<span class="mark">        fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))</span>
+        fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 
-<span class="mark">    })</span>
+    })
 
-<span class="mark">   </span>
+   
 
-<span class="mark">log.Fatal(http.ListenAndServeTLS(":10443", "cert.pem", "key.pem", nil))</span>
+log.Fatal(http.ListenAndServeTLS(":10443", "cert.pem", "key.pem", nil))
 
 或者是：
 
-<span class="mark">ss := &http.Server{    </span>
+ss := &http.Server{    
 
-<span class="mark">    Addr: ":10443",    </span>
+    Addr: ":10443",    
 
-<span class="mark">    Handler: myHandler,    </span>
+    Handler: myHandler,    
 
-<span class="mark">    ReadTimeout: 10 \* time.Second,    </span>
+    ReadTimeout: 10 \* time.Second,    
 
-<span class="mark">    WriteTimeout: 10 \* time.Second,    </span>
+    WriteTimeout: 10 \* time.Second,    
 
-<span class="mark">    MaxHeaderBytes: 1 \<\< 20,</span>
+    MaxHeaderBytes: 1 \<\< 20,
 
-<span class="mark">}</span>
+}
 
-<span class="mark">log.Fatal(ss.ListenAndServeTLS("cert.pem", "key.pem"))</span>
+log.Fatal(ss.ListenAndServeTLS("cert.pem", "key.pem"))
 
 下面通过示例来演示一下Go语言时如何处理 HTTPS 请求的，代码如下所示：
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark"></span>
 
-<span class="mark">import (</span>
 
-<span class="mark">    "log"</span>
+import (
 
-<span class="mark">    "net/http"</span>
+    "log"
 
-<span class="mark">)</span>
+    "net/http"
 
-<span class="mark"></span>
+)
 
-<span class="mark">func handler(w http.ResponseWriter, req \*http.Request) {</span>
 
-<span class="mark">    w.Header().Set("Content-Type", "text/plain")</span>
 
-<span class="mark">    w.Write(\[\]byte("C语言中文网\n"))</span>
+func handler(w http.ResponseWriter, req \*http.Request) {
 
-<span class="mark">}</span>
+    w.Header().Set("Content-Type", "text/plain")
 
-<span class="mark"></span>
+    w.Write(\[\]byte("C语言中文网\n"))
 
-<span class="mark">func main() {</span>
+}
 
-<span class="mark">    http.HandleFunc("/", handler)</span>
 
-<span class="mark">    log.Printf("监听 1234 端口成功，可以通过 https://127.0.0.1:1234/ 访问")</span>
 
-<span class="mark">    err := http.ListenAndServeTLS(":1234", "cert.pem", "key.pem", nil)</span>
+func main() {
 
-<span class="mark">    if err != nil {</span>
+    http.HandleFunc("/", handler)
 
-<span class="mark">        log.Fatal(err)</span>
+    log.Printf("监听 1234 端口成功，可以通过 https://127.0.0.1:1234/ 访问")
 
-<span class="mark">    }</span>
+    err := http.ListenAndServeTLS(":1234", "cert.pem", "key.pem", nil)
 
-<span class="mark">}</span>
+    if err != nil {
+
+        log.Fatal(err)
+
+    }
+
+}
 
 运行上面的程序需要用到 cert.pem 和 key.pem 这两个文件，可以使用 crypto/tls 包的 generate_cert.go 文件来生成 cert.pem 和 key.pem 这两个文件，运行结果如下：
 
@@ -2265,39 +2234,39 @@ go run main.go
 本节我们来学习如何搭建一个简单的网站程序。
 
 首先打开你最喜爱的编辑器，编写如下所示的几行代码，并将其保存为 hello.go。
+```go
+package main
 
-<span class="mark">package main</span>
+import (
 
-<span class="mark">import (</span>
+    "io"
 
-<span class="mark">    "io"</span>
+    "log"
 
-<span class="mark">    "log"</span>
+    "net/http"
 
-<span class="mark">    "net/http"</span>
+)
 
-<span class="mark">)</span>
+func helloHandler(w http.ResponseWriter, r \*http.Request) {
 
-<span class="mark">func helloHandler(w http.ResponseWriter, r \*http.Request) {</span>
+    io.WriteString(w, "Hello, world!")
 
-<span class="mark">    io.WriteString(w, "Hello, world!")</span>
+}
 
-<span class="mark">}</span>
+func main() {
 
-<span class="mark">func main() {</span>
+    http.HandleFunc("/hello", helloHandler)
 
-<span class="mark">    http.HandleFunc("/hello", helloHandler)</span>
+    err := http.ListenAndServe(":8080", nil)
 
-<span class="mark">    err := http.ListenAndServe(":8080", nil)</span>
+    if err != nil {
 
-<span class="mark">    if err != nil {</span>
+        log.Fatal("ListenAndServe: ", err.Error())
 
-<span class="mark">        log.Fatal("ListenAndServe: ", err.Error())</span>
+    }
 
-<span class="mark">    }</span>
-
-<span class="mark">}</span>
-
+}
+```
 我们引入了 Go语言标准库中的 net/http 包，主要用于提供 Web 服务，响应并处理客户端（浏览器）的 HTTP请求。
 
 同时，使用 io 包而不是 fmt 包来输出字符串，这样源文件编译成可执行文件后，体积要小很多，运行起来也更省资源。
@@ -2322,7 +2291,7 @@ go run main.go
 
 试着编译并运行当前的这份 hello.go 源文件：
 
-\$ go run hello.go
+$ go run hello.go
 
 然后在浏览器访问 http://localhost:8080/hello，会看到如下图所示的界面。
 
@@ -2337,39 +2306,97 @@ go run main.go
 
 首先创建一个用于存放工程源代码的目录并切换到该目录中去，随后创建一个名为 photoweb.go 的文件，用于后面编辑我们的代码：
 
-\$ mkdir -p photoweb/uploads  
-\$ cd photoweb  
-\$ touch photoweb.go
+$ mkdir -p photoweb/uploads  
+$ cd photoweb  
+$ touch photoweb.go
 
 我们的示例程序不是再造一个 Flickr 那样的网站或者比其更强大的图片分享网站，虽然我们可能很想这么玩。不过还是先让我们快速开发一个简单的网站小程序，暂且只实现以下最基本的几个功能：
-
 - 支持图片上传；
-
 - 在网页中可以查看已上传的图片；
-
 - 能看到所有上传的图片列表；
-
 - 可以删除指定的图片。
 
 功能不多，也很简单。在大概了解上一节中的网页输出 Hello world 示例后，想必你已经知道可以引入 net/http 包来提供更多的路由分派并编写与之对应的业务逻辑处理方法，只不过会比输出一行 Hello, world! 多一些环节，还有些细节需要关注和处理。
 
 ### 13.12.2使用 net/http 包提供网络服务
-
 接下来，我们继续使用 Go 标准库中的 net/http 包来一步步构建整个相册程序的网络服务。
 
 #### 1) 上传图片
-
 先从最基本的图片上传着手，具体代码如下所示。
 
-package mainimport ( "io" "log" "net/http")func uploadHandler(w http.ResponseWriter, r \*http.Request) { if r.Method == "GET" { io.WriteString(w, "\<form method=\\POST\\ action=\\/upload\\ "+ " enctype=\\multipart/form-data\\\>"+ "Choose an image to upload: \<input name=\\image\\ type=\\file\\ /\>"+ "\<input type=\\submit\\ value=\\Upload\\ /\>"+ "\</form\>") return }}func main() { http.HandleFunc("/upload", uploadHandler) err := http.ListenAndServe(":8080", nil) if err != nil { log.Fatal("ListenAndServe: ", err.Error()) }}
-
+```go 
+package main
+import ( 
+	"io" 
+	"log" 
+	"net/http"
+	)
+func uploadHandler(w http.ResponseWriter, r \*http.Request) { 
+	if r.Method == "GET" { 
+		io.WriteString(w, 
+			"\<form method=\\POST\\ action=\\/upload\\ "
+			+ " enctype=\\multipart/form-data\\\>"
+			+ "Choose an image to upload: \<input name=\\image\\ type=\\file\\ /\>"
+			+ "\<input type=\\submit\\ value=\\Upload\\ /\>"
+			+ "\</form\>") 
+			return 
+		}
+}
+func main() { 
+	http.HandleFunc("/upload", uploadHandler) 
+	err := http.ListenAndServe(":8080", nil) 
+	if err != nil { 
+		log.Fatal("ListenAndServe: ", err.Error()) 
+	}
+}
+```
 可以看到，结合 main() 和 uploadHandler() 方法，针对 HTTP GET 方式请求 /upload 路径，程序将会往 http.ResponseWriter 类型的实例对象 w 中写入一段 HTML 文本，即输出一个 HTML 上传表单。
 
 如果我们使用浏览器访问这个地址，那么网页上将会是一个可以上传文件的表单。光有上传表单还不能完成图片上传，服务端程序还必须有接收上传图片的相关处理。针对上传表单提交过来的文件，我们对 uploadHandler() 方法再添加些业务逻辑程序：
 
-const ( UPLOAD_DIR = "./uploads")func uploadHandler(w http.ResponseWriter, r \*http.Request) { if r.Method == "GET" { io.WriteString(w, "\<form method=\\POST\\ action=\\/upload\\ "+ " enctype=\\multipart/form-data\\\>"+ "Choose an image to upload: \<input name=\\image\\ type=\\file\\ /\>"+ "\<input type=\\submit\\ value=\\Upload\\ /\>"+ "\</form\>") return } if r.Method == "POST" { f, h, err := r.FormFile("image") if err != nil { http.Error(w, err.Error(), http.StatusInternalServerError) return } filename := h.Filename defer f.Close() t, err := os.Create(UPLOAD_DIR + "/" + filename) if err != nil { http.Error(w, err.Error(), http.StatusInternalServerError) return } defer t.Close() if \_, err := io.Copy(t, f); err != nil { http.Error(w, err.Error(), http.StatusInternalServerError) return } http.Redirect(w, r, "/view?id="+filename, http.StatusFound) }}
+```go
+const ( 
+	UPLOAD_DIR = "./uploads"
+)
+func uploadHandler(w http.ResponseWriter, r \*http.Request) { 
+	if r.Method == "GET" { 
+		io.WriteString(w, 
+			"\<form method=\\POST\\ action=\\/upload\\ "
+			+ " enctype=\\multipart/form-data\\\>"
+			+ "Choose an image to upload: \<input name=\\image\\ type=\\file\\ /\>"
+			+ "\<input type=\\submit\\ value=\\Upload\\ /\>"+ "\</form\>"
+			) 
+		return 
+	} 
+	
+	if r.Method == "POST" { 
+		f, h, err := r.FormFile("image") 
+		if err != nil { 
+			http.Error(w, err.Error(), 
+					http.StatusInternalServerError) 
+			return 
+		} 
+		
+		filename := h.Filename 
+		defer f.Close() 
+		
+		t, err := os.Create(UPLOAD_DIR + "/" + filename) 
+		if err != nil { 
+			http.Error(w, err.Error(), http.StatusInternalServerError) 
+			return 
+		} 
+		defer t.Close() 
+		
+		if _, err := io.Copy(t, f); err != nil { 
+			http.Error(w, err.Error(), http.StatusInternalServerError) 
+			return 
+		} 
+		http.Redirect(w, r, "/view?id="+filename, http.StatusFound) 
+	}
+}
+```
 
-如果是客户端发起的 HTTP POST 请求，那么首先从表单提交过来的字段寻找名为 image 的文件域并对其接值，调用 r.FormFile() 方法会返回 3 个值，各个值的类型分别是 multipart.File、\*multipart.FileHeader 和 error。
+如果是客户端发起的 HTTP POST 请求，那么首先从表单提交过来的字段寻找名为 image 的文件域并对其接值，调用 r.FormFile() 方法会返回 3 个值，各个值的类型分别是 multipart.File、*multipart.FileHeader 和 error。
 
 如果上传的图片接收不成功，那么在示例程序中返回一个 HTTP 服务端的内部错误给客户端。如果上传的图片接收成功，则将该图片的内容复制到一个临时文件里。如果临时文件创建失败，或者图片副本保存失败，都将触发服务端内部错误。
 
@@ -2384,8 +2411,15 @@ const ( UPLOAD_DIR = "./uploads")func uploadHandler(w http.ResponseWriter, r \*h
 要在网页中显示图片，必须有一个可以访问到该图片的网址。在前面的示例代码中，图片上传成功后会跳转到 /view?id= 这样的网址，因此我们的程序要能够将对 /view 路径的访问映射到某个具体的业务逻辑处理方法。
 
 首先，在 photoweb 程序中新增一个名为 viewHanlder() 的方法，其代码如下：
+```go
+func viewHandler(w http.ResponseWriter, r *http.Request) { 
+	imageId = r.FormValue("id") 
+	imagePath = UPLOAD_DIR + "/" + imageId 
+	w.Header().Set("Content-Type", "image") 
+	http.ServeFile(w, r, imagePath)
+}
+```
 
-func viewHandler(w http.ResponseWriter, r \*http.Request) { imageId = r.FormValue("id") imagePath = UPLOAD_DIR + "/" + imageId w.Header().Set("Content-Type", "image") http.ServeFile(w, r, imagePath)}
 
 在上述代码中，我们首先从客户端请求中对参数进行接值。r.FormValue("id") 即可得到客户端请求传递的图片唯一 ID，然后我们将图片 ID 结合之前保存图片用的目录进行组装，即可得到文件在服务器上的存放路径。
 
@@ -2438,66 +2472,64 @@ Go 标准库中的 html/template 包对网页模板有着良好的支持。接�
 ### 13.12.3渲染网页模板
 
 使用 Go 标准库提供的 html/template 包，可以让我们将 HTML 从业务逻辑程序中抽离出来形成独立的模板文件，这样业务逻辑程序只负责处理业务逻辑部分和提供模板需要的数据，模板文件负责数据要表现的具体形式。
-
 然后模板解析器将这些数据以定义好的模板规则结合模板文件进行渲染，最终将渲染后的结果一并输出，构成一个完整的网页。
 
 下面我们把 photoweb.go 程序的 uploadHandler() 和 listHandler() 方法中的 HTML 文本 抽出，生成模板文件。
-
 新建一个名为 upload.html 的文件，内容如下：
 
-<span class="mark">\<!doctype html\></span>
+\<!doctype html\>
 
-<span class="mark">\<html\></span>
+\<html\>
 
-<span class="mark">\<head\></span>
+\<head\>
 
-<span class="mark">\<meta charset="utf-8"\></span>
+\<meta charset="utf-8"\>
 
-<span class="mark">\<title\>Upload\</title\></span>
+\<title\>Upload\</title\>
 
-<span class="mark">\</head\></span>
+\</head\>
 
-<span class="mark">\<body\>    </span>
+\<body\>    
 
-<span class="mark">    \<form method="POST" action="/upload" enctype="multipart/form-data"\>        </span>
+    \<form method="POST" action="/upload" enctype="multipart/form-data"\>        
 
-<span class="mark">    Choose an image to upload: \<input name="image" type="file" /\>        </span>
+    Choose an image to upload: \<input name="image" type="file" /\>        
 
-<span class="mark">    \<input type="submit" value="Upload" /\>    </span>
+    \<input type="submit" value="Upload" /\>    
 
-<span class="mark">    \</form\></span>
+    \</form\>
 
-<span class="mark">\</body\></span>
+\</body\>
 
-<span class="mark">\</html\></span>
+\</html\>
 
 然后新建一个名为 list.html 的文件，内容如下：
 
-<span class="mark">\<!doctype html\></span>
+\<!doctype html\>
 
-<span class="mark">\<html\></span>
+\<html\>
 
-<span class="mark">\<head\></span>
+\<head\>
 
-<span class="mark">\<meta charset="utf-8"\>\<title\>List\</title\></span>
+\<meta charset="utf-8"\>\<title\>List\</title\>
 
-<span class="mark">\</head\></span>
+\</head\>
 
-<span class="mark">\<body\>    </span>
+\<body\>    
 
-<span class="mark">\<ol\>        </span>
+\<ol\>        
 
-<span class="mark">    {{range \$.images}}            </span>
+    {{range \$.images}}            
 
-<span class="mark">    \<li\>\<a href="/view?id={{.\|urlquery}}"\>{{.\|html}}\</a\>\</li\>        </span>
+    \<li\>\<a href="/view?id={{.\|urlquery}}"\>{{.\|html}}\</a\>\</li\>        
 
-<span class="mark">    {{end}}    </span>
+    {{end}}    
 
-<span class="mark">\</ol\></span>
+\</ol\>
 
-<span class="mark">\</body\></span>
+\</body\>
 
-<span class="mark">\</html\></span>
+\</html\>
 
 在上述模板中，双大括号 {{}} 是区分模板代码和 HTML 的分隔符，括号里边可以是要显示输出的数据，或者是控制语句，比如 if 判断式或者 range 循环体等。
 
@@ -2511,91 +2543,91 @@ range 语句在模板中是一个循环过程体，紧跟在 range 后面的必�
 
 在了解模板语法后，接着我们修改 photoweb.go 源文件，引入 html/template 包，并修改 uploadHandler() 和 listHandler() 方法，具体如下所示。
 
-<span class="mark">package main</span>
+package main
 
-<span class="mark">import (    </span>
+import (    
 
-<span class="mark">    "io"    </span>
+    "io"    
 
-<span class="mark">    "log"    </span>
+    "log"    
 
-<span class="mark">    "net/http"    </span>
+    "net/http"    
 
-<span class="mark">    "io/ioutil"    </span>
+    "io/ioutil"    
 
-<span class="mark">    "html/template"</span>
+    "html/template"
 
-<span class="mark">)</span>
+)
 
-<span class="mark">func uploadHandler(w http.ResponseWriter, r \*http.Request) {    </span>
+func uploadHandler(w http.ResponseWriter, r \*http.Request) {    
 
-<span class="mark">    if r.Method == "GET" {        </span>
+    if r.Method == "GET" {        
 
-<span class="mark">        t, err := template.ParseFiles("upload.html")        </span>
+        t, err := template.ParseFiles("upload.html")        
 
-<span class="mark">        if err != nil {            </span>
+        if err != nil {            
 
-<span class="mark">            http.Error(w, err.Error(),http.StatusInternalServerError)            </span>
+            http.Error(w, err.Error(),http.StatusInternalServerError)            
 
-<span class="mark">            return        </span>
+            return        
 
-<span class="mark">        }        </span>
+        }        
 
-<span class="mark">        t.Execute(w, nil)        </span>
+        t.Execute(w, nil)        
 
-<span class="mark">        return    </span>
+        return    
 
-<span class="mark">    }    </span>
+    }    
 
-<span class="mark">   </span>
+   
 
-<span class="mark">    if r.Method == "POST" {        </span>
+    if r.Method == "POST" {        
 
-<span class="mark">        // ...    </span>
+        // ...    
 
-<span class="mark">    }</span>
+    }
 
-<span class="mark">}</span>
+}
 
-<span class="mark">func listHandler(w http.ResponseWriter, r \*http.Request) {    </span>
+func listHandler(w http.ResponseWriter, r \*http.Request) {    
 
-<span class="mark">    fileInfoArr, err := ioutil.ReadDir("./uploads")    </span>
+    fileInfoArr, err := ioutil.ReadDir("./uploads")    
 
-<span class="mark">   </span>
+   
 
-<span class="mark">    if err != nil {        </span>
+    if err != nil {        
 
-<span class="mark">        http.Error(w, err.Error(),        http.StatusInternalServerError)        </span>
+        http.Error(w, err.Error(),        http.StatusInternalServerError)        
 
-<span class="mark">        return    </span>
+        return    
 
-<span class="mark">    }    </span>
+    }    
 
-<span class="mark">   </span>
+   
 
-<span class="mark">    locals := make(map\[string\]interface{})    </span>
+    locals := make(map\[string\]interface{})    
 
-<span class="mark">    images := \[\]string{}    </span>
+    images := \[\]string{}    
 
-<span class="mark">    for \_, fileInfo := range fileInfoArr {        </span>
+    for \_, fileInfo := range fileInfoArr {        
 
-<span class="mark">        images = append(images, fileInfo.Name)    </span>
+        images = append(images, fileInfo.Name)    
 
-<span class="mark">    }    </span>
+    }    
 
-<span class="mark">    locals\["images"\] = images t, err := template.ParseFiles("list.html")    </span>
+    locals\["images"\] = images t, err := template.ParseFiles("list.html")    
 
-<span class="mark">    if err != nil {        </span>
+    if err != nil {        
 
-<span class="mark">        http.Error(w, err.Error(),        http.StatusInternalServerError)        </span>
+        http.Error(w, err.Error(),        http.StatusInternalServerError)        
 
-<span class="mark">        return    </span>
+        return    
 
-<span class="mark">    }    </span>
+    }    
 
-<span class="mark">    t.Execute(w, locals)</span>
+    t.Execute(w, locals)
 
-<span class="mark">}</span>
+}
 
 在上面的代码中，template.ParseFiles() 函数将会读取指定模板的内容并且返回一个 \*template.Template 值。
 
@@ -2603,23 +2635,23 @@ t.Execute() 方法会根据模板语法来执行模板的渲染，并将渲染�
 
 在 uploadHandler() 方法和 listHandler() 方法中，均调用了 template.ParseFiles() 和 t.Execute() 这两个方法。根据 DRY（Don’t Repeat Yourself）原则，我们可以将模板渲染代码分离出来，单独编写一个处理函数，以便其他业务逻辑处理函数都可以使用。于是，我们可以定义一个名为 renderHtml() 的方法用来渲染模板：
 
-<span class="mark">func renderHtml(w http.ResponseWriter,</span>
+func renderHtml(w http.ResponseWriter,
 
-<span class="mark">    tmpl string,  </span>
+    tmpl string,  
 
-<span class="mark">    locals map\[string\]interface{} )err error {    </span>
+    locals map\[string\]interface{} )err error {    
 
-<span class="mark">        t, err = template.ParseFiles(tmpl + ".html")    </span>
+        t, err = template.ParseFiles(tmpl + ".html")    
 
-<span class="mark">        if err != nil {        </span>
+        if err != nil {        
 
-<span class="mark">            return    </span>
+            return    
 
-<span class="mark">        }    </span>
+        }    
 
-<span class="mark">        err = t.Execute(w, locals)</span>
+        err = t.Execute(w, locals)
 
-<span class="mark">}</span>
+}
 
 有了 renderHtml() 这个通用的模板渲染方法，uploadHandler() 和 listHandler() 方法的代码可以再精简些，如下：
 

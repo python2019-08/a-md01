@@ -19,8 +19,8 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 保存profile文件并运行命令 source /etc/profile，重新加载环境配置
 
 ### 注： my setting：
-export GOROOT=/home/gumaoqiang/opt/go/
-export GOPATH=/home/gumaoqiang/stu/gopath
+export GOROOT=/home/abner/opt/go/
+export GOPATH=/home/abner/stu/gopath
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 ## 1.4，运行命令检验是否安装成功
 // 方法1：
@@ -41,4 +41,54 @@ func main() {
 go run test.go
 ```
 
+========================================================
+# 2.Linux系统：Ubuntu上安装postman的详细教程
 
+前端白袍  于 2024-10-12 16:53:37                         
+原文链接：https://blog.csdn.net/qq_44776454/article/details/142881681
+
+
+Ubuntu系统版本：23.04
+
+以下是在Ubuntu上安装Postman的详细步骤：
+
+(1)打开终端，使用以下命令下载Postman的安装包：
+wget https://dl.pstmn.io/download/latest/linux64 -O postman.tar.gz
+ 
+(2)解压下载的安装包：
+tar -xvf postman.tar.gz
+ 
+(3)移动解压后的文件夹到 /opt 目录下：
+sudo mv Postman /opt
+ 
+(4)创建一个符号链接以便可以直接在终端中运行Postman：
+sudo ln -s /opt/Postman/Postman /usr/local/bin/postman
+ 
+(5)创建一个桌面启动器图标：
+sudo nano /usr/share/applications/postman.desktop
+ 
+(6)在打开的文件中，复制并粘贴以下内容：
+[Desktop Entry]
+Encoding=UTF-8
+Name=Postman
+Exec=postman
+Icon=/opt/Postman/app/resources/app/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Development;
+ 
+(7)按 Ctrl + X 保存并退出nano编辑器。
+(8)现在，您可以在应用程序菜单中找到并打开Postman，或者在终端中运行 postman 命令启动Postman。
+以此完成以上步骤，您就成功在Ubuntu上安装了Postman。 
+
+
+
+[Desktop Entry]
+Encoding=UTF-8
+Name=Postman
+Exec=postman
+Icon=/home/abner/programs/Postman/app/resources/app/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Development;
+ 

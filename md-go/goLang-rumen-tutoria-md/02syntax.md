@@ -1312,7 +1312,7 @@ Go语言中字符串的内部实现使用 UTF-8 编码，通过 rune 类型，�
 6.  fmt.Println(str)
 
 代码运行结果：
-<span id="_Toc1745073003" class="anchor"></span>第一行  
+第一行  
 第二行  
 第三行  
 \r\n

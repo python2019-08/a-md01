@@ -922,19 +922,12 @@ go install chapter08/importadd
 导入的包之间可以通过添加空行来分组；通常将来自不同组织的包独自分组。包的导入顺序无关紧要，但是在每个分组中一般会根据字符串顺序排列。（gofmt 和 goimports 工具都可以将不同分组导入的包独立排序。）
 
 1.  import (
-
 2.  "fmt"
-
 3.  "html/template"
-
 4.  "os"
-
 5.  
-
 6.  "golang.org/x/net/html"
-
 7.  "golang.org/x/net/ipv4"
-
 8.  )
 
 ### 8.8.2导入包后自定义引用的包名
@@ -942,11 +935,8 @@ go install chapter08/importadd
 如果我们想同时导入两个有着名字相同的包，例如 math/rand 包和 crypto/rand 包，那么导入声明必须至少为一个同名包指定一个新的包名以避免冲突。这叫做导入包的重命名。
 
 1.  import (
-
 2.  "crypto/rand"
-
 3.  mrand "math/rand" // 将名称替换为mrand避免冲突
-
 4.  )
 
 导入包的重命名只影响当前的源文件。其它的源文件如果导入了相同的包，可以用导入包原本默认的名字或重命名为另一个完全不同的名字。  
