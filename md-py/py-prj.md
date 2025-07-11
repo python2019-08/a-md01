@@ -33,11 +33,18 @@ PYTHONPYCACHEPREFIX="$(pwd)/.pycache" python your_script.py
 
 ### **2. 使用 `-X pycache_prefix` 命令行参数**
 无需修改环境变量，直接在命令行指定：
-
 ```bash
-python -X pycache_prefix=".pycache" your_script.py
-# python -X pycache_prefix="~/.pycache" your_script.py 
+python -X pycache_prefix=".pycache" your_script.py 
+``` 
 
+此选项等效于设置环境变量`PYTHONPYCACHEPREFIX`，但优先级更高。
+```bash
+# 以下两种方式效果相同
+python -X pycache_prefix=/tmp/pycache my_script.py
+
+# 或
+export PYTHONPYCACHEPREFIX=/tmp/pycache
+python my_script.py
 ```
 
 ### **3. 自定义 `__init__.py` 配置（针对包）**
@@ -94,7 +101,51 @@ rm -rf .pycache
 
 ### **注意事项**
 1. **兼容性**：Python 3.8 及以上版本支持 `PYTHONPYCACHEPREFIX`，旧版本可能需要降级方案。
-2. **权限问题**：确保缓存目录有写入权限。
-3. **IDE 索引**：某些 IDE（如 PyCharm）可能需要重新索引项目以识别新的缓存位置。
+2. **权限问题**：确保缓存目录有写入权限。**目录必须存在且可写** 
+   指定的目录必须提前创建，否则Python会抛出错误：
+   ```bash
+   mkdir -p /tmp/pycache
+   python -X pycache_prefix=/tmp/pycache script.py
+   ``` 
+3. **路径格式**  
+   路径应使用绝对路径，避免相对路径导致的混淆。例如：
+   ```bash
+   # 不推荐（相对路径依赖当前工作目录）
+   python -X pycache_prefix=./cache script.py
+   
+   # 推荐（绝对路径）
+   python -X pycache_prefix=$HOME/cache script.py
+   ```  
+3. **性能影响**  
+   缓存位置的磁盘性能可能影响Python启动速度。建议使用SSD或高性能存储。    
+4. **与其他选项组合**  
+   可与其他Python选项一起使用：
+   ```bash
+   python -X pycache_prefix=/tmp/pycache -O -u script.py
+   ```
+   其中：
+   - `-O`：优化模式，生成更精简的`.pyc`文件
+   - `-u`：无缓冲输出
+
+5. **IDE 索引**：某些 IDE（如 PyCharm）可能需要重新索引项目以识别新的缓存位置。
 
 通过以上方法，你可以有效管理 Python 缓存，保持项目目录整洁，同时享受字节码缓存带来的性能提升。
+ 
+### 验证设置是否生效
+
+运行以下命令查看缓存目录位置：
+```bash
+python -X pycache_prefix=/tmp/pycache -c "import sys; print(sys.pycache_prefix)"
+```
+输出应为：
+```
+/tmp/pycache
+```
+
+如果你需要在脚本中动态获取当前设置的缓存前缀，可以使用：
+```python
+import sys
+print(sys.pycache_prefix)  # 输出None表示使用默认位置
+```
+
+通过合理使用`pycache_prefix`，你可以更灵活地管理Python的字节码缓存，特别是在复杂的开发和部署环境中。

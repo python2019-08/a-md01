@@ -1,0 +1,1 @@
+https://github.com/sunface/new-rusty-book.git

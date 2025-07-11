@@ -204,3 +204,145 @@ fn platform_specific_function() {
 - **Rust项目首选Cargo**：Cargo提供了完整的项目管理功能，无需CMake。
 - **与C/C++交互时可选CMake**：通过`build.rs`脚本调用CMake，但更推荐使用`cc` crate等Rust原生方案。
 - **遵循Rust标准结构**：保持项目结构清晰，符合社区惯例。 
+
+
+===================================================================
+# 3.rust中 mod名字对应于 rs文件名吗
+在Rust中，模块（`mod`）的名字与源文件（`.rs`）的命名规则有明确的对应关系，但具体取决于你使用的是**内联模块**还是**文件模块**。
+
+
+### **1. 内联模块（Inline Modules）**
+模块直接在当前文件中定义，**不需要对应单独的文件**。  
+**语法**：
+```rust
+mod 模块名 {
+    // 模块内容
+}
+```
+
+**示例**：  
+在 `main.rs` 中定义内联模块：
+```rust
+// main.rs
+mod utils {
+    pub fn add(a: i32, b: i32) -> i32 {
+        a + b
+    }
+}
+
+fn main() {
+    println!("{}", utils::add(1, 2)); // 调用内联模块中的函数
+}
+```
+
+
+### **2. 文件模块（File Modules）**
+模块定义在单独的文件中，**模块名必须与文件名一致**（不含扩展名）。  
+有两种组织方式：
+
+
+#### **2.1 单文件模块**
+模块内容直接放在 `<模块名>.rs` 文件中。
+
+**目录结构**：
+```
+src/
+  ├── main.rs
+  └── utils.rs
+```
+
+**代码实现**：  
+```rust
+// main.rs
+mod utils; // 声明模块，Rust会自动寻找 utils.rs 文件
+
+fn main() {
+    println!("{}", utils::add(1, 2));
+}
+
+// utils.rs
+pub fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+```
+
+
+#### **2.2 模块文件夹（带 mod.rs）**
+对于复杂模块，可使用文件夹 + `mod.rs` 文件的形式。  
+**目录结构**：
+```
+src/
+  ├── main.rs
+  └── utils/
+      └── mod.rs
+```
+
+**代码实现**：  
+```rust
+// main.rs
+mod utils; // 声明模块，Rust会自动寻找 utils/mod.rs 文件
+
+fn main() {
+    println!("{}", utils::add(1, 2));
+}
+
+// utils/mod.rs
+pub fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+```
+
+
+### **3. 子模块的命名规则**
+子模块的文件路径需反映其层级关系。
+
+**目录结构**：
+```
+src/
+  ├── main.rs
+  └── utils/
+      ├── mod.rs
+      └── math.rs
+```
+
+**代码实现**：  
+```rust
+// main.rs
+mod utils;
+
+fn main() {
+    println!("{}", utils::math::multiply(2, 3));
+}
+
+// utils/mod.rs
+pub mod math; // 声明子模块，指向 math.rs
+
+// utils/math.rs
+pub fn multiply(a: i32, b: i32) -> i32 {
+    a * b
+}
+```
+
+
+### **4. Rust 2018+ 的推荐方式**
+从 Rust 2018 版开始，推荐使用 **模块文件夹 + `lib.rs`/`main.rs`** 的结构，而不是传统的 `mod.rs`。  
+**目录结构**：
+```
+src/
+  ├── main.rs
+  └── utils/
+      └── lib.rs  // 替代 mod.rs
+```
+
+
+### **总结**
+| **模块类型**       | **命名规则**                          | **示例**                  |
+|--------------------|---------------------------------------|---------------------------|
+| 内联模块           | 直接在文件中定义，无需对应文件        | `mod utils { ... }`       |
+| 文件模块（单文件） | 模块名与文件名（不含扩展名）一致      | `mod utils;` → `utils.rs` |
+| 文件模块（文件夹） | 模块名与文件夹名一致，内容放在 `mod.rs` 或 `lib.rs` 中 | `mod utils;` → `utils/mod.rs` |
+
+**关键点**：  
+- **模块名决定引用路径**（如 `utils::add`）。  
+- **文件路径决定模块的物理位置**，必须与模块声明匹配。  
+- Rust 会自动根据 `mod` 声明寻找对应的文件，但文件名必须严格匹配。

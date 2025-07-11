@@ -8,6 +8,13 @@
 > 5. "mv -vT" 和"ln -svfT"
 > 6. linux shell脚本中[ $a ]和 [ -n  $a]有什么区别吗
 > 7. `[ -n "$a" ]` 或 `[[ -n $a ]]`区别
+> 8.linux shell 编程，如何 把一个字符串截取一部分
+> 9.ARGS_PRIVATE_REPO=${1-}
+> 10.  while read line; do eval $line done < <(...)
+> 11. 简述上述问题中 < <()的作用
+> 12. linux shell 脚本 如何处理输入的参数
+> 13.linux shell 如何从 文件路径 获取文件名（不包括后缀）
+> 14. linux shell 脚本 如何 用 for 循环 打印0到10000
 ```
 
 
@@ -914,3 +921,413 @@ command1 < <(command2)
 3. 避免了创建和清理临时文件的麻烦。
 
 这种语法在需要将命令输出作为输入，同时保留变量作用域的场景中非常有用。
+
+=================================================
+# 12. linux shell 脚本 如何处理输入的参数
+
+在 Linux Shell 脚本中，处理输入参数是常见需求，可通过内置变量、参数解析工具等方式实现。以下是详细说明：
+
+
+### 一、基础参数变量
+Shell 脚本通过内置变量直接获取输入的位置参数，格式为 `$n`（`n` 为参数位置，从 1 开始），常用变量如下：
+
+| 变量       | 含义                                  | 示例（执行 `./script.sh a b c` 时）       |
+|------------|---------------------------------------|------------------------------------------|
+| `$0`       | 脚本自身的文件名（包含路径）          | `./script.sh`                            |
+| `$1`~`$n`  | 第 1 到第 n 个位置参数                | `$1=a`，`$2=b`，`$3=c`                   |
+| `$#`       | 参数的总个数                          | `3`（表示有 3 个参数）                   |
+| `$*`       | 所有参数的集合（视为一个整体字符串）  | `"a b c"`（带引号时）                    |
+| `$@`       | 所有参数的集合（视为独立字符串）      | `a b c`（带引号时保持参数独立性）         |
+| `$?`       | 上一条命令的退出状态（0 为成功）      | 通常用于判断命令执行结果                  |
+
+
+### 二、示例：直接使用位置参数
+#### 脚本（`param_demo.sh`）：
+```bash
+#!/bin/bash
+
+# 输出脚本名
+echo "脚本名：$0"
+
+# 输出参数个数
+echo "参数总个数：$#"
+
+# 输出所有参数（两种方式对比）
+echo "使用 \$* 输出参数：$*"
+echo "使用 \$@ 输出参数：$@"
+
+# 遍历参数（推荐用 $@，保持参数独立性）
+echo "逐个输出参数："
+for param in "$@"; do
+    echo "- $param"
+done
+```
+
+#### 执行与输出：
+```bash
+chmod +x param_demo.sh
+./param_demo.sh apple banana "cherry pie"
+```
+```
+脚本名：./param_demo.sh
+参数总个数：3
+使用 $* 输出参数：apple banana cherry pie
+使用 $@ 输出参数：apple banana cherry pie
+逐个输出参数：
+- apple
+- banana
+- cherry pie
+```
+
+
+### 三、处理选项参数（带 `-` 或 `--` 的参数）
+若参数包含选项（如 `-h`、`--help`），需通过逻辑判断或工具解析，常见方式有：
+
+#### 1. 手动解析（适合简单场景）
+通过 `case` 语句判断选项，示例如下（支持 `-n` 选项指定名称，`-a` 选项开启调试）：
+
+```bash
+#!/bin/bash
+
+# 初始化变量
+name="默认用户"
+debug=0
+
+# 解析选项参数（循环处理所有参数）
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -n|--name)
+            name="$2"  # 获取 -n 后的参数值
+            shift 2    # 跳过已处理的两个参数（选项和值）
+            ;;
+        -a|--debug)
+            debug=1    # 开启调试模式
+            shift      # 跳过当前选项
+            ;;
+        -h|--help)
+            echo "用法：$0 [-n 名称] [-a] [-h]"
+            echo "  -n, --name  指定名称"
+            echo "  -a, --debug 开启调试模式"
+            echo "  -h, --help  显示帮助"
+            exit 0
+            ;;
+        *)
+            # 未知参数
+            echo "错误：未知参数 $1"
+            exit 1
+            ;;
+    esac
+done
+
+# 输出结果
+echo "姓名：$name"
+if [[ $debug -eq 1 ]]; then
+    echo "调试模式已开启"
+fi
+```
+
+#### 执行与输出：
+```bash
+./param_options.sh -n "张三" -a
+```
+```
+姓名：张三
+调试模式已开启
+```
+
+
+#### 2. 使用 `getopts` 工具（适合短选项）
+`getopts` 是 Shell 内置工具，用于解析短选项（如 `-h`、`-v`），格式为：  
+`getopts "选项字符串" 变量名`  
+- 选项字符串中，带 `:` 的选项表示需要参数（如 `n:` 表示 `-n` 需要值）。
+
+示例脚本：
+```bash
+#!/bin/bash
+
+name="默认用户"
+debug=0
+
+# 解析选项（n: 表示 -n 需要参数，a 表示 -a 无参数，h 表示 -h 无参数）
+while getopts "n:ah" opt; do
+    case $opt in
+        n)
+            name="$OPTARG"  # OPTARG 存储选项的参数值
+            ;;
+        a)
+            debug=1
+            ;;
+        h)
+            echo "用法：$0 [-n 名称] [-a] [-h]"
+            exit 0
+            ;;
+        \?)
+            echo "错误：无效选项 -$OPTARG"
+            exit 1
+            ;;
+        :)
+            echo "错误：选项 -$OPTARG 需要参数"
+            exit 1
+            ;;
+    esac
+done
+
+echo "姓名：$name"
+[[ $debug -eq 1 ]] && echo "调试模式已开启"
+```
+
+
+#### 3. 使用 `getopt` 工具（支持长选项）
+`getopt` 功能更强大，可解析长选项（如 `--name`），但语法较复杂，需结合 `set` 命令重置参数。
+getopt是一个独立的外部可执行程序（通常位于/usr/bin/getopt），不属于 shell 内置命令，需要系统中安装该程序才能使用。
+
+示例脚本：
+```bash
+#!/bin/bash
+
+# 定义长选项（name: 表示 --name 需要参数，debug 表示 --debug 无参数）
+OPTIONS=$(getopt -o n:ah --long name:,debug,help -n "$0" -- "$@")
+if [[ $? -ne 0 ]]; then
+    exit 1
+fi
+
+# 重置参数
+eval set -- "$OPTIONS"
+
+name="默认用户"
+debug=0
+
+# 解析选项
+while true; do
+    case "$1" in
+        -n|--name)
+            name="$2"
+            shift 2
+            ;;
+        -a|--debug)
+            debug=1
+            shift
+            ;;
+        -h|--help)
+            echo "用法：$0 [--name 名称] [--debug] [-h]"
+            exit 0
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "内部错误"
+            exit 1
+            ;;
+    esac
+done
+
+echo "姓名：$name"
+[[ $debug -eq 1 ]] && echo "调试模式已开启"
+```
+
+
+### 四、参数校验
+处理参数时，常需校验参数是否存在、格式是否正确，示例如下：
+
+```bash
+#!/bin/bash
+
+# 检查参数个数（至少需要 1 个参数）
+if [[ $# -eq 0 ]]; then
+    echo "错误：请输入参数"
+    echo "用法：$0 <参数1> [参数2...]"
+    exit 1
+fi
+
+# 检查第一个参数是否为数字
+if [[ ! "$1" =~ ^[0-9]+$ ]]; then
+    echo "错误：第一个参数必须是数字"
+    exit 1
+fi
+
+echo "第一个参数（数字）：$1"
+```
+
+
+### 总结
+- **简单位置参数**：直接使用 `$1`~`$n`、`$#`、`$@` 等变量。  
+- **短选项（如 `-n`）**：用 `getopts` 便捷解析。  
+- **长选项（如 `--name`）**：用 `getopt` 或手动 `case` 判断。  
+- 务必添加参数校验，提高脚本健壮性。
+
+=======================================
+# 13.linux shell 如何从 文件路径 获取文件名（不包括后缀）
+
+在Linux Shell中，从文件路径获取文件名（不包括后缀）有多种方法，下面介绍几种常用的方式：
+
+
+### **1. 使用 `basename` 命令**
+`basename` 命令可以提取路径中的文件名部分，配合参数可以去除后缀：
+```bash
+file_path="/path/to/your/file.txt"
+
+# 获取带后缀的文件名
+filename_with_ext=$(basename "$file_path")  # 输出: file.txt
+
+# 获取不带后缀的文件名（指定后缀）
+filename=$(basename "$file_path" ".txt")    # 输出: file
+
+# 获取不带后缀的文件名（自动删除最后一个点后的所有内容）
+filename=$(basename "$file_path" | sed 's/\.[^.]*$//')  # 输出: file
+```
+
+
+### **2. 使用参数扩展（Bash内置）**
+Bash的参数扩展功能可以直接处理路径和后缀：
+```bash
+file_path="/path/to/your/file.txt"
+
+# 获取带后缀的文件名
+filename_with_ext="${file_path##*/}"  # 输出: file.txt
+
+# 获取不带后缀的文件名（删除最后一个点及其后的内容）
+filename="${filename_with_ext%.*}"    # 输出: file
+
+# 示例：一步到位
+filename="${file_path##*/}"
+filename="${filename%.*}"             # 输出: file
+```
+
+**参数扩展解释**：
+- `${file_path##*/}`：删除路径中最后一个 `/` 及其左边的所有内容（即提取文件名）。
+- `${filename_with_ext%.*}`：删除文件名中最后一个 `.` 及其右边的所有内容（即去除后缀）。
+
+
+### **3. 使用 `dirname` 和 `awk` 组合**
+结合 `dirname` 和 `awk` 可以更灵活地处理复杂路径：
+```bash
+file_path="/path/to/your/file.txt"
+
+# 获取不带后缀的文件名
+filename=$(echo "$file_path" | awk -F'/' '{print $NF}' | awk -F'.' '{print $1}')  # 输出: file
+```
+
+
+### **4. 使用 `sed` 命令**
+使用 `sed` 正则表达式处理路径：
+```bash
+file_path="/path/to/your/file.txt"
+
+# 获取不带后缀的文件名
+filename=$(echo "$file_path" | sed 's/.*\///; s/\.[^.]*$//')  # 输出: file
+```
+
+**正则解释**：
+- `s/.*\///`：删除最后一个 `/` 及其左边的所有内容。
+- `s/\.[^.]*$//`：删除最后一个 `.` 及其右边的所有内容。
+
+
+### **5. 处理多个后缀的情况**
+如果文件有多个后缀（如 `file.tar.gz`），需要特殊处理：
+```bash
+file_path="/path/to/your/file.tar.gz"
+
+# 方法1：手动指定后缀
+filename=$(basename "$file_path" ".tar.gz")  # 输出: file
+
+# 方法2：删除第一个点及其后的所有内容
+filename="${file_path##*/}"
+filename="${filename%%.*}"                  # 输出: file
+```
+
+
+### **总结**
+- **推荐使用参数扩展**（方法2）：Bash内置，无需外部命令，高效且简洁。
+- **复杂后缀用 `basename`**（方法1）：适合明确知道后缀的情况。
+- **灵活处理用 `sed`/`awk`**（方法3/4）：适合需要自定义正则匹配的场景。
+
+**示例代码**：
+```bash
+file_path="/path/to/your/file.txt"
+
+# 方法2（推荐）
+filename="${file_path##*/}"
+filename="${filename%.*}"
+echo "文件名（不带后缀）: $filename"  # 输出: file
+```
+
+===========================================
+# 14. linux shell 脚本 如何 用 for 循环 打印0到10000
+
+在Linux Shell中，有多种方式可以使用for循环打印0到10000的数字。以下是几种常见的实现方法：
+
+
+### **1. C风格for循环（Bash支持）**
+```bash
+for ((i=0; i<=10000; i++)); do
+    echo $i
+done
+```
+
+**解释**：
+- `((i=0; i<=10000; i++))`：C风格的循环语法，初始化`i=0`，每次循环检查`i<=10000`，循环结束后执行`i++`。
+
+
+### **2. 使用`seq`命令**
+```bash
+for i in $(seq 0 10000); do
+    echo $i
+done
+```
+
+**或更简洁的写法**：
+```bash
+seq 0 10000
+```
+
+**解释**：
+- `seq 0 10000`：生成从0到10000的数字序列。
+- `$(seq 0 10000)`：命令替换，将`seq`的输出作为for循环的参数。
+
+
+### **3. 使用Bash的扩展序列（`{start..end}`）**
+```bash
+for i in {0..10000}; do
+    echo $i
+done
+```
+
+**注意**：这种方法在Bash 4.0及以上版本中支持。如果你的Bash版本较低（如macOS默认的Bash 3.x），可能需要升级Bash或使用其他方法。
+
+
+### **4. 性能优化（减少echo调用）**
+如果需要更高的性能，可以将所有数字一次性输出（但可能超出终端缓冲区）：
+```bash
+echo $(seq 0 10000)
+```
+
+
+### **选择建议**
+- **推荐C风格循环**：简洁且不依赖外部命令，适用于所有Bash环境。
+- **使用`seq`**：当需要兼容更旧的Shell（如dash）时。
+- **扩展序列`{0..10000}`**：代码最简洁，但依赖Bash版本。
+
+
+### **示例代码**
+```bash
+#!/bin/bash
+
+# 方法1：C风格循环（推荐）
+for ((i=0; i<=10000; i++)); do
+    echo $i
+done
+
+# 方法2：seq命令
+for i in $(seq 0 10000); do
+    echo $i
+done
+
+# 方法3：扩展序列（Bash 4.0+）
+for i in {0..10000}; do
+    echo $i
+done
+```
+
+根据你的具体需求和Shell环境选择合适的方法即可。

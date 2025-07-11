@@ -46,3 +46,92 @@ Wiki pages you might want to explore:
 - [User Management (go-admin-team/go-admin)](/wiki/go-admin-team/go-admin#3.1)
 - [Role and Permission Management (go-admin-team/go-admin)](/wiki/go-admin-team/go-admin#3.2)
 - [Extension and Customization (go-admin-team/go-admin)](/wiki/go-admin-team/go-admin#5)
+
+==============================================================
+# 2. API Server
+
+## 2.1 Overview
+The go-admin API Server is built on the Gin web framework and follows a layered architecture approach.
+ ![images/api-server-component-diagram.png](images/api-server-component-diagram.png)
+Sources:
+cmd/api/server.go 32-46
+cmd/api/server.go 79-153
+
+## 2.2 Server Initialization
+The API Server is initialized through the CLI command system using Cobra. The startup process includes configuration loading, middleware setup, route registration, and HTTP server initialization.
+
+ ![images/api-Server-init-sequence.png](images/api-Server-init-sequence.png)
+
+## 2.3 Router System
+ ![api-server-router-sys.png](images/api-server-router-sys.png)
+
+## 2.4 Service Layer
+
+![alt text](images/api-server-Service-Layer.png)
+
+Sources:
+app/admin/service/sys_api.go 16-121
+
+## 2.5 Data Transfer Objects (DTOs)
+DTOs are used for transferring data between layers. They define the structure of request and response data and include validation logic.
+
+## 2.6 API Model
+
+The system uses a SysApi model to represent and manage API endpoints. This model is used to:
+
+    Store API metadata (path, method, title, etc.)
+    Track API changes
+    Support API discovery and registration
+    Provide data for API permission management
+
+Sources:
+app/admin/models/sys_api.go19-41
+
+### API Discovery and Registration
+
+The API Server includes a feature for automatically discovering and registering API endpoints. This process:
+
+    Scans the router for registered routes
+    Filters out certain system paths (e.g., Swagger, static files)
+    Extracts metadata from API handler functions
+    Creates or updates SysApi records in the database
+
+This feature helps maintain an up-to-date catalog of available APIs for documentation and permission management.
+
+Sources:
+app/admin/models/sys_api.go43-91
+
+cmd/api/server.go 100-115
+### Request Lifecycle
+The full request lifecycle in the API Server follows these steps:
+
+ ![api-server--Request-Lifecycle.png](images/api-server--Request-Lifecycle.png)
+
+========================================
+# 3. settings.yml loading process
+
+## 3.1 sequence
+
+The settings.yml configuration loading process in go-admin follows this sequence:
+ ![settings.yml-loading-sequence.png](images/settings.yml-loading-sequence.png)
+
+## 3.2 Key Functions Involved:
+
+    Command Flag Parsing: server.go:26
+        cmd/config/server.go, 
+        cmd/api/server.go, and 
+        cmd/migrate/server.go all define the -c flag for configuration file path
+    Configuration Setup: server.go:30
+        config.Setup() function is called with a file source
+    File Source Creation: server.go:30
+        file.NewSource(file.WithPath(configYml)) creates a file-based configuration source
+    Configuration Loading in Different Commands:
+        Config Command: server.go:29-30
+        Migrate Command: server.go:51-54
+        API Server Command: server.go:52
+
+## 3.3 which function do the real reading job int go-admin code
+The actual file reading in go-admin is not performed by functions within the go-admin codebase itself. Instead, the real reading job is delegated to the go-admin-core library through the file.NewSource() function.
+
+The config.Setup() function then processes the file source created by file.NewSource(), but the actual YAML file parsing and reading is handled internally by the go-admin-core configuration system.
+

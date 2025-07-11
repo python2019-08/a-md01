@@ -215,3 +215,116 @@ int main() {
 
 #### **六、总结**
 解释器模式的价值在于**将语言规则与解释逻辑分离**，使系统更灵活。虽然它起源于编译器，但在现代软件开发中，它广泛应用于**配置解析、规则引擎、DSL、表达式计算**等场景。在需要动态解释自定义语言的地方，解释器模式都是首选方案。
+
+=============================================
+# 3.c++中，组合和继承的选择
+
+在C++中，“尽量用组合代替继承”是一条重要的设计原则，但并非绝对规则。以下从可行性、优缺点和适用场景展开分析：
+
+
+### **1. 为什么推荐组合？**
+组合（Composition）通过持有其他对象的指针/引用实现功能复用，而继承（Inheritance）通过类的派生实现复用。组合的优势在于：
+- **松耦合**：仅依赖接口而非具体实现，便于替换组件。
+- **灵活性**：运行时动态调整组合关系（如策略模式）。
+- **避免继承带来的问题**：
+  - **脆弱的基类**：基类修改可能影响所有派生类。
+  - **菱形继承**（钻石问题）导致的歧义。
+  - **接口污染**：派生类暴露基类的所有接口。
+
+
+### **2. 组合的典型应用场景**
+#### **场景1：实现“有一个”（Has-A）关系**
+```cpp
+class Engine {
+public:
+    void start() { /* ... */ }
+};
+
+class Car {
+private:
+    Engine engine;  // 组合：Car有一个Engine
+public:
+    void startCar() { engine.start(); }
+};
+```
+
+#### **场景2：实现策略模式（运行时动态切换行为）**
+```cpp
+class FlyBehavior {
+public:
+    virtual void fly() = 0;
+};
+
+class JetFly : public FlyBehavior {
+public:
+    void fly() override { /* 喷射飞行 */ }
+};
+
+class Duck {
+private:
+    std::unique_ptr<FlyBehavior> flyBehavior;  // 组合
+public:
+    void setFlyBehavior(std::unique_ptr<FlyBehavior> behavior) {
+        flyBehavior = std::move(behavior);
+    }
+    void performFly() { flyBehavior->fly(); }
+};
+```
+
+
+### **3. 继承的不可替代性**
+尽管组合更灵活，但继承在以下场景中仍不可替代：
+- **实现“是一个”（Is-A）关系**：如`class Bird : public Animal`，此时继承更符合语义。
+- **需要多态**：通过基类指针调用派生类方法（如虚函数）。
+- **框架设计**：如Qt的信号槽机制依赖继承。
+
+
+### **4. 最佳实践：组合与继承结合**
+- **优先使用组合**：当复用实现细节而非接口时，组合更合适。
+- **谨慎使用继承**：仅在满足以下条件时使用：
+  - 严格的“Is-A”关系。
+  - 基类接口稳定且派生类无需修改其行为。
+  - 派生类需要访问基类的受保护成员。
+
+
+### **5. C++中组合的实现方式**
+#### **方式1：直接包含对象**
+```cpp
+class Logger {
+public:
+    void log(const std::string& msg) { /* ... */ }
+};
+
+class Service {
+private:
+    Logger logger;  // 直接包含对象
+public:
+    void doWork() { logger.log("Working..."); }
+};
+```
+
+#### **方式2：通过指针/引用包含（延迟初始化、多态）**
+```cpp
+class Database {
+public:
+    virtual void connect() = 0;
+};
+
+class MySQLDatabase : public Database {
+public:
+    void connect() override { /* ... */ }
+};
+
+class App {
+private:
+    std::unique_ptr<Database> db;  // 通过指针包含
+public:
+    explicit App(std::unique_ptr<Database> db) : db(std::move(db)) {}
+};
+```
+
+
+### **总结**
+**可行，但需权衡**：组合能解决大多数继承的问题，尤其适合构建松耦合、可维护的系统。但继承在表达严格的层次关系和多态时仍是必要的。建议根据具体场景选择：
+- **组合**：复用实现、动态行为、避免继承陷阱。
+- **继承**：严格的“Is-A”关系、多态需求。

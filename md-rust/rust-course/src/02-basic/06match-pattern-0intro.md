@@ -1,0 +1,13 @@
+<!-- 
+  - [模式匹配](basic/match-pattern/intro.md)
+    - [match 和 if let](basic/match-pattern/match-if-let.md)
+    - [解构 Option](basic/match-pattern/option.md)
+    - [模式适用场景](basic/match-pattern/pattern-match.md)
+    - [全模式列表](basic/match-pattern/all-patterns.md) 
+-->
+
+# 模式匹配
+
+模式匹配，这个词，对于非函数语言编程来说，真的还蛮少听到，因为它经常出现在函数式编程里，用于为复杂的类型系统提供一个轻松的解构能力。
+
+曾记否？在枚举和流程控制那章，我们遗留了两个问题，都是关于 `match` 的，第一个是如何对 `Option` 枚举进行进一步处理，另外一个是如何用 `match` 来替代 `else if` 这种丑陋的多重分支使用方式。那么让我们先一起来揭开 `match` 的神秘面纱。
