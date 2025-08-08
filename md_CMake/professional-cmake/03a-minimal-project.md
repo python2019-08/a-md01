@@ -6,17 +6,17 @@ Continuing the analogy with sources, CMake defines its own language which has ma
 
 \#------------------------------------\>\>\>\>\>\>
 
-<span class="mark">cmake_minimum_required(VERSION 3.2)</span>
+cmake_minimum_required(VERSION 3.2)
 
-<span class="mark">project(MyApp)</span>
+project(MyApp)
 
-<span class="mark">add_executable(myExe main.cpp)</span>
+add_executable(myExe main.cpp)
 
 \#------------------------------------\<\<\<\<\<\<
 
 Each line in the above example executes a built-in CMake command. In CMake, commands are similar to other languages’ function calls, except that while they support arguments, they do not return values directly (but a later chapter shows how to pass values back to the caller in other ways). Arguments are separated from each other by spaces and may be split across multiple lines: 【译】上述示例中的每一行都执行一个内置的CMake命令。在CMake中，命令类似于其他语言的函数调用，除了虽然它们支持参数，但它们不直接返回值（但后面的章节将展示如何以其他方式将值传递回调用者）。参数之间用空格分隔，可以拆分为多行：
 
-\`\`\`cmake
+```cmake
 
 add_executable(myExe
 
@@ -28,7 +28,7 @@ src2.cpp
 
 )
 
-\`\`\`
+```
 
 Command names are also case insensitive, so the following are all equivalent: 【译】命令名也不区分大小写，因此以下内容都是等效的：
 
@@ -60,11 +60,11 @@ Using this command is so important that CMake will issue a warning if the CMakeL
 
 The typical form of the cmake_minimum_required() command is straightforward: 【译】cmake_minimum_required()命令的典型形式很简单：
 
-\`\`\`cmake
+```cmake
 
 cmake_minimum_required(VERSION major.minor\[.patch\[.tweak\]\])
 
-\`\`\`
+```
 
 The VERSION keyword must always be present and the version details provided must have at least the major.minor part. In most projects, specifying the patch and tweak parts is not necessary, since new features typically only appear in minor version updates (this is the official CMake behavior from version 3.0 onwards). Only if a specific bug fix is needed should a project specify a patch part. Furthermore, since no CMake release in the 3.x series has used a tweak number, projects should not need to specify one either. 【译】VERSION关键字必须始终存在，提供的版本详细信息必须至少包含major.minor部分。在大多数项目中，指定补丁和调整部分是不必要的，因为新功能通常只出现在次要版本更新中（这是从3.0版本开始的CMake官方行为）。只有当需要特定的bug修复时，项目才应该指定补丁部分。此外，由于3.x系列中没有CMake版本使用调整编号，因此项目也不需要指定一个。
 
@@ -76,17 +76,12 @@ As a general rule of thumb, choose the most recent CMake version that won’t pr
 
 Every CMake project should contain a project() command and it should appear after cmake_minimum_required() has been called. The command with its most common options has the following form: 【译】每个CMake项目都应该包含一个project()命令，并且应该在调用cmake_minimum_required()后出现。命令及其最常见的选项具有以下形式：
 
-\`\`\`cmake
-
+```cmake
 project(projectName
-
-\[VERSION major\[.minor\[.patch\[.tweak\]\]\]\]
-
-\[LANGUAGES languageName ...\]
-
+    [VERSION major[.minor[.patch[.tweak]]]]
+    [LANGUAGES languageName ...]
 )
-
-\`\`\`
+```
 
 The projectName is required and may only contain letters, numbers, underscores (\_) and hyphens (-), although typically only letters and perhaps underscores are used in practice. Since spaces are not permitted, the project name does not have to be surrounded by quotes. This name is used for the top level of a project with some project generators (eg Xcode and Visual Studio) and it is also used in various other parts of the project, such as to act as defaults for packaging and documentation metadata, to provide project-specific variables and so on. The name is the only mandatory argument for the project() command. 【译】projectName是必需的，并且只能包含字母、数字、下划线（\_）和连字符（-），尽管在实践中通常只使用字母和下划线。由于不允许使用空格，因此项目名称不必用引号括起来。此名称用于具有某些项目生成器（如Xcode和Visual Studio）的项目的顶层，也用于项目的其他各个部分，例如作为打包和文档元数据的默认值，提供特定于项目的变量等。该名称是project() 命令的唯一强制参数。
 
@@ -94,11 +89,9 @@ The optional VERSION details are only supported in CMake 3.0 and later. Like the
 
 The optional LANGUAGES argument defines the programming languages that should be enabled for the project. Supported values include C, CXX, Fortran, ASM, Java and others. If specifying multiple languages, separate each with a space. In some special situations, projects may want to indicate that no languages are used, which can be done using LANGUAGES NONE. Techniques introduced in later chapters take advantage of this particular form. If no LANGUAGES option is provided, CMake will default to C and CXX. CMake versions prior to 3.0 do not support the LANGUAGES keyword, but languages can still be specified after the project name using the older form of the command like so: 【译】可选的LANGUAGES参数定义了应为项目启用的编程语言。支持的值包括C、CXX、Fortran、ASM、Java等。如果指定多种语言，请用空格分隔每种语言。在某些特殊情况下，项目可能希望表明没有使用任何语言，这可以使用LANGUAGE NONE来完成。后面章节中介绍的技术利用了这种特殊的形式。如果没有提供LANGUAGES选项，CMake将默认为C和CXX。CMake 3.0之前的版本不支持LANGUAGES关键字，但仍然可以使用旧形式的命令在项目名称后指定语言，如下所示：
 
-\`\`\`cmake
-
+```cmake
 project(myProj C CXX)
-
-\`\`\`
+```
 
 New projects are encouraged to specify a minimum CMake version of at least 3.0 and use the new form with the LANGUAGES keyword instead. 【译】鼓励新项目指定至少3.0的最低CMake版本，并使用带有LANGUAGES关键字的新表单。
 
@@ -110,21 +103,17 @@ When the compiler and linker checks performed by CMake are successful, their res
 
 To complete our minimal example, the add_executable() command tells CMake to create an executable from a set of source files. The basic form of this command is:
 
-\`\`\`cmake
-
-add_executable(targetName source1 \[source2 ...\])
-
-\`\`\`
+```cmake
+add_executable(targetName source1 [source2 ...])
+```
 
 This creates an executable which can be referred to within the CMake project as targetName. This name may contain letters, numbers, underscores and hyphens. When the project is built, an executable will be created in the build directory with a platform-dependent name, the default name being based on the target name. Consider the following simple example command:
 
 【译】这将创建一个可执行文件，在CMake项目中可以将其称为targetName。此名称可以包含字母、数字、下划线和连字符。构建项目时，将在构建目录中创建一个具有平台相关名称的可执行文件，默认名称基于目标名称。考虑以下简单的示例命令：
 
-\`\`\`cmake
-
+```cmake
 add_executable(myApp main.cpp)
-
-\`\`\`
+```
 
 By default, the name of the executable would be myApp.exe on Windows and myApp on Unix-based platforms like macOS, Linux, etc. The executable name can be customized with target properties, a CMake feature introduced in “Chapter 9, Properties”. Multiple executables can also be defined within the one CMakeLists.txt file by calling add_executable() multiple times with different target names. If the same target name is used in more than one add_executable() command, CMake will fail and highlight the error. 【译】默认情况下，可执行文件的名称在Windows上为myApp.exe，在macOS、Linux等基于Unix的平台上为myApp。可执行文件名可以使用目标属性进行自定义，这是“第9章，属性”中介绍的CMake功能。通过使用不同的目标名称多次调用add_executable()，也可以在一个CMakeLists.txt文件中定义多个可执行文件。如果在多个add_executable()命令中使用了相同的目标名称，CMake将失败并突出显示错误。
 
@@ -132,37 +121,22 @@ By default, the name of the executable would be myApp.exe on Windows and myApp o
 
 Before leaving this chapter, it will be useful to demonstrate how to add comments to a CMakeLists.txt file. Comments are used extensively throughout this book and developers are encouraged to also get into the habit of commenting their projects just as they would for ordinary source code. CMake follows similar commenting conventions as Unix shell scripts. Any line beginning with a \# character is treated as a comment. Except within a quoted string, anything after a \# on a line within a CMakeLists.txt file is also treated as a comment. The following shows a few comment examples and brings together the concepts introduced in this chapter: 【译】在离开本章之前，演示如何向CMakeLists.txt文件添加注释将很有用。本书中广泛使用了注释，鼓励开发人员养成像注释普通源代码一样注释项目的习惯。CMake遵循与Unix shell脚本类似的注释约定。任何以#字符开头的行都被视为注释。除了引号内的字符串外，CMakeLists.txt文件中一行#之后的任何内容也被视为注释。下面显示了一些评论示例，并汇集了本章介绍的概念：
 
-\#------------------------------------\>\>\>\>\>\>
+```cmake
+cmake_minimum_required(VERSION 3.2)
+# We don't use the C++ compiler, so don't let project()
+# test for it in case the platform doesn't have one
+project(MyApp VERSION 4.7.2 LANGUAGES C)
 
-<span class="mark">cmake_minimum_required(VERSION 3.2)</span>
+# Primary tool for this project
+add_executable(mainTool
+    main.c
+    debug.c # Optimized away for release builds
+)
 
-<span class="mark"></span>
 
-<span class="mark">\# We don't use the C++ compiler, so don't let project()</span>
-
-<span class="mark">\# test for it in case the platform doesn't have one</span>
-
-<span class="mark">project(MyApp VERSION 4.7.2 LANGUAGES C)</span>
-
-<span class="mark"></span>
-
-<span class="mark">\# Primary tool for this project</span>
-
-<span class="mark">add_executable(mainTool</span>
-
-<span class="mark"> main.c</span>
-
-<span class="mark"> debug.c \# Optimized away for release builds</span>
-
-<span class="mark">)</span>
-
-<span class="mark"></span>
-
-<span class="mark">\# Helpful diagnostic tool for development and testing</span>
-
-<span class="mark">add_executable(testTool testTool.c)</span>
-
-\#------------------------------------\<\<\<\<\<\<
+# Helpful diagnostic tool for development and testing
+add_executable(testTool testTool.c)
+```
 
 ## 3.5. Recommended Practices
 

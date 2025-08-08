@@ -378,3 +378,210 @@ info -o gcc.html gcc
 
 ### **总结**
 `info` 命令是 Linux 系统中深度学习软件的重要工具，尤其适合探索 GNU 项目的复杂工具（如 GCC、Emacs）。尽管其交互逻辑不如 `man` 命令直观，但结构化的文档组织方式能提供更系统的知识体系。建议在需要深入理解软件原理时优先使用 `info`，而日常快速查询则使用 `man`。
+
+===============================
+# 5. 如何给 curl命令添加代理信息
+
+要给 `curl` 命令添加代理信息，可以使用 `-x` 或 `--proxy` 参数指定代理服务器地址。以下是几种常见的代理配置方式：
+
+---
+
+### **1. 使用 HTTP/HTTPS 代理**
+```bash
+curl -x http://代理服务器IP:端口 -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+# curl -x http://127.0.0.1:8123  -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+或：
+```bash
+curl --proxy http://代理服务器IP:端口 -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+#### **示例**（假设代理服务器是 `192.168.1.100:8080`）：
+```bash
+curl -x http://192.168.1.100:8080 -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+---
+
+### **2. 使用 SOCKS 代理**
+如果代理是 SOCKS5 协议（如 Shadowsocks、VPN），需指定 `socks5://`：
+```bash
+curl --proxy socks5://代理服务器IP:端口 -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+#### **示例**（SOCKS5 代理 `127.0.0.1:1080`）：
+```bash
+curl --proxy socks5://127.0.0.1:1080 -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+---
+
+### **3. 代理需要认证**
+如果代理需要用户名和密码，使用以下格式：
+```bash
+curl -x http://用户名:密码@代理服务器IP:端口 -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+#### **示例**（用户 `admin`，密码 `123456`）：
+```bash
+curl -x http://admin:123456@192.168.1.100:8080 -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+---
+
+### **4. 通过环境变量配置代理**
+如果不想每次输入代理信息，可以设置环境变量：
+```bash
+export http_proxy=http://代理服务器IP:端口
+export https_proxy=http://代理服务器IP:端口
+curl -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+#### **示例**：
+```bash
+export http_proxy=http://192.168.1.100:8080
+export https_proxy=http://192.168.1.100:8080
+curl -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+---
+
+### **5. 忽略代理对某些地址生效**
+如果代理会干扰某些地址，可以通过 `--noproxy` 排除：
+```bash
+curl -x http://代理服务器IP:端口 --noproxy "dl.k8s.io" -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+---
+
+### **常见问题**
+1. **代理连接失败**  
+   - 检查代理服务器是否可用：
+     ```bash
+     ping 代理服务器IP
+     ```
+   - 检查端口是否开放：
+     ```bash
+     telnet 代理服务器IP 端口
+     ```
+
+2. **证书错误**  
+   如果代理拦截 HTTPS 流量导致证书错误，可临时跳过验证（不推荐）：
+   ```bash
+   curl -x http://代理服务器IP:端口 -k -LO "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+   ```
+
+---
+
+### **总结**
+| 场景               | 命令示例                                                                 |
+|--------------------|--------------------------------------------------------------------------|
+| **HTTP 代理**      | `curl -x http://192.168.1.100:8080 -LO "URL"`                           |
+| **SOCKS5 代理**    | `curl --proxy socks5://127.0.0.1:1080 -LO "URL"`                        |
+| **代理认证**       | `curl -x http://admin:123456@192.168.1.100:8080 -LO "URL"`              |
+| **环境变量代理**   | `export http_proxy=http://192.168.1.100:8080; curl -LO "URL"`           |
+| **忽略证书错误**   | `curl -x http://代理IP:端口 -k -LO "URL"`                               |
+
+按实际代理类型和参数替换即可！
+
+=====================================================
+# 6. wget 命令如何指定代理信息
+
+在 `wget` 命令中指定代理信息，可以通过以下方式配置代理服务器：
+
+---
+
+### **1. 使用 `-e` 参数临时指定代理**
+```bash
+wget -e use_proxy=yes -e http_proxy=http://代理IP:端口 -e https_proxy=http://代理IP:端口 "下载URL"
+```
+
+#### **示例**（HTTP/HTTPS 代理）：
+```bash
+wget -e use_proxy=yes -e http_proxy=http://192.168.1.100:8080 -e https_proxy=http://192.168.1.100:8080 "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+#### **示例**（SOCKS5 代理）：
+```bash
+wget -e use_proxy=yes -e http_proxy=socks5://127.0.0.1:1080 -e https_proxy=socks5://127.0.0.1:1080 "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+---
+
+### **2. 使用 `--proxy` 参数（部分 `wget` 版本支持）**
+```bash
+wget --proxy=on --http-proxy=http://代理IP:端口 --https-proxy=http://代理IP:端口 "下载URL"
+```
+
+#### **示例**：
+```bash
+wget --proxy=on --http-proxy=http://192.168.1.100:8080 --https-proxy=http://192.168.1.100:8080 "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+---
+
+### **3. 通过环境变量配置代理**
+```bash
+export http_proxy=http://代理IP:端口
+export https_proxy=http://代理IP:端口
+wget "下载URL"
+```
+
+#### **示例**：
+```bash
+export http_proxy=http://192.168.1.100:8080
+export https_proxy=http://192.168.1.100:8080
+wget "https://dl.k8s.io/release/v1.33.2/bin/linux/amd64/kubectl"
+```
+
+---
+
+### **4. 代理需要用户名和密码**
+```bash
+wget -e use_proxy=yes -e http_proxy=http://用户名:密码@代理IP:端口 -e https_proxy=http://用户名:密码@代理IP:端口 "下载URL"
+```
+
+#### **示例**：
+```bash
+wget -e use_proxy=yes -e http_proxy=http://admin:123456@192.168.1.100:8080 -e https_proxy=http://admin:123456@192.168.1.100:8080 "https://example.com/file.tar.gz"
+```
+
+---
+
+### **5. 忽略代理对某些地址生效**
+如果代理会影响某些域名，可以通过 `--no-proxy` 排除：
+```bash
+wget -e use_proxy=yes -e http_proxy=http://代理IP:端口 --no-proxy "example.com" "https://example.com/file.tar.gz"
+```
+
+---
+
+### **常见问题**
+1. **代理连接失败**  
+   - 检查代理服务器是否在线：
+     ```bash
+     ping 代理IP
+     ```
+   - 检查端口是否开放：
+     ```bash
+     telnet 代理IP 端口
+     ```
+
+2. **证书错误**  
+   如果代理导致 HTTPS 证书错误，可临时关闭验证（不推荐）：
+   ```bash
+   wget --no-check-certificate -e use_proxy=yes -e http_proxy=http://代理IP:端口 "https://example.com/file.tar.gz"
+   ```
+
+---
+
+### **总结**
+| 场景               | 命令示例                                                                 |
+|--------------------|--------------------------------------------------------------------------|
+| **临时 HTTP 代理** | `wget -e use_proxy=yes -e http_proxy=http://代理IP:端口 "URL"`          |
+| **SOCKS5 代理**    | `wget -e use_proxy=yes -e http_proxy=socks5://127.0.0.1:1080 "URL"`    |
+| **代理认证**       | `wget -e use_proxy=yes -e http_proxy=http://用户:密码@代理IP:端口 "URL"` |
+| **环境变量代理**   | `export http_proxy=http://代理IP:端口; wget "URL"`                     |
+| **忽略证书**       | `wget --no-check-certificate -e use_proxy=yes -e http_proxy=... "URL"` |
+
+按实际代理类型替换即可！

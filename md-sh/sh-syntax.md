@@ -15,6 +15,7 @@
 > 12. linux shell 脚本 如何处理输入的参数
 > 13.linux shell 如何从 文件路径 获取文件名（不包括后缀）
 > 14. linux shell 脚本 如何 用 for 循环 打印0到10000
+> 15.linux shell 编程，如何把常用的函数单独放一个文件 
 ```
 
 
@@ -107,6 +108,79 @@ done
 - **路径问题**：数组中存储的文件名不包含完整路径，仅为文件名。若需要完整路径，可结合 `pwd` 命令来获取当前目录路径，再进行拼接。 
 
 综上所述，`keyFrameList=(*.jpg)` 确实可以把当前目录下的 `.jpg` 文件存到一个数组里。 
+
+<------------------------------------------------------------------------>
+==========================================================================
+# 2+1. picList数组没有按预期展开 PNG 文件列表
+
+## 问题
+```sh
+(base) abner@abner-XPS:~$ picList=(/home/abner/Downloads/kj/*.png)
+(base) abner@abner-XPS:~$ echo $picList
+/home/abner/Downloads/kj/*.png
+(base) abner@abner-XPS:~$ echo ${picList[@]}
+/home/abner/Downloads/kj/*.png
+```
+## 元宝
+
+你的问题是关于 Bash 数组的使用 - 当前 `picList` 数组没有按预期展开 PNG 文件列表。这是因为通配符 `*.png` 在赋值时没有被展开。以下是解决方案：
+
+### 正确用法
+```bash
+# 方法1：直接赋值（推荐）
+picList=(/home/abner/Downloads/kj/*.png)
+
+# 方法2：使用shopt（处理隐藏文件）
+shopt -s nullglob  # 如果没有匹配文件，返回空数组
+picList=(/home/abner/Downloads/kj/*.png)
+shopt -u nullglob  # 恢复默认
+
+# 验证数组内容
+echo "找到 ${#picList[@]} 个PNG文件:"
+printf '%s\n' "${picList[@]}"
+```
+
+### 关键说明
+1. **通配符展开时机**：
+   ```bash
+   # 错误：引号阻止了通配符展开
+   picList=("/home/abner/Downloads/kj/*.png") 
+
+   # 正确：去掉引号才能展开
+   picList=(/home/abner/Downloads/kj/*.png)
+   ```
+
+2. **常见问题处理**：
+   ```bash
+   # 如果没有png文件时的处理
+   if [ ${#picList[@]} -eq 0 ]; then
+       echo "未找到PNG文件"
+   else
+       echo "第一个文件: ${picList[0]}"
+   fi
+   ```
+
+3. **遍历数组**：
+   ```bash
+   for img in "${picList[@]}"; do
+       echo "处理文件: $img"
+       # 添加你的处理命令...
+   done
+   ```
+
+### 其他实用技巧
+```bash
+# 只获取文件名（不含路径）
+names=("${picList[@]##*/}") 
+
+# 创建文件列表文本文件
+printf '%s\n' "${picList[@]}" > png_list.txt
+```
+
+如果仍有问题，请检查：
+1. `/home/abner/Downloads/kj/` 目录确实存在
+2. 目录中有 `.png` 后缀的文件
+3. 你有该目录的读取权限
 
 <------------------------------------------------------------------------>
 ==========================================================================
@@ -1331,3 +1405,79 @@ done
 ```
 
 根据你的具体需求和Shell环境选择合适的方法即可。
+
+==========================================
+# 15.linux shell 编程，如何把常用的函数单独放一个文件 
+
+在 Linux Shell 编程里，你能够把常用的函数存于单独的文件，方便在不同脚本中复用。这种做法可以让代码更有条理，提升其可维护性。下面为你详细介绍具体的实现方法：
+
+### 1. 创建函数库文件
+首先，创建一个专门存放常用函数的文件，例如 `my_functions.sh`，并添加如下内容：
+```bash
+#!/bin/bash
+
+# 文件操作相关函数
+get_extension() {
+    local file_path="$1"
+    local filename=$(basename -- "$file_path")
+    local extension="${filename##*.}"
+    
+    if [[ "$filename" == "$extension" ]]; then
+        echo ""
+    else
+        echo "$extension"
+    fi
+}
+
+# 字符串处理相关函数
+to_upper() {
+    echo "$1" | tr '[:lower:]' '[:upper:]'
+}
+
+# 数组操作相关函数
+contains_element() {
+    local e match="$1"
+    shift
+    for e; do [[ "$e" == "$match" ]] && return 0; done
+    return 1
+}
+```
+
+### 2. 在脚本中引入函数库
+接着，在你的 shell 脚本里使用 `.` 或者 `source` 命令来引入这个函数库文件，示例如下：
+```bash
+#!/bin/bash
+
+# 引入函数库
+source /path/to/my_functions.sh
+
+# 使用函数库中的函数
+file="/document/report.txt"
+ext=$(get_extension "$file")
+echo "文件后缀: $ext"  # 输出: 文件后缀: txt
+
+text="hello"
+echo "转为大写: $(to_upper "$text")"  # 输出: 转为大写: HELLO
+
+# 使用数组函数
+arr=("apple" "banana" "cherry")
+if contains_element "banana" "${arr[@]}"; then
+    echo "数组包含 banana"
+fi
+```
+
+### 3. 让函数库全局可用（可选操作）
+要是你希望函数库能在所有 shell 会话中都可以使用，可以把 source 命令添加到 shell 的配置文件里。以 bash 为例：
+```bash
+echo "source /path/to/my_functions.sh" >> ~/.bashrc
+source ~/.bashrc  # 让配置立即生效
+```
+
+### 4. 函数库设计建议
+- **文件组织**：按照功能对函数进行分组，比如创建 `file_utils.sh`、`network_utils.sh` 等不同的文件。
+- **避免命名冲突**：函数名最好有独特的前缀，像 `myutils_get_extension`。
+- **添加注释**：为函数添加文档注释，说明其用途、参数以及返回值。
+- **错误处理**：在函数内部进行错误处理，避免脚本因此中断。
+
+通过这种方式，你可以打造一个高效的 shell 函数库，让后续的脚本编写工作更加轻松。
+

@@ -1,3 +1,4 @@
+#!/bin/bash
 #+++++++++++ male +++++++++++++
 edge-tts --voice zh-CN-YunxiNeural --file ./edge-tts-input-demo.txt --write-media hello_in_cn.mp3 --write-subtitles hello_in_cn.srt
 #+++++++++++++ female +++++++++++++
@@ -6,7 +7,12 @@ edge-tts --voice zh-CN-XiaoxiaoNeural  --file ./edge-tts-input-demo.txt --write-
 
 #+++++++++++++ male +++++++++++++
 work_dir=./
-# edge-tts --voice zh-CN-YunxiNeural --file ./edge-tts-input-demo-fragment.txt --write-media male_cn_frag.mp3
+if false; then # This block never run. 
+    edge-tts --voice en-US-AnaNeural   --file ./L035-1.txt  --write-media L035-1.mp3
+    for idx in $(seq  1   5); do
+        edge-tts --voice en-US-AnaNeural   --file ./L035-${idx}.txt  --write-media L035-${idx}.mp3
+    done
+fi
 edge-tts --voice zh-CN-YunxiNeural --file ./edge-tts-input-demo-fragment.txt --write-media story_male_cn.mp3 --write-subtitles story_male_cn.srt
 
 ffmpeg -i ${work_dir}/story_male_cn.mp3 -ar 16000 -ac 1 -c:a pcm_s16le ${work_dir}/story_male_cn.wav

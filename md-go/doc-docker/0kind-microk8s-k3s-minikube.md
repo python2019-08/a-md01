@@ -1,8 +1,17 @@
 # 1.如果在个人台式机上做golang  c++  cicd 相关项目，选择minikube/kind/microk8s/k3s中哪个更适合
  
+ minikube /kind /k3s 是用golang开发的，microk8s是用python开发的。
+ | 工具       | 语言     | 特点                          |
+|------------|----------|-------------------------------|
+| **Kind**   | Go       | 高性能，与 K8s 生态深度集成   |
+| **Minikube** | Go      | 同样用 Go，但依赖虚拟机       |
+| **K3s**    | Go       | 轻量级 K8s，适合边缘计算       |
+| **MicroK8s** | Python | 依赖 Snap，Ubuntu 官方维护    |
+
  在个人台式机上为 Golang/C++ 项目搭建 CI/CD，推荐使用 Kind 或 MicroK8s，具体选择取决于你的需求：
 
 ### 1. Kind（Kubernetes in Docker）
+   
 
 适合场景：
 • 需要完全贴近生产 K8s：Kind 直接在 Docker 容器中运行 Kubernetes，行为与生产集群一致，适合测试 CI/CD 流程。

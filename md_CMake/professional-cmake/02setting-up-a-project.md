@@ -38,26 +38,20 @@ Some of the generators produce projects which support multiple configurations (e
 
 The most basic way to run CMake is via the cmake command line utility. The simplest way to invoke it is to change to the build directory and pass options to cmake for the generator type and location of the source tree. For example: 【译】运行CMake的最基本方法是通过CMake命令行实用程序。调用它的最简单方法是更改到构建目录，并将生成器类型和源代码树位置的选项传递给cmake。例如：
 
-\`\`\`sh
-
+```sh
 mkdir build
-
 cd build
-
 cmake -G "Unix Makefiles" ../source
-
-\`\`\`
+```
 
 If the -G option is omitted, CMake will choose a default generator type based on the host platform. For all generator types, CMake will carry out a series of tests and interrogate the system to determine how to set up the project files. This includes things like verifying that the compilers work, determining the set of supported compiler features and various other tasks. A variety of information will be logged before CMake finishes with lines like the following upon success:
 
 【译】如果省略-G选项，CMake将根据主机平台选择默认生成器类型。对于所有生成器类型，CMake将执行一系列测试并询问系统以确定如何设置项目文件。这包括验证编译器是否正常工作、确定支持的编译器功能集以及各种其他任务。在CMake成功完成之前，将记录各种信息，并显示以下行：
-
+```sh
 -- Configuring done
-
 -- Generating done
-
 -- Build files have been written to: /some/path/build
-
+```
 The above highlights that project file creation actually involves two steps; configuring and generating. During the configuring phase, CMake reads in the CMakeLists.txt file and builds up an internal representation of the entire project. After this is done, the generation phase creates the project files. The distinction between configuring and generating doesn’t matter so much for basic CMake usage, but in later chapters the separation of configuration and generation becomes important. This is covered in more detail in “Chapter 10, Generator Expressions”. 【译】上面强调了项目文件创建实际上涉及两个步骤：配置和生成。在配置阶段，CMake读取CMakeLists.txt文件并构建整个项目的内部表示。完成此操作后，生成阶段将创建项目文件。配置和生成之间的区别对于CMake的基本用法来说并不重要，但在后面的章节中，配置和生成的分离变得很重要。这在第10章“生成器表达式”中有更详细的介绍。
 
 When CMake has completed its run, it will have saved a CMakeCache.txt file in the build directory. CMake uses this file to save details so that if it is re-run again, it can re-use information computed the first time and speed up the project generation. As covered in later chapters, it also allows developer options to be saved between runs. A GUI application, cmake-gui, is available as an alternative to running the cmake command line tool, but the introduction of the GUI application is deferred to “Chapter 5, Variables” where its usefulness is more clearly evident.
@@ -68,11 +62,9 @@ When CMake has completed its run, it will have saved a CMakeCache.txt file in th
 
 At this point, with project files now available, the developer can use their selected build tool in the way to which they are accustomed. The build directory will contain the necessary project files which can be loaded into an IDE, read by command line tools, etc. lternatively, cmake can invoke the build tool on the developer’s behalf like so: 【译】此时，有了项目文件，开发人员可以按照他们习惯的方式使用他们选择的构建工具。构建目录将包含必要的项目文件，这些文件可以加载到IDE中，由命令行工具读取等。或者，cmake可以代表开发人员调用构建工具，如下所示：
 
-\`\`\`sh
-
+```sh
 cmake --build /some/path/build --config Debug --target MyApp
-
-\`\`\`
+```
 
 This works even for project types the developer may be more accustomed to using through an IDE like Xcode or Visual Studio. The --build option points to the build directory used by the CMake project generation step. For multi configuration generators, the --config option specifies which configuration to build, whereas single configuration generators will ignore the --config option and rely instead on information provided when the CMake project generation step was performed. Specifying the build configuration is covered in depth in “Chapter 13, Build Type”. The --target option can be used to tell the build tool what to build, or if omitted, the default target will be built. 【译】这甚至适用于开发人员可能更习惯通过Xcode或Visual Studio等IDE使用的项目类型。
 
@@ -84,17 +76,12 @@ While developers will typically invoke their selected build tool directly in day
 
 【译】虽然开发人员通常会在日常开发中直接调用他们选择的构建工具，但通过如上所示的cmake命令调用它在驱动自动构建的脚本中可能更有用。使用这种方法，一个简单的脚本构建可能看起来像这样：
 
-\`\`\`sh
-
-<span class="mark">mkdir build</span>
-
-<span class="mark">cd build</span>
-
-<span class="mark">cmake -G "Unix Makefiles" ../source</span>
-
-<span class="mark">cmake --build . --config Release --target MyApp</span>
-
-\`\`\`
+```sh
+mkdir build
+cd build
+cmake -G "Unix Makefiles" ../source
+cmake --build . --config Release --target MyApp
+```
 
 If the developer wishes to experiment with different generators, all that needs to be done is change the argument given to the -G CMake option and the correct build tool will be automatically invoked. The build tool doesn’t even have to be on the user’s PATH for cmake --build to work (although it may need to be for the initial configuration step when cmake is first invoked). 【译】如果开发人员希望尝试不同的生成器，只需更改-G CMake选项的参数，就会自动调用正确的构建工具。构建工具甚至不必在用户的PATH上，cmake--build才能工作（尽管在cmake首次调用时，它可能需要在初始配置步骤中）。
 

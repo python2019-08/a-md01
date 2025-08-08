@@ -2,80 +2,55 @@
 # ----Part III: The Bigger Picture----
 
 For the lucky few, a project may be independent of anything else and only needs to satisfy mild quality constraints or perhaps none at all for throw-away experiments. The more likely scenario is that, at some point, the project needs to move beyond its own isolated existence and interact with external entities. This occurs in two directions:【翻译】对于少数幸运的人来说，一个项目可能独立于其他任何东西，只需要满足轻微的质量限制，或者对于一次性实验可能根本不需要。更有可能的情况是，在某个时候，项目需要超越其孤立的存在，与外部实体互动。这发生在两个方向上：
-
-\#\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>
-
-\#(1)**Dependencies**
-
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#(1)Dependencies 
 The project may depend on other externally provided files, libraries, executables, packages and so on. 【翻译】该项目可能依赖于其他外部提供的文件、库、可执行文件、包等。
-
-\#(2)**Consumers**
-
+#(2)Consumers 
 Other projects may wish to consume the project in a variety of ways. Some may want to incorporate it at the source level, others may expect a pre-built binary package to be available. Another possibility is the assumption that the project is installed somewhere on the system.【翻译】其他项目可能希望以各种方式使用该项目。有些人可能希望在源代码级别合并它，而另一些人可能希望提供预构建的二进制包。另一种可能性是假设项目安装在系统的某个地方。
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
 
-\#\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<
+Making a project available either as a standalone package or for consumption by other projects also brings an expectation of a certain level of quality. Automated testing is usually a critical part of any robust software delivery strategy, which means it must be easy to define and execute tests and also to report on the results.   【翻译】将项目作为独立包提供或供其他项目使用，也会带来对一定质量水平的期望。自动化测试通常是任何稳健的软件交付策略的关键部分，这意味着它必须易于定义和执行测试，并报告结果。
 
-Making a project available either as a standalone package or for consumption by other projects also brings an expectation of a certain level of quality. Automated testing is usually a critical part of any robust software delivery strategy, which means it must be easy to define and execute tests and also to report on the results. 【翻译】将项目作为独立包提供或供其他项目使用，也会带来对一定质量水平的期望。自动化测试通常是任何稳健的软件交付策略的关键部分，这意味着它必须易于定义和执行测试，并报告结果。
 
-The CMake suite of tools provides assistance with all of the above. It provides commands that operate at a lower level for finding individual files, libraries, etc. and it also provides modules that build on these commands to give a higher level entry point for dependency management. The CTest framework provides a rich set of automated testing capabilities, while CPack considerably eases the process of creating packages in various formats. This part of the book covers these externally focused topics, showing how to get the most out of what CMake offers while also highlighting common mistakes and pitfalls. 【翻译】CMake工具套件为上述所有功能提供了帮助。它提供了在较低级别操作的命令，用于查找单个文件、库等，还提供了基于这些命令的模块，为依赖关系管理提供了更高级别的入口点。CTest框架提供了一套丰富的自动化测试功能，而CPack大大简化了以各种格式创建包的过程。本书的这一部分涵盖了这些以外部为重点的主题，展示了如何充分利用CMake提供的功能，同时也强调了常见的错误和陷阱。
+The CMake suite of tools provides assistance with all of the above. It provides commands that operate at a lower level for finding individual files, libraries, etc. and it also provides modules that build on these commands to give a higher level entry point for dependency management. The CTest framework provides a rich set of automated testing capabilities, while CPack considerably eases the process of creating packages in various formats. This part of the book covers these externally focused topics, showing how to get the most out of what CMake offers while also highlighting common mistakes and pitfalls.  【翻译】CMake工具套件为上述所有功能提供了帮助。它提供了在较低级别操作的命令，用于查找单个文件、库等，还提供了基于这些命令的模块，为依赖关系管理提供了更高级别的入口点。CTest框架提供了一套丰富的自动化测试功能，而CPack大大简化了以各种格式创建包的过程。本书的这一部分涵盖了这些以外部为重点的主题，展示了如何充分利用CMake提供的功能，同时也强调了常见的错误和陷阱。
 
-The last chapter in this part of the book brings the reader full circle back to thinking about how to organize a project. Doing this well requires an appreciation for both the build level features and how a project will interact with other projects. With the benefit of the knowledge gained from the chapters before it, it shows how to structure and define a project to be flexible, robust and easier for developers to work with. 【翻译】本书这一部分的最后一章让读者重新思考如何组织一个项目。做好这项工作需要了解构建级功能以及项目将如何与其他项目交互。借助前几章中获得的知识，它展示了如何构建和定义一个灵活、健壮、易于开发人员使用的项目。
+
+The last chapter in this part of the book brings the reader full circle back to thinking about how to organize a project. Doing this well requires an appreciation for both the build level features and how a project will interact with other projects. With the benefit of the knowledge gained from the chapters before it, it shows how to structure and define a project to be flexible, robust and easier for developers to work with.  【翻译】本书这一部分的最后一章让读者重新思考如何组织一个项目。做好这项工作需要了解构建级功能以及项目将如何与其他项目交互。借助前几章中获得的知识，它展示了如何构建和定义一个灵活、健壮、易于开发人员使用的项目。
 
 # Ch23. Finding Things
 
 A project of at least modest size will quite likely rely on things provided by something outside of the project itself. For example, it may expect a particular library or tool to be available, or it may need to know the location of a specific configuration file or a header for a library it uses. At a higher level, the project may want to find a complete package that potentially defines a whole range of things including targets, functions, variables and just about anything else a regular CMake project might define.
-
 【译】一个规模适中的项目很可能依赖于项目本身之外的东西。例如，它可能期望特定的库或工具可用，或者它可能需要知道特定配置文件的位置或它使用的库的头部。在更高的层次上，项目可能希望找到一个完整的包，该包可能定义了一系列的东西，包括目标、函数、变量以及常规CMake项目可能定义的任何其他东西。
 
-To assist with this, CMake provides a variety of features which allow projects to find various things and even to make themselves easy to find and be incorporated into other projects. Various find\_…() commands provide the ability to search for specific files, libraries or programs, or indeed for an entire package. CMake modules also add the ability to use pkg-config to provide information about external packages, while other modules facilitate writing package files for other projects to consume. This chapter covers CMake’s support for searching for something already available on the file system. The ability to download missing dependencies is covered in “Chapter 27, External Content” and preparing a project for being found by other projects is addressed in Section 25.7, “Writing A Config Package File”.
-
-【译】为了帮助实现这一点，CMake提供了各种功能，使项目能够找到各种东西，甚至使自己易于找到并融入其他项目。各种find\_…()命令提供了搜索特定文件、库或程序，甚至整个包的能力。CMake模块还增加了使用pkg-config提供外部包信息的能力，而其他模块则便于编写包文件供其他项目使用。本章介绍CMake对搜索文件系统上已有内容的支持。下载缺失依赖项的能力在“第27章，外部内容”中有所介绍，为其他项目找到项目做准备的能力在第25.7节“编写配置包文件”中有所说明。
+To assist with this, CMake provides a variety of features which allow projects to find various things and even to make themselves easy to find and be incorporated into other projects. Various find_…() commands provide the ability to search for specific files, libraries or programs, or indeed for an entire package. CMake modules also add the ability to use pkg-config to provide information about external packages, while other modules facilitate writing package files for other projects to consume. This chapter covers CMake’s support for searching for something already available on the file system. The ability to download missing dependencies is covered in “Chapter 27, External Content” and preparing a project for being found by other projects is addressed in Section 25.7, “Writing A Config Package File”.
+【译】为了帮助实现这一点，CMake提供了各种功能，使项目能够找到各种东西，甚至使自己易于找到并融入其他项目。各种 find_…() 命令提供了搜索特定文件、库或程序，甚至整个包的能力。CMake模块还增加了使用pkg-config提供外部包信息的能力，而其他模块则便于编写包文件供其他项目使用。本章介绍CMake对搜索文件系统上已有内容的支持。下载缺失依赖项的能力在“第27章，外部内容”中有所介绍，为其他项目找到项目做准备的能力在第25.7节“编写配置包文件”中有所说明。
 
 The basic idea of searching for something is relatively straightforward, but as will become apparent, the details of how the search is conducted can be quite involved. In many cases, the default behaviors are appropriate, but an understanding of the search locations and their ordering can allow projects to tailor the search to account for non-standard behaviors and unusual circumstances.
-
 【译】搜索某物的基本思想相对简单，但很明显，如何进行搜索的细节可能非常复杂。在许多情况下，默认行为是合适的，但了解搜索位置及其顺序可以使项目根据非标准行为和异常情况定制搜索。
 
 ## 23.1. Finding Files and Paths
 
-Conceptually, the most basic search task is to find a specific file and the most direct way to achieve this is with the find_file() command. It also serves as a good introduction to the whole family of find\_…() commands, since they all share many of the same options and have similar behavior. The full syntax of this command is as follows:
+Conceptually, the most basic search task is to find a specific file and the most direct way to achieve this is with the find_file() command. It also serves as a good introduction to the whole family of find_…() commands, since they all share many of the same options and have similar behavior. The full syntax of this command is as follows:
+【译】从概念上讲，最基本的搜索任务是找到一个特定的文件，实现这一点的最直接方法是使用find_file()命令。它还可以很好地介绍整个find_…()命令家族，因为它们都有许多相同的选项，并且具有相似的行为。此命令的完整语法如下：
 
-【译】从概念上讲，最基本的搜索任务是找到一个特定的文件，实现这一点的最直接方法是使用find_file()命令。它还可以很好地介绍整个find\_…()命令家族，因为它们都有许多相同的选项，并且具有相似的行为。此命令的完整语法如下：
-
-\`\`\`cmake
-
-find_file(outVar
-
-name \| NAMES name1 \[name2...\]
-
-\[HINTS path1 \[path2...\] \[ENV var\]...\]
-
-\[PATHS path1 \[path2...\] \[ENV var\]...\]
-
-\[PATH_SUFFIXES suffix1 \[suffix2 ...\]\]
-
-\[NO_DEFAULT_PATH\]
-
-\[NO_PACKAGE_ROOT_PATH\]
-
-\[NO_CMAKE_PATH\]
-
-\[NO_CMAKE_ENVIRONMENT_PATH\]
-
-\[NO_SYSTEM_ENVIRONMENT_PATH\]
-
-\[NO_CMAKE_SYSTEM_PATH\]
-
-\[CMAKE_FIND_ROOT_PATH_BOTH \|
-
-ONLY_CMAKE_FIND_ROOT_PATH \|
-
-NO_CMAKE_FIND_ROOT_PATH\]
-
-\[DOC "description"\]
-
+```cmake
+find_file(outVar   
+name | NAMES name1 [name2...]   
+[HINTS path1 [path2...] [ENV var]...]   
+[PATHS path1 [path2...] [ENV var]...]   
+[PATH_SUFFIXES suffix1 [suffix2 ...]]   
+[NO_DEFAULT_PATH]   
+[NO_PACKAGE_ROOT_PATH]   
+[NO_CMAKE_PATH]   
+[NO_CMAKE_ENVIRONMENT_PATH]   
+[NO_SYSTEM_ENVIRONMENT_PATH]   
+[NO_CMAKE_SYSTEM_PATH]   
+[CMAKE_FIND_ROOT_PATH_BOTH |   
+ONLY_CMAKE_FIND_ROOT_PATH |   
+NO_CMAKE_FIND_ROOT_PATH]   
+[DOC "description"] 
 )
-
-\`\`\`
+```
 
 The command can search for a single file name or it can be given a list of names with the NAMES option. A list can be useful when the file being searched for may have a few variations on its name, such as different operating system distributions choosing different naming conventions, incorporating version numbers or not, accounting for a file changing names from one release to another and so on. The names should be listed in preferred order, since the search will stop at the first one found (the complete set of search locations is checked for a particular name before moving on to the next name). When specifying names that contain some form of version numbering, the CMake documentation recommends listing the name(s) without version details ahead of those that do so that locally built files are more likely to be found ahead of files provided by the operating system.
 
@@ -87,13 +62,13 @@ The search will be conducted over a set of locations checked according to a well
 
 <img src="./media/image99.png" style="width:5.75972in;height:2.43333in" />
 
-**\#(1)Package root variables**
+#(1)**Package root variables**
 
 The first location searched only applies when find_file() is invoked from within a Find module (discussed later in this chapter). It was initially added as a search location in CMake 3.9.0, but was removed in 3.9.1 due to backward compatibility issues. It was then re-added again in CMake 3.12 with the problems addressed. Further discussion of this search location is deferred to Section 23.5, “Finding Packages” where its use is more relevant.
 
 【译】搜索的第一个位置仅适用于从find模块中调用find_file()时（本章稍后讨论）。它最初在CMake 3.9.0中作为搜索位置添加，但由于向后兼容性问题，在3.9.1中被删除。然后在CMake 3.12中再次添加，并解决了问题。关于此搜索位置的进一步讨论将推迟到第23.5节“查找包”，其中其使用更为相关。
 
-\#(2)**Cache variables (CMake-specific)**
+#(2)**Cache variables (CMake-specific)**
 
 The CMake-specific cache variable locations are derived from the cache variables CMAKE_PREFIX_PATH, CMAKE_INCLUDE_PATH and CMAKE_FRAMEWORK_PATH. Of these, CMAKE_PREFIX_PATH is perhaps the most convenient, as setting it works not just for find_file(), but also for all the other find\_…() commands. It represents a base point below which a typical directory structure of bin, lib, include and so on is expected and each find\_…() command appends its own subdirectory to construct search paths. In the case of find_file(), for each entry in CMAKE_PREFIX_PATH, the directory \<prefix\>/include will be searched. If the CMAKE_LIBRARY_ARCHITECTURE variable is set, then the architecture-specific directory \<prefix\>/include/\${CMAKE_LIBRARY_ARCHITECTURE} will be searched first to ensure architecturespecific locations take precedence over generic locations. The CMAKE_LIBRARY_ARCHITECTURE variable is normally set automatically by CMake and projects should not generally try to set it themselves.
 
@@ -101,33 +76,28 @@ The CMake-specific cache variable locations are derived from the cache variables
 
 For the cases where a more specific include or framework path needs to be searched and it is not part of a standard directory layout or package, the CMAKE_INCLUDE_PATH and CMAKE_FRAMEWORK_PATH variables can be used. They each provide a list of directories to be searched, but unlike CMAKE_PREFIX_PATH, no include subdirectory is appended. CMAKE_INCLUDE_PATH is supported by find_file() and find_path(), whereas CMAKE_FRAMEWORK_PATH is supported by those two commands and by find_library(). Other than that, these two sets of paths are handled in the same way. See Section 23.1.1, “Apple-specific Behavior” further below for additional details.【翻译】对于需要搜索更具体的包含或框架路径并且它不是标准目录布局或包的一部分的情况，可以使用CMAKE_include_path和CMAKE_framework_path变量。它们各自提供了一个要搜索的目录列表，但与CMAKE_PREFIX_PATH不同，没有附加包含子目录。CMAKE_INCLUDE_PATH由find_file()和find_PATH()支持，而CMAKE_FRAMEWORK_PATH由这两个命令和find_library()支持。除此之外，这两组路径的处理方式是相同的。更多详细信息，请参阅下文第23.1.1节“苹果特定行为”。
 
-**\#(3)Environment variables (CMake-specific)**
+#(3) **Environment variables (CMake-specific)**
 
 The CMake-specific environment variable locations are very similar to the cache variable locations. The environment variables CMAKE_PREFIX_PATH, CMAKE_INCLUDE_PATH and CMAKE_FRAMEWORK_PATH are treated in the same way as the same-named cache variables, except that on Unix platforms, each list item will be separated by a colon (:) instead of a semi-colon (;). This is to allow the environment variables to use platform-specific path lists defined in the same style as other path lists for each platform. 【译】CMake特定的环境变量位置与缓存变量位置非常相似。环境变量CMAKE_PREFIX_PATH、CMAKE_INCLUDE_PATH和CMAKE_FRAMEWORK_PATH的处理方式与同名缓存变量相同，除了在Unix平台上，每个列表项将用冒号（：）而不是分号（；）分隔。这是为了允许环境变量使用以与每个平台的其他路径列表相同的样式定义的特定于平台的路径列表。
 
-**\#(4)Environment variables (system-specific)**
+#(4)**Environment variables (system-specific)**
 
 The system-specific environment variables are INCLUDE and PATH. Both may contain a list separated by the platform-specific path separator (colon on Unix systems, semi-colon on Windows), with each item being added to the set of search locations (INCLUDE is added before PATH). 【译】系统特定的环境变量是INCLUDE和PATH。两者都可能包含一个由特定于平台的路径分隔符分隔的列表（Unix系统上为冒号，Windows上为分号），每个项目都会添加到搜索位置集中（INCLUDE添加在path之前）。
 
 On Windows only (including Cygwin), the PATH entries will be further processed in a more complex way. For each item in PATH, a base path will be computed by dropping any trailing bin or sbin subdirectory from the end. This base path is then used to add one or two paths to the search locations. If CMAKE_LIBRARY_ARCHITECTURE is defined, \<base\>/include/\${CMAKE_LIBRARY_ARCHITECTURE} is added. After that, the \<base\>/include path is added to the set of search paths regardless of whether CMAKE_LIBRARY_ARCHITECTURE is defined. In the search path ordering, these paths are placed immediately before the unmodified PATH item itself. For example, if the PATH environment variable was set to C:\foo\bin;D:\bar and CMAKE_LIBRARY_ARCHITECTURE set to somearch, the following set of search paths would be added in the order shown: 【翻译】仅在Windows（包括Cygwin）上，PATH条目将以更复杂的方式进一步处理。对于PATH中的每个项目，将通过从末尾删除任何尾随bin或sbin子目录来计算基路径。然后，使用此基本路径向搜索位置添加一条或两条路径。如果定义了CMAKE_LIBRARY_ARCHITECTURE，则添加\<base\>/include/\${CMAKE_LIBARRY_ARCHI CTURE}。之后，无论是否定义了CMAKE_LIBRARY_ARCHITECTURE，都会将\<base\>/include路径添加到搜索路径集中。在搜索路径排序中，这些路径被放置在未修改的path项本身之前。例如，如果PATH环境变量设置为C:\foo\bin；D： \bar和CMAKE_LIBRARY_ARCHITECTURE设置为somearch，将按所示顺序添加以下搜索路径集：
 
 • C:\foo\include\somearch
-
 • C:\foo\include
-
 • C:\foo\bin
-
 • D:\bar\include\somearch
-
 • D:\bar\include
-
 • D:\bar
 
-**\#(5)Cache variables (platform-specific)**
+**#(5)Cache variables (platform-specific)**
 
 The platform-specific cache variable locations are very similar to those used for the CMakespecific ones. The names change slightly but the pattern is the same. The variable names are CMAKE_SYSTEM_PREFIX_PATH, CMAKE_SYSTEM_INCLUDE_PATH and CMAKE_SYSTEM_FRAMEWORK_PATH. These platform-specific variables are not intended to be set by the project or the developer. Rather, they are set automatically by CMake as part of setting up the platform toolchain so that they reflect locations specific to the platform and compilers being used. The exception to this is where a developer provides their own toolchain file, in which case it may be appropriate to set these variables within the toolchain file. 【翻译】特定于平台的缓存变量位置与用于CMake特定缓存变量的位置非常相似。名字略有变化，但模式是一样的。变量名为CMAKE_SYSTEM_PREFIX_PATH、CMAKE_SYSTEM_INCLUDE_PATH和CMAKE_SYSTEM \_FRAMEWORK_PATH。这些特定于平台的变量不是由项目或开发人员设置的。相反，它们是由CMake自动设置的，作为设置平台工具链的一部分，以便它们反映特定于所使用的平台和编译器的位置。例外情况是开发人员提供自己的工具链文件，在这种情况下，在工具链文件中设置这些变量可能是合适的。
 
-**\#(6)HINTS and PATHS**
+**#(6)HINTS and PATHS**
 
 **\#\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>**
 
@@ -423,7 +393,7 @@ NO_CMAKE_FIND_ROOT_PATH\]
 
 When find_package() is called with an option only supported by the long form, the search for a Find module is skipped. The NO_MODULE or CONFIG keywords allow a call that would otherwise match the short form to be treated as the long form and hence only search for config details (both keywords are equivalent).
 
-【译】当调用find_package()时，如果只使用长格式支持的选项，则跳过对find模块的搜索。NO_MODULE或CONFIG关键字允许将原本与短表单匹配的调用视为长表单，因此只搜索配置详细信息（这两个关键字是等效的）。
+【译】当调用find_package()时，如果只使用长格式支持的选项，则跳过对find模块的搜索。NO_MODULE 或 CONFIG 关键字允许将原本与短表单匹配的调用视为长表单，因此只搜索配置详细信息（这两个关键字是等效的）。
 
 When searching for config details, find_package() looks for a file named \<packageName\>Config.cmake or the less common \<lowercasePackageName\>-config.cmake by default. The CONFIGS option can be used to specify a different set of file names to search for instead, but use of this option should be rare. Non-standard file names would require every project wanting to find that package to be aware of the non-standard file name.
 

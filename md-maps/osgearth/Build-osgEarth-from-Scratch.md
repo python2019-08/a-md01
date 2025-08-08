@@ -93,12 +93,23 @@ sudo make install
 ```
 or 
 ```shell
+#--- remark: my cmds 4 ubuntu-dbg-static
 git clone https://github.com/openscenegraph/OpenSceneGraph.git
 cd OpenSceneGraph
-# remark: my cmds
-cmake -S. -Bbuild/ubuntu    -DOPENGL_PROFILE=GL3 -DOSG_GL_CONTEXT_VERSION=4.6
-# build/ubuntu  && make -j8 
-cmake --build build/ubuntu -- -j8
+
+cmake -S. -Bbuild/ubuntu-dbg-static \
+     -DOPENGL_PROFILE=GL3 \
+     -DOSG_GL_CONTEXT_VERSION=4.6  \
+     -DCMAKE_BUILD_TYPE=Debug  \
+        -DBUILD_SHARED_LIBS=OFF \
+        -DOSG_BUILD_TYPE=Static \
+        -DCMAKE_EXE_LINKER_FLAGS="-static" \
+        -DCMAKE_FIND_LIBRARY_SUFFIXES=.a \
+     -DDYNAMIC_OPENSCENEGRAPH=OFF \
+     -DDYNAMIC_OPENTHREADS=OFF
+
+## build/ubuntu  && make -j8 
+cmake --build build/ubuntu-dbg-static -- -j15
 ```
 
 
@@ -114,6 +125,8 @@ make -j8
 sudo make install
 ```
 
+
+
 Build osgEarth. Turning off OSGEARTH_ENABLE_FASTDXT may not be necessary but left it here for platforms where it will not build.
 ```sh
 git clone https://github.com/gwaldron/osgearth.git
@@ -123,13 +136,19 @@ cmake .. -DOSGEARTH_ENABLE_FASTDXT=OFF
 make -j8
 sudo make install
 ```
-or
+or 
 ```sh
+# ----osgEarth: my cmds 4 ubuntu-dbg-static
 git clone https://github.com/gwaldron/osgearth.git
 cd osgEarth
-# remark: my cmds
-cmake -S. -Bbuild/ubuntu -DOSGEARTH_ENABLE_FASTDXT=OFF
-cmake --build build/ubuntu  -- -j8
+  
+
+cmake -S. -Bbuild/ubuntu-dbg-static \
+    -DOSGEARTH_ENABLE_FASTDXT=OFF \
+    -DCMAKE_BUILD_TYPE=Debug \
+    -DOSGEARTH_BUILD_SHARED_LIBS=OFF \
+    -DOpenSceneGraph_ROOT=/mnt/disk2/abner/zdev/nv/OpenSceneGraph/build/ubuntu-dbg-static
+cmake --build build/ubuntu-dbg-static  -- -j10
 ```
 
 
