@@ -388,157 +388,21 @@ nm ./osgearth_viewer | grep " U "  # 查看未定义的符号（动态依赖）
 
 在 **OpenSceneGraph (OSG)** 中，将插件（`osgdb_*.so`）的注册模式从动态库（`.so` 或 `.dll`）改为静态库（`.a` 或 `.lib`），需要修改 **CMake 配置** 和 **插件注册逻辑**。以下是具体步骤：
 
----
-
-### **1. 修改 CMake 构建配置**
-确保 OSG 插件以静态库形式编译，需在 CMake 中设置：
-```cmake
-# 在 OSG 主 CMakeLists.txt 或插件目录的 CMakeLists.txt 中添加：
-set(BUILD_SHARED_LIBS OFF)  # 禁用动态库，强制生成静态库
-set(OSG_PLUGIN_STATIC_LINK ON)  # 显式启用插件静态链接
-```
-
-#### **针对特定插件**
-若只需修改某个插件（如 `osgdb_jpeg`）：
-```cmake
-add_library(osgdb_jpeg STATIC  # 替换原来的 SHARED
-    jpeg_reader.cpp
-    jpeg_writer.cpp
-)
-```
-
----
-
-### **2. 修改插件注册逻辑**
-OSG 插件通常通过 **动态加载机制** 注册（通过 `REGISTER_OSGPLUGIN` 宏）。静态链接时，需改为 **显式注册**：
-
-#### **(1) 定义静态注册函数**
-在插件代码中（如 `osgdb_jpeg.cpp`）添加：
-```cpp
-#include <osgDB/Registry>
-#include <osgDB/ReaderWriter>
-
-// 原动态注册宏（注释掉）
-// REGISTER_OSGPLUGIN(jpeg, ReaderWriterJPEG)
-
-// 改为静态注册函数
-extern "C" void osgdb_jpeg_static_init() {
-    osgDB::Registry::instance()->addReaderWriter(new ReaderWriterJPEG);
-}
-```
-
-#### **(2) 在应用程序中调用注册**
-在主程序启动时（如 `main()` 函数）手动调用所有插件的静态注册：
-```cpp
-// 声明插件注册函数（需与插件中的函数名一致）
-extern void osgdb_jpeg_static_init();
-
-int main() {
-    // 手动注册静态插件
-    osgdb_jpeg_static_init();
-    // 其他插件...
-    // osgdb_png_static_init();
-
-    // 正常使用 OSG
-    osg::ref_ptr<osg::Image> image = osgDB::readImageFile("texture.jpg");
-    return 0;
-}
-```
-
----
-
-### **3. 解决静态链接的常见问题**
-#### **(1) 符号冲突**
-静态库可能导致重复符号（如多个插件依赖同一库的不同版本）。  
-**解决**：在 CMake 中统一依赖版本：
-```cmake
-target_link_libraries(osgdb_jpeg PRIVATE JPEG::JPEG)  # 使用 CMake 导入的目标
-```
-
-#### **(2) 插件初始化顺序**
-静态注册需确保插件在 `osgDB::Registry` 初始化后加载。  
-**解决**：在主程序启动时尽早调用注册函数。
-
-#### **(3) 减少二进制体积**
-静态链接会增大可执行文件体积。  
-**优化**：使用编译器选项移除未使用代码（如 GCC 的 `-ffunction-sections` 和 `-Wl,--gc-sections`）。
-
----
-
-### **4. 完整示例：静态链接 `osgdb_jpeg`**
-#### **CMakeLists.txt**
-```cmake
-# 禁用动态库
-set(BUILD_SHARED_LIBS OFF)
-
-# 查找 OSG 和依赖项
-find_package(OpenSceneGraph REQUIRED)
-find_package(JPEG REQUIRED)
-
-# 创建静态插件
-add_library(osgdb_jpeg STATIC
-    jpeg_reader.cpp
-    jpeg_writer.cpp
-)
-target_link_libraries(osgdb_jpeg PRIVATE 
-    OpenSceneGraph::osgDB 
-    JPEG::JPEG
-)
-```
-
-#### **插件代码 (`jpeg_reader.cpp`)**
-```cpp
-#include <osgDB/Registry>
-#include <osgDB/ReaderWriter>
-
-class ReaderWriterJPEG : public osgDB::ReaderWriter {
-    // 实现读写逻辑...
-};
-
-// 静态注册函数
-extern "C" void osgdb_jpeg_static_init() {
-    osgDB::Registry::instance()->addReaderWriter(new ReaderWriterJPEG);
-}
-```
-
-#### **主程序 (`main.cpp`)**
-```cpp
-#include <osgDB/Registry>
-
-// 声明插件注册函数
-extern "C" void osgdb_jpeg_static_init();
-
-int main() {
-    // 手动注册插件
-    osgdb_jpeg_static_init();
-
-    // 使用插件
-    osg::ref_ptr<osg::Image> image = osgDB::readImageFile("texture.jpg");
-    return 0;
-}
-```
-
----
-
-### **5. 验证静态链接**
-#### **(1) 检查二进制文件**
-```bash
-ldd ./your_program  # 应不显示 osgdb_*.so 依赖
-```
-
-#### **(2) 查看符号表**
-```bash
-nm ./your_program | grep osgdb_jpeg_static_init  # 应存在该符号
-```
-
----
-
-### **总结**
+![andro-mk-3rd.png]( osgearth-ldj/andro-mk-3rd.png)
+![folder-struct.png](osgearth-ldj/folder-struct.png)
+![USE_OSGPLUGIN.png](osgearth-ldj/USE_OSGPLUGIN.png)
+     
+ 
+> 	-DBUILD_SHARED_LIBS=OFF \
+> 	-DDYNAMIC_OPENSCENEGRAPH=OFF \
+> 	-DDYNAMIC_OPENTHREADS=OFF 
+ 
+ 
 | **步骤**               | **关键操作**                                |
 |------------------------|--------------------------------------------|
 | 1. 修改 CMake 配置     | `set(BUILD_SHARED_LIBS OFF)`               |
 | 2. 替换动态注册宏      | 改为显式静态注册函数                       |
-| 3. 主程序手动注册      | 调用 `osgdb_*_static_init()`               |
+| 3. 主程序手动注册       | 调用 `USE_OSGPLUGIN(png)`               |
 | 4. 解决冲突与优化      | 统一依赖、控制初始化顺序、裁剪未使用代码   |
 
-通过以上步骤，OSG 插件将以静态库形式直接编译到主程序中，无需动态加载 `.so` 文件，适合需要简化部署或封闭环境的场景。
+ 

@@ -470,13 +470,22 @@ journalctl -u myapp -f
 ### 3. 更规范的做法
 若希望头文件安装到 `${CMAKE_BINARY_DIR}/install`，推荐通过修改基础变量实现，而非直接设置 `CMAKE_INSTALL_FULL_INCLUDEDIR`：  
 ```cmake
+cmake_minimum_required(VERSION 3.10)
+project(MyProject)
+
+# CMAKE_INSTALL_FULL_INCLUDEDIR是由 GNUInstallDirs模块基于 CMAKE_INSTALL_PREFIX生成的。
+# 如果先调用 include(GNUInstallDirs)，再设置 CMAKE_INSTALL_PREFIX，则 CMAKE_INSTALL_FULL_INCLUDEDIR
+# 会使用 CMAKE_INSTALL_PREFIX的默认值（通常是 /usr/local），而不是你后续设置的 ${CMAKE_BINARY_DIR}/install。
+#
+# 先设置安装前缀
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install)
+# 再调用 GNUInstallDirs
 include(GNUInstallDirs)
 
-# 设置安装根目录为编译目录下的 install 文件夹
-set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install)
-
-# 此时 CMAKE_INSTALL_FULL_INCLUDEDIR 会自动变为：
-# ${CMAKE_BINARY_DIR}/install/include
+# 输出验证
+# CMAKE_INSTALL_FULL_INCLUDEDIR的值可能仍不是 ${CMAKE_BINARY_DIR}/install/include，
+# 因为 GNUInstallDirs可能会根据平台规则调整子目录（例如：include或 include/${PROJECT_NAME}）。
+# 如果项目名称（PROJECT_NAME）已定义，路径可能包含项目名。
 message("头文件完整安装路径: ${CMAKE_INSTALL_FULL_INCLUDEDIR}")
 ```
 
@@ -484,58 +493,10 @@ message("头文件完整安装路径: ${CMAKE_INSTALL_FULL_INCLUDEDIR}")
 
 
 ### 总结
-`CMAKE_INSTALL_FULL_INCLUDEDIR` 通常是自动计算的“完整头文件安装路径”，手动设置虽可行，但更推荐通过修改 `CMAKE_INSTALL_PREFIX` 来间接控制，以保持与其他安装路径的一致性。
+`CMAKE_INSTALL_FULL_INCLUDEDIR` 通常是自动计算的“完整头文件安装路径”，手动设置虽可行，但更推荐通过修改 `CMAKE_INSTALL_PREFIX` 来间接控制，以保持与其他安装路径的一致性。 
 
-==================================
-# 7.set(CMAKE_INSTALL_INCLUDEDIR  include/tiff)
-
-将 `CMAKE_INSTALL_INCLUDEDIR` 设置为 `include/tiff` 是一种常见做法，用于将项目的头文件安装到一个**命名空间子目录**中，避免与其他库的头文件重名冲突。以下是具体分析：
-
-
-### 作用与意义
-- **路径构成**：结合 `CMAKE_INSTALL_PREFIX` 后，头文件的完整安装路径为：  
-  `${CMAKE_INSTALL_PREFIX}/include/tiff`  
-  例如，若安装前缀是 `/usr/local`，则实际路径为 `/usr/local/include/tiff`。
-
-- **核心目的**：
-  - **避免命名冲突**：如果多个库都有 `image.h` 这样的通用头文件名，放到各自的子目录（如 `tiff/`、`png/`）中可避免冲突。
-  - **清晰的命名空间**：用户使用时需通过 `#include <tiff/image.h>` 引用，明确标识头文件所属的库。
-
-
-### 配合 `install` 命令使用
-设置后，需在 `install` 命令中使用该变量安装头文件：
-```cmake
-include(GNUInstallDirs)
-set(CMAKE_INSTALL_INCLUDEDIR include/tiff)  # 自定义头文件安装子目录
-
-# 安装头文件到上述目录
-install(
-  FILES 
-    src/tiff.h 
-    src/tiffio.h 
-  DESTINATION 
-    ${CMAKE_INSTALL_INCLUDEDIR}  # 实际路径：<prefix>/include/tiff
-)
-```
-
-安装后，用户代码中引用方式为：
-```c
-#include <tiff/tiff.h>  // 明确从 tiff 子目录引入
-```
-
-
-### 注意事项
-1. **与其他变量的协调**：若同时自定义了 `CMAKE_INSTALL_LIBDIR` 等，建议保持一致的命名风格（如库文件也可放到 `lib/tiff`，但通常不需要）。
-
-2. **Find模块的兼容性**：若你的库需要被其他项目通过 `find_package` 查找，需确保对应的 `FindXXX.cmake` 模块能正确识别 `include/tiff` 路径。
-
-3. **默认值覆盖**：该设置会覆盖 `GNUInstallDirs` 模块提供的默认 `CMAKE_INSTALL_INCLUDEDIR`（原本为 `include`），属于主动的路径规划。
-
-
-### 总结
-将 `CMAKE_INSTALL_INCLUDEDIR` 设为 `include/tiff` 是一种良好的实践，尤其适合像 libtiff 这样的通用库，通过子目录隔离避免头文件冲突，同时让用户引用时更清晰。实际使用时只需确保 `install` 命令正确关联该变量即可。
 ===========================================
-# 8.CMAKE_INSTALL_FULL_LIBDIR
+# 7.CMAKE_INSTALL_FULL_LIBDIR
 
 `CMAKE_INSTALL_FULL_LIBDIR` 是 CMake 中一个自动生成的变量，用于表示**库文件（静态库、动态库）的完整安装路径**，它由基础路径变量组合而成，是跨平台安装配置的重要参考。
 
@@ -591,90 +552,8 @@ install(
 `CMAKE_INSTALL_FULL_LIBDIR` 是库文件完整安装路径的标准化表示，由 CMake 自动生成，确保跨平台环境下库文件安装路径的一致性。它主要用于查看、配置安装相关的脚本或文件，无需手动修改，通过调整其依赖的基础变量即可控制最终路径。
 
 
-==============================================
-# 9. include(GNUInstallDirs) 和set(CMAKE_INSTALL_PREFIX  "/path/to/")的调用顺序
-
-## 问题
-```cmake
-include(GNUInstallDirs)
-include(CheckCCompilerFlag)
-include(CheckCSourceCompiles)
-include(CheckIncludeFile)
-include(CheckTypeSize)
-include(CheckFunctionExists)
-enable_testing()
-
-
-set(CMAKE_INSTALL_PREFIX   ${CMAKE_BINARY_DIR}/install)
-# set(CMAKE_INSTALL_LIBDIR   lib)
-set(CMAKE_INSTALL_INCLUDEDIR   include/tiff)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
-
-
-message(STATUS "gm......CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}...CMAKE_INSTALL_FULL_LIBDIR=${CMAKE_INSTALL_FULL_LIBDIR}") 
-```
-为什么
-```sh
-$ cmake -S. -Bbuild01/tiff-ubuntu-dbg -DCMAKE_BUILD_TYPE=Debug
-CMake Deprecation Warning at CMakeLists.txt:26 (cmake_minimum_required):
-......
--- gmq......CMAKE_INSTALL_PREFIX=/mnt/disk2/abner/zdev/nv/OpenSceneGraph/3rd123/libtiff/build01/tiff-ubuntu-dbg/install...CMAKE_INSTALL_FULL_LIBDIR=/usr/local/lib
-```
-
-## 豆包答案
-
-尽管已经添加了 `include(GNUInstallDirs)`，但 `CMAKE_INSTALL_FULL_LIBDIR` 仍然显示为 `/usr/local/lib`，没有跟随 `CMAKE_INSTALL_PREFIX` 变化，核心原因是**变量设置的顺序问题**：`GNUInstallDirs` 模块在 `CMAKE_INSTALL_PREFIX` 被修改前就已经计算了路径。
-
-
-### 问题根源
-`GNUInstallDirs` 模块在被 `include` 时，会**立即根据当时的 `CMAKE_INSTALL_PREFIX` 值计算所有“完整路径变量”**（包括 `CMAKE_INSTALL_FULL_LIBDIR`）。  
-在你的代码中：
-1. 先 `include(GNUInstallDirs)`，此时 `CMAKE_INSTALL_PREFIX` 还是默认值（`/usr/local`），因此 `CMAKE_INSTALL_FULL_LIBDIR` 被初始化为 `/usr/local/lib`。
-2. 之后才修改 `CMAKE_INSTALL_PREFIX` 为自定义路径，但此时 `GNUInstallDirs` 已经完成计算，不会自动重新更新 `CMAKE_INSTALL_FULL_LIBDIR`。
-
-
-### 解决方案：调整变量设置顺序
-**先设置 `CMAKE_INSTALL_PREFIX`，再引入 `GNUInstallDirs` 模块**，确保模块在计算路径时使用自定义的安装前缀：
-```cmake
-# 1. 先设置自定义安装前缀
-set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install)
-
-# 2. 再引入模块，此时会基于上面的 prefix 计算路径
-include(GNUInstallDirs)
-
-include(CheckCCompilerFlag)
-include(CheckCSourceCompiles)
-include(CheckIncludeFile)
-include(CheckTypeSize)
-include(CheckFunctionExists)
-enable_testing()
-
-# 其他路径设置（此时依赖的变量已正确初始化）
-# set(CMAKE_INSTALL_LIBDIR lib)  # 可选，默认就是 lib
-set(CMAKE_INSTALL_INCLUDEDIR include/tiff)
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
-
-message(STATUS "gm......CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}...CMAKE_INSTALL_FULL_LIBDIR=${CMAKE_INSTALL_FULL_LIBDIR}")
-```
-
-
-### 效果说明
-调整顺序后，`GNUInstallDirs` 会在 `CMAKE_INSTALL_PREFIX` 已设置为自定义路径的前提下计算：
-- `CMAKE_INSTALL_FULL_LIBDIR` 将变为：  
-  `${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}`  
-  即 `/mnt/disk2/.../install/lib`（与自定义前缀匹配）。
-
-
-### 关键结论
-`GNUInstallDirs` 模块对 `CMAKE_INSTALL_PREFIX` 的读取是**一次性的**（在 `include` 时），因此必须在引入模块**之前**设置 `CMAKE_INSTALL_PREFIX`，才能让所有“完整路径变量”（如 `CMAKE_INSTALL_FULL_LIBDIR`）基于自定义前缀计算。这是 CMake 路径配置中容易忽略的顺序依赖问题。
-
-=====================================
-# 10.set(CMAKE_INSTALL_INCLUDEDIR   "include/tiff")和include(GNUInstallDirs) 的调用顺序
+==============================================  
+# 8.set(CMAKE_INSTALL_INCLUDEDIR   "include/tiff")和include(GNUInstallDirs) 的调用顺序
 
 ## 问题
 ```cmake
@@ -740,7 +619,7 @@ message(STATUS "gm......CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}...CMAKE_INS
 `GNUInstallDirs` 模块在 `include` 时会一次性计算所有“完整路径变量”，因此**所有依赖的基础变量（如 `CMAKE_INSTALL_PREFIX`、`CMAKE_INSTALL_INCLUDEDIR`、`CMAKE_INSTALL_LIBDIR` 等）都必须在 `include(GNUInstallDirs)` 之前设置**，才能让完整路径按预期生成。这是 CMake 路径配置中关键的顺序原则。
 
 =========================================
-# 11.CMake Error:set_property could not find CACHE variable CMAKE_INSTALL_INCLUDEDIR.
+# 9.CMake Error:set_property could not find CACHE variable CMAKE_INSTALL_INCLUDEDIR.
 
 ## 问题
 ```sh

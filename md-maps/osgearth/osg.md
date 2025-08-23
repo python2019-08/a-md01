@@ -3,6 +3,7 @@
 osg data download url:
 https://openscenegraph.github.io/OpenSceneGraphDotComBackup/OpenSceneGraph/www.openscenegraph.com/index.php/download-section/data.html
 
+[OpenSceneGraph-Data ](https://github.com/openscenegraph/OpenSceneGraph-Data.git)
 ===========================================
 # 2.如何在osgEarth中使用Cesium Native？
 
@@ -678,3 +679,167 @@ $HOME/OpenSceneGraph是osg源码路径，  $HOME/OpenSceneGraph/build/ubuntu/是
 
 ## 元宝
 
+======================================================
+# 9.osg源码中USE_OSGPLUGIN定义如下， osgdb_##ext函数的函数体在哪里定义的
+
+```cpp
+#define USE_OSGPLUGIN(ext) \
+    extern "C" void osgdb_##ext(void); \
+    static osgDB::PluginFunctionProxy proxy_##ext(osgdb_##ext);
+```
+在OSG源码中，`USE_OSGPLUGIN`宏定义的`osgdb_##ext`函数实际上是一个"声明"而非"定义"。这个函数的真正实现是通过OSG的插件机制自动生成的，具体机制如下：
+
+1. **宏展开机制**：
+   当你在插件代码中使用`USE_OSGPLUGIN(png)`时，预处理器会将其展开为：
+   ```cpp
+   extern "C" void osgdb_png(void);
+   static osgDB::PluginFunctionProxy proxy_png(osgdb_png);
+   ```
+
+2. **函数实现位置**：
+   这些`osgdb_##ext`函数的实际定义是由OSG的插件注册系统在运行时动态生成的，而不是在源码中显式定义的。具体来说：
+
+   - 当插件被加载时，OSG的插件系统会自动为每个插件生成一个对应的`osgdb_##ext`函数
+   - 这个函数的作用是注册该插件支持的所有读写功能
+   - 函数的实现代码实际上是在`osgDB::Registry`类中动态构建的
+
+3. **底层机制**：
+   真正的注册工作是通过`PluginFunctionProxy`类完成的。当`proxy_##ext`这个静态对象被初始化时，它会调用`osgdb_##ext`函数，进而触发插件的注册过程。
+
+4. **相关源码位置**：
+   如果你想查看这部分机制的实现，可以查看以下文件：
+   - `src/osgDB/Registry.cpp` - 处理插件注册的核心逻辑
+   - `src/osgDB/DynamicLibrary.cpp` - 处理动态库加载
+   - `include/osgDB/Registry` - 插件注册相关的头文件
+
+5. **为什么这样设计**：
+   这种设计允许：
+   - 插件可以独立编译，不需要知道其他插件的存在
+   - 新的文件格式支持可以简单地通过添加新插件来实现
+   - 运行时动态加载/卸载插件
+
+所以总结来说，`osgdb_##ext`函数的"定义"并不是在源码中显式存在的，而是由OSG的插件系统在运行时动态生成的。这种设计是OSG插件架构的核心机制之一。
+
+=================================
+# 10. 解释cmake 宏LINK_WITH_VARIABLES
+
+请解释
+```cmake
+MACRO(LINK_WITH_VARIABLES TRGTNAME)
+    FOREACH(varname ${ARGN})
+        IF(${varname}_DEBUG)
+            IF(${varname}_RELEASE)
+                TARGET_LINK_LIBRARIES(${TRGTNAME} optimized "${${varname}_RELEASE}" debug "${${varname}_DEBUG}")
+            ELSE(${varname}_RELEASE)
+                TARGET_LINK_LIBRARIES(${TRGTNAME} optimized "${${varname}}" debug "${${varname}_DEBUG}")
+            ENDIF(${varname}_RELEASE)
+        ELSE(${varname}_DEBUG)
+            TARGET_LINK_LIBRARIES(${TRGTNAME} ${${varname}} )
+        ENDIF(${varname}_DEBUG)
+    ENDFOREACH(varname)
+ENDMACRO(LINK_WITH_VARIABLES TRGTNAME)
+```
+这段代码定义了一个 CMake 宏 `LINK_WITH_VARIABLES`，用于根据不同的构建类型（Debug 或 Release）链接不同的库文件。下面是对这个宏的详细解释：
+
+---
+
+### **宏定义解析**
+```cmake
+MACRO(LINK_WITH_VARIABLES TRGTNAME)
+```
+- **`MACRO`**：定义一个 CMake 宏，名为 `LINK_WITH_VARIABLES`。
+- **`TRGTNAME`**：宏的第一个参数，表示要链接库的目标（通常是可执行文件或库）。
+
+---
+
+### **遍历所有传入的变量**
+```cmake
+FOREACH(varname ${ARGN})
+```
+- **`FOREACH`**：遍历宏的所有额外参数（`${ARGN}` 表示除 `TRGTNAME` 外的所有参数）。
+- **`varname`**：当前循环的变量名，表示一个库的基名称（如 `OpenGL_LIBRARY`）。
+
+---
+
+### **检查是否存在 Debug 版本的库**
+```cmake
+IF(${varname}_DEBUG)
+```
+- 检查是否存在 `${varname}_DEBUG` 变量（如 `OpenGL_LIBRARY_DEBUG`），表示 Debug 版本的库路径。
+
+---
+
+#### **情况 1：同时存在 Debug 和 Release 版本的库**
+```cmake
+IF(${varname}_RELEASE)
+    TARGET_LINK_LIBRARIES(${TRGTNAME} 
+        optimized "${${varname}_RELEASE}" 
+        debug "${${varname}_DEBUG}"
+    )
+```
+- **`${varname}_RELEASE`**：Release 版本的库路径（如 `OpenGL_LIBRARY_RELEASE`）。
+- **`TARGET_LINK_LIBRARIES`**：链接到目标 `TRGTNAME`：
+  - **`optimized`**：在 Release 构建时链接 `${varname}_RELEASE`。
+  - **`debug`**：在 Debug 构建时链接 `${varname}_DEBUG`。
+
+---
+
+#### **情况 2：只有 Debug 版本，没有单独的 Release 版本**
+```cmake
+ELSE(${varname}_RELEASE)
+    TARGET_LINK_LIBRARIES(${TRGTNAME} 
+        optimized "${${varname}}" 
+        debug "${${varname}_DEBUG}"
+    )
+```
+- **`${varname}`**：默认库路径（如 `OpenGL_LIBRARY`）。
+- 在 Release 构建时链接默认库 `${varname}`，在 Debug 构建时链接 `${varname}_DEBUG`。
+
+---
+
+#### **情况 3：没有 Debug 版本，只有默认库**
+```cmake
+ELSE(${varname}_DEBUG)
+    TARGET_LINK_LIBRARIES(${TRGTNAME} ${${varname}})
+```
+- 如果没有 `${varname}_DEBUG`，则直接链接 `${varname}`，不区分构建类型。
+
+---
+
+### **结束宏**
+```cmake
+ENDFOREACH(varname)
+ENDMACRO(LINK_WITH_VARIABLES TRGTNAME)
+```
+- 结束 `FOREACH` 循环和宏定义。
+
+---
+
+### **使用示例**
+假设有以下变量：
+```cmake
+set(OPENGL_LIBRARY "/path/to/opengl.lib")
+set(OPENGL_LIBRARY_DEBUG "/path/to/opengld.lib")
+set(OPENGL_LIBRARY_RELEASE "/path/to/opengl_opt.lib")
+```
+调用宏：
+```cmake
+LINK_WITH_VARIABLES(my_target OPENGL_LIBRARY)
+```
+效果：
+- **Debug 构建**：链接 `OPENGL_LIBRARY_DEBUG`（`opengld.lib`）。
+- **Release 构建**：链接 `OPENGL_LIBRARY_RELEASE`（`opengl_opt.lib`）。
+
+如果没有 `OPENGL_LIBRARY_RELEASE`，则 Release 构建会链接 `OPENGL_LIBRARY`（`opengl.lib`）。
+
+---
+
+### **总结**
+这个宏的作用是：
+1. **根据构建类型选择不同的库文件**（Debug/Release）。
+2. **支持灵活配置**：
+   - 可以只提供默认库 `${varname}`。
+   - 也可以单独指定 Debug/Release 版本（`${varname}_DEBUG` 和 `${varname}_RELEASE`）。
+3. **简化 CMake 脚本**：避免重复写 `TARGET_LINK_LIBRARIES` 的条件判断。
+
+这种设计在大型项目中很常见，尤其是当第三方库提供多个构建配置时（如 OpenGL、Boost、Qt 等）。

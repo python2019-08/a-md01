@@ -97,19 +97,21 @@ or
 git clone https://github.com/openscenegraph/OpenSceneGraph.git
 cd OpenSceneGraph
 
-cmake -S. -Bbuild/ubuntu-dbg-static \
+# -DCMAKE_EXE_LINKER_FLAGS="-static" \
+
+cmake -S. -Bbuild/ubuntu-dbg-a \
      -DOPENGL_PROFILE=GL3 \
      -DOSG_GL_CONTEXT_VERSION=4.6  \
      -DCMAKE_BUILD_TYPE=Debug  \
         -DBUILD_SHARED_LIBS=OFF \
-        -DOSG_BUILD_TYPE=Static \
-        -DCMAKE_EXE_LINKER_FLAGS="-static" \
         -DCMAKE_FIND_LIBRARY_SUFFIXES=.a \
      -DDYNAMIC_OPENSCENEGRAPH=OFF \
      -DDYNAMIC_OPENTHREADS=OFF
 
+
+
 ## build/ubuntu  && make -j8 
-cmake --build build/ubuntu-dbg-static -- -j15
+cmake --build build/ubuntu-dbg-a -- VERBOSE=1 -j15 install 
 ```
 
 
@@ -143,12 +145,12 @@ git clone https://github.com/gwaldron/osgearth.git
 cd osgEarth
   
 
-cmake -S. -Bbuild/ubuntu-dbg-static \
+cmake -S. -Bbuild/ubuntu-dbg-a \
     -DOSGEARTH_ENABLE_FASTDXT=OFF \
     -DCMAKE_BUILD_TYPE=Debug \
     -DOSGEARTH_BUILD_SHARED_LIBS=OFF \
-    -DOpenSceneGraph_ROOT=/mnt/disk2/abner/zdev/nv/OpenSceneGraph/build/ubuntu-dbg-static
-cmake --build build/ubuntu-dbg-static  -- -j10
+    -DOpenSceneGraph_ROOT=/mnt/disk2/abner/zdev/nv/OpenSceneGraph/build/ubuntu-dbg-a
+cmake --build build/ubuntu-dbg-a  -- -j10 
 ```
 
 

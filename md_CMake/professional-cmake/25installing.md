@@ -128,9 +128,7 @@ The DOCDIR location deserves special mention, as it defaults to a value that inc
 include(GNUInstallDirs)
 
 set(CMAKE_INSTALL_DOCDIR
-
-> ${CMAKE_INSTALL_DATAROOTDIR}/doc/${PROJECT_NAME})
-
+   ${CMAKE_INSTALL_DATAROOTDIR}/doc/${PROJECT_NAME})
 ```
 For the remainder of this chapter, examples will use the CMAKE_INSTALL_<dir> variables for most relative install destinations.
 
@@ -193,37 +191,23 @@ With the structure of the install area defined, attention can now move to the in
 【翻译】定义了安装区域的结构后，现在可以将注意力转移到已安装的内容本身。项目使用install()命令来定义要安装什么、这些东西应该放在哪里等等。此命令有多种不同的形式，每种形式都专注于由命令的第一个参数指定的特定类型的实体。其中一个关键形式是安装目标：
 
 ```cmake
-
 install(TARGETS targets...
-
 [EXPORT exportName]
-
 [CONFIGURATIONS configs...]
 
 # One or more blocks of the following
-
 [ [entityType]
-
-> DESTINATION dir
->
-> [PERMISSIONS permissions...]
->
-> [NAMELINK_ONLY | NAMELINK_SKIP]
->
-> [COMPONENT component]
->
-> [NAMELINK_COMPONENT component] # CMake 3.12 or later only
->
-> [EXCLUDE_FROM_ALL]
->
-> [OPTIONAL]
->
-> [CONFIGURATIONS configs...]
-
+ DESTINATION dir
+ [PERMISSIONS permissions...]
+ [NAMELINK_ONLY | NAMELINK_SKIP]
+ [COMPONENT component]
+ [NAMELINK_COMPONENT component] # CMake 3.12 or later only
+ [EXCLUDE_FROM_ALL]
+ [OPTIONAL]
+ [CONFIGURATIONS configs...]
 ]...
 
 # Special case
-
 [INCLUDES DESTINATION incDirs...]
 
 )
@@ -294,17 +278,11 @@ After the entityType, various options can be listed and they only apply to that 
 【译】在entityType之后，可以列出各种选项，并且这些选项仅适用于该实体类型。例如，下面显示了如何安装库，将各个部分放在所有平台上的预期位置（假设它们不是Apple框架）：
 
 ```cmake
-
 install(TARGETS mySharedLib myStaticLib
-
-RUNTIME DESTINATION \${CMAKE_INSTALL_BINDIR}
-
-LIBRARY DESTINATION \${CMAKE_INSTALL_LIBDIR}
-
-ARCHIVE DESTINATION \${CMAKE_INSTALL_LIBDIR}
-
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
-
 ```
 
 The above example shows how the DESTINATION option can specify different locations for different parts of the same target. The command is also flexible enough to handle multiple targets of different types all at once.
@@ -321,13 +299,10 @@ CMake will usually issue a warning or error if a target provides a particular en
 
 ```cmake
 
-\# Targets are both executables, so specifying the entity type isn't needed
-
+# Targets are both executables, so specifying the entity type isn't needed
 install(TARGETS exe1 exe2
-
-DESTINATION \${CMAKE_INSTALL_BINDIR}
-
-)
+    DESTINATION  ${CMAKE_INSTALL_BINDIR}
+    )
 ```
 
 Options following an entity type can specify more than just the destination. They can also override the default permissions with the PERMISSIONS option, specifying one or more of the same values as for the file(COPY) command described back in Section 18.2, “Copying Files”:
