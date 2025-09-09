@@ -813,7 +813,7 @@ install(
 ### 二、关键参数解析
 以一个实际示例理解各参数的作用（假设项目名是 `MyMath`，生成一个静态库 `libMyMath.a`）：
 
-```cmake
+```sh cmake
 # 1. 定义库目标
 add_library(MyMath STATIC src/add.cpp src/sub.cpp)
 # 设置头文件路径（让其他项目引用时能找到头文件）
@@ -825,16 +825,30 @@ target_include_directories(MyMath PUBLIC
 # 2. 安装头文件（供其他项目包含）
 install(DIRECTORY include/ DESTINATION include/MyMath)
 
+
 # 3. 安装库文件（实际的 .a/.so/.lib 文件）
 install(TARGETS MyMath
-    EXPORT MyMathTargets  # 关联到下面的 EXPORT 命令，将该目标导出
+    EXPORT MyMathExports  # 关联到下面的 EXPORT 命令，将该目标导出
     ARCHIVE DESTINATION lib  # 静态库安装路径（lib 目录）
     LIBRARY DESTINATION lib  # 动态库安装路径（lib 目录）
     RUNTIME DESTINATION bin  # 可执行文件安装路径（bin 目录，此处可省略）
 )
 
-# 4. 导出目标配置文件（核心命令）
-install(EXPORT MyMathTargets
+# 4.1  生成构建目录的导出文件**
+# - **作用**：在 **构建目录**（`CMAKE_CURRENT_BINARY_DIR`）中生成一个 `sqlite3Targets.cmake` 文件。
+# - **用途**：
+#   - 允许 **同一项目中的其他部分** 或 **未安装时的临时使用** 直接引用 SQLite 目标。
+#   - 例如：在开发阶段，其他模块可以通过 `include(sqlite3Targets.cmake)` 快速链接 SQLite。
+# 
+# #### **与 `install(EXPORT ...)` 的区别**
+# - `export()` 生成的文件位于 **构建目录**，用于开发阶段的临时依赖。
+# - `install(EXPORT ...)` 生成的文件会 **安装到系统目录**（如 `/usr/lib/cmake/sqlite3`），供其他项目永久使用。
+export(EXPORT MyMathExports
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/sqlite3Targets.cmake"
+    NAMESPACE SQLite::
+)
+# 4.2 导出目标配置文件（核心命令）
+install(EXPORT MyMathExports
     FILE MyMathTargets.cmake          # 生成的导出文件名
     NAMESPACE MyMath::                # 目标命名空间（最终目标名为 MyMath::MyMath）
     DESTINATION lib/cmake/MyMath      # 导出文件安装路径（符合 CMake 约定，方便其他项目查找）
@@ -842,8 +856,8 @@ install(EXPORT MyMathTargets
 ```
 
 #### 各参数的实际效果：
-1. **`EXPORT <导出目标集名称>`（MyMathTargets）**  
-   将 `add_library(MyMath)` 定义的目标归入“ MyMathTargets ”这个目标集，后续 `install(EXPORT)` 会基于这个目标集生成配置文件。
+1. **`EXPORT <导出目标集名称>`（MyMathExports）**  
+   将 `add_library(MyMath)` 定义的目标归入“ MyMathExports ”这个目标集，后续 `install(EXPORT)` 会基于这个目标集生成配置文件。
 
 2. **`FILE <导出文件名>`（MyMathTargets.cmake）**  
    生成的导出文件会被命名为 `MyMathTargets.cmake`，该文件中包含：  
@@ -864,7 +878,7 @@ install(EXPORT MyMathTargets
 `install(EXPORT)` 生成的 `MyMathTargets.cmake` 是“目标导出文件”，但其他项目通过 `find_package(MyMath)` 时，CMake 优先找的是 `MyMathConfig.cmake`（项目配置文件）。因此，通常需要手动写一个 `MyMathConfig.cmake`，并将其安装到与 `MyMathTargets.cmake` 相同的目录，用于“引导” CMake 找到目标导出文件。
 
 #### 示例 `MyMathConfig.cmake`：
-```cmake
+```sh cmake
 # MyMathConfig.cmake（通常放在项目的 cmake/ 目录下）
 # 1. 查找目标导出文件（MyMathTargets.cmake）
 include("${CMAKE_CURRENT_LIST_DIR}/MyMathTargets.cmake")
