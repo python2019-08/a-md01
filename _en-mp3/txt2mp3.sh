@@ -31,11 +31,11 @@ file_path="$0"
 dir_path=$(dirname "$file_path")
 echo "$dir_path"
  
-work_dir=${dir_path}/037stress
-filePrefix=L037
+work_dir=${dir_path}/L039Adventure
+filePrefix=L039
 echo "work_dir=${work_dir}"
 
-for idx in $(seq  2   2); do
+for idx in $(seq  1   10); do
     if [ ! -f "${work_dir}/${filePrefix}-${idx}.txt" ]; then
         echo "${work_dir}/${filePrefix}-${idx}.txt NOT exist..."
         continue

@@ -585,3 +585,64 @@ wget -e use_proxy=yes -e http_proxy=http://代理IP:端口 --no-proxy "example.c
 | **忽略证书**       | `wget --no-check-certificate -e use_proxy=yes -e http_proxy=... "URL"` |
 
 按实际代理类型替换即可！
+
+============================================================
+# 7.find . -type f -name "*.cmake" -exec grep -Hn "GEOS" {} + 和 find . -type f -name "*.cmake" | grep -Hn "GEOS" 区别
+
+这两条命令的**功能和输出结果有本质区别**，核心差异在于它们处理文件的方式不同：
+
+
+### 1. `find . -type f -name "*.cmake" -exec grep -Hn "GEOS" {} +`
+#### 作用：
+- 先通过 `find` 命令找到所有 `.cmake` 文件；
+- 然后对**每个找到的文件内容**执行 `grep` 搜索，查找包含 "GEOS" 的行。
+
+#### 输出示例：
+```
+./FindGEOS.cmake:10:find_package(GEOS REQUIRED)
+./GEOSConfig.cmake:5:set(GEOS_VERSION 3.11.2)
+```
+- 结果显示**文件名、行号和包含 "GEOS" 的具体内容行**（实际匹配的是文件内容）。
+
+
+### 2. `find . -type f -name "*.cmake" | grep -Hn "GEOS"`
+#### 作用：
+- 先通过 `find` 命令找到所有 `.cmake` 文件，输出这些文件的**路径名**；
+- 然后通过管道 `|` 将这些**文件路径名**传递给 `grep`，搜索路径名中包含 "GEOS" 的字符串。
+
+#### 输出示例：
+```
+(标准输入):1:./FindGEOS.cmake
+(标准输入):3:./build/GEOSConfig.cmake
+```
+- 结果显示**包含 "GEOS" 的文件路径名**（实际匹配的是文件名/路径，而非文件内容）；
+- 由于 `grep` 处理的是管道输入的文本（文件路径），`-H` 会显示 `(标准输入)` 而非实际文件名，`-n` 显示的是管道输入中的行号（非文件内容行号）。
+
+
+### 核心区别总结
+ 
+ 维度  | 第一条命令（`-exec grep`） | 第二条命令（管道 `| grep`） 
+|---------|----------------------------|-------------------|
+| 搜索对象 | **文件内容**中是否包含 "GEOS"  | **文件路径名**中是否包含 "GEOS" 
+| 用途  | 查找内容涉及 "GEOS" 的 `.cmake` 文件 | 查找文件名/路径包含 "GEOS" 的 `.cmake` 文件  
+| `grep` 处理的输入 |   实际文件的内容 |   `find` 输出的文件路径字符串  
+| 输出中的行号 |  匹配内容在文件中的实际行号  | 路径名在 `find` 输出结果中的行号（无实际意义） |
+
+简单说：  
+- 想找**内容里有 GEOS** 的 `.cmake` 文件 → 用第一条命令；  
+- 想找**文件名/路径里有 GEOS** 的 `.cmake` 文件 → 用第二条命令（但通常会简化为 `find . -name "*GEOS*.cmake"`）。
+
+====================================
+# 8.find ./ -type d -name "x64-linux-dbg" -exec rm -fr {} +
+使用 `find` 的 `-exec` 选项来执行删除操作，例如：
+
+```bash
+find ./ -type d -name "x64-linux-dbg" -exec rm -fr {} +
+```
+
+### 说明：
+- `-type d`：指定查找类型为目录（与你命令中的 `-d` 作用相同，但 `-type d` 是标准写法）
+- `-name "x64-linux-dbg"`：匹配名称为 `x64-linux-dbg` 的目录
+- `-exec rm -fr {} +`：对找到的每个目录执行 `rm -fr` 命令（`{}` 代表找到的目录，`+` 表示批量处理以提高效率）
+
+执行此命令会递归删除当前目录下所有名为 `x64-linux-dbg` 的目录，请谨慎操作，确保不会误删重要文件。

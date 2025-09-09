@@ -284,3 +284,157 @@ check_files:
 | 并行计算               | 避免循环+并行make | `make -j $(NUM_CPUS)`             |
 
 在Makefile中实现循环时，始终优先考虑**声明式语法**（如依赖规则），仅在必要时使用过程式循环，以保持Makefile的清晰和高效。
+
+===============================================================
+# 3.Makefile 中每行命令都在独立的子 shell 中执行​
+
+## 问题
+请问下面的makefile运行后，cmake 语句的当前工作目录是cd src/osg吗
+```sh
+osgu:
+	cd src/osg
+	cmake -Ssrc/osg -Bsrc/osg/build/ubuntu-dbg  -DOPENGL_PROFILE=GL3  \
+			-DOSG_GL_CONTEXT_VERSION=4.6   -DCMAKE_BUILD_TYPE=Debug  \
+			-DBUILD_SHARED_LIBS=ON  -DDYNAMIC_OPENSCENEGRAPH=ON -DDYNAMIC_OPENTHREADS=ON
+			-DCMAKE_FIND_LIBRARY_SUFFIXES=.a 	
+			# # -DCMAKE_EXE_LINKER_FLAGS="-static"  
+	# ## build/ubuntu  && make -j8 
+	cmake --build src/osg/build/ubuntu-dbg -- VERBOSE=1 -j15 install
+```    
+
+## 腾讯元宝
+
+**不会**。在 Makefile 中，`cd src/osg` 命令**不会影响后续命令的工作目录**。
+
+---
+
+### **原因解析**
+1. **Makefile 中每行命令都在独立的子 shell 中执行**
+   - `cd src/osg` 在它自己的子 shell 中执行
+   - 该子 shell 退出后，工作目录的改变**不会影响**后续命令
+
+2. **`cmake -S...` 命令的工作目录仍然是 Makefile 所在的根目录**
+   - `-Ssrc/osg` 只指定了**源码路径**，不是工作目录
+   - `-Bsrc/osg/build/ubuntu-dbg` 只指定了**构建路径**
+
+---
+
+### **验证方法**
+在 `cmake` 命令前添加 `pwd` 查看实际工作目录：
+```makefile
+osgu:
+	cd src/osg
+	pwd  # 这里会显示仍然是根目录，不是 src/osg
+	cmake -Ssrc/osg -Bsrc/osg/build/ubuntu-dbg ...
+```
+
+---
+
+### **正确的解决方案**
+
+#### **方案1：使用分号连接命令（推荐）**
+```makefile
+osgu:
+	cd src/osg && cmake -S. -Bbuild/ubuntu-dbg \
+		-DOPENGL_PROFILE=GL3 \
+		-DOSG_GL_CONTEXT_VERSION=4.6 \
+		-DCMAKE_BUILD_TYPE=Debug \
+		-DBUILD_SHARED_LIBS=ON \
+		-DDYNAMIC_OPENSCENEGRAPH=ON \
+		-DDYNAMIC_OPENTHREADS=ON \
+		-DCMAKE_FIND_LIBRARY_SUFFIXES=.a
+	cd src/osg && cmake --build build/ubuntu-dbg -- VERBOSE=1 -j15 install
+```
+
+#### **方案2：使用括号创建子shell**
+```makefile
+osgu:
+	(cd src/osg && \
+	cmake -S. -Bbuild/ubuntu-dbg \
+		-DOPENGL_PROFILE=GL3 \
+		-DOSG_GL_CONTEXT_VERSION=4.6 \
+		-DCMAKE_BUILD_TYPE=Debug \
+		-DBUILD_SHARED_LIBS=ON \
+		-DDYNAMIC_OPENSCENEGRAPH=ON \
+		-DDYNAMIC_OPENTHREADS=ON \
+		-DCMAKE_FIND_LIBRARY_SUFFIXES=.a)
+	(cd src/osg && cmake --build build/ubuntu-dbg -- VERBOSE=1 -j15 install)
+```
+
+#### **方案3：使用 CMake 的 -S 和 -B 参数（保持当前目录）**
+```makefile
+osgu:
+	# 从根目录运行，明确指定路径
+	cmake -Ssrc/osg -Bsrc/osg/build/ubuntu-dbg \
+		-DOPENGL_PROFILE=GL3 \
+		-DOSG_GL_CONTEXT_VERSION=4.6 \
+		-DCMAKE_BUILD_TYPE=Debug \
+		-DBUILD_SHARED_LIBS=ON \
+		-DDYNAMIC_OPENSCENEGRAPH=ON \
+		-DDYNAMIC_OPENTHREADS=ON \
+		-DCMAKE_FIND_LIBRARY_SUFFIXES=.a
+	cmake --build src/osg/build/ubuntu-dbg -- VERBOSE=1 -j15 install
+```
+
+---
+
+### **关键区别**
+| 方案 | 工作目录 | 优点 |
+|------|----------|------|
+| 方案1 | `src/osg` | 命令简洁，路径相对简单 |
+| 方案2 | `src/osg` | 明确的子shell环境 |
+| 方案3 | 根目录 | 不需要切换目录，路径清晰 |
+
+**推荐使用方案1**，因为它既保持了正确的工作目录，又使 CMake 命令中的路径相对简单（使用 `-S. -Bbuild/...`）。
+
+====================================================
+# 4. MKDIR ?= mkdir -p 和 MKDIR := mkdir -p
+
+在 Makefile 中，`MKDIR ?= mkdir -p` 和 `MKDIR := mkdir -p` 都是给变量赋值的方式，但它们的行为有本质区别，核心在于**是否允许变量被外部或后续定义覆盖**。
+
+
+### 1. `MKDIR := mkdir -p`（立即赋值，强赋值）
+- **行为**：无论 `MKDIR` 之前是否有定义，都会**强制将其设置为 `mkdir -p`**，覆盖任何已有的值。
+- **特点**：
+  - 属于“强赋值”，赋值操作在 Makefile 解析阶段立即执行（展开右侧内容）。
+  - 忽略外部环境（如命令行参数、环境变量）或上层 Makefile 对 `MKDIR` 的定义，始终使用当前赋值。
+
+- **示例**：
+  ```makefile
+  MKDIR := mkdir -p  # 强制赋值为 mkdir -p
+  
+  # 即使后续尝试重新定义，也会被覆盖（取决于位置）
+  MKDIR = other-mkdir  # 这条会生效，因为在强赋值之后
+  ```
+  若在命令行中尝试覆盖：`make MKDIR=my-mkdir`，实际执行时仍会使用 `mkdir -p`（因为被 Makefile 中的 `:=` 强制覆盖）。
+
+
+### 2. `MKDIR ?= mkdir -p`（条件赋值，弱赋值）
+- **行为**：仅当 `MKDIR` **尚未被定义**时，才将其赋值为 `mkdir -p`；如果 `MKDIR` 已有定义（无论来自外部还是内部），则此语句**不生效**。
+- **特点**：
+  - 属于“弱赋值”，用于定义**默认值**，允许外部或后续操作覆盖。
+  - 优先级：外部定义（命令行、环境变量）> 内部先定义 > `?=` 赋值。
+
+- **示例**：
+  ```makefile
+  MKDIR ?= mkdir -p  # 仅在 MKDIR 未定义时生效
+  
+  # 如果在这之前已有定义，?= 会被忽略
+  # MKDIR := my-mkdir  # 若打开此句，?= 会失效
+  ```
+  若在命令行中指定：`make MKDIR=my-mkdir`，则 `MKDIR` 会使用 `my-mkdir`（覆盖默认值）。
+
+
+### 核心区别总结
+| 赋值方式 | 作用                          | 是否允许外部/后续覆盖 | 典型用途                     |
+|----------|-------------------------------|----------------------|------------------------------|
+| `:=`     | 强制赋值，覆盖已有定义        | 不允许（会被覆盖）   | 固定变量值，不希望被修改时   |
+| `?=`     | 仅在变量未定义时设置默认值    | 允许                 | 定义可定制的默认行为（推荐） |
+
+
+### 实际使用建议
+- 对于 `MKDIR` 这类工具路径变量，通常推荐用 `?=`，因为：
+  - 保持默认行为（`mkdir -p`）适配大多数环境；
+  - 允许在特殊环境下（如 Windows、自定义工具链）通过外部参数覆盖，增强灵活性。
+- 若明确希望变量值固定不变（不允许任何修改），则用 `:=`。
+

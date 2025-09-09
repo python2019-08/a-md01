@@ -911,6 +911,88 @@ GIT_TRACE=1 GIT_CURL_VERBOSE=1 git submodule update --init --recursive -v --prog
 - **首次克隆** → `git clone --recursive`  
 - **后期维护** → `git submodule update --init --recursive -v`  
 - **调试技巧**：添加 `GIT_TRACE=1` 查看底层 Git 操作：
-  ```bash
+```bash
   GIT_TRACE=1 git submodule update --init --recursive -v
-  ```
+```
+
+===============================================
+#  git checkout OpenSceneGraph-3.6.5 和git switch -c OpenSceneGraph-3.6.5 
+
+## Q
+OpenSceneGraph-3.6.5是tag； git checkout OpenSceneGraph-3.6.5 和git switch -c OpenSceneGraph-3.6.5后，代码都切换到OpenSceneGraph-3.6.5了吗
+
+## A
+### **问题解答**
+
+---
+
+#### **1. 两种命令的区别**
+| **命令**                          | **作用**                                                                 | **是否切换到目标代码**       |
+|-----------------------------------|--------------------------------------------------------------------------|-----------------------------|
+| `git checkout OpenSceneGraph-3.6.5` | 切换到标签 `OpenSceneGraph-3.6.5` 对应的提交（**分离头指针状态**）。       | ✅ 是，但处于分离头状态       |
+| `git switch -c OpenSceneGraph-3.6.5` | **错误用法**：尝试创建新分支 `OpenSceneGraph-3.6.5`，而非切换到标签。      | ❌ 否，会创建新分支           |
+
+---
+
+#### **2. 正确切换到标签的方法**
+##### **(1) 直接切换到标签（分离头状态）**
+```bash
+git checkout OpenSceneGraph-3.6.5
+```
+**效果**：
+- 代码会切换到标签对应的提交。
+- 但处于 **分离头指针（detached HEAD）状态**（无分支绑定）。
+
+##### **(2) 基于标签创建新分支并切换**
+```bash
+git checkout -b my-osg-3.6.5 OpenSceneGraph-3.6.5
+```
+或（Git 2.23+）：
+```bash
+git switch -c my-osg-3.6.5 OpenSceneGraph-3.6.5
+```
+**效果**：
+- 创建新分支 `my-osg-3.6.5`，并指向标签对应的提交。
+- 此时处于正常分支状态，可自由修改代码。
+
+---
+
+#### **3. 验证是否切换成功**
+```bash
+git describe --tags  # 查看当前所在的标签
+git branch           # 查看当前分支（若为分离头状态，显示 "HEAD detached at OpenSceneGraph-3.6.5"）
+```
+**期望输出**：
+```
+OpenSceneGraph-3.6.5
+```
+
+---
+
+#### **4. 关键注意事项**
+1. **分离头指针的风险**：
+   - 在分离头状态下提交的更改可能丢失（除非手动创建分支保存）。
+   - 建议始终基于标签创建新分支：
+     ```bash
+     git checkout -b my-osg-3.6.5 OpenSceneGraph-3.6.5
+     ```
+
+2. **标签与分支的区别**：
+   - **标签（Tag）**：静态标记某个提交（如版本发布），不可直接修改。
+   - **分支（Branch）**：动态的开发线，可继续提交代码。
+
+3. **`git switch` 的局限性**：
+   - `git switch -c` 只能基于现有分支或提交创建新分支，**不能直接切换到标签**。
+   - 切换到标签必须用 `git checkout <tag>`。
+
+---
+
+#### **5. 总结**
+| **需求**                | **正确命令**                                                                 |
+|-------------------------|-----------------------------------------------------------------------------|
+| 临时查看标签代码        | `git checkout OpenSceneGraph-3.6.5`（分离头状态）                          |
+| 基于标签开发新功能      | `git checkout -b my-osg-3.6.5 OpenSceneGraph-3.6.5`（推荐）               |
+| 错误操作                | `git switch -c OpenSceneGraph-3.6.5`（错误，会创建同名分支而非切换标签）   |
+
+**最终建议**：  
+若需修改代码，始终用 `git checkout -b <新分支名> <标签名>` 创建分支！

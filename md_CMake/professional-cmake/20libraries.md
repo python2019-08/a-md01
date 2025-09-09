@@ -13,15 +13,15 @@ For the most part, however, a core set of capabilities are supported by all majo
 
 The fundamental command for defining a library was covered in previous chapters and has the following form:【翻译】定义库的基本命令在前面的章节中已经介绍过，其形式如下：
 
-\`\`\`cmake
+```cmake
 
-add_library(targetName \[STATIC \| SHARED \| MODULE \| OBJECT\]
+add_library(targetName [STATIC | SHARED | MODULE | OBJECT]
 
-> \[EXCLUDE_FROM_ALL\]
+> [EXCLUDE_FROM_ALL]
 >
-> source1 \[source2 ...\])
+> source1 [source2 ...])
 
-\`\`\`
+```
 
 A shared library will be produced if either the SHARED or MODULE keyword is provided. Alternatively, if no STATIC, SHARED, MODULE or OBJECT keyword is given, a shared library will be produced if the BUILD_SHARED_LIBS variable has a value of true at the time add_library() is called.
 
@@ -47,7 +47,7 @@ In typical projects, static libraries will not contain cyclic dependencies where
 
 在典型的项目中，静态库不会包含两个或多个库相互依赖的循环依赖关系。然而，某些场景会导致这种情况，只要指定了相关的链接关系（即通过target_link_libraries()），CMake就会识别和处理循环依赖关系。CMake文档中示例的稍作修改版本突出了该行为：
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
 add_library(A STATIC a.cpp)
 
@@ -61,7 +61,7 @@ add_executable(main main.cpp)
 
 target_link_libraries(main A)
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 In the above, the link command for main will contain A B A B. This repetition is provided automatically by CMake without developer intervention, but in certain pathological cases, more than one repetition may be required. While CMake provides the LINK_INTERFACE_MULTIPLICITY target property for this purpose, such situations usually point to a need for the project to be restructured. OBJECT libraries may also be a useful tool for addressing such deep interdependencies, since they effectively act like a collection of sources rather than actual libraries. The ordering of object files on the linker command line is usually not important, whereas library ordering certainly is.
 
@@ -77,15 +77,15 @@ Most platforms offer functionality for specifying the version number of a shared
 
 大多数平台都提供指定共享库版本号的功能，但实现方式差异很大。平台通常能够将版本详细信息编码到共享库二进制文件中，这些信息有时用于确定链接到该二进制文件的另一个可执行文件或共享库 是否可以使用该二进制文件。一些平台还具有设置文件和符号链接的约定，其名称中包含不同级别的版本号。例如，在Linux上，共享库的一组常见文件和符号链接可能如下：
 
-\`\`\`sh
+```sh
 
 libmystuff.so.2.4.3
 
-libmystuff.so.2 --\> libmystuff.so.2.4.3
+libmystuff.so.2 --> libmystuff.so.2.4.3
 
-libmystuff.so --\> libmystuff.so.2
+libmystuff.so --> libmystuff.so.2
 
-\`\`\`
+```
 
 CMake takes care of most of the platform differences with regard to version handling for shared libraries. When linking a target to a shared library, it will follow platform conventions when deciding which of the file or symlink names to link against. When building a shared library, CMake automates the creation of the full set of files and symlinks if version details are provided.
 
@@ -103,7 +103,7 @@ If the version details of a shared library are modified according to these princ
 
 如果根据这些原则修改共享库的版本详细信息，则所有平台上运行时的API不兼容问题都将最小化。考虑以下示例，它为Linux生成了前面显示的符号链接集：
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
 add_library(mystuff SHARED source1.cpp ...)
 
@@ -115,7 +115,7 @@ SOVERSION 2
 
 )
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 On Apple platforms, the otool -L command can be used to print the version details encoded into the resultant shared library. The output for the shared library produced by the above example would report the version details as having a compatibility version of 2.0.0 and current version 2.4.3. Anything that linked against the mystuff library would have the name libmystuff.2.dylib encoded into it as the name of the library to look for at run time. Linux platforms show a similar structure in their symbolic links for shared libraries and normal practice is to use just the major part for the library’s soname.
 
@@ -141,7 +141,7 @@ Consider a realistic example where a networking library only provides support fo
 
 A few different types of interface compatibility properties can be defined, but the simplest is a boolean property. The basic idea is that libraries specify the name of a property they will use to advertise a particular boolean state and then they define that property with the relevant value. When multiple libraries that are being linked together define the same property name for an interface compatibility, CMake will check that they specify the same value and issue an error if they are different. A basic example looks something like this:【翻译】可以定义几种不同类型的接口兼容性属性，但最简单的是布尔属性。基本思想是，库指定它们将用于通告特定布尔状态的属性的名称，然后用相关值定义该属性。当链接在一起的多个库为接口兼容性定义了相同的属性名称时，CMake将检查它们是否指定了相同的值，如果它们不同，则会发出错误。一个基本的例子看起来像这样：
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
 add_library(networking net.cpp)
 
@@ -169,31 +169,31 @@ target_link_libraries(myApp PRIVATE networking util)
 
 target_compile_definitions(myApp PRIVATE
 
-\$\<\$\<BOOL:\$\<TARGET_PROPERTY:SSL_SUPPORT\>\>:HAVE_SSL\>
+$<$<BOOL:$<TARGET_PROPERTY:SSL_SUPPORT>>:HAVE_SSL>
 
 )
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
-Both library targets advertise that they define an interface compatibility for the property name SSL_SUPPORT. The COMPATIBLE_INTERFACE_BOOL property is expected to hold a list of names, each of which requires an associated property of the same name with INTERFACE\_ prepended to be defined on that target. When the libraries are used together as a link dependency for myApp, CMake checks that both libraries define INTERFACE_SSL_SUPPORT with the same value. In addition, CMake will also automatically populate the SSL_SUPPORT property of the myApp target with the same value too, which can then be used as part of a generator expression and made available to the source code of myApp as a compile definition as shown. This allows the myApp code to tailor itself to whether or not SSL support has been compiled into the libraries it uses. Continuing with the example, rather than myApp simply detecting whether or not SSL support is available, it can specify a requirement by explicitly defining its SSL_SUPPORT property to hold the value that the libraries must be compatible with. In that case, rather than automatically populating the SSL_SUPPORT property of myApp, CMake will compare the values and ensure the libraries are consistent with the specified requirement.
+Both library targets advertise that they define an interface compatibility for the property name SSL_SUPPORT. The COMPATIBLE_INTERFACE_BOOL property is expected to hold a list of names, each of which requires an associated property of the same name with INTERFACE_ prepended to be defined on that target. When the libraries are used together as a link dependency for myApp, CMake checks that both libraries define INTERFACE_SSL_SUPPORT with the same value. In addition, CMake will also automatically populate the SSL_SUPPORT property of the myApp target with the same value too, which can then be used as part of a generator expression and made available to the source code of myApp as a compile definition as shown. This allows the myApp code to tailor itself to whether or not SSL support has been compiled into the libraries it uses. Continuing with the example, rather than myApp simply detecting whether or not SSL support is available, it can specify a requirement by explicitly defining its SSL_SUPPORT property to hold the value that the libraries must be compatible with. In that case, rather than automatically populating the SSL_SUPPORT property of myApp, CMake will compare the values and ensure the libraries are consistent with the specified requirement.
 
-两个库目标都声明它们为属性名SSL_SUPPORT定义了接口兼容性。COMPATIBLE_INTERFACE_BOOL属性应包含一个名称列表，每个名称都需要一个同名的关联属性，并在该目标上预先定义INTERFACE\_。当这些库一起用作myApp的链接依赖时，CMake会检查这两个库是否定义了具有相同值的INTERFACE_SSL_SUPPORT。此外，CMake还将自动用相同的值填充myApp目标的SSL_SUPPORT属性，然后可以将其用作生成器表达式的一部分，并作为编译定义提供给myApp的源代码，如图所示。这允许myApp代码根据SSL支持是否已编译到它使用的库中进行自我调整。继续这个例子，myApp不是简单地检测SSL支持是否可用，而是可以通过显式定义其SSL_support属性来指定要求，以保存库必须兼容的值。在这种情况下，CMake将比较值并确保库与指定要求一致，而不是自动填充myApp的SSL_SUPPORT属性。
+两个库目标都声明它们为属性名SSL_SUPPORT定义了接口兼容性。COMPATIBLE_INTERFACE_BOOL属性应包含一个名称列表，每个名称都需要一个同名的关联属性，并在该目标上预先定义INTERFACE_。当这些库一起用作myApp的链接依赖时，CMake会检查这两个库是否定义了具有相同值的INTERFACE_SSL_SUPPORT。此外，CMake还将自动用相同的值填充myApp目标的SSL_SUPPORT属性，然后可以将其用作生成器表达式的一部分，并作为编译定义提供给myApp的源代码，如图所示。这允许myApp代码根据SSL支持是否已编译到它使用的库中进行自我调整。继续这个例子，myApp不是简单地检测SSL支持是否可用，而是可以通过显式定义其SSL_support属性来指定要求，以保存库必须兼容的值。在这种情况下，CMake将比较值并确保库与指定要求一致，而不是自动填充myApp的SSL_SUPPORT属性。
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
-\# Require libraries to have SSL support
+# Require libraries to have SSL support
 
 set_target_properties(myApp PROPERTIES SSL_SUPPORT YES)
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
-The above examples are somewhat contrived, since the same constraints could effectively have been enforced in other ways. The real advantages of interface compatibility specifications start to emerge as a project becomes more complicated and its targets are spread across many directories or come from externally built projects. Interface compatibilities are assigned as properties of the targets, so they only need to be defined in one place and are then made available anywhere the target can be used without further effort. Consuming targets don’t have to know the details of how the interface compatibility is determined, only the final decision stored in the target’s INTERFACE\_… properties.
+The above examples are somewhat contrived, since the same constraints could effectively have been enforced in other ways. The real advantages of interface compatibility specifications start to emerge as a project becomes more complicated and its targets are spread across many directories or come from externally built projects. Interface compatibilities are assigned as properties of the targets, so they only need to be defined in one place and are then made available anywhere the target can be used without further effort. Consuming targets don’t have to know the details of how the interface compatibility is determined, only the final decision stored in the target’s INTERFACE_… properties.
 
-上述示例有些做作，因为同样的约束本可以通过其他方式有效地执行。随着项目变得更加复杂，其目标分布在许多目录中或来自外部构建的项目，接口兼容性规范的真正优势开始显现。接口兼容性被指定为目标的属性，因此它们只需要在一个地方定义，然后可以在任何可以使用目标的地方使用，而无需进一步努力。消费目标不必知道如何确定接口兼容性的细节，只需要知道存储在目标interface\_…属性中的最终决定。
+上述示例有些做作，因为同样的约束本可以通过其他方式有效地执行。随着项目变得更加复杂，其目标分布在许多目录中或来自外部构建的项目，接口兼容性规范的真正优势开始显现。接口兼容性被指定为目标的属性，因此它们只需要在一个地方定义，然后可以在任何可以使用目标的地方使用，而无需进一步努力。消费目标不必知道如何确定接口兼容性的细节，只需要知道存储在目标interface_…属性中的最终决定。
 
 CMake also supports interface compatibilities expressed as a string. These work essentially the same way as the boolean case except that the named properties are required to have exactly the same values and can hold any arbitrary contents. The earlier example can be modified to require that libraries use the same SSL implementation, not just agree on whether they support SSL or not:【翻译】CMake还支持以字符串表示的接口兼容性。除了命名属性需要具有完全相同的值并且可以包含任何任意内容之外，这些工作方式与布尔值基本相同。可以修改前面的示例，要求库使用相同的SSL实现，而不仅仅是同意它们是否支持SSL：
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
 add_library(networking net.cpp)
 
@@ -221,17 +221,17 @@ target_link_libraries(myApp PRIVATE networking util)
 
 target_compile_definitions(myApp PRIVATE
 
-SSL_IMPL=\$\<TARGET_PROPERTY:SSL_IMPL\>
+SSL_IMPL=$<TARGET_PROPERTY:SSL_IMPL>
 
 )
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 In the above, the SSL_IMPL property is used as a string interface compatibility with the libraries specifying that they use OpenSSL as their SSL implementation. Just as for the boolean case, the myApp target could have defined its SSL_IMPL property to specify a requirement rather than letting CMake populate it with the value from the libraries.【翻译】在上面，SSL_MIMPL属性用作与指定使用OpenSSL作为SSL实现的库的字符串接口兼容性。与布尔值的情况一样，myApp目标可以定义其SSL_MIMPL属性来指定需求，而不是让CMake用库中的值填充它。
 
 The other kind of interface compatibility CMake supports is a numeric value. Numeric interface compatibilities are used to determine the minimum or maximum value defined for a property among a set of libraries rather than to require the properties to have the same value. This key difference can be exploited to allow targets to detect things like a minimum protocol version it could support or to work out the largest temporary buffer size needed among the different libraries it links to.【翻译】CMake支持的另一种接口兼容性是数值。数字接口兼容性用于确定一组库中为属性定义的最小值或最大值，而不是要求属性具有相同的值。可以利用这一关键差异，使目标能够检测到它可以支持的最低协议版本，或者在它链接到的不同库中计算出所需的最大临时缓冲区大小。
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
 add_library(bigAndFast strategy1.cpp)
 
@@ -267,13 +267,13 @@ target_link_libraries(myApp PRIVATE bigAndFast smallAndSlow)
 
 target_compile_definitions(myApp PRIVATE
 
-MIN_API=\$\<TARGET_PROPERTY:PROTOCOL_VER\>
+MIN_API=$<TARGET_PROPERTY:PROTOCOL_VER>
 
-TMP_BUFFERS=\$\<TARGET_PROPERTY:TMP_BUFFERS\>
+TMP_BUFFERS=$<TARGET_PROPERTY:TMP_BUFFERS>
 
 )
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 In the above, PROTOCOL_VER is defined as a minimum numeric interface compatibility, so the PROTOCOL_VER property of myApp will be set to the smallest value specified for the INTERFACE_PROTOCOL_VER property of the libraries it links to, which in this case is 2. Similarly, TMP_BUFFERS is defined as a maximum numeric interface compatibility and the myApp TMP_BUFFERS property receives the largest value among the INTERFACE_TMP_BUFFERS property of its linked libraries, which is 200.
 
@@ -283,7 +283,7 @@ At this point, it would be natural to think about using the same property for bo
 
 此时，自然会考虑使用相同的属性来实现最小和最大的数字接口兼容性，以允许在父级中检测最小和最大值。这是不可能的，因为CMake不（也不能）允许同一属性与多种接口兼容。如果一个属性用于多种类型的接口兼容性，CMake将无法知道应该使用哪种类型来计算要存储在父级结果属性中的值。例如，如果在上述示例中PROTOCOL_VER既是最小接口兼容性，也是最大接口兼容性，CMake无法确定要存储在myApp的PROTOCOL.VER属性中的值——它应该存储最小值还是最大值？相反，必须使用单独的属性来实现这一点：
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
 add_library(bigAndFast strategy1.cpp)
 
@@ -319,13 +319,13 @@ target_link_libraries(myApp PRIVATE bigAndFast smallAndSlow)
 
 target_compile_definitions(myApp PRIVATE
 
-PROTOCOL_VER_MIN=\$\<TARGET_PROPERTY:PROTOCOL_VER_MIN\>
+PROTOCOL_VER_MIN=$<TARGET_PROPERTY:PROTOCOL_VER_MIN>
 
-PROTOCOL_VER_MAX=\$\<TARGET_PROPERTY:PROTOCOL_VER_MAX\>
+PROTOCOL_VER_MAX=$<TARGET_PROPERTY:PROTOCOL_VER_MAX>
 
 )
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 The result of the above example is that myApp knows the range of protocol versions it needs to support based on the protocols used by the libraries it links to.
 
@@ -381,17 +381,17 @@ By default, Visual Studio compilers assume all symbols are hidden unless explici
 
 默认情况下，除非明确导出，否则Visual Studio编译器假定所有符号都是隐藏的。其他编译器，如GCC和Clang，则相反，默认情况下所有符号都是可见的，只有在明确告知的情况下才隐藏符号。如果一个项目希望在其所有编译器和平台上具有相同的默认符号可见性，则必须选择这两种方法之一，但希望前一节中强调的缺点为选择默认隐藏符号提供了有力的论据。
 
-The first step to enforcing hidden default visibility is to define the \<LANG\>\_VISIBILITY_PRESET set of properties on a shared library target. For the two most common languages where this functionality is used, the property names are C_VISIBILITY_PRESET and CXX_VISIBILITY_PRESET for C and C++ respectively. The value given to this property should be hidden, which changes the default visibility to hide all symbols. Other supported values include default, protected and internal, but these are less likely to be useful for cross-platform projects. They either specify what is already the default behavior or are variants of hidden with more specialized meanings in some contexts.
+The first step to enforcing hidden default visibility is to define the <LANG>_VISIBILITY_PRESET set of properties on a shared library target. For the two most common languages where this functionality is used, the property names are C_VISIBILITY_PRESET and CXX_VISIBILITY_PRESET for C and C++ respectively. The value given to this property should be hidden, which changes the default visibility to hide all symbols. Other supported values include default, protected and internal, but these are less likely to be useful for cross-platform projects. They either specify what is already the default behavior or are variants of hidden with more specialized meanings in some contexts.
 
-强制执行隐藏默认可见性的第一步是在共享库目标上定义\<LANG\>\_visibility_PRESET属性集。对于使用此功能的两种最常见的语言，C和C++的属性名分别为C_VISIBILITY_PRESET和CXX_VISIBILITY_PRESET。应隐藏此属性的值，这将更改默认可见性以隐藏所有符号。其他支持的值包括默认值、受保护值和内部值，但这些值对于跨平台项目不太可能有用。它们要么指定了默认行为，要么是隐藏的变体，在某些情况下具有更特殊的含义。
+强制执行隐藏默认可见性的第一步是在共享库目标上定义<LANG>_visibility_PRESET属性集。对于使用此功能的两种最常见的语言，C和C++的属性名分别为C_VISIBILITY_PRESET和CXX_VISIBILITY_PRESET。应隐藏此属性的值，这将更改默认可见性以隐藏所有符号。其他支持的值包括默认值、受保护值和内部值，但这些值对于跨平台项目不太可能有用。它们要么指定了默认行为，要么是隐藏的变体，在某些情况下具有更特殊的含义。
 
 The second step is to specify that inlined functions should also be hidden by default. For C++ code making heavy use of templates, this can substantially reduce the size of the final shared library binary. This behavior is controlled by the target property VISIBILITY_INLINES_HIDDEN and applies to all languages. It should hold the boolean value TRUE to hide inline symbols by default.
 
 第二步是指定默认情况下内联函数也应隐藏。对于大量使用模板的C++代码，这可以大大减小最终共享库二进制文件的大小。此行为由目标属性VISIBILITY_INLINES_HIDDEN控制，适用于所有语言。默认情况下，它应该保持布尔值TRUE以隐藏内联符号。
 
-Both \<LANG\>\_VISIBILITY_PRESET and VISIBILITY_INLINES_HIDDEN can be specified on each shared library target, or a default can be set by the appropriate CMake variables. When a target is created, its \<LANG\>\_VISIBILITY_PRESET property is initialized by the value of the CMake variable CMAKE\_\<LANG\>\_VISIBILITY_PRESET and its VISIBILITY_INLINES_HIDDEN property by the CMAKE_VISIBILITY_INLINES_HIDDEN variable. This is typically more convenient than setting the properties for each target individually.
+Both <LANG>_VISIBILITY_PRESET and VISIBILITY_INLINES_HIDDEN can be specified on each shared library target, or a default can be set by the appropriate CMake variables. When a target is created, its <LANG>_VISIBILITY_PRESET property is initialized by the value of the CMake variable CMAKE_<LANG>_VISIBILITY_PRESET and its VISIBILITY_INLINES_HIDDEN property by the CMAKE_VISIBILITY_INLINES_HIDDEN variable. This is typically more convenient than setting the properties for each target individually.
 
-可以在每个共享库目标上指定\<LANG\>\_VISIBILITY_PRESESET和VISIBLITY_INLINES_HIDDEN，也可以通过相应的CMake变量设置默认值。创建目标时，其\<LANG\>\_VISIBILITY_PRESET属性由CMake变量CMake\_\<LANG\>\_VISIBILITY_PRESET的值初始化，其VISIBLITY_INLINES_HIDDEN属性由CMake_VISIBILTY_INLINES_HIDDEN变量初始化。这通常比单独设置每个目标的属性更方便。
+可以在每个共享库目标上指定<LANG>_VISIBILITY_PRESESET和VISIBLITY_INLINES_HIDDEN，也可以通过相应的CMake变量设置默认值。创建目标时，其<LANG>_VISIBILITY_PRESET属性由CMake变量CMake_<LANG>_VISIBILITY_PRESET的值初始化，其VISIBLITY_INLINES_HIDDEN属性由CMake_VISIBILTY_INLINES_HIDDEN变量初始化。这通常比单独设置每个目标的属性更方便。
 
 For those projects wishing to make all symbols visible by default across all platforms, this only requires changing the default behavior of Visual Studio compilers. From version 3.4, CMake provides the WINDOWS_EXPORT_ALL_SYMBOLS target property which provides this behavior, but with caveats. Defining this property to a true value will cause CMake to write a .def file containing all symbols from all object files used to create the shared library and pass that .def file to the linker. This is a fairly brute force method which prevents the source code from selectively hiding any symbols, so it should only be used where all symbols should be made visible. This target property is initialized by the CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS CMake variable when a shared library target is created.
 
@@ -407,7 +407,7 @@ There are three primary cases where symbol visibility can be specified: classes,
 
 可以指定符号可见性的主要情况有三种：类、函数和变量。在以下包含这三种情况的声明的示例中，请注意MYTOOLS_EXPORT的位置：
 
-\`\`\`cpp
+```cpp
 
 **class MYTOOLS_EXPORT** SomeClass {...}; // Export non-private members of a class
 
@@ -415,81 +415,81 @@ MYTOOLS_EXPORT **void someFunction**(); // Make a free function visible
 
 MYTOOLS_EXPORT **extern int** myGlobalVar; // Make a global variable visible
 
-\`\`\`
+```
 
-When building the shared library containing the implementations of the above, MYTOOLS_EXPORT needs to be substituted with the relevant keywords specifying that the symbol should be exported for other libraries and executables to use. On the other hand, if the same declarations are read by code belonging to some other target outside of the shared library, then MYTOOLS_EXPORT must be substituted with the relevant keywords specifying that the symbol should be imported. On Windows, these keywords take the form \_\_declspec(...), whereas GCC and compatible compilers use \_\_attribute\_\_(...).
+When building the shared library containing the implementations of the above, MYTOOLS_EXPORT needs to be substituted with the relevant keywords specifying that the symbol should be exported for other libraries and executables to use. On the other hand, if the same declarations are read by code belonging to some other target outside of the shared library, then MYTOOLS_EXPORT must be substituted with the relevant keywords specifying that the symbol should be imported. On Windows, these keywords take the form __declspec(...), whereas GCC and compatible compilers use __attribute__(...).
 
-在构建包含上述实现的共享库时，MYTOOLS_EXPORT需要用相关关键字替换，指定应导出符号以供其他库和可执行文件使用。另一方面，如果属于共享库之外的其他目标的代码读取了相同的声明，则必须用指定应导入符号的相关关键字替换MYTOOLS_EXPORT。在Windows上，这些关键字采用\_\_declspec（…）的形式，而GCC和兼容的编译器使用\_\_attribute\_\_（…）。
+在构建包含上述实现的共享库时，MYTOOLS_EXPORT需要用相关关键字替换，指定应导出符号以供其他库和可执行文件使用。另一方面，如果属于共享库之外的其他目标的代码读取了相同的声明，则必须用指定应导入符号的相关关键字替换MYTOOLS_EXPORT。在Windows上，这些关键字采用__declspec（…）的形式，而GCC和兼容的编译器使用__attribute__（…）。
 
 Coming up with the right contents for MYTOOLS_EXPORT for all compilers and for both the exporting and importing cases can be somewhat messy. Add into the mix that developers might choose to build a library as either shared or static and the complexity grows. Thankfully, CMake provides the GenerateExportHeader module which handles all of these details in a very convenient fashion. This module provides the following function:
 
 为所有编译器以及导出和导入情况制定正确的MYTOOLS_EXPORT内容可能会有些混乱。再加上开发人员可能选择将库构建为共享或静态，复杂性就会增加。值得庆幸的是，CMake提供了GenerateExportHeader模块，该模块以非常方便的方式处理所有这些细节。该模块提供以下功能：
 
-\`\`\`cmake
+```cmake
 
 generate_export_header(target
 
-\[BASE_NAME baseName\]
+[BASE_NAME baseName]
 
-\[EXPORT_FILE_NAME exportFileName\]
+[EXPORT_FILE_NAME exportFileName]
 
-\[EXPORT_MACRO_NAME exportMacroName\]
+[EXPORT_MACRO_NAME exportMacroName]
 
-\[DEPRECATED_MACRO_NAME deprecatedMacroName\]
+[DEPRECATED_MACRO_NAME deprecatedMacroName]
 
-\[NO_EXPORT_MACRO_NAME noExportMacroName\]
+[NO_EXPORT_MACRO_NAME noExportMacroName]
 
-\[STATIC_DEFINE staticDefine\]
+[STATIC_DEFINE staticDefine]
 
-\[NO_DEPRECATED_MACRO_NAME noDeprecatedMacroName\]
+[NO_DEPRECATED_MACRO_NAME noDeprecatedMacroName]
 
-\[DEFINE_NO_DEPRECATED\]
+[DEFINE_NO_DEPRECATED]
 
-\[PREFIX_NAME prefix\]
+[PREFIX_NAME prefix]
 
-\[CUSTOM_CONTENT_FROM_VARIABLE var\]
+[CUSTOM_CONTENT_FROM_VARIABLE var]
 
 )
 
-\`\`\`
+```
 
-Typically, none of the optional arguments are needed and only the shared library target name is provided. CMake writes out a header file in the current binary directory, using the target name in lowercase with \_export.h appended as the header file name. The header provides a define for symbol export with a similarly structured name, this time using the uppercase target name with \_EXPORT appended. The following demonstrates this typical usage:
+Typically, none of the optional arguments are needed and only the shared library target name is provided. CMake writes out a header file in the current binary directory, using the target name in lowercase with _export.h appended as the header file name. The header provides a define for symbol export with a similarly structured name, this time using the uppercase target name with _EXPORT appended. The following demonstrates this typical usage:
 
 通常，不需要任何可选参数，只提供共享库目标名称。CMake在当前二进制目录中写出一个头文件，使用小写的目标名称，并附加export.h作为头文件名。标头提供了一个具有类似结构名称的符号导出定义，这次使用大写目标名称并附加_export。以下演示了这种典型用法：
 
-\#------#*CMakeLists.txt*
+#------#*CMakeLists.txt*
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
-\# Hide things by default
+# Hide things by default
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
 set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
 
-\# NOTE: myTools.cpp must \#include myTools.h
+# NOTE: myTools.cpp must #include myTools.h
 
 add_library(myTools myTools.cpp)
 
 target_include_directories(myTools PUBLIC
 
-"\${CMAKE_CURRENT_BINARY_DIR}"
+"${CMAKE_CURRENT_BINARY_DIR}"
 
 )
 
-\# Write out mytools_export.h to the current binary directory
+# Write out mytools_export.h to the current binary directory
 
 include(GenerateExportHeader)
 
 generate_export_header(myTools)
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 //------//*myTools.h*
 
-//-----------------------------------\>\>\>\>\>\>
+//----------------------------------->>>>>>
 
-\#include "mytools_export.h"
+#include "mytools_export.h"
 
 **class MYTOOLS_EXPORT** SomeClass
 
@@ -503,31 +503,31 @@ MYTOOLS_EXPORT **void someFunction**();
 
 MYTOOLS_EXPORT **extern int** myGlobalVar;
 
-//-----------------------------------\<\<\<\<\<\<
+//-----------------------------------<<<<<<
 
 The current binary directory is not part of the default header search path, so it needs to be added as a PUBLIC search path for the library to ensure the mytools_export.h header can be found by both the library’s own source code and any other code from targets linking to the shared library.
 
 当前二进制目录不是默认标头搜索路径的一部分，因此需要将其添加为库的PUBLIC搜索路径，以确保库自己的源代码和链接到共享库的目标中的任何其他代码都可以找到mytools_export.h标头。
 
-If using the target name as part of the header file name or preprocessor define name is not desirable, the BASE_NAME option can be used to provide an alternative. It is transformed in the same way, being converted to lowercase and having \_export.h appended for the file name and uppercase with \_EXPORT appended for the preprocessor define.
+If using the target name as part of the header file name or preprocessor define name is not desirable, the BASE_NAME option can be used to provide an alternative. It is transformed in the same way, being converted to lowercase and having _export.h appended for the file name and uppercase with _EXPORT appended for the preprocessor define.
 
 如果不希望将目标名称用作头文件名或预处理器定义名称的一部分，可以使用BASE_name选项提供替代方案。它以相同的方式转换，转换为小写，并在文件名后附加_export.h，在预处理器定义后附加大写的_export。
 
-\#-----------#*CMakeLists.txt*
+#-----------#*CMakeLists.txt*
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
 include(GenerateExportHeader)
 
 generate_export_header(myTools BASE_NAME fooBar)
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 //------------//*myTools.h*
 
-//-------------------------------------\>\>\>\>\>\>
+//------------------------------------->>>>>>
 
-\#include "foobar_export.h"
+#include "foobar_export.h"
 
 **class FOOBAR_EXPORT** SomeClass
 
@@ -541,15 +541,15 @@ FOOBAR_EXPORT **void someFunction**();
 
 FOOBAR_EXPORT **extern int** myGlobalVar;
 
-//-------------------------------------\<\<\<\<\<\<
+//-------------------------------------<<<<<<
 
 If a different name should be used for the file and preprocessor define, then rather than using BASE_NAME, the EXPORT_FILE_NAME and EXPORT_MACRO_NAME options can be given. Unlike BASE_NAME, the names provided by these two options are used without any modification.
 
 如果文件和预处理器定义应使用不同的名称，则可以给出EXPORT_file_name和EXPORT_MACRO_name选项，而不是使用BASE_name。与BASE_NAME不同，这两个选项提供的名称在不进行任何修改的情况下使用。
 
-\#---------------#*CMakeLists.txt*
+#---------------#*CMakeLists.txt*
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
 include(GenerateExportHeader)
 
@@ -561,13 +561,13 @@ EXPORT_MACRO_NAME API_MYTOOLS
 
 )
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 //-----------//*myTools.h*
 
-//-------------------------------------\>\>\>\>\>\>
+//------------------------------------->>>>>>
 
-\#include "export_myTools.h"
+#include "export_myTools.h"
 
 **class API_MYTOOLS** SomeClass
 
@@ -581,13 +581,13 @@ API_MYTOOLS **void someFunction**();
 
 API_MYTOOLS **extern int** myGlobalVar;
 
-//-------------------------------------\<\<\<\<\<\<
+//-------------------------------------<<<<<<
 
-The generate_export_header() function provides more than just this one preprocessor define, it also provides other preprocessor definitions which can be used to mark symbols as deprecated or to explicitly specify that a symbol should never be exported. The latter can be useful to prevent exporting parts of a class that is otherwise exported, such as a public member function intended for internal use within the shared library but not by code outside it. By default, the name of this preprocessor definition consists of the target name (or BASE_NAME if it is specificed) with \_NO_EXPORT appended, but an alternative name can be provided with the NO_EXPORT_MACRO_NAME option if desired.【翻译】generate.export_header（）函数不仅提供了这一个预处理器定义，还提供了其他预处理器定义。这些预处理器定义可用于将符号标记为已弃用或明确指定不应导出符号。后者可用于防止导出以其他方式导出的类的部分，例如用于共享库内部使用但不由共享库外部代码使用的公共成员函数。默认情况下，此预处理器定义的名称由附加了_NO_EXPORT的目标名称（或BASE_name，如果指定的话）组成，但如果需要，可以通过NO_EXPORT_MACRO_name选项提供替代名称。
+The generate_export_header() function provides more than just this one preprocessor define, it also provides other preprocessor definitions which can be used to mark symbols as deprecated or to explicitly specify that a symbol should never be exported. The latter can be useful to prevent exporting parts of a class that is otherwise exported, such as a public member function intended for internal use within the shared library but not by code outside it. By default, the name of this preprocessor definition consists of the target name (or BASE_NAME if it is specificed) with _NO_EXPORT appended, but an alternative name can be provided with the NO_EXPORT_MACRO_NAME option if desired.【翻译】generate.export_header（）函数不仅提供了这一个预处理器定义，还提供了其他预处理器定义。这些预处理器定义可用于将符号标记为已弃用或明确指定不应导出符号。后者可用于防止导出以其他方式导出的类的部分，例如用于共享库内部使用但不由共享库外部代码使用的公共成员函数。默认情况下，此预处理器定义的名称由附加了_NO_EXPORT的目标名称（或BASE_name，如果指定的话）组成，但如果需要，可以通过NO_EXPORT_MACRO_name选项提供替代名称。
 
-\#---------------#*CMakeLists.txt*
+#---------------#*CMakeLists.txt*
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
 include(GenerateExportHeader)
 
@@ -597,13 +597,13 @@ NO_EXPORT_MACRO_NAME REALLY_PRIVATE
 
 )
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 //-----------//*myTools.h*
 
-//-------------------------------------\>\>\>\>\>\>
+//------------------------------------->>>>>>
 
-\#include "mytools_export.h"
+#include "mytools_export.h"
 
 **class MYTOOLS_EXPORT** SomeClass
 
@@ -617,15 +617,15 @@ REALLY_PRIVATE **void** doInternalThings();
 
 };
 
-//------------------------------------\<\<\<\<\<\<
+//------------------------------------<<<<<<
 
-The function’s deprecation support works in a similar way, providing a preprocessor definition with the uppercased target (or BASE_NAME) name followed by \_DEPRECATED, or allowing a custom name to be specified via the DEPRECATED_MACRO_NAME option. The DEFINE_NO_DEPRECATED option can also be given, which will result in an additional preprocessor define being provided with a name consisting of the usual uppercased target or BASE_NAME followed by \_NO_DEPRECATED. Like the other preprocessor defines, this name can also be overridden with the NO_DEPRECATED_MACRO_NAME option. With some compilers, symbols marked as deprecated can result in compile time warnings which draw attention to their use. This can be a helpful mechanism to encourage developers to update their code to no longer use the deprecated symbols. The following shows how the deprecation mechanisms can be used.
+The function’s deprecation support works in a similar way, providing a preprocessor definition with the uppercased target (or BASE_NAME) name followed by _DEPRECATED, or allowing a custom name to be specified via the DEPRECATED_MACRO_NAME option. The DEFINE_NO_DEPRECATED option can also be given, which will result in an additional preprocessor define being provided with a name consisting of the usual uppercased target or BASE_NAME followed by _NO_DEPRECATED. Like the other preprocessor defines, this name can also be overridden with the NO_DEPRECATED_MACRO_NAME option. With some compilers, symbols marked as deprecated can result in compile time warnings which draw attention to their use. This can be a helpful mechanism to encourage developers to update their code to no longer use the deprecated symbols. The following shows how the deprecation mechanisms can be used.
 
 该函数的弃用支持以类似的方式工作，提供带有大写目标（或BASE_NAME）名称后跟_DEPRECATED的预处理器定义，或允许通过DEPRECATED_MACRO_NAME选项指定自定义名称。也可以给出DEFINE_NO_DEPRECATED选项，这将导致为额外的预处理器定义提供一个由通常大写的目标或BASE_name后跟_NO_DEPRECATED组成的名称。与其他预处理器定义一样，此名称也可以用NO_DEPRECATED_MACRO_name选项覆盖。对于某些编译器，标记为弃用的符号可能会导致编译时警告，提请注意它们的使用。这可能是一种有用的机制，可以鼓励开发人员更新他们的代码，不再使用已弃用的符号。下面显示了如何使用弃用机制。
 
-\#-----------#*CMakeLists.txt*
+#-----------#*CMakeLists.txt*
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
 option(OMIT_DEPRECATED "Leave out deprecated parts of myTools")
 
@@ -645,17 +645,17 @@ generate_export_header(myTools
 
 NO_DEPRECATED_MACRO_NAME OMIT_DEPRECATED
 
-\${deprecatedOption}
+${deprecatedOption}
 
 )
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 //---------//*myTools.h*
 
-//-------------------------------------\>\>\>\>\>\>
+//------------------------------------->>>>>>
 
-\#include "mytools_export.h"
+#include "mytools_export.h"
 
 **class MYTOOLS_EXPORT** SomeClass
 
@@ -663,63 +663,63 @@ NO_DEPRECATED_MACRO_NAME OMIT_DEPRECATED
 
 **public**:
 
-\#ifndef OMIT_DEPRECATED
+#ifndef OMIT_DEPRECATED
 
 MYTOOLS_DEPRECATED **void** oldImpl();
 
-\#endif
+#endif
 
 // ...
 
 };
 
-//-------------------------------------\<\<\<\<\<\<
+//-------------------------------------<<<<<<
 
 //---------//*myTools.cpp*
 
-//-------------------------------------\>\>\>\>\>\>
+//------------------------------------->>>>>>
 
-\#include "myTools.h"
+#include "myTools.h"
 
-\#ifndef OMIT_DEPRECATED
+#ifndef OMIT_DEPRECATED
 
 **void** SomeClass::oldImpl() { ... }
 
-\#endif
+#endif
 
-//-------------------------------------\<\<\<\<\<\<
+//-------------------------------------<<<<<<
 
 The above example provides a CMake cache variable to determine whether or not to compile the deprecated items. The developer has the ability to make this choice without editing any files, so verifying behavior with or without the deprecated part of an API is easy to do. This can be particularly useful if continuous integration builds have been set up to test both with and without deprecated parts of a library. It can also be useful in situations where the project is being used as a dependency of another project, allowing that other project’s developers to test whether their code uses the deprecated symbols or not just by changing the CMake cache variable.
 
 上面的示例提供了一个CMake缓存变量，用于确定是否编译已弃用的项目。开发人员可以在不编辑任何文件的情况下做出此选择，因此无论是否使用API的不推荐部分来验证行为都很容易。如果连续集成构建已设置为使用库的不推荐的部分进行测试，则这一点尤其有用。在项目被用作另一个项目的依赖项的情况下，它也很有用，允许其他项目的开发人员通过更改CMake缓存变量来测试他们的代码是否使用了弃用的符号。
 
-A less common but nevertheless important case also deserves special mention. Some projects may wish to build both shared and static versions of the same library. In this case, the same set of source code needs to allow symbol exports to be enabled for the shared library build, but disabled for the static library build (also see the next section for why this won’t always be the case). When both forms of library are required in the one build, they need to be different build targets, but the generate_export_header() function writes a header that is closely tied to a single target. In order to support this scenario, the generated header includes logic to check for the existence of one further preprocessor define before populating the export definition. The name of this special define follows the usual pattern once again, this time being the uppercased target or BASE_NAME followed by \_STATIC_DEFINE, or having a custom name provided by the STATIC_DEFINE option. When this special preprocessor definition is defined, the export definition is forced to expand to nothing, which is typically what is needed when the target is being built as a static library. Without the special preprocessor definition, the export define has the usual contents and works as expected when building a shared library target.【译】一个不太常见但仍然重要的案例也值得特别提及。某些项目可能希望同时构建同一库的共享版本和静态版本。在这种情况下，同一组源代码需要允许为共享库构建启用符号导出，但为静态库构建禁用符号导出（另请参阅下一节，了解为什么情况并非总是如此）。当一个构建中需要两种形式的库时，它们需要是不同的构建目标，但generate.export_header（）函数会写入一个与单个目标紧密相关的头。为了支持这种情况，生成的标头包括在填充导出定义之前检查是否存在另一个预处理器定义的逻辑。此特殊定义的名称再次遵循通常的模式，这次是大写的目标或BASE_name，后跟_STATIC_define，或者具有由STATIC_define选项提供的自定义名称。当定义了这个特殊的预处理器定义时，导出定义被迫扩展为零，这通常是将目标构建为静态库时所需要的。如果没有特殊的预处理器定义，导出定义将具有通常的内容，并在构建共享库目标时按预期工作。
+A less common but nevertheless important case also deserves special mention. Some projects may wish to build both shared and static versions of the same library. In this case, the same set of source code needs to allow symbol exports to be enabled for the shared library build, but disabled for the static library build (also see the next section for why this won’t always be the case). When both forms of library are required in the one build, they need to be different build targets, but the generate_export_header() function writes a header that is closely tied to a single target. In order to support this scenario, the generated header includes logic to check for the existence of one further preprocessor define before populating the export definition. The name of this special define follows the usual pattern once again, this time being the uppercased target or BASE_NAME followed by _STATIC_DEFINE, or having a custom name provided by the STATIC_DEFINE option. When this special preprocessor definition is defined, the export definition is forced to expand to nothing, which is typically what is needed when the target is being built as a static library. Without the special preprocessor definition, the export define has the usual contents and works as expected when building a shared library target.【译】一个不太常见但仍然重要的案例也值得特别提及。某些项目可能希望同时构建同一库的共享版本和静态版本。在这种情况下，同一组源代码需要允许为共享库构建启用符号导出，但为静态库构建禁用符号导出（另请参阅下一节，了解为什么情况并非总是如此）。当一个构建中需要两种形式的库时，它们需要是不同的构建目标，但generate.export_header（）函数会写入一个与单个目标紧密相关的头。为了支持这种情况，生成的标头包括在填充导出定义之前检查是否存在另一个预处理器定义的逻辑。此特殊定义的名称再次遵循通常的模式，这次是大写的目标或BASE_name，后跟_STATIC_define，或者具有由STATIC_define选项提供的自定义名称。当定义了这个特殊的预处理器定义时，导出定义被迫扩展为零，这通常是将目标构建为静态库时所需要的。如果没有特殊的预处理器定义，导出定义将具有通常的内容，并在构建共享库目标时按预期工作。
 
 When both shared and static libraries are being built for the same set of source files, the generate_export_header() function should be given the target that corresponds to the shared library. The special preprocessor define is then set only on the static library’s target. The BASE_NAME option will also typically be used to make the various symbols intuitive to either form of the library rather than being specific to the shared library only. The following demonstrates the structure needed to achieve the desired result:
 
 当为同一组源文件构建共享库和静态库时，应向generate.export_header（）函数提供与共享库对应的目标。然后，只在静态库的目标上设置特殊的预处理器定义。BASE_NAME选项通常也用于使各种符号对库的任何一种形式都直观，而不仅仅是特定于共享库。以下展示了实现预期结果所需的结构：
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
-\# Same source list, different library types
+# Same source list, different library types
 
-add_library(myShared SHARED \${mySources})
+add_library(myShared SHARED ${mySources})
 
-add_library(myStatic STATIC \${mySources})
+add_library(myStatic STATIC ${mySources})
 
-\# Shared target used for generating export header
+# Shared target used for generating export header
 
-\# with the name myTools_export.h, which will be suitable
+# with the name myTools_export.h, which will be suitable
 
-\# for both the shared and static targets
+# for both the shared and static targets
 
 include(GenerateExportHeader)
 
 generate_export_header(myShared BASE_NAME myTools)
 
-\# Static target needs special preprocessor define
+# Static target needs special preprocessor define
 
-\# to prevent symbol import/export keywords being added
+# to prevent symbol import/export keywords being added
 
 target_compile_definitions(myStatic PRIVATE
 
@@ -727,7 +727,7 @@ MYTOOLS_STATIC_DEFINE
 
 )
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 As is evident by the preceding discussion, the generate_export_header() function defines a number of different preprocessor definitions and there are opportunities for different targets to accidentally try to use the same names for at least some of them. To help reduce name collisions, the PREFIX_NAME option allows an additional string to be specified which will be prepended to the names of each preprocessor definition. When used, this option would typically be something related to the project as a whole, effectively putting all of a project’s generated preprocessor names into something like a project-specific namespace.
 
@@ -737,11 +737,11 @@ The last option not yet discussed is CUSTOM_CONTENT_FROM_VARIABLE, which was onl
 
 最后一个尚未讨论的选项是CUSTOM_CONTENT_ROM_VARIABLE，它仅在CMake 3.7中添加。此选项允许在添加所有各种预处理器逻辑后，将任意内容注入到末尾附近生成的标头中。使用时，必须为该选项指定一个变量的名称，该变量的内容应该被注入，而不是内容本身。
 
-\#------------------------------------\>\>\>\>\>\>
+#------------------------------------>>>>>>
 
 string(TIMESTAMP now)
 
-set(customContents "/\* Generated: \${now} \*/")
+set(customContents "/* Generated: ${now} */")
 
 generate_export_header(myTools
 
@@ -749,7 +749,7 @@ CUSTOM_CONTENT_FROM_VARIABLE customContents
 
 )
 
-\#------------------------------------\<\<\<\<\<\<
+#------------------------------------<<<<<<
 
 ## 20.6. Mixing Static And Shared Libraries
 
@@ -763,7 +763,7 @@ This scenario results in success more by good fortune than by good design, but i
 
 When library targets are defined as a mix of shared and static, the correctness of link dependencies becomes much more important. Consider the following set of targets:【译】当库目标被定义为共享和静态的混合体时，链接依赖关系的正确性变得更加重要。考虑以下一组目标：
 
-<img src="./media/image87.png" style="width:2.90972in;height:4.07639in" />
+<img src="./media/image87.png" style="width:4.90972in;height:8.07639in" />
 
 If libUtil and libCalc are static libraries, the above link dependency relationships are safe. If libUtil is a shared library, then the above link dependency arrangement opens up the possibility of duplicating data expected to have only one instance across a whole application. If libCalc defines global data, such as might be common for a singleton or static data of a class, it may be possible for both myApp and libUtil to have their own separate instances of that data. This becomes possible because both myApp and libUtil require the linker to resolve symbols, so both invocations may decide the global data is required and set up an internal instance of it within that executable or shared library. If the global data is not an exported symbol, the linker won’t see the instance already created in libUtil when it goes to link myApp. The end result is that a second instance is created in myApp, which is almost certain to cause hard-to-trace runtime issues. A typical manifestation of this is a variable magically appearing to change values across a function call from one executable or shared library into another shared library.
 
@@ -775,55 +775,39 @@ Situations similar to the above scenario can appear in a number of different for
 
 <img src="./media/image88.png" style="width:5.76319in;height:3.09931in" />
 
-Using static libraries to build up shared library content like this presents its own set of issues when it comes to symbol visibility. Ordinarily, the code from the static libraries would not be exported, so it would not appear as part of the shared library’s exported symbols. One way to address this is to use the generate_export_header() function on the shared library as normal, then make the static library re-use the same export definitions. The key to making this work is to ensure the static library has a compile definition for the name of the shared library target with \_EXPORTS appended, which is how the generated header detects whether the code is being built as part of the shared library or not.
+Using static libraries to build up shared library content like this presents its own set of issues when it comes to symbol visibility. Ordinarily, the code from the static libraries would not be exported, so it would not appear as part of the shared library’s exported symbols. One way to address this is to use the generate_export_header() function on the shared library as normal, then make the static library re-use the same export definitions. The key to making this work is to ensure the static library has a compile definition for the name of the shared library target with _EXPORTS appended, which is how the generated header detects whether the code is being built as part of the shared library or not.
 
 使用静态库来构建这样的共享库内容，在符号可见性方面会出现一系列问题。通常，静态库中的代码不会被导出，因此它不会作为共享库导出符号的一部分出现。解决这个问题的一种方法是在共享库上正常使用generate_export_header（）函数，然后使静态库重用相同的导出定义。实现此功能的关键是确保静态库具有附加了_EXPORTS的共享库目标名称的编译定义，这就是生成的标头如何检测代码是否作为共享库的一部分构建的。
 
-\#-----------#*CMakeLists.txt*
-
-\#------------------------------------\>\>\>\>\>\>
-
+#-----------#*CMakeLists.txt*
+```sh
 add_library(myShared SHARED shared.cpp)
-
 add_library(myStatic STATIC static.cpp)
 
 include(GenerateExportHeader)
-
 generate_export_header(myShared BASE_NAME mine)
 
 target_link_libraries(myShared PRIVATE myStatic)
 
-target_include_directories(myShared PUBLIC \${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(myShared PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(myStatic PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
-target_include_directories(myStatic PUBLIC \${CMAKE_CURRENT_BINARY_DIR})
-
-\# This makes the static library code appear to be part of the shared library
-
-\# library as far as the generated export header is concerned
-
+# This makes the static library code appear to be part of the shared library
+# library as far as the generated export header is concerned
 target_compile_definitions(myStatic PRIVATE myShared_EXPORTS)
-
-\#------------------------------------\<\<\<\<\<\<
+```
 
 //-------------------//*shared.h*
-
-//--------------------------------------------------\>\>\>\>\>\>
-
-\#include "mine_export.h"
-
+```sh
+#include "mine_export.h"
 MINE_EXPORT **void sharedFunc**();
-
-//--------------------------------------------------\<\<\<\<\<\<
+```
 
 //-------------------//*static.h*
-
-//--------------------------------------------------\>\>\>\>\>\>
-
-\#include "mine_export.h"
-
+```sh
+#include "mine_export.h"
 MINE_EXPORT **void staticFunc**();
-
-//--------------------------------------------------\<\<\<\<\<\<
+```
 
 The other factor to consider is whether the linker will discard code or data defined in the static library when it comes to linking the shared library. If it determines that nothing is using a particular symbol, the linker may discard it as an optimization. Special steps may need to be taken to prevent it from doing this. One choice is to make the shared library explicitly use every symbol to be retained from the shared libraries. This has the advantage that it would work for all compilers and linkers, but it may not be feasible for non-trivial projects. The alternative essentially requires linker-specific flags to be added, such as --whole-archive and --no-whole-archive for the ld linker on Unix systems, or /WHOLEARCHIVE with Visual Studio, but such functionality may not be available with all linkers. If ensuring the shared library uses each symbol exported by its static libraries isn’t practical, it may be worth considering turning those static libraries into shared instead.
 
@@ -835,27 +819,22 @@ If a shared library only links to static libraries in a private fashion (meaning
 
 CMake provides the POSITION_INDEPENDENT_CODE target property as a way of transparently handling position independent behavior on those platforms that require it. When set to true, this causes that target’s code to be built as position independent. By default, the property is ON for SHARED and MODULE libraries and OFF for all other types of targets. The default can be overridden by setting the CMAKE_POSITION_INDEPENDENT_CODE variable, in which case it will be used to initialize the POSITION_INDEPENDENT_CODE target property when the target is created.【翻译】CMake提供POSITION_INDEPENT_CODE目标属性，作为在需要它的平台上透明地处理位置无关行为的一种方式。当设置为true时，这会导致该目标的代码被构建为位置无关的。默认情况下，该属性对于SHARED和MODULE库为ON，对于所有其他类型的目标为OFF。可以通过设置CMAKE_POSITION_INDEPENDENT_CODE变量来覆盖默认值，在这种情况下，它将在创建目标时用于初始化POSITION_INDEPENT_CODE目标属性。
 
-\#------------------------------------\>\>\>\>\>\>
-
+```sh
 add_library(myShared SHARED shared.cpp)
-
 add_library(myStatic STATIC static.cpp)
 
 target_link_libraries(myShared PRIVATE myStatic)
 
 set_target_properties(myStatic PROPERTIES
-
-POSITION_INDEPENDENT_CODE ON
-
+    POSITION_INDEPENDENT_CODE ON
 )
-
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_library(myOtherStatic STATIC other.cpp)
 
 target_link_libraries(myShared PRIVATE myOtherStatic)
 
-\#------------------------------------\<\<\<\<\<\<
+``` 
 
 ## 20.7. Recommended Practices
 

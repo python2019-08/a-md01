@@ -1547,3 +1547,308 @@ message(STATUS "CURL 头文件路径: ${CURL_INCLUDE_DIRS}")
 3. **适用于特殊场景**：这种配置适合需要“完全隔离系统环境”的场景（如独立部署、版本严格控制），普通本地编译无需如此设置（可能导致系统库无法使用）。
 
 通过以上配置，CMake 会彻底忽略系统默认库，只使用你指定的非系统路径依赖。
+
+==============================================================
+# 13. CMAKE_FIND_USE_CMAKE_SYSTEM_PATH 和 CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH
+
+## 一、区别
+`CMAKE_FIND_USE_CMAKE_SYSTEM_PATH` 和 `CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH` 是 CMake 中用于**控制依赖查找范围**的两个重要开关变量，它们决定了 CMake 在执行 `find_package()`、`find_library()`、`find_path()` 等查找命令时，是否搜索**系统默认路径**和**环境变量指定的路径**。
+
+
+### 1. `CMAKE_FIND_USE_CMAKE_SYSTEM_PATH`
+#### 作用
+控制 CMake 是否搜索**其内置的“系统默认路径列表”**（这些路径是 CMake 预定义的、针对不同平台的标准安装路径）。
+
+#### 关键细节
+- **默认值**：`ON`（启用）。
+- **“系统默认路径列表”包含哪些路径？**  
+  CMake 会根据当前操作系统（Linux/macOS/Windows）预定义一系列标准路径，例如：
+  - Linux：`/usr/lib`、`/usr/include`、`/usr/local/lib`、`/usr/local/include` 等；
+  - Windows：`C:\Program Files`、`C:\Program Files (x86)`、`C:\Windows\System32` 等；
+  - macOS：`/usr/local/lib`、`/Library/Frameworks` 等。
+- **关闭（`OFF`）的效果**：  
+  CMake 将不再搜索上述预定义的系统默认路径，仅搜索用户通过 `CMAKE_PREFIX_PATH`、`CMAKE_MODULE_PATH` 等变量指定的自定义路径。
+
+
+### 2. `CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH`
+#### 作用
+控制 CMake 是否搜索**系统环境变量中包含的路径**（这些路径是用户通过环境变量配置的，如 `PATH`、`LD_LIBRARY_PATH` 等）。
+
+#### 关键细节
+- **默认值**：`ON`（启用）。
+- **会搜索哪些环境变量？**  
+  根据查找目标不同（库、头文件、程序等），CMake 会解析对应的环境变量，例如：
+  - 查找库（`find_library()`）：会参考 `LD_LIBRARY_PATH`（Linux）、`DYLD_LIBRARY_PATH`（macOS）、`PATH`（Windows，库文件常放在 `PATH` 中）；
+  - 查找头文件（`find_path()`）：会参考 `CPATH`（Linux/macOS）、`INCLUDE`（Windows）；
+  - 查找程序（`find_program()`）：主要参考 `PATH` 环境变量。
+- **关闭（`OFF`）的效果**：  
+  CMake 将忽略所有系统环境变量中的路径，仅依赖 CMake 自身配置的路径（如 `CMAKE_PREFIX_PATH`）。
+
+
+### 3. 典型使用场景
+这两个变量通常在**需要严格控制依赖来源**的场景中使用（如交叉编译、定制化环境），避免意外引用系统自带的库或工具。
+
+#### 场景1：交叉编译（如 NDK 编译 JNI）
+```bash
+cmake -S . -B build \
+  -DCMAKE_FIND_USE_CMAKE_SYSTEM_PATH=OFF \  # 不搜主机系统默认路径（避免误用上 x86 库）
+  -DCMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH=OFF \  # 不搜主机环境变量路径
+  -DCMAKE_FIND_ROOT_PATH="/path/to/android/ndk/sysroot"  # 仅搜目标环境路径
+```
+作用：确保只使用 NDK 提供的目标架构（如 ARM）依赖，不混入主机（如 x86_64 Linux）的系统库。
+
+#### 场景2：使用自定义编译的依赖（而非系统库）
+```bash
+cmake -S . -B build \
+  -DCMAKE_FIND_USE_CMAKE_SYSTEM_PATH=OFF \  # 不使用系统默认的 /usr/lib 等路径
+  -DCMAKE_PREFIX_PATH="/path/to/my/custom/libs"  # 仅使用自定义路径下的依赖
+```
+作用：强制使用自己编译的依赖库（如自定义版本的 ZLIB），避免链接到系统预装的旧版本。
+
+
+### 4. 与其他路径变量的关系
+- **`CMAKE_PREFIX_PATH`/`CMAKE_MODULE_PATH`**：用户手动指定的路径，不受上述两个变量影响（无论开关如何，这些路径都会被搜索）。
+- **`CMAKE_FIND_ROOT_PATH`**：交叉编译时的“根目录”，上述两个变量控制的路径会被映射到 `CMAKE_FIND_ROOT_PATH` 下（若启用 `CMAKE_FIND_ROOT_PATH`）。
+
+
+### 总结
+| 变量                          | 控制对象                          | 默认值 | 关闭（`OFF`）的效果                     |
+|-------------------------------|-----------------------------------|--------|----------------------------------------|
+| `CMAKE_FIND_USE_CMAKE_SYSTEM_PATH` | CMake 预定义的系统默认路径        | `ON`   | 不搜索 `/usr/lib` 等系统标准路径        |
+| `CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH` | 系统环境变量（如 `PATH`）中的路径 | `ON`   | 不搜索 `PATH` 等环境变量指定的路径      |
+
+通过合理设置这两个变量，可以精确控制 CMake 的依赖查找范围，确保编译过程中使用预期的依赖库。
+
+## 二、/usr/share/cmake-3.28/Modules/FindGLEW.cmake 是由这俩个变量控制的吗
+
+是的，`/usr/share/cmake-3.28/Modules/FindGLEW.cmake`（CMake 内置的模块文件）的搜索过程，**会受到 `CMAKE_FIND_USE_CMAKE_SYSTEM_PATH` 和 `CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH` 这两个变量的控制**，但具体影响方式需要结合 CMake 查找模块的逻辑来理解：
+
+
+### 1. 先明确：`FindGLEW.cmake` 是如何被找到的？
+当你在 `CMakeLists.txt` 中执行 `find_package(GLEW)` 时，CMake 会先进入**“模块模式（Module Mode）”**，搜索名为 `FindGLEW.cmake` 的模块文件，搜索路径包括：
+- **用户自定义路径**：通过 `CMAKE_MODULE_PATH` 指定（如项目内的 `cmake/modules` 目录）；
+- **CMake 内置系统路径**：如 `/usr/share/cmake-3.28/Modules/`（系统级 CMake 模块目录）。
+
+其中，`/usr/share/cmake-3.28/Modules/` 属于 CMake 预定义的**“系统默认模块路径”**，这正是 `CMAKE_FIND_USE_CMAKE_SYSTEM_PATH` 变量管控的范围。
+
+
+### 2. 两个变量对 `FindGLEW.cmake` 搜索的具体影响
+#### （1）`CMAKE_FIND_USE_CMAKE_SYSTEM_PATH` 的影响
+- **当该变量为 `ON`（默认值）**：  
+  CMake 会搜索内置的系统模块路径（包括 `/usr/share/cmake-3.28/Modules/`），因此能找到 `FindGLEW.cmake`。
+  
+- **当该变量为 `OFF`**：  
+  CMake 会**跳过所有预定义的系统模块路径**，仅搜索 `CMAKE_MODULE_PATH` 指定的自定义路径。  
+  此时，若你的 `CMAKE_MODULE_PATH` 中没有手动放置 `FindGLEW.cmake`，则会提示找不到该模块（`Could not find module FindGLEW.cmake`）。
+
+
+#### （2）`CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH` 的影响
+这个变量**对 `FindGLEW.cmake` 本身的搜索几乎没有影响**，原因是：  
+`FindGLEW.cmake` 是 CMake 模块文件，其搜索路径由 `CMAKE_MODULE_PATH` 和系统内置模块路径控制，而 `CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH` 主要管控的是**“依赖库/头文件/程序”的查找**（如 `find_library()` 找 `libGLEW.so` 时是否参考 `LD_LIBRARY_PATH` 环境变量），而非“模块文件本身”的搜索。
+
+简单说：这个变量影响的是 `FindGLEW.cmake` 内部逻辑（找 GLEW 库文件），不影响 `FindGLEW.cmake` 自身是否被找到。
+
+
+### 3. 总结
+- **`CMAKE_FIND_USE_CMAKE_SYSTEM_PATH`**：直接控制是否搜索 `/usr/share/cmake-3.28/Modules/` 等系统内置模块路径，因此会决定 CMake 能否找到 `FindGLEW.cmake`。
+- **`CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH`**：不影响 `FindGLEW.cmake` 本身的搜索，仅影响该模块内部查找 GLEW 库文件时是否参考系统环境变量（如 `PATH`、`LD_LIBRARY_PATH`）。
+
+因此，若你想让 CMake 不使用系统内置的 `FindGLEW.cmake`（例如想使用自己写的版本），可以将 `CMAKE_FIND_USE_CMAKE_SYSTEM_PATH` 设为 `OFF`，并通过 `CMAKE_MODULE_PATH` 指定自定义模块的路径。
+
+=================================================
+# 14. CMAKE_FIND_USE_SYSTEM_LIBS    CMAKE_FIND_ROOT_PATH_MODE_LIBRARY   CMAKE_FIND_USE_CMAKE_SYSTEM_PATH
+
+### **CMake 库搜索控制参数详解**
+
+---
+
+#### **1. 参数对比表**
+| **参数名**                          | **作用**                                                                 | **默认值** | **推荐场景**                              |
+|-------------------------------------|--------------------------------------------------------------------------|------------|------------------------------------------|
+| `CMAKE_FIND_USE_SYSTEM_LIBS`        | 全局开关：是否搜索系统库路径（如 `/usr/lib`）                           | `ON`       | 需完全隔离系统库时设为 `OFF`             |
+| `CMAKE_FIND_ROOT_PATH_MODE_LIBRARY` | 控制如何在 `CMAKE_FIND_ROOT_PATH` 中搜索库（`ONLY`/`NEVER`/`BOTH`）     | `BOTH`     | 交叉编译时设为 `ONLY`                    |
+| `CMAKE_FIND_USE_CMAKE_SYSTEM_PATH`   | 是否搜索 CMake 内置的系统路径（如 `/usr/local/lib/cmake`）              | `ON`       | 需避免污染时设为 `OFF`                   |
+
+---
+
+#### **2. 参数协同工作原理**
+```mermaid
+graph TD
+    A[开始查找库] --> B{CMAKE_FIND_USE_SYSTEM_LIBS=ON?}
+    B -->|Yes| C[搜索系统路径]
+    B -->|No| D[跳过系统路径]
+    C --> E{CMAKE_FIND_ROOT_PATH_MODE_LIBRARY}
+    E -->|ONLY| F[仅搜索 CMAKE_FIND_ROOT_PATH]
+    E -->|BOTH| G[同时搜索系统和 ROOT_PATH]
+    E -->|NEVER| H[忽略 ROOT_PATH]
+    D --> I[仅搜索 CMAKE_PREFIX_PATH]
+```
+
+---
+
+#### **3. 关键参数详解**
+
+##### **(1) `CMAKE_FIND_USE_SYSTEM_LIBS`**
+- **功能**：总开关，控制是否搜索以下系统路径：
+  - `/usr/lib`, `/usr/local/lib`
+  - `LD_LIBRARY_PATH` 中的路径
+- **示例**：
+  ```cmake
+  set(CMAKE_FIND_USE_SYSTEM_LIBS OFF)  # 彻底禁用系统库
+  ```
+
+##### **(2) `CMAKE_FIND_ROOT_PATH_MODE_LIBRARY`**
+- **可选值**：
+  - `ONLY`：仅在 `CMAKE_FIND_ROOT_PATH` 中搜索（交叉编译）
+  - `BOTH`：先搜索 `ROOT_PATH`，再搜索系统路径
+  - `NEVER`：忽略 `ROOT_PATH`
+- **示例**：
+  ```cmake
+  set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)  # 严格限制搜索范围
+  ```
+
+##### **(3) `CMAKE_FIND_USE_CMAKE_SYSTEM_PATH`**
+- **影响范围**：
+  - CMake 内置的 `CMAKE_SYSTEM_PREFIX_PATH`
+  - 平台特定的默认路径（如 macOS 的 `/Applications/CMake.app/Contents/lib`）
+- **示例**：
+  ```cmake
+  set(CMAKE_FIND_USE_CMAKE_SYSTEM_PATH OFF)  # 避免平台默认路径干扰
+  ```
+
+---
+
+#### **4. 典型配置方案**
+
+##### **场景 1：完全隔离系统库（推荐）**
+```cmake
+set(CMAKE_FIND_USE_SYSTEM_LIBS OFF)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_USE_CMAKE_SYSTEM_PATH OFF)
+```
+**效果**：仅搜索 `CMAKE_PREFIX_PATH` 和 `CMAKE_FIND_ROOT_PATH`。
+
+##### **场景 2：允许系统库回退**
+```cmake
+set(CMAKE_FIND_USE_SYSTEM_LIBS ON)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY BOTH)
+set(CMAKE_FIND_USE_CMAKE_SYSTEM_PATH ON)
+```
+**效果**：优先搜索自定义路径，未找到时回退到系统路径。
+
+---
+
+#### **5. 验证方法**
+检查 CMake 缓存变量：
+```bash
+cat CMakeCache.txt | grep "FIND_USE_SYSTEM_LIBS\|ROOT_PATH_MODE\|USE_CMAKE_SYSTEM_PATH"
+```
+或生成调试信息：
+```bash
+cmake -B build --debug-find
+```
+
+---
+
+#### **6. 常见问题解决**
+| **问题现象**                  | **解决方案**                                                                 |
+|-------------------------------|-----------------------------------------------------------------------------|
+| 链接到错误的系统库版本        | 设置 `CMAKE_FIND_USE_SYSTEM_LIBS=OFF` + 显式指定 `CMAKE_PREFIX_PATH`       |
+| 交叉编译时找到主机库         | 设置 `CMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY`                              |
+| CMake 找到非预期的第三方库    | 设置 `CMAKE_FIND_USE_CMAKE_SYSTEM_PATH=OFF`                                |
+
+---
+
+#### **7. 完整示例**
+```bash
+cmake -B build \
+    -DCMAKE_FIND_USE_SYSTEM_LIBS=OFF \
+    -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+    -DCMAKE_FIND_USE_CMAKE_SYSTEM_PATH=OFF \
+    -DCMAKE_PREFIX_PATH="/custom/libs"
+```
+
+---
+
+#### **8. 总结**
+- **隔离构建**：三个参数均设为 `OFF`/`ONLY`，严格限制搜索范围。
+- **灵活配置**：通过组合控制可实现从严格隔离到宽松回退的不同策略。
+- **调试关键**：使用 `--debug-find` 观察实际搜索路径。
+
+===============================================
+# 15.控制 find_package 所用的配置文件的搜索范围的 是哪个变量
+
+控制 `find_package()` 搜索**配置文件**（如 `XXXConfig.cmake` 或 `FindXXX.cmake`）范围的核心变量，是 **`CMAKE_MODULE_PATH`** 和 **`CMAKE_PREFIX_PATH`**，二者分工不同，共同决定了配置文件的查找路径；此外，交叉编译场景下，`CMAKE_FIND_ROOT_PATH` 会进一步限制搜索的“根目录范围”。
+
+
+### 一、核心变量1：`CMAKE_MODULE_PATH` —— 控制 `FindXXX.cmake` 的搜索路径
+`find_package()` 查找配置文件时，会优先搜索 **“模块模式（Module Mode）”** 的配置文件（即 `FindXXX.cmake`），这类文件的搜索范围由 `CMAKE_MODULE_PATH` 直接控制。
+
+#### 作用细节：
+- **默认搜索路径**：如果未设置 `CMAKE_MODULE_PATH`，CMake 会默认从「系统内置模块目录」搜索 `FindXXX.cmake`，例如：
+  - Linux：`/usr/share/cmake-<版本>/Modules/`（你之前提到的系统 CMake 模块目录）；
+  - Windows：`C:\Program Files\CMake\share\cmake-<版本>\Modules\`；
+  - 交叉编译（如 NDK）：NDK 自带的 CMake 模块目录（如 `ndk-bundle/build/cmake/android.toolchain.cmake` 关联的模块路径）。
+- **自定义路径追加**：若你自己写了 `FindXXX.cmake`（如放在项目的 `cmake/modules/` 目录下），需要通过 `CMAKE_MODULE_PATH` 告诉 CMake 去这个目录搜索，否则 CMake 找不到自定义的 `FindXXX.cmake`。
+
+#### 配置方式：
+1. 在 `CMakeLists.txt` 中设置（推荐，项目级生效）：
+   ```cmake
+   # 将项目的 cmake/modules 目录添加到模块搜索路径（追加，不覆盖默认）
+   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+   ```
+2. 编译时通过 `-D` 参数传入（临时生效，优先级高于 `CMakeLists.txt` 中的设置）：
+   ```bash
+   cmake -S. -Bbuild -DCMAKE_MODULE_PATH="/path/to/your/custom/modules"
+   ```
+
+
+### 二、核心变量2：`CMAKE_PREFIX_PATH` —— 控制 `XXXConfig.cmake` 的搜索路径
+当 `find_package()` 在“模块模式”下找不到 `FindXXX.cmake` 时，会切换到 **“配置模式（Config Mode）”**，搜索第三方库自带的配置文件（如 `XXXConfig.cmake`，通常随库安装在 `lib/cmake/XXX/` 目录下），这类文件的搜索范围由 `CMAKE_PREFIX_PATH` 控制。
+
+#### 作用细节：
+- **搜索逻辑**：CMake 会在 `CMAKE_PREFIX_PATH` 指定的每个“前缀目录”下，递归搜索 `lib/cmake/XXX/`、`lib64/cmake/XXX/`、`share/cmake/XXX/` 等子目录（这些是第三方库安装 `XXXConfig.cmake` 的标准路径）。
+- **典型场景**：当你通过源码编译安装第三方库（如将 GLEW 安装到 `/opt/glew`），库会自动在 `/opt/glew/lib/cmake/glew/` 生成 `GLEWConfig.cmake`。此时只需将 `/opt/glew` 加入 `CMAKE_PREFIX_PATH`，`find_package(GLEW)` 就能找到这个配置文件。
+
+#### 配置方式：
+1. 在 `CMakeLists.txt` 中设置：
+   ```cmake
+   # 添加 GLEW 的安装前缀目录到配置文件搜索路径
+   list(APPEND CMAKE_PREFIX_PATH "/opt/glew" "/usr/local/Qt5")
+   ```
+2. 编译时通过 `-D` 参数传入（常用，灵活指定不同环境的库路径）：
+   ```bash
+   cmake -S. -Bbuild -DCMAKE_PREFIX_PATH="/opt/glew:/usr/local/Qt5"
+   ```
+3. 通过环境变量设置（系统级生效，适用于多个项目共用同一库）：
+   ```bash
+   # Linux/macOS 下（临时生效，终端关闭后失效）
+   export CMAKE_PREFIX_PATH="/opt/glew:/usr/local/Qt5"
+   cmake -S. -Bbuild
+
+   # Windows 下（cmd 终端）
+   set CMAKE_PREFIX_PATH="C:\opt\glew;C:\Qt\5.15.2\mingw81_64"
+   cmake -S. -Bbuild
+   ```
+
+
+### 三、辅助变量：`CMAKE_FIND_ROOT_PATH` —— 限制交叉编译的“根目录范围”
+在**交叉编译场景**（如你之前提到的 NDK 编译 JNI SO），`CMAKE_FIND_ROOT_PATH` 会作为“搜索根目录”，限制 `find_package()` 对配置文件的搜索范围——即所有配置文件的查找，都会被限定在 `CMAKE_FIND_ROOT_PATH` 指定的目录下（而非主机系统目录）。
+
+#### 作用细节：
+- 例如，NDK 编译时，`CMAKE_FIND_ROOT_PATH` 会被设置为 NDK 的 `sysroot` 目录（如 `ndk-bundle/sysroot`），此时 `find_package()` 只会在 `sysroot` 下搜索 `FindXXX.cmake` 或 `XXXConfig.cmake`，避免误用到主机（如 Linux x86_64）的库配置文件。
+- 若需同时搜索主机目录，可配合 `CMAKE_FIND_ROOT_PATH_MODE_PACKAGE=BOTH`（你之前提到的变量），允许 CMake 先搜 `CMAKE_FIND_ROOT_PATH` 下的目标环境，再搜主机环境。
+
+
+### 四、总结：不同配置文件的搜索控制逻辑
+| 配置文件类型       | 核心控制变量          | 典型场景                          |
+|--------------------|-----------------------|-----------------------------------|
+| `FindXXX.cmake`    | `CMAKE_MODULE_PATH`   | 自定义模块、系统内置模块的查找    |
+| `XXXConfig.cmake`  | `CMAKE_PREFIX_PATH`   | 第三方库（如 GLEW、Qt）自带配置文件的查找 |
+| 交叉编译场景       | `CMAKE_FIND_ROOT_PATH`| 限制搜索范围到目标平台（如 NDK sysroot） |
+
+
+简单来说：  
+- 找**自己写的/系统内置的 `FindXXX.cmake`** → 用 `CMAKE_MODULE_PATH`；  
+- 找**第三方库自带的 `XXXConfig.cmake`** → 用 `CMAKE_PREFIX_PATH`；  
+- 交叉编译时**避免搜主机目录** → 用 `CMAKE_FIND_ROOT_PATH`。

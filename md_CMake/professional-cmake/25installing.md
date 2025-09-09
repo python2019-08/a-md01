@@ -152,9 +152,8 @@ Not all projects can be made relocatable, some need to place their files in very
 
 【翻译】 并非所有项目都可以重新定位，有些项目需要将文件放置在非常特定的位置（例如内核包）。除了少数配置文件外，一些项目可以重新定位，在这种情况下，一个有用的策略有时是将这些特定文件作为脚本安装后步骤进行处理（下一章将讨论特定打包系统的一些方面）。
 
-The choice of base install location is closely tied to the target platform, with each one having its own common practices and guidelines. On Windows, the base install location is usually a subdirectory of C:\Program Files, whereas on most other systems, it is /usr/local or a subdirectory of /opt. CMake provides a number of controls for managing the base install location to mostly abstract away these platform differences. Perhaps the most important is the CMAKE_INSTALL_PREFIX variable, which controls the base install location when the user builds the install target (the target may be called INSTALL with some generator types). The default value of CMAKE_INSTALL_PREFIX is C:\Program Files\{PROJECT_NAME} on Windows and /usr/local on Unix-based platforms.
-
-【翻译】基础安装位置的选择与目标平台密切相关，每个平台都有自己的通用做法和指导方针。在Windows上，基本安装位置通常是C:\Program Files的子目录，而在大多数其他系统上，它是/usr/local或/opt的子目录。CMake提供了许多用于管理基本安装位置的控件，以主要抽象出这些平台差异。也许最重要的是CMAKE_INSTALL_PREFIX变量，它在用户构建安装目标时控制基本安装位置（在某些生成器类型中，目标可能被称为INSTALL）。CMAKE_INSTALL_PREFIX的默认值在Windows上为C:\Program Files\{PROJECT_NAME}，在基于Unix的平台上为/usr/local。
+The choice of base install location is closely tied to the target platform, with each one having its own common practices and guidelines. On Windows, the base install location is usually a subdirectory of C:Program Files, whereas on most other systems, it is /usr/local or a subdirectory of /opt. CMake provides a number of controls for managing the base install location to mostly abstract away these platform differences. Perhaps the most important is the CMAKE_INSTALL_PREFIX variable, which controls the base install location when the user builds the install target (the target may be called INSTALL with some generator types). The default value of CMAKE_INSTALL_PREFIX is C:Program Files{PROJECT_NAME} on Windows and /usr/local on Unix-based platforms.
+【翻译】基础安装位置的选择与目标平台密切相关，每个平台都有自己的通用做法和指导方针。在Windows上，基本安装位置通常是C:\Program Files的子目录，而在大多数其他系统上，它是/usr/local或/opt的子目录。CMake提供了许多用于管理基本安装位置的控件，以主要抽象出这些平台差异。也许最重要的是CMAKE_INSTALL_PREFIX变量，它在用户构建安装目标时控制基本安装位置（在某些生成器类型中，目标可能被称为INSTALL）。CMAKE_INSTALL_PREFIX的默认值在Windows上为C:\Program Files{PROJECT_NAME}，在基于Unix的平台上为/usr/local。
 
 When installing on Linux, the default value does not conform to the File System Hierarchy standard. The FHS requires system packages to use a base location of / or /usr, with the latter more likely to be the desired choice. For add-on packages, they should be installed to /opt/<package> or /opt/<provider>, with a recommendation to use /opt/<provider>/<package>. If <provider> is used, it is formally expected to be a LANANA-registered name or just the lowercase fully qualified domain name of the organization providing the package. This is to avoid clashes between different packages trying to use the same base install location. For most projects, explicitly setting CMAKE_INSTALL_PREFIX for non-Windows platforms to a FHS-compliant /opt/… path is advisable, but this should generally only be done in the top level CMakeLists.txt with an appropriate check that the project is in fact the top level of the source tree (to support hierarchical project arrangements).
 
@@ -169,9 +168,9 @@ set(CMAKE_INSTALL_PREFIX "/opt/mycompany.com/${PROJECT_NAME}")
 endif()
 ```
 
-For cross-compiling scenarios, the CMAKE_STAGING_PREFIX variable can be defined to provide an override for where the install rule installs to. This is to allow installing to an alternate part of the file system while still preserving all the other effects of CMAKE_INSTALL_PREFIX, such as embedding of paths in the installed binaries (covered in Section 25.2.2, “RPATH” later in this chapter). CMAKE_STAGING_PREFIX also affects the search paths of most find\_…() commands.
+For cross-compiling scenarios, the CMAKE_STAGING_PREFIX variable can be defined to provide an override for where the install rule installs to. This is to allow installing to an alternate part of the file system while still preserving all the other effects of CMAKE_INSTALL_PREFIX, such as embedding of paths in the installed binaries (covered in Section 25.2.2, “RPATH” later in this chapter). CMAKE_STAGING_PREFIX also affects the search paths of most find_…() commands.
 
-【翻译】对于交叉编译场景，可以定义CMAKE_STAGING_PREFIX变量，为安装规则的安装位置提供覆盖。这是为了允许安装到文件系统的其他部分，同时仍然保留CMAKE_INSTALL_PREFIX 的所有其他效果，例如在已安装的二进制文件中嵌入路径（本章稍后的第25.2.2节“RPATH”中介绍）。CMAKE_STAGING_PREFIX也会影响大多数find\_…（）命令的搜索路径。
+【翻译】对于交叉编译场景，可以定义CMAKE_STAGING_PREFIX变量，为安装规则的安装位置提供覆盖。这是为了允许安装到文件系统的其他部分，同时仍然保留CMAKE_INSTALL_PREFIX 的所有其他效果，例如在已安装的二进制文件中嵌入路径（本章稍后的第25.2.2节“RPATH”中介绍）。CMAKE_STAGING_PREFIX也会影响大多数find_…（）命令的搜索路径。
 
 For some packaging scenarios and to allow testing the install process in a location off to the side, CMake supports the common DESTDIR functionality for non-Windows platforms. DESTDIR is not a CMake variable, but rather it is a variable passed to the build tool or set as an environment variable for the build tool to read. It allows the install base location to be placed under some arbitrary location rather than the root of the file system. It is typically used on a command line when invoking the build tool directly, such as:
 
@@ -182,9 +181,9 @@ make DESTDIR=/home/me/staging install
 env DESTDIR=/home/me/staging ninja install
 ```
 
-The DESTDIR functionality is somewhat conceptually similar to CMAKE_STAGING_PREFIX, but DESTDIR is specified only at install time and does not affect things like find\_…() commands.CMAKE_STAGING_PREFIX is saved as a cache variable, whereas DESTDIR is an environment variable and is not saved between invocations of the build tool.The combination of CMAKE_INSTALL_PREFIX, CMAKE_STAGING_PREFIX and DESTDIR gives the project and the developer the flexibility to set the base install location as needed and to perform test installs without actually touching the final intended install location. Be aware, however, that the various packaging formats may have their own default base install locations and may completely ignore these three variables in preference to their own package-specific ones.
+The DESTDIR functionality is somewhat conceptually similar to CMAKE_STAGING_PREFIX, but DESTDIR is specified only at install time and does not affect things like find_…() commands.CMAKE_STAGING_PREFIX is saved as a cache variable, whereas DESTDIR is an environment variable and is not saved between invocations of the build tool.The combination of CMAKE_INSTALL_PREFIX, CMAKE_STAGING_PREFIX and DESTDIR gives the project and the developer the flexibility to set the base install location as needed and to perform test installs without actually touching the final intended install location. Be aware, however, that the various packaging formats may have their own default base install locations and may completely ignore these three variables in preference to their own package-specific ones.
 
-【翻译】DESTDIR功能在概念上与CMAKE_STAGING_PREFIX有些相似，但DESTDIR仅在安装时指定，不影响find\_…() 命令等。CMAKE_STAGING_PREFIX保存为缓存变量，而DESTDIR是环境变量，在构建工具的调用之间不会保存。CMAKE_INSTALL_PREFIX、CMAKE_STAGING_PREFIX和DESTDIR的组合使项目和开发人员能够根据需要灵活设置基本安装位置，并在不实际接触最终预期安装位置的情况下进行测试安装。但是，请注意，各种打包格式可能有自己的默认基本安装位置，并且可能会完全忽略这三个变量，而不是它们自己的特定于包的变量。
+【翻译】DESTDIR功能在概念上与CMAKE_STAGING_PREFIX有些相似，但DESTDIR仅在安装时指定，不影响find_…() 命令等。CMAKE_STAGING_PREFIX保存为缓存变量，而DESTDIR是环境变量，在构建工具的调用之间不会保存。CMAKE_INSTALL_PREFIX、CMAKE_STAGING_PREFIX和DESTDIR的组合使项目和开发人员能够根据需要灵活设置基本安装位置，并在不实际接触最终预期安装位置的情况下进行测试安装。但是，请注意，各种打包格式可能有自己的默认基本安装位置，并且可能会完全忽略这三个变量，而不是它们自己的特定于包的变量。
 
 With the structure of the install area defined, attention can now move to the installed content itself.Projects use the install() command to define what to install, where those things should be located and so on. This command has a number of different forms, each focused on a particular type of entity which is specified by the first argument to the command. One of the key forms is for installing targets:
 
@@ -317,21 +316,21 @@ As for file(COPY), permissions not supported for the platform will simply be ign
 
 ```cmake
 
-\# Intended to only be run by an administrator, so only allow the owner to have access
+# Intended to only be run by an administrator, so only allow the owner to have access
 
 install(TARGETS onlyOwnerCanRunMe
 
-DESTINATION \${CMAKE_INSTALL_SBINDIR}
+DESTINATION ${CMAKE_INSTALL_SBINDIR}
 
 PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
 
 )
 
-\# Install with set-group permission
+# Install with set-group permission
 
 install(TARGETS runAsGroup
 
-DESTINATION \${CMAKE_INSTALL_BINDIR}
+DESTINATION ${CMAKE_INSTALL_BINDIR}
 
 PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
 
@@ -348,9 +347,9 @@ For the LIBRARY entity type, some platforms support the creation of symbolic lin
 
 libmyShared.so.1.3.2 ①
 
-libmyShared.so.1 --\> libmyShared.so.1.3.2 ②
+libmyShared.so.1 --> libmyShared.so.1.3.2 ②
 
-libmyShared.so --\> libmyShared.so.1 ③
+libmyShared.so --> libmyShared.so.1 ③
 
 ```
 
@@ -374,13 +373,13 @@ install(TARGETS myShared myStatic
 
 RUNTIME
 
-> DESTINATION \${CMAKE_INSTALL_BINDIR}
+> DESTINATION ${CMAKE_INSTALL_BINDIR}
 >
 > COMPONENT MyProj_Runtime
 
 LIBRARY
 
-> DESTINATION \${CMAKE_INSTALL_LIBDIR}
+> DESTINATION ${CMAKE_INSTALL_LIBDIR}
 >
 > NAMELINK_SKIP
 >
@@ -388,19 +387,19 @@ LIBRARY
 
 ARCHIVE
 
-> DESTINATION \${CMAKE_INSTALL_LIBDIR}
+> DESTINATION ${CMAKE_INSTALL_LIBDIR}
 >
 > COMPONENT MyProj_Development
 
 )
 
-\# Because NAMELINK_ONLY is given, CMake won't complain about a missing RUNTIME block
+# Because NAMELINK_ONLY is given, CMake won't complain about a missing RUNTIME block
 
 install(TARGETS myShared
 
 LIBRARY
 
-> DESTINATION \${CMAKE_INSTALL_LIBDIR}
+> DESTINATION ${CMAKE_INSTALL_LIBDIR}
 >
 > NAMELINK_ONLY
 >
@@ -418,21 +417,21 @@ install(TARGETS myShared myStatic
 
 RUNTIME
 
-DESTINATION \${CMAKE_INSTALL_BINDIR}
+DESTINATION ${CMAKE_INSTALL_BINDIR}
 
 COMPONENT MyProj_Runtime
 
 LIBRARY
 
-DESTINATION \${CMAKE_INSTALL_LIBDIR}
+DESTINATION ${CMAKE_INSTALL_LIBDIR}
 
 COMPONENT MyProj_Runtime
 
-NAMELINK_COMPONENT MyProj_Development \# Requires CMake 3.12 or later
+NAMELINK_COMPONENT MyProj_Development # Requires CMake 3.12 or later
 
 ARCHIVE
 
-DESTINATION \${CMAKE_INSTALL_LIBDIR}
+DESTINATION ${CMAKE_INSTALL_LIBDIR}
 
 COMPONENT MyProj_Development
 
@@ -456,7 +455,7 @@ install(TARGETS myStatic
 
 ARCHIVE
 
-> DESTINATION \${CMAKE_INSTALL_LIBDIR}/Debug
+> DESTINATION ${CMAKE_INSTALL_LIBDIR}/Debug
 >
 > CONFIGURATIONS Debug
 
@@ -466,7 +465,7 @@ install(TARGETS myStatic
 
 ARCHIVE
 
-> DESTINATION \${CMAKE_INSTALL_LIBDIR}/Release
+> DESTINATION ${CMAKE_INSTALL_LIBDIR}/Release
 >
 > CONFIGURATIONS Release RelWithDebInfo MinSizeRel
 
@@ -484,15 +483,15 @@ CONFIGURATIONS Release
 
 RUNTIME
 
-> DESTINATION \${CMAKE_INSTALL_BINDIR}
+> DESTINATION ${CMAKE_INSTALL_BINDIR}
 
 LIBRARY
 
-> DESTINATION \${CMAKE_INSTALL_LIBDIR}
+> DESTINATION ${CMAKE_INSTALL_LIBDIR}
 
 ARCHIVE
 
-> DESTINATION \${CMAKE_INSTALL_LIBDIR}
+> DESTINATION ${CMAKE_INSTALL_LIBDIR}
 >
 > CONFIGURATIONS Debug Release
 
@@ -510,9 +509,9 @@ add_library(foo STATIC ...)
 
 target_include_directories(foo
 
-INTERFACE \${CMAKE_CURRENT_BINARY_DIR}/somewhere
+INTERFACE ${CMAKE_CURRENT_BINARY_DIR}/somewhere
 
-\${MyProject_BINARY_DIR}/anotherDir
+${MyProject_BINARY_DIR}/anotherDir
 
 )
 
@@ -534,17 +533,17 @@ target_include_directories(foo
 
 INTERFACE
 
-> \$\<BUILD_INTERFACE:\${CMAKE_CURRENT_BINARY_DIR}/somewhere\>
+> $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/somewhere>
 >
-> \$\<BUILD_INTERFACE:\${MyProject_BINARY_DIR}/anotherDir\>
+> $<BUILD_INTERFACE:${MyProject_BINARY_DIR}/anotherDir>
 >
-> \$\<INSTALL_INTERFACE:\${CMAKE_INSTALL_INCLUDEDIR}\>
+> $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
 )
 
 ```
 
-\$\<BUILD_INTERFACE:xxx\> will expand to xxx for the build tree and expand to nothing when installing, whereas \$\<INSTALL_INTERFACE:yyy\> does the opposite, ensuring that yyy is only added for the installed target. In the case of INSTALL_INTERFACE, yyy is usually a relative path, which is treated as being relative to the base install location. 【翻译】\$\<BUILD_INTERFACE:xxx\>将在构建树中扩展为xxx，并在安装时扩展为无，而\$\<INSTALLINTERFACE:yyy\>则相反，确保yyy仅为已安装的目标添加。在INSTALLINTERFACE的情况下，yyy通常是一个相对路径，被视为相对于基本安装位置。
+$<BUILD_INTERFACE:xxx> will expand to xxx for the build tree and expand to nothing when installing, whereas $<INSTALL_INTERFACE:yyy> does the opposite, ensuring that yyy is only added for the installed target. In the case of INSTALL_INTERFACE, yyy is usually a relative path, which is treated as being relative to the base install location. 【翻译】$<BUILD_INTERFACE:xxx>将在构建树中扩展为xxx，并在安装时扩展为无，而$<INSTALLINTERFACE:yyy>则相反，确保yyy仅为已安装的目标添加。在INSTALLINTERFACE的情况下，yyy通常是一个相对路径，被视为相对于基本安装位置。
 
 While the header search path within the build tree may vary from target to target, it is very common for the targets to all share the same header search path once installed. In the above example, CMAKE_INSTALL_INCLUDEDIR is used and is likely to be repeated for every installable target, but specifying it individually for each target is not the most convenient approach. The INCLUDES option of the install() command can be used instead to specify the same information for a group of targets. All the directories given after INCLUDES DESTINATION are added to the INTERFACE_INCLUDE_DIRECTORIES property of each target listed. This leads to a more concise description of header search path details. 【翻译】虽然构建树中的标头搜索路径可能因目标而异，但安装后目标共享相同的标头搜索道路是很常见的。在上面的示例中，使用了CMAKE_INSTALL_INCLUDEDIR，并且可能会对每个可安装的目标重复使用，但为每个目标单独指定它并不是最方便的方法。install（）命令的INCLUDES选项可用于为一组目标指定相同的信息。在INCLUDESDESTINATION之后给出的所有目录都将添加到列出的每个目标的INTERFACE_INCLUDE_directories属性中。这使得标题搜索路径的详细信息描述更为简洁。
 
@@ -556,13 +555,13 @@ add_library(myHeaderOnly INTERFACE ...)
 
 target_include_directories(myStatic
 
-PUBLIC \$\<BUILD_INTERFACE:\${CMAKE_CURRENT_BINARY_DIR}/static_exports\>
+PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/static_exports>
 
 )
 
 target_include_directories(myHeaderOnly
 
-INTERFACE \$\<BUILD_INTERFACE:\${CMAKE_CURRENT_LIST_DIR}\>
+INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
 
 )
 
@@ -570,11 +569,11 @@ install(TARGETS myStatic myHeaderOnly
 
 ARCHIVE
 
-> DESTINATION \${CMAKE_INSTALL_LIBDIR}
+> DESTINATION ${CMAKE_INSTALL_LIBDIR}
 
 INCLUDES
 
-> DESTINATION \${CMAKE_INSTALL_INCLUDEDIR}
+> DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 
 )
 
@@ -594,43 +593,43 @@ The RPATH defaults are a reasonable starting point, but they are unlikely to be 
 
 【翻译】RPATH默认值是一个合理的起点，但它们不太可能适用于已安装的目标。项目将希望覆盖默认行为，以确保构建树和安装场景都得到适当的满足。CMake允许对构建和安装RPATH位置进行单独控制，因此项目可以实施最适合其需求的策略。以下目标属性和变量可用于影响RPATH行为：
 
-\#\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-**\#(1)BUILD_RPATH**
+**#(1)BUILD_RPATH**
 
 This target property can be used to provide additional search paths to be embedded in the build tree’s binary. This will be in addition to the paths automatically added by CMake for that binary’s link dependencies, so only extra paths CMake cannot work out on its own should be specified. This property should only be needed if the binary loads non-linked libraries at run time using dlopen() or some equivalent mechanism, such as when loading optional plugin modules. This property is initialized by the value of the CMAKE_BUILD_RPATH variable at the time the target is created by add_library() or add_executable(). While the automatically added paths have been supported in CMake for a long time, the BUILD_RPATH property and the CMAKE_BUILD_RPATH variable were only added in CMake 3.8. 【翻译】此目标属性可用于提供要嵌入构建树二进制文件中的其他搜索路径。这将是CMake为该二进制文件的链接依赖关系自动添加的路径之外的额外路径，因此只应指定CMake无法自行解决的额外路径。只有当二进制文件在运行时使用dlopen（）或一些等效机制加载非链接库时，才需要此属性，例如加载可选插件模块时。在通过add_library（）或add_executable（）创建目标时，此属性由CMAKE_BUILD_RPATH变量的值初始化。虽然CMake支持自动添加的路径已有很长一段时间，但BUILD_RPATH属性和CMake_BUILD_RPATH变量仅在CMake 3.8中添加。
 
-**\#(2)INSTALL_RPATH**
+**#(2)INSTALL_RPATH**
 
 This target property specifies the RPATH of the binary when it is installed. Unlike the build RPATH, CMake does not provide any install RPATH contents by default, so the project should set this property to a list of paths that reflect the installed layout. Details further below discuss how this can be done. This property is initialized by the value of the CMAKE_INSTALL_RPATH variable when the target is created. 【翻译】此目标属性指定安装二进制文件时的RPATH。与构建RPATH不同，CMake默认情况下不提供任何安装RPATH内容，因此项目应将此属性设置为反映已安装布局的路径列表。下文将详细讨论如何做到这一点。创建目标时，此属性由CMAKE_INSTALL_RPATH变量的值初始化。
 
-**\#(3)INSTALL_RPATH_USE_LINK_PATH**
+**#(3)INSTALL_RPATH_USE_LINK_PATH**
 
 When this target property is set to true, the path of each library this target links to is added to the set of install RPATH locations, but only if the path points to a location outside the project’s source and binary directories. This is mainly useful for embedding absolute paths to external libraries that are not part of the project, but that are expected to be at the same location on all machines the project will be deployed to. Use this with caution, as such assumptions can reduce the robustness of the installed package (paths may change with future releases of the external libraries, system administrators may choose non-default installation configurations, etc.). This property is initialized by the value of the CMAKE_INSTALL_RPATH_USE_LINK_PATH variable when the target is created. 【翻译】当此目标属性设置为true时，此目标链接到的每个库的路径都会添加到安装RPATH位置集中，但前提是路径指向项目源代码和二进制目录之外的位置。这主要用于将绝对路径嵌入到不属于项目的外部库，但预计这些外部库将位于项目将部署到的所有计算机上的同一位置。请谨慎使用，因为这样的假设可能会降低已安装包的稳健性（路径可能会随着外部库的未来版本而变化，系统管理员可能会选择非默认安装配置等）。创建目标时，此属性由CMAKE_INSTALL_RPATH_USE_LINK_PATH变量的值初始化。
 
-**\#(4)BUILD_WITH_INSTALL_RPATH**
+**#(4)BUILD_WITH_INSTALL_RPATH**
 
 Some projects use a build layout that mirrors the installed layout, in which case the install RPATH may also be suitable for the build tree. By setting this target property to true, the build RPATH is not used and the install RPATH will be embedded in the binary at build time instead. Note that this may cause build problems during linking when using placeholders supported by the loader but not the linker (discussed further below). This property is initialized by the CMAKE_BUILD_WITH_INSTALL_RPATH variable when the target is created. 【翻译】一些项目使用镜像已安装布局的构建布局，在这种情况下，安装RPATH也可能适用于构建树。通过将此目标属性设置为true，不使用构建RPATH，而是在构建时将安装RPATH嵌入二进制文件中。请注意，当使用加载器支持的占位符而不是链接器支持的占位符时，这可能会在链接过程中导致构建问题（下面将进一步讨论）。创建目标时，此属性由CMAKE_BUILD_WITH_INSTALL_RPATH变量初始化。
 
-**\#(5)SKIP_BUILD_RPATH**
+**#(5)SKIP_BUILD_RPATH**
 
 When this target property is set to true, no build RPATH is set. BUILD_RPATH will be ignored and CMake will not automatically add RPATH entries for libraries the target links to. Note that this can cause builds to fail if dependent libraries link to other libraries, so use with caution. This property is initialized by the value of the CMAKE_SKIP_BUILD_RPATH variable when the target is created. It is also overridden by BUILD_WITH_INSTALL_RPATH if that property is set to true. 【翻译】当此目标属性设置为true时，不会设置构建RPATH。BUILD_RPATH将被忽略，CMake不会自动为目标链接到的库添加RPATH条目。请注意，如果依赖库链接到其他库，这可能会导致构建失败，因此请谨慎使用。创建目标时，此属性由CMAKE_SKIP_BUILD_RPATH变量的值初始化。如果该属性设置为true，它也会被BUILD_WITH_INSTALL_RPATH覆盖。
 
-**\#(6)CMAKE_SKIP_INSTALL_RPATH**
+**#(6)CMAKE_SKIP_INSTALL_RPATH**
 
 This variable is the install equivalent of CMAKE_SKIP_BUILD_RPATH. Setting it to true causes INSTALL_RPATH target properties to be ignored and will likely cause the installed targets to fail to find their dependent libraries at run time, so its usefulness is questionable. Note that there is no SKIP_INSTALL_RPATH target property, only the CMAKE_SKIP_INSTALL_RPATH variable.【翻译】此变量与CMAKE_SKIP_BUILD_RPATH的安装等效。将其设置为true会导致忽略INSTALL_RPATH目标属性，并可能导致安装的目标在运行时无法找到其依赖库，因此其有用性值得怀疑。请注意，没有SKIP_INSTALL_RPATH目标属性，只有CMAKE_SKIP_INSTALL_RPATH变量。
 
-**\#(7)CMAKE_SKIP_RPATH**
+**#(7)CMAKE_SKIP_RPATH**
 
 Setting this variable to true causes all RPATH support to be disabled and all of the above properties and variables will be ignored. It is generally not desirable to do this unless the project is managing the run time library loading itself in some other way, but in general the RPATH functionality should generally be preferred. 【翻译】将此变量设置为true会导致禁用所有RPATH支持，并忽略上述所有属性和变量。通常不希望这样做，除非项目以其他方式管理运行时库加载本身，但一般来说，RPATH功能通常是首选。
 
-\#\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-Install RPATH locations should ideally be based on relative paths. This is achieved on most Unixbased platforms by using the \$ORIGIN placeholder to represent the location of the binary in which the RPATH is embedded. For example, the following is a common way of defining install RPATH details for projects that follow the a similar layout to that defined by the default GNUInstallDirs module: 【翻译】理想情况下，RPATH的安装位置应基于相对路径。在大多数基于Unix的平台上，这是通过使用\$ORIGIN占位符来表示嵌入RPATH的二进制文件的位置来实现的。例如，以下是为遵循与默认GNUInstallDirs模块定义的布局类似的布局的项目定义安装RPATH详细信息的常见方法：
+Install RPATH locations should ideally be based on relative paths. This is achieved on most Unixbased platforms by using the $ORIGIN placeholder to represent the location of the binary in which the RPATH is embedded. For example, the following is a common way of defining install RPATH details for projects that follow the a similar layout to that defined by the default GNUInstallDirs module: 【翻译】理想情况下，RPATH的安装位置应基于相对路径。在大多数基于Unix的平台上，这是通过使用$ORIGIN占位符来表示嵌入RPATH的二进制文件的位置来实现的。例如，以下是为遵循与默认GNUInstallDirs模块定义的布局类似的布局的项目定义安装RPATH详细信息的常见方法：
 
 ```cmake
 
-set(CMAKE_INSTALL_RPATH \$ORIGIN \$ORIGIN/../lib)
+set(CMAKE_INSTALL_RPATH $ORIGIN $ORIGIN/../lib)
 
 ```
 
@@ -642,17 +641,17 @@ include(GNUInstallDirs)
 
 file(RELATIVE_PATH relDir
 
-\${CMAKE_CURRENT_BINARY_DIR}/\${CMAKE_INSTALL_BINDIR}
+${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}
 
-\${CMAKE_CURRENT_BINARY_DIR}/\${CMAKE_INSTALL_LIBDIR})
+${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 
-set(CMAKE_INSTALL_RPATH \$ORIGIN \$ORIGIN/\${relDir})
+set(CMAKE_INSTALL_RPATH $ORIGIN $ORIGIN/${relDir})
 
 ```
 
 All targets defined after the above will have an INSTALL_RPATH that directs the loader to look in the same directory as the binary as well as something like ../lib or its platform equivalent relative to the binary’s location. Thus, for executables installed to bin and shared libraries installed to lib, this will ensure both can find any other libraries provided by the project. This is highly recommended as a starting point when first adding RPATH support to projects. Note that Apple targets work a little differently and may have a considerably different layout, so the above needs to be adapted further to cover that platform (discussed in the next section). 【翻译】在上述内容之后定义的所有目标都将有一个INSTALL_RPATH，它指示加载器在与二进制文件相同的目录中查找，以及类似于..的内容/lib或其平台等效物相对于二进制文件的位置。因此，对于安装到bin的可执行文件和安装到lib的共享库，这将确保两者都能找到项目提供的任何其他库。强烈建议将此作为首次向项目添加RPATH支持的起点。请注意，Apple目标的工作方式略有不同，布局可能也大不相同，因此上述内容需要进一步调整以覆盖该平台（将在下一节中讨论）。
 
-One weakness to be aware of is that while loaders understand \$ORIGIN, the linker most likely will not. This can lead to problems when something links to a library which itself links to another library. The first level of linking does not present a problem, since the library will be listed directly on the linker command line, but the second level of library dependency has to be found by the linker. When the linker doesn’t understand \$ORIGIN, it can’t find the second level library via RPATH details. Therefore, unless the path is also specified by some other option like -L, linking will fail even though the first level library technically contains all the information needed. This is a known issue in general that is not specific to CMake, it is simply a weakness of popular linkers (notably the GNU ld linker). 【翻译】需要注意的一个弱点是，虽然加载器理解\$ORIGIN，但链接器很可能不会。当某物链接到一个库，而该库又链接到另一个库时，这可能会导致问题。第一级链接没有问题，因为库将直接在链接器命令行上列出，但第二级库依赖关系必须由链接器找到。当链接器不理解\$ORIGIN时，它无法通过RPATH详细信息找到二级库。因此，除非路径也由其他选项（如-L）指定，否则即使一级库在技术上包含所需的所有信息，链接也会失败。这是一个众所周知的问题，并非特定于CMake，它只是流行链接器（特别是GNU ld链接器）的一个弱点。
+One weakness to be aware of is that while loaders understand $ORIGIN, the linker most likely will not. This can lead to problems when something links to a library which itself links to another library. The first level of linking does not present a problem, since the library will be listed directly on the linker command line, but the second level of library dependency has to be found by the linker. When the linker doesn’t understand $ORIGIN, it can’t find the second level library via RPATH details. Therefore, unless the path is also specified by some other option like -L, linking will fail even though the first level library technically contains all the information needed. This is a known issue in general that is not specific to CMake, it is simply a weakness of popular linkers (notably the GNU ld linker). 【翻译】需要注意的一个弱点是，虽然加载器理解$ORIGIN，但链接器很可能不会。当某物链接到一个库，而该库又链接到另一个库时，这可能会导致问题。第一级链接没有问题，因为库将直接在链接器命令行上列出，但第二级库依赖关系必须由链接器找到。当链接器不理解$ORIGIN时，它无法通过RPATH详细信息找到二级库。因此，除非路径也由其他选项（如-L）指定，否则即使一级库在技术上包含所需的所有信息，链接也会失败。这是一个众所周知的问题，并非特定于CMake，它只是流行链接器（特别是GNU ld链接器）的一个弱点。
 
 Depending on the various properties and variables mentioned above, CMake may be required to change the embedded RPATH details of a target when it is being installed. There are two ways this can be done. If the binary is in the ELF format, then by default CMake uses an internal tool to rewrite the RPATH directly in the installed binary. The RPATH value in the ELF headers are of fixed size, but CMake ensures there will be enough space for the install RPATH by padding the build RPATH if necessary. The details of how this is done are largely hidden from the developer, other than perhaps some odd-looking options on the linker command line at build time. For non-ELF platforms, CMake re-links the binary at install time, specifying the install RPATH details instead. Historically, this can sometimes confuse developers who wonder why something that has already been built needs to be linked again, but ultimately the re-linking is a pragmatic way to get the desired end result. The re-linking behavior can be forced for ELF platforms too by setting the CMAKE_NO_BUILTIN_CHRPATH variable to true, but this should not generally be used unless the internal RPATH rewriting fails for some reason. 【翻译】根据上述各种属性和变量，在安装目标时，可能需要CMake来更改目标的嵌入式RPATH详细信息。有两种方法可以做到这一点。如果二进制文件是ELF格式，则默认情况下CMake使用内部工具直接在安装的二进制文件中重写RPATH。ELF头文件中的RPATH值大小固定，但CMake通过在必要时填充构建RPATH来确保有足够的空间来安装RPATH。除了在构建时链接器命令行上的一些看起来很奇怪的选项外，开发人员基本上无法了解如何完成此操作的细节。对于非ELF平台，CMake在安装时重新链接二进制文件，并指定安装RPATH的详细信息。从历史上看，这有时会让开发人员感到困惑，他们想知道为什么已经构建的东西需要再次链接，但最终重新链接是一种获得预期最终结果的实用方法。通过将CMAKE_NO_BUILTIN_CRPATH变量设置为true，ELF平台也可以强制重新链接行为，但除非内部RPATH重写因某种原因失败，否则通常不应使用。
 
@@ -660,13 +659,13 @@ When cross compiling, a few other variables can modify the RPATH locations embed
 
 ### 25.2.3. Apple-specific Targets
 
-Apple’s loader and linker work a little differently to other Unix platforms. Whereas libraries on platforms like Linux encode just the library name into a shared library (i.e. the soname), Apple platforms encode the full path to the library. This full path is referred to as the install_name and the path part of the install_name is sometimes called the install_name_dir. Anything linking to the library also encodes the full install_name as the library to search for. When everything is installed to the expected location, this works well, but for relocatable packages (which includes most app bundles), this is too inflexible. As a way of dealing with this, Apple supports relative base points similar to \$ORIGIN, but the placeholders are different: 【译】 苹果的加载器和链接器的工作方式与其他Unix平台略有不同。Linux等平台上的库只将库名称编码到共享库中（即soname），而苹果平台则将库的完整路径编码。此完整路径称为install_name，install_name的路径部分有时称为install_name_dir。链接到库的任何内容也会将完整的install_name编码为要搜索的库。当所有内容都安装到预期位置时，这会很好地工作，但对于可重定位包（包括大多数应用程序包）来说，这太不灵活了。作为一种处理方式，Apple支持类似于\$ORIGIN的相对基点，但占位符不同：
+Apple’s loader and linker work a little differently to other Unix platforms. Whereas libraries on platforms like Linux encode just the library name into a shared library (i.e. the soname), Apple platforms encode the full path to the library. This full path is referred to as the install_name and the path part of the install_name is sometimes called the install_name_dir. Anything linking to the library also encodes the full install_name as the library to search for. When everything is installed to the expected location, this works well, but for relocatable packages (which includes most app bundles), this is too inflexible. As a way of dealing with this, Apple supports relative base points similar to $ORIGIN, but the placeholders are different: 【译】 苹果的加载器和链接器的工作方式与其他Unix平台略有不同。Linux等平台上的库只将库名称编码到共享库中（即soname），而苹果平台则将库的完整路径编码。此完整路径称为install_name，install_name的路径部分有时称为install_name_dir。链接到库的任何内容也会将完整的install_name编码为要搜索的库。当所有内容都安装到预期位置时，这会很好地工作，但对于可重定位包（包括大多数应用程序包）来说，这太不灵活了。作为一种处理方式，Apple支持类似于$ORIGIN的相对基点，但占位符不同：
 
-\#\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 **@loader_path**
 
-This is more or less Apple’s equivalent of \$ORIGIN, but the linker is able to understand it and therefore doesn’t suffer the problems other linkers experience with being unable to decode \$ORIGIN. 【译】这或多或少相当于苹果的\$ORIGIN，但链接器能够理解它，因此不会遇到其他链接器无法解码\$ORIGIN的问题。
+This is more or less Apple’s equivalent of $ORIGIN, but the linker is able to understand it and therefore doesn’t suffer the problems other linkers experience with being unable to decode $ORIGIN. 【译】这或多或少相当于苹果的$ORIGIN，但链接器能够理解它，因此不会遇到其他链接器无法解码$ORIGIN的问题。
 
 **@executable_path**
 
@@ -676,23 +675,23 @@ This will be replaced by the location of the program being executed. For librari
 
 This can be used as a placeholder for part of the install_name_dir or it can replace the install_name_dir completely. 【译】这可以用作install_name_dir的一部分的占位符，也可以完全替换install_name-dir。
 
-\#\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-The combination of @loader_path and @rpath can be used to achieve the same behavior as other Unix platforms that support \$ORIGIN. CMake provides additional Apple-specific controls to help set things up appropriately: 【译】@loader_path和@rpath的组合可用于实现与支持\$ORIGIN的其他Unix平台相同的行为。CMake提供了额外的Apple特定控件，以帮助正确设置：
+The combination of @loader_path and @rpath can be used to achieve the same behavior as other Unix platforms that support $ORIGIN. CMake provides additional Apple-specific controls to help set things up appropriately: 【译】@loader_path和@rpath的组合可用于实现与支持$ORIGIN的其他Unix平台相同的行为。CMake提供了额外的Apple特定控件，以帮助正确设置：
 
-\#\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-**\#(1)MACOSX_RPATH**
+**#(1)MACOSX_RPATH**
 
 When this target property is set to true, CMake automatically sets the install_name_dir to @rpath when building for Apple platforms. This is the default behavior since CMake 3.0 and is almost always desirable. It can be overridden by INSTALL_NAME_DIR. If the CMAKE_MACOSX_RPATH variable is set at the time the target is created, it is used to initialize the value of the MACOSX_RPATH property.【译】当此目标属性设置为true时，CMake在为Apple平台构建时会自动将install_name_dir设置为@rpath。这是CMake 3.0以来的默认行为，几乎总是可取的。它可以被INSTALL_NAME_DIR覆盖。如果在创建目标时设置了CMAKE_MACOSX_RPATH变量，则它用于初始化MACOSX_RPPATH属性的值。
 
-**\#(2)INSTALL_NAME_DIR**
+**#(2)INSTALL_NAME_DIR**
 
 This target property is used to explicitly set the install_name_dir part of the library’s install_name. The default install_name usually has the form @rpath/libsomename.dylib, but for cases where @rpath is not appropriate, INSTALL_NAME_DIR can specify an alternative. The property is initialized with the value of the CMAKE_INSTALL_NAME_DIR variable at the time it is created. This property is ignored on non-Apple platforms.【译】此目标属性用于显式设置库的install_name的install_name_dir部分。默认的install_name通常采用@rpath/libsomename.dylib的形式，但对于@rpath不合适的情况，install_name_DIR可以指定一个替代方案。该属性在创建时使用CMAKE_INSTALL_NAME_DIR变量的值进行初始化。此属性在非Apple平台上被忽略。
 
-\#\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<\<
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-For non-bundle layouts, the \$ORIGIN behavior can be extended to cover the Apple case as well:【译】对于非捆绑布局，\$ORIGIN行为也可以扩展到涵盖Apple案例：
+For non-bundle layouts, the $ORIGIN behavior can be extended to cover the Apple case as well:【译】对于非捆绑布局，$ORIGIN行为也可以扩展到涵盖Apple案例：
 
 ```cmake
 
@@ -702,7 +701,7 @@ set(basePoint @loader_path)
 
 else()
 
-set(basePoint \$ORIGIN)
+set(basePoint $ORIGIN)
 
 endif()
 
@@ -710,13 +709,13 @@ include(GNUInstallDirs)
 
 file(RELATIVE_PATH relDir
 
-\${CMAKE_CURRENT_BINARY_DIR}/\${CMAKE_INSTALL_BINDIR}
+${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}
 
-\${CMAKE_CURRENT_BINARY_DIR}/\${CMAKE_INSTALL_LIBDIR}
+${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}
 
 )
 
-set(CMAKE_INSTALL_RPATH \${basePoint} \${basePoint}/\${relDir})
+set(CMAKE_INSTALL_RPATH ${basePoint} ${basePoint}/${relDir})
 
 ```
 
@@ -738,9 +737,9 @@ add_library(fmwk1 SHARED ...)
 
 add_library(fmwk2 SHARED ...)
 
-target_link_libraries(myApp PRIVATE fmwk1) \# Only needs fmwk1 directly...
+target_link_libraries(myApp PRIVATE fmwk1) # Only needs fmwk1 directly...
 
-target_link_libraries(fmwk1 PRIVATE fmwk2) \# ... but fmwk1 needs fmwk2
+target_link_libraries(fmwk1 PRIVATE fmwk2) # ... but fmwk1 needs fmwk2
 
 set_target_properties(myApp PROPERTIES
 
@@ -780,11 +779,11 @@ add_custom_command(TARGET myApp POST_BUILD
 
 COMMAND rsync -a
 
-> \$\<TARGET_BUNDLE_DIR:fmwk1\>
+> $<TARGET_BUNDLE_DIR:fmwk1>
 >
-> \$\<TARGET_BUNDLE_DIR:fmwk2\>
+> $<TARGET_BUNDLE_DIR:fmwk2>
 >
-> \$\<TARGET_BUNDLE_CONTENT_DIR:myApp\>/Frameworks/
+> $<TARGET_BUNDLE_CONTENT_DIR:myApp>/Frameworks/
 
 )
 
@@ -802,11 +801,11 @@ When it comes to embedding headers in frameworks, CMake provides a little more h
 
 install(TARGETS myShared
 
-FRAMEWORK \# Apple framework case
+FRAMEWORK # Apple framework case
 
 DESTINATION ...
 
-LIBRARY \# Non-Apple case
+LIBRARY # Non-Apple case
 
 DESTINATION ...
 
@@ -829,93 +828,63 @@ When targets are installed, they can specify the name of an export set to which 
 ```cmake
 
 install(EXPORT exportName
-
 DESTINATION dir
-
-\[FILE name.cmake\]
-
-\[NAMESPACE namespace\]
-
-\[PERMISSIONS permissions...\]
-
-\[EXPORT_LINK_INTERFACE_LIBRARIES\]
-
-\[COMPONENT component\]
-
-\[EXCLUDE_FROM_ALL\]
-
-\[CONFIGURATIONS configs...\]
-
+[FILE name.cmake]
+[NAMESPACE namespace]
+[PERMISSIONS permissions...]
+[EXPORT_LINK_INTERFACE_LIBRARIES]
+[COMPONENT component]
+[EXCLUDE_FROM_ALL]
+[CONFIGURATIONS configs...]
 )
 
 ```
 
-Installing an export set creates a file at the nominated destination dir with the specified name.cmake file name (it must end in .cmake). If the FILE option is not given, a default file name based on the exportName is used. The generated file will contain CMake commands that define an imported target for each target in the export set. The purpose of this file is for other projects to include it so that they can refer to this project’s targets and have full information about the interface properties and inter-target relationships. With some limitations, the consuming project can then treat the imported targets just like any of its own regular targets. These export files are not usually included directly by projects, they are intended to be used by a config package, which is then found by other projects using the find_package() command (this is covered in more detail in Section 25.7, “Writing A Config Package File” later in this chapter). 【译】安装导出集会在指定的目标目录下创建一个文件，该文件具有指定的name.cmake文件名（它必须以.cmake结尾）。如果未给出FILE选项，则使用基于exportName的默认文件名。生成的文件将包含CMake命令，这些命令为导出集中的每个目标定义一个导入的目标。此文件的目的是让其他项目包含它，以便他们可以引用此项目的目标，并获得有关接口属性和目标间关系的完整信息。在某些限制下，消费项目可以像对待任何自己的常规目标一样对待导入的目标。这些导出文件通常不直接包含在项目中，它们旨在供配置包使用，然后由其他项目使用find_package（）命令找到（这在本章后面的第25.7节“编写配置包文件”中有更详细的介绍）。
+Installing an export set creates a file at the nominated destination dir with the specified name.cmake file name (it must end in .cmake). If the FILE option is not given, a default file name based on the exportName is used. The generated file will contain CMake commands that define an imported target for each target in the export set. The purpose of this file is for other projects to include it so that they can refer to this project’s targets and have full information about the interface properties and inter-target relationships. With some limitations, the consuming project can then treat the imported targets just like any of its own regular targets. These export files are not usually included directly by projects, they are intended to be used by a config package, which is then found by other projects using the find_package() command (this is covered in more detail in Section 25.7, “Writing A Config Package File” later in this chapter). 【译】安装导出集会在指定的目标目录下创建一个文件，该文件具有指定的name.cmake文件名（它必须以.cmake结尾）。如果未给出FILE选项，则使用基于exportName的默认文件名。生成的文件将包含CMake命令，这些命令为导出集中的每个目标定义一个导入的目标。此文件的目的是让其他项目包含它，以便他们可以引用此项目的目标，并获得有关接口属性和目标间关系的完整信息。在某些限制下，消费项目可以像对待任何自己的常规目标一样对待导入的目标。这些导出文件通常不直接包含在项目中，它们旨在供配置包使用，然后由其他项目使用find_package()命令找到（这在本章后面的第25.7节“编写配置包文件”中有更详细的介绍）。
 
 When the NAMESPACE option is given, each target will have namespace prepended to its name when creating its associated imported target. Consider the following example: 【译】当给出NAMESPACE选项时，每个目标在创建其关联的导入目标时，其名称前都会添加命名空间。考虑以下示例：
 
 ```cmake
-
 add_library(myShared SHARED ...)
-
 add_library(BagOfBeans::myShared ALIAS myShared)
-
 install(TARGETS myShared
-
-EXPORT BagOfBeans
-
-DESTINATION \${CMAKE_INSTALL_LIBDIR}
-
+    EXPORT BagOfBeans
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 install(EXPORT BagOfBeans
-
-DESTINATION \${CMAKE_INSTALL_LIBDIR}/cmake/BagOfBeans
-
-NAMESPACE BagOfBeans::
-
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BagOfBeans
+    NAMESPACE BagOfBeans::
 )
 
 ```
 
-The above example follows the advice from Section 16.4, “Recommended Practices” where each regular target also has a namespaced ALIAS associated with it. When installing the export for the non-alias myShared target, the same namespace is used as for the alias target (i.e. BagOfBeans::). This allows projects that consume the exported details to refer to the target in the same way as this project can refer to the alias (BagOfBeans::myShared). Consuming projects can then elect to add this project directly via add_subdirectory() or pull in the export file via find_package(), yet still use the same BagOfBeans::myShared target name regardless of which method was chosen. This important pattern is emerging as a fairly common expectation on projects among the CMake community, so it is in most projects’ interests to try to follow it. 【译】上述示例遵循了第16.4节“推荐做法”的建议，其中每个常规目标也有一个与之关联的命名空间ALIAS。在为非别名myShared目标安装导出时，使用与别名目标相同的命名空间（即BagOfBeans:：）。这允许使用导出详细信息的项目以与此项目引用别名（BagOfBeans:：myShared）相同的方式引用目标。然后，消费项目可以选择通过add_subdirectory（）直接添加此项目，或通过find_package（）拉入导出文件，但无论选择哪种方法，仍然使用相同的BagOfBeans:：myShared目标名称。这一重要模式正成为CMake社区对项目的一种相当普遍的期望，因此尝试遵循它符合大多数项目的利益。
+The above example follows the advice from Section 16.4, “Recommended Practices” where each regular target also has a namespaced ALIAS associated with it. When installing the export for the non-alias myShared target, the same namespace is used as for the alias target (i.e. BagOfBeans::). This allows projects that consume the exported details to refer to the target in the same way as this project can refer to the alias (BagOfBeans::myShared). Consuming projects can then elect to add this project directly via add_subdirectory() or pull in the export file via find_package(), yet still use the same BagOfBeans::myShared target name regardless of which method was chosen. This important pattern is emerging as a fairly common expectation on projects among the CMake community, so it is in most projects’ interests to try to follow it. 【译】上述示例遵循了第16.4节“推荐做法”的建议，其中每个常规目标也有一个与之关联的命名空间ALIAS。在为非别名myShared目标安装导出时，使用与别名目标相同的命名空间（即BagOfBeans:：）。这允许使用导出详细信息的项目以与此项目引用别名（BagOfBeans::myShared）相同的方式引用目标。然后，消费项目可以选择通过add_subdirectory()直接添加此项目，或通过find_package()拉入导出文件，但无论选择哪种方法，仍然使用相同的BagOfBeans::myShared目标名称。这一重要模式正成为CMake社区对项目的一种相当普遍的期望，因此尝试遵循它符合大多数项目的利益。
 
 The name of the export set given after the EXPORT keyword does not have to be related to the NAMESPACE. The namespace is usually closely associated with the project name, but a range of different strategies can be appropriate for the naming of export sets. For example, a project could define multiple export sets with targets that share a single namespace and where the export sets might correspond to logical units that could be installed as a whole. These export sets might each correspond to a single install COMPONENT or they might collect together multiple components. The following demonstrates these cases: 【译】export关键字后给出的导出集名称不必与NAMESPACE相关。名称空间通常与项目名称密切相关，但一系列不同的策略可能适用于导出集的命名。例如，一个项目可以定义多个导出集，这些导出集具有共享单个命名空间的目标，并且这些导出集可能对应于可以作为一个整体安装的逻辑单元。这些导出集可能每个都对应一个安装组件，也可能收集多个组件。以下展示了这些案例：
 
 ```cmake
 
-\# Single component export
-
+# Single component export
 install(TARGETS algo1 EXPORT MyProj_algoFree
-
-DESTINATION ... COMPONENT MyProj_free
-
+    DESTINATION ... COMPONENT MyProj_free
 )
 
 install(EXPORT MyProj_algoFree
-
-DESTINATION ... COMPONENT MyProj_free
-
+    DESTINATION ... COMPONENT MyProj_free
 )
 
-\# Multi component export
-
+# Multi component export
 install(TARGETS algo2 EXPORT MyProj_algoPaid
-
-DESTINATION ... COMPONENT MyProj_licensed_A
-
+    DESTINATION ... COMPONENT MyProj_licensed_A
 )
 
 install(TARGETS algo3 EXPORT MyProj_algoPaid
-
-DESTINATION ... COMPONENT MyProj_licensed_B
-
+    DESTINATION ... COMPONENT MyProj_licensed_B
 )
 
 install(EXPORT MyProj_algoPaid
-
-DESTINATION ... COMPONENT MyProj_licensed_dev
-
+    DESTINATION ... COMPONENT MyProj_licensed_dev
 )
 
 ```
@@ -924,11 +893,11 @@ In the above examples, the export set contains just the algo1 target, which is a
 
 The multi component export case above highlights an important aspect of how export sets and components need to be installed. It is an error to install the export file without also installing the actual targets that the export file points to. Thus, if the user installs the MyProj_licensed_dev component, then the MyProj_licensed_A and MyProj_licensed_B components must also be installed. 【译】上面的多组件导出案例突出了如何安装导出集和组件的一个重要方面。安装导出文件而不安装导出文件指向的实际目标是错误的。因此，如果用户安装了MyProj_licensed_dev组件，则还必须安装MyProj_licensed_A和MyProj-licensed_B组件。
 
-Of the remaining options of the install(EXPORT) command, a number have similar effects as they do for install(TARGETS). The PERMISSIONS, EXCLUDE_FROM_ALL and CONFIGURATIONS options apply to the installed export file rather than the targets themselves, but are otherwise equivalent. The destination used for install(EXPORT) is up to the project, but there are some conventions that may be useful to follow. The motivations for these are tied to the main way the exported files are used as part of config packages, so discussion of this topic is delayed to Section 25.7, “Writing A Config Package File” further below. 【译】在install（EXPORT）命令的其余选项中，有一些与install（TARGETS）的效果相似。PERMISSIONS、EXCLUDE_FROM_ALL和CONFIGURATIONS选项适用于已安装的导出文件，而不是目标本身，但在其他方面是等效的。用于安装的目标（导出）取决于项目，但有一些约定可能很有用。这些动机与导出文件作为配置包的一部分的主要使用方式有关，因此关于此主题的讨论推迟到下文第25.7节“编写配置包文件”。
+Of the remaining options of the install(EXPORT) command, a number have similar effects as they do for install(TARGETS). The PERMISSIONS, EXCLUDE_FROM_ALL and CONFIGURATIONS options apply to the installed export file rather than the targets themselves, but are otherwise equivalent. The destination used for install(EXPORT) is up to the project, but there are some conventions that may be useful to follow. The motivations for these are tied to the main way the exported files are used as part of config packages, so discussion of this topic is delayed to Section 25.7, “Writing A Config Package File” further below. 【译】在install（EXPORT）命令的其余选项中，有一些与install(TARGETS)的效果相似。PERMISSIONS、EXCLUDE_FROM_ALL和CONFIGURATIONS选项适用于已安装的导出文件，而不是目标本身，但在其他方面是等效的。用于安装的目标（导出）取决于项目，但有一些约定可能很有用。这些动机与导出文件作为配置包的一部分的主要使用方式有关，因此关于此主题的讨论推迟到下文第25.7节“编写配置包文件”。
 
 The EXPORT_LINK_INTERFACE_LIBRARIES option is for supporting old pre-3.0 CMake behavior and relates to link interface libraries. It’s use is discouraged and projects are advised to update to at least 3.0 as a minimum CMake version instead.【译】EXPORT_LINK_INTFACE_LIBRARIES选项用于支持旧的3.0之前的CMake行为，并与链接接口库有关。不鼓励使用它，建议项目至少更新到3.0作为CMake的最低版本。
 
-There is a very similar form of the install() command specifically for exporting targets for use with Android ndk-build projects: 【译】install（）命令有一种非常相似的形式，专门用于导出目标以供Android ndk构建项目使用：
+There is a very similar form of the install() command specifically for exporting targets for use with Android ndk-build projects: 【译】install()命令有一种非常相似的形式，专门用于导出目标以供Android ndk构建项目使用：
 
 ```cmake
 
@@ -936,19 +905,19 @@ install(EXPORT_ANDROID_MK exportName
 
 DESTINATION dir
 
-\[FILE name.mk\]
+[FILE name.mk]
 
-\[NAMESPACE namespace\]
+[NAMESPACE namespace]
 
-\[PERMISSIONS permissions...\]
+[PERMISSIONS permissions...]
 
-\[EXPORT_LINK_INTERFACE_LIBRARIES\]
+[EXPORT_LINK_INTERFACE_LIBRARIES]
 
-\[COMPONENT component\]
+[COMPONENT component]
 
-\[EXCLUDE_FROM_ALL\]
+[EXCLUDE_FROM_ALL]
 
-\[CONFIGURATIONS configs...\]
+[CONFIGURATIONS configs...]
 
 )
 
@@ -962,9 +931,9 @@ In some situations, it may be desirable to have an export file without actually 
 
 export(EXPORT exportName
 
-\[NAMESPACE namespace\]
+[NAMESPACE namespace]
 
-\[FILE fileName\]
+[FILE fileName]
 
 )
 
@@ -978,21 +947,21 @@ In contrast to targets, installing individual files and directories is less comp
 
 ```cmake
 
-install(\<FILES \| PROGRAMS\> files...
+install(<FILES | PROGRAMS> files...
 
 DESTINATION dir
 
-\[RENAME newName\]
+[RENAME newName]
 
-\[PERMISSIONS permissions...\]
+[PERMISSIONS permissions...]
 
-\[COMPONENT component\]
+[COMPONENT component]
 
-\[EXCLUDE_FROM_ALL\]
+[EXCLUDE_FROM_ALL]
 
-\[OPTIONAL\]
+[OPTIONAL]
 
-\[CONFIGURATIONS configs...\]
+[CONFIGURATIONS configs...]
 
 )
 
@@ -1000,15 +969,15 @@ DESTINATION dir
 
 Most of the options are already familiar and have the same meaning as they do for install(TARGETS). The only difference between install(FILES) and install(PROGRAMS) is that the latter adds execute permissions by default if PERMISSIONS is not given. This is intended for installing things like shell scripts which need to be executable, but are not CMake targets. The RENAME option can only be given if files is a single file. It allows that file to be given a different name when installed. 【译】大多数选项已经很熟悉了，并且与安装（TARGETS）的含义相同。install（FILES）和install（PROGRAMS）之间的唯一区别是，如果未给出permissions，后者默认会添加执行权限。这是为了安装需要可执行但不是CMake目标的shell脚本等。只有当文件是单个文件时，才能给出RENAME选项。它允许在安装时为该文件命名。
 
-In some situations, a project may want to install the binaries associated with an imported target, but the install(TARGETS) form does not allow imported targets to be installed directly. One way around this is to install the file(s) associated with the imported target as ordinary files. All of the usage requirements associated with the target won’t be preserved, but it does at least allow the binaries to be installed. The \$\<TARGET_FILE:…\> generator expression and others like it are particularly useful when employing this technique. A disadvantage of doing this is that it puts the onus back on the project to handle all the platform differences, which is particularly problematic for imported library targets. 【译】在某些情况下，项目可能希望安装与导入的目标关联的二进制文件，但安装（TARGETS）表单不允许直接安装导入的目标。一种解决方法是将与导入目标关联的文件作为普通文件安装。与目标相关的所有使用要求都不会被保留，但它至少允许安装二进制文件。使用此技术时，\$\<TARGET_FILE:…\>生成器表达式和其他类似表达式特别有用。这样做的缺点是，它将处理所有平台差异的责任重新放在了项目上，这对导入的库目标来说尤其成问题。
+In some situations, a project may want to install the binaries associated with an imported target, but the install(TARGETS) form does not allow imported targets to be installed directly. One way around this is to install the file(s) associated with the imported target as ordinary files. All of the usage requirements associated with the target won’t be preserved, but it does at least allow the binaries to be installed. The $<TARGET_FILE:…> generator expression and others like it are particularly useful when employing this technique. A disadvantage of doing this is that it puts the onus back on the project to handle all the platform differences, which is particularly problematic for imported library targets. 【译】在某些情况下，项目可能希望安装与导入的目标关联的二进制文件，但安装（TARGETS）表单不允许直接安装导入的目标。一种解决方法是将与导入目标关联的文件作为普通文件安装。与目标相关的所有使用要求都不会被保留，但它至少允许安装二进制文件。使用此技术时，$<TARGET_FILE:…>生成器表达式和其他类似表达式特别有用。这样做的缺点是，它将处理所有平台差异的责任重新放在了项目上，这对导入的库目标来说尤其成问题。
 
 ```cmake
 
-\# Assume myImportedExe is an imported target for an executable not built by this project
+# Assume myImportedExe is an imported target for an executable not built by this project
 
-install(PROGRAMS \$\<TARGET_FILE:myImportedExe\>
+install(PROGRAMS $<TARGET_FILE:myImportedExe>
 
-DESTINATION \${CMAKE_INSTALL_BINDIR}
+DESTINATION ${CMAKE_INSTALL_BINDIR}
 
 )
 
@@ -1022,29 +991,29 @@ install(DIRECTORY dirs...
 
 DESTINATION dir
 
-\[FILE_PERMISSIONS permissions... \| USE_SOURCE_PERMISSIONS\]
+[FILE_PERMISSIONS permissions... | USE_SOURCE_PERMISSIONS]
 
-\[DIRECTORY_PERMISSIONS permissions...\]
+[DIRECTORY_PERMISSIONS permissions...]
 
-\[COMPONENT component\]
+[COMPONENT component]
 
-\[EXCLUDE_FROM_ALL\]
+[EXCLUDE_FROM_ALL]
 
-\[OPTIONAL\]
+[OPTIONAL]
 
-\[CONFIGURATIONS configs...\]
+[CONFIGURATIONS configs...]
 
-\[MESSAGE_NEVER\]
+[MESSAGE_NEVER]
 
-\[FILES_MATCHING\]
+[FILES_MATCHING]
 
-\# The following block can be repeated as many times as needed
+# The following block can be repeated as many times as needed
 
-\[ \[PATTERN pattern \| REGEX regex\]
+[ [PATTERN pattern | REGEX regex]
 
-\[EXCLUDE\]
+[EXCLUDE]
 
-\[PERMISSIONS permissions...\] \]
+[PERMISSIONS permissions...] ]
 
 )
 
@@ -1056,11 +1025,11 @@ In the absence of any of the optional arguments, for each dirs location the enti
 
 ```cmake
 
-\# Results in somewhere/foo/...
+# Results in somewhere/foo/...
 
 install(DIRECTORY foo DESTINATION somewhere)
 
-\# Results in somewhere/...
+# Results in somewhere/...
 
 install(DIRECTORY foo/ DESTINATION somewhere)
 
@@ -1086,7 +1055,7 @@ DESTINATION include
 
 FILES_MATCHING
 
-PATTERN \*.h
+PATTERN *.h
 
 )
 
@@ -1102,11 +1071,11 @@ DESTINATION samples
 
 FILES_MATCHING
 
-REGEX "example\\.(h\|c\|cpp\|cxx)"
+REGEX "example.(h|c|cpp|cxx)"
 
-PATTERN \*.txt
+PATTERN *.txt
 
-PATTERN \*.sh
+PATTERN *.sh
 
 > PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
 >
@@ -1128,7 +1097,7 @@ DESTINATION doc
 
 FILES_MATCHING
 
-REGEX \\.(DS_Store\|svn) EXCLUDE
+REGEX .(DS_Store|svn) EXCLUDE
 
 )
 
@@ -1142,7 +1111,7 @@ install(DIRECTORY admin_scripts
 
 DESTINATION private
 
-PATTERN \*.sh
+PATTERN *.sh
 
 > PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
 >
@@ -1166,11 +1135,11 @@ There can be situations where simply copying things into the install area isn’
 
 ```cmake
 
-install(SCRIPT fileName \| CODE cmakeCode
+install(SCRIPT fileName | CODE cmakeCode
 
-> \[COMPONENT component\]
+> [COMPONENT component]
 >
-> \[EXCLUDE_FROM_ALL\]
+> [EXCLUDE_FROM_ALL]
 
 )
 
@@ -1182,11 +1151,11 @@ Multiple SCRIPT and/or CODE blocks can be combined in the one command and they w
 
 ```cmake
 
-install(CODE \[\[ message("Starting custom script") \]\]
+install(CODE [[ message("Starting custom script") ]]
 
 > SCRIPT myCustomLogic.cmake
 >
-> CODE \[\[ message("Finished custom script") \]\]
+> CODE [[ message("Finished custom script") ]]
 >
 > COMPONENT MyProj_Runtime
 
@@ -1216,11 +1185,11 @@ include(GNUInstallDirs)
 
 if(WIN32)
 
-set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION \${CMAKE_INSTALL_BINDIR})
+set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 else()
 
-set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION \${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 endif()
 
@@ -1242,17 +1211,17 @@ include(GNUInstallDirs)
 
 if(WIN32)
 
-install(FILES \${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
 
-DESTINATION \${CMAKE_INSTALL_BINDIR}
+DESTINATION ${CMAKE_INSTALL_BINDIR}
 
 )
 
 else()
 
-install(FILES \${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
 
-DESTINATION \${CMAKE_INSTALL_LIBDIR}
+DESTINATION ${CMAKE_INSTALL_LIBDIR}
 
 )
 
@@ -1270,33 +1239,33 @@ Another pair of modules can also be used to install a project’s run time depen
 
 The preferred way for an installed project to make itself available for other CMake projects to consume is to provide a config package file. This file is found by consuming projects using the find_package() command, as introduced back in Section 23.5, “Finding Packages”. The name of the config file must match one of two forms: 【译】一个已安装的项目使其可供其他CMake项目使用的首选方式是提供一个配置包文件。此文件是通过使用find_package（）命令消费项目来找到的，如第23.5节“查找包”中所述。配置文件的名称必须与以下两种形式之一匹配：
 
-• \<packageName\>Config.cmake
+• <packageName>Config.cmake
 
-• \<lowercasePackageName\>-config.cmake
+• <lowercasePackageName>-config.cmake
 
 The first of the above forms is perhaps a little more common and is consistent with other functionality provided by CMake discussed further below, but both are otherwise equivalent. The file is expected to provide imported targets for all the libraries and executables the installed project wants to make available. The directory into which the config file is installed should be one of the default locations that find_package() will search if the base point of the install is added to the CMAKE_PREFIX_PATH variable. This ensures that the config file will be easy to find. From Section 23.5, “Finding Packages”, the full set of locations that will be searched is: 【译】上述第一种形式可能更常见，与下面进一步讨论的CMake提供的其他功能一致，但两者在其他方面是等效的。该文件预计将为已安装项目希望提供的所有库和可执行文件提供导入目标。如果将安装基点添加到CMAKE_PREFIX_PATH变量中，则安装配置文件的目录应该是find_package（）将搜索的默认位置之一。这确保了配置文件易于查找。根据第23.5节“查找包裹”，将搜索的全套位置是：
 
 ```cmake
 
-\<prefix\>/
+<prefix>/
 
-\<prefix\>/(cmake\|CMake)/
+<prefix>/(cmake|CMake)/
 
-\<prefix\>/\<packageName\>\*/
+<prefix>/<packageName>*/
 
-\<prefix\>/\<packageName\>\*/(cmake\|CMake)/
+<prefix>/<packageName>*/(cmake|CMake)/
 
-\<prefix\>/(lib/\<arch\>\|lib\*\|share)/cmake/\<packageName\>\*/
+<prefix>/(lib/<arch>|lib*|share)/cmake/<packageName>*/
 
-\<prefix\>/(lib/\<arch\>\|lib\*\|share)/\<packageName\>\*/
+<prefix>/(lib/<arch>|lib*|share)/<packageName>*/
 
-\<prefix\>/(lib/\<arch\>\|lib\*\|share)/\<packageName\>\*/(cmake\|CMake)/
+<prefix>/(lib/<arch>|lib*|share)/<packageName>*/(cmake|CMake)/
 
-\<prefix\>/\<packageName\>\*/(lib/\<arch\>\|lib\*\|share)/cmake/\<packageName\>\*/
+<prefix>/<packageName>*/(lib/<arch>|lib*|share)/cmake/<packageName>*/
 
-\<prefix\>/\<packageName\>\*/(lib/\<arch\>\|lib\*\|share)/\<packageName\>\*/
+<prefix>/<packageName>*/(lib/<arch>|lib*|share)/<packageName>*/
 
-\<prefix\>/\<packageName\>\*/(lib/\<arch\>\|lib\*\|share)/\<packageName\>\*/(cmake\|CMake)/
+<prefix>/<packageName>*/(lib/<arch>|lib*|share)/<packageName>*/(cmake|CMake)/
 
 ```
 
@@ -1306,21 +1275,21 @@ On Apple platforms, the following subdirectories may also be searched:
 
 ```cmake
 
-\<prefix\>/\<packageName\>.framework/Resources/
+<prefix>/<packageName>.framework/Resources/
 
-\<prefix\>/\<packageName\>.framework/Resources/CMake/
+<prefix>/<packageName>.framework/Resources/CMake/
 
-\<prefix\>/\<packageName\>.framework/Versions/\*/Resources/
+<prefix>/<packageName>.framework/Versions/*/Resources/
 
-\<prefix\>/\<packageName\>.framework/Versions/\*/Resources/CMake/
+<prefix>/<packageName>.framework/Versions/*/Resources/CMake/
 
-\<prefix\>/\<packageName\>.app/Contents/Resources/
+<prefix>/<packageName>.app/Contents/Resources/
 
-\<prefix\>/\<packageName\>.app/Contents/Resources/CMake/
+<prefix>/<packageName>.app/Contents/Resources/CMake/
 
 ```
 
-Clearly that’s a large set of candidates, but the best choice depends somewhat on how the project expects to be installed. When packaging for inclusion in a Linux distribution, the distribution itself may have policies for where such files are expected to be. Rather than forcing each distribution to carry its own patches to the project to ensure the config file is installed according to its policies,projects should ideally provide a way to pass the required details into the build. A cache variable is ideal for this purpose, since the project can specify a default, but it can be overridden without having to change the project at all. In the absence of any other constraints, two very simple and commonly used locations are \<prefix\>/cmake and \<prefix\>/lib/cmake/\<packageName\>, with variations on the latter being a little friendlier to multi-architecture deployments (see examples below). 【译】显然，这是一个很大的候选集，但最佳选择在一定程度上取决于项目的预期安装方式。在打包以包含在Linux发行版中时，发行版本身可能有关于此类文件预期位置的策略。与其强制每个发行版将自己的补丁携带到项目中以确保配置文件按照其策略安装，项目最好提供一种将所需详细信息传递到构建中的方法。缓存变量是实现此目的的理想选择，因为项目可以指定默认值，但可以覆盖它，而无需更改项目。在没有任何其他约束的情况下，两个非常简单且常用的位置是\<prefix\>/cmake和\<prefix\>/lib/cmake/\<packageName\>，后者的变体对多架构部署更友好（见下面的示例）。
+Clearly that’s a large set of candidates, but the best choice depends somewhat on how the project expects to be installed. When packaging for inclusion in a Linux distribution, the distribution itself may have policies for where such files are expected to be. Rather than forcing each distribution to carry its own patches to the project to ensure the config file is installed according to its policies,projects should ideally provide a way to pass the required details into the build. A cache variable is ideal for this purpose, since the project can specify a default, but it can be overridden without having to change the project at all. In the absence of any other constraints, two very simple and commonly used locations are <prefix>/cmake and <prefix>/lib/cmake/<packageName>, with variations on the latter being a little friendlier to multi-architecture deployments (see examples below). 【译】显然，这是一个很大的候选集，但最佳选择在一定程度上取决于项目的预期安装方式。在打包以包含在Linux发行版中时，发行版本身可能有关于此类文件预期位置的策略。与其强制每个发行版将自己的补丁携带到项目中以确保配置文件按照其策略安装，项目最好提供一种将所需详细信息传递到构建中的方法。缓存变量是实现此目的的理想选择，因为项目可以指定默认值，但可以覆盖它，而无需更改项目。在没有任何其他约束的情况下，两个非常简单且常用的位置是<prefix>/cmake和<prefix>/lib/cmake/<packageName>，后者的变体对多架构部署更友好（见下面的示例）。
 
 For projects that provide an Android.mk file from an install(EXPORT_ANDROID_MK) command, CMake has no specific convention for its location. A reasonable arrangement would be to use a dedicated ndk-build directory within the package layout, but it is ultimately up to the project.
 
@@ -1336,7 +1305,7 @@ include(GNUInstallDirs)
 
 install(EXPORT myProj
 
-DESTINATION \${CMAKE_INSTALL_LIBDIR}/cmake/MyProj
+DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/MyProj
 
 NAMESPACE MyProj::
 
@@ -1350,31 +1319,31 @@ Note how the destination uses the CMAKE_INSTALL_LIBDIR cache variable defined by
 
 In practice, the config file is not normally directly generated like this. More often, a separate config file is prepared which brings in exported files via include() commands. A slightly expanded example using two export sets demonstrates the technique: 【译】在实践中，配置文件通常不会像这样直接生成。更常见的是，会准备一个单独的配置文件，通过include（）命令引入导出的文件。使用两个导出集的稍微扩展的示例演示了该技术：
 
-\#-------#*MyProjConfig.cmake*
+#-------#*MyProjConfig.cmake*
 
 ```cmake
 
-include("\${CMAKE_CURRENT_LIST_DIR}/MyProj_Runtime.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/MyProj_Runtime.cmake")
 
-include("\${CMAKE_CURRENT_LIST_DIR}/MyProj_Development.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/MyProj_Development.cmake")
 
 ```
 
-\#--------#*CMakeLists.txt*
+#--------#*CMakeLists.txt*
 
 ```cmake
 
-\# Define targets, etc...
+# Define targets, etc...
 
-\# Create two separate export sets installed to the same place
+# Create two separate export sets installed to the same place
 
-\# and a manually written config file that will include them
+# and a manually written config file that will include them
 
 include(GNUInstallDirs)
 
 install(EXPORT MyProj_Runtime
 
-DESTINATION \${CMAKE_INSTALL_LIBDIR}/cmake/MyProj
+DESTINATION  ${CMAKE_INSTALL_LIBDIR}/cmake/MyProj
 
 NAMESPACE MyProj::
 
@@ -1386,7 +1355,7 @@ COMPONENT MyProj_Runtime
 
 install(EXPORT MyProj_Development
 
-DESTINATION \${CMAKE_INSTALL_LIBDIR}/cmake/MyProj
+DESTINATION  ${CMAKE_INSTALL_LIBDIR}/cmake/MyProj
 
 NAMESPACE MyProj::
 
@@ -1398,7 +1367,7 @@ COMPONENT MyProj_Development
 
 install(FILES MyProjConfig.cmake
 
-DESTINATION \${CMAKE_INSTALL_LIBDIR}/cmake/MyProj
+DESTINATION  ${CMAKE_INSTALL_LIBDIR}/cmake/MyProj
 
 )
 
@@ -1414,9 +1383,9 @@ include(CMakeFindDependencyMacro)
 
 find_dependency(BagOfBeans)
 
-include("\${CMAKE_CURRENT_LIST_DIR}/MyProj_Runtime.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/MyProj_Runtime.cmake")
 
-include("\${CMAKE_CURRENT_LIST_DIR}/MyProj_Development.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/MyProj_Development.cmake")
 
 ```
 
