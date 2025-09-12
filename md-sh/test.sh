@@ -1,7 +1,10 @@
 #!/bin/bash
-echo "0=$0"
+echo "param 0=$0"
 echo "dirname=$(dirname "$0")"
 
+readonly base_name="$(basename "$0")"
+echo "base_name= $base_name..."
+# --------------
 BASE_PATH=$(cd "$(dirname "$0")"; pwd)
 echo $BASE_PATH
 
