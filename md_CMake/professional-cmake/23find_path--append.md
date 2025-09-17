@@ -228,3 +228,4 @@ FIND_PACKAGE_HANDLE_STANDARD_ARGS(ZLIB REQUIRED_VARS ZLIB_LIBRARY ZLIB_INCLUDE_D
 - **你通过 `-DZLIB_INCLUDE_DIR` 手动指定了头文件路径**，`findZlib.cmake` 中的 `find_path` 因目标变量已存在而跳过自动搜索；
 - 这不是 CMake 的“问题”，而是“用户手动指定路径优先于自动搜索”的设计逻辑；
 - 若想触发自动搜索，删除 `-DZLIB_INCLUDE_DIR` 参数即可（`ZLIB_ROOT` 会引导 CMake 优先搜索正确路径）。
+==================================================

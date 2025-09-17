@@ -346,10 +346,10 @@ find_package(SomeLib REQUIRED)
 
 =======================================================
 
-# 3.CMAKE_PREFIX_PATH是 find_package 用于搜索SomeLibConfig.cmake，而CMAKE_MODULE_PATH是 find_package 用于搜索SomeLib.cmake？
+# 3.CMAKE_PREFIX_PATH是 find_package 用于搜索SomeLibConfig.cmake，而CMAKE_MODULE_PATH是 find_package 用于搜索FindSomeLib.cmake？
 
 你的理解基本正确，但需要更精确地区分两者的职责和搜索逻辑。以下是详细对比：
-
+ 
 ---
 
 ### **1. `CMAKE_PREFIX_PATH`**

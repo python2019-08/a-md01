@@ -14,7 +14,7 @@ First, they’re incredibly **exciting**: whether it’s characters exploring hi
 首先，它们令人难以置信地激动人心：无论是人物探索隐藏的寺庙，在波涛汹涌的大海中航行，还是解开古老的谜团，紧张、不可预测的情节都让我感到紧张，让每一章都感觉像是一种新的刺激。
 
 Second, they’re deeply **interesting** because they spark my **imagination**. Adventure stories often take place in vivid, unknown worlds (like a magical jungle or a distant planet) or follow unique quests, which let me “escape” the ordinary and picture myself in those extraordinary scenarios.  
-其次，它们非常有趣，因为它们激发了我的想象力。冒险故事通常发生在生动、未知的世界（如魔法丛林或遥远的星球），或者遵循独特的任务，这让我“逃离”了平凡，想象自己处于那些非同寻常的场景中。  
+其次，它们非常有趣，因为它们 激发(spark/stimulate)  了我的想象力。冒险故事通常发生在生动、未知的世界（如魔法丛林或遥远的星球），或者遵循独特的任务，这让我“逃离”了平凡，想象自己处于那些非同寻常的场景中。  
 
 Most importantly, they let me “gain” new **experiences** indirectly. Through the characters’ journeys—overcoming fears, working with friends, or discovering new things—I feel like I’m learning about courage, resilience, and the world in a fun, engaging way. All these reasons make adventure stories one of my favorite genres.
 最重要的是，它们让我间接地“获得”了新的**体验**。通过角色的旅程——克服恐惧、与朋友合作或发现新事物——我觉得我正在以一种有趣、引人入胜的方式学习勇气、韧性和世界。所有这些原因使冒险故事成为我最喜欢的类型之一。
@@ -27,11 +27,21 @@ Most importantly, they let me “gain” new **experiences** indirectly. Through
 > alive
 > attractive
 
-People go on adventures primarily because they grow **tired of** the unchanging rhythm of **day-to-day life**. Most days follow a predictable loop: waking up at the same time, commuting to work or school, finishing routine tasks, and returning home—this repetition can gradually make life feel flat and uninspiring. Adventures, by contrast, shatter this monotony: a weekend hike in an undiscovered forest, a road trip to a small coastal town, or even trying a new extreme activity like rock climbing introduces novelty that rekindles enthusiasm, offering a break from the “same old” routine.  
-人们冒险主要是因为他们厌倦了日常生活中一成不变的节奏。大多数日子都遵循一个可预测的循环：在同一时间醒来，上下班或上学，完成日常任务，然后回家——这种重复会逐渐让生活变得平淡乏味。相比之下，冒险打破了这种单调：周末在一片未被发现的森林徒步旅行，去一个沿海小镇的公路旅行，甚至尝试攀岩等新的极限活动，都会带来新奇感，重新点燃热情，让人从“旧日”的例行公事中解脱出来。  
+People go on adventures primarily because they grow **tired of** the unchanging rhythm of **day-to-day life**. 
+Most days follow a predictable loop: waking up at the same time, commuting to work or school, finishing routine tasks, and returning home—this repetition can gradually make life feel flat and uninspiring. 
+Adventures, by contrast, shatter this monotony: a weekend hike in an undiscovered forest, a road trip to a small coastal town, or even trying a new extreme activity like rock climbing introduces novelty that rekindles enthusiasm, offering a break from the “same old” routine.  
+人们冒险主要是因为他们厌倦了日常生活中一成不变的节奏。
+大多数日子都遵循一个可预测的循环：在同一时间醒来，上下班或上学，完成日常任务，然后回家——这种重复会逐渐让生活变得平淡乏味。
+相比之下，冒险打破了这种单调：周末在一片未被发现的森林徒步旅行，去一个沿海小镇的公路旅行，甚至尝试攀岩等新的极限活动，都会带来新奇感，重新点燃热情，让人从“旧日”的例行公事中解脱出来。  
 
-Another core reason is that people **seek** to feel genuinely **alive**. Adventures push individuals beyond their comfort zones: navigating a tricky trail, adapting to unexpected weather during a camping trip, or communicating with locals in a foreign language forces them to stay present and engaged. Overcoming these small challenges sparks intense emotions—excitement, pride, and a sharp sense of being “in the moment”—that routine life rarely provides. This intensity makes people feel more connected to their own capabilities and the world, awakening a vividness that feels far more real than daily chores. 
-另一个核心原因是人们**寻求**真正**活着**。冒险会让人超越自己的舒适区：在一条棘手的小径上航行，在露营旅行中适应意外的天气，或者用外语与当地人交流，都会迫使他们保持专注和参与。克服这些小挑战会引发强烈的情绪——兴奋、自豪和“当下”的敏锐感——这是日常生活很少提供的。这种强度使人们感到与自己的能力和世界更加紧密相连，唤醒了一种比日常琐事更真实的生动感。  
+Another core reason is that people **seek** to feel genuinely **alive**. 
+Adventures push individuals beyond their comfort zones: navigating a tricky trail, adapting to unexpected weather during a camping trip, or communicating with locals in a foreign language forces them to stay present and engaged. 
+Overcoming these small challenges sparks intense emotions—excitement, pride, and a sharp sense of being “in the moment”—that routine life rarely provides. 
+This intensity makes people feel more connected to their own capabilities and the world, awakening a vividness that feels far more real than daily chores. 
+另一个核心原因是人们**寻求**真正（Truly）**活着**。
+冒险会让人超越自己的舒适区：在一条棘手的小径上航行，在露营旅行中适应意外的天气，或者用外语与当地人交流，都会迫使他们保持专注和参与。
+克服这些小挑战会引发强烈的情绪——兴奋、自豪和“当下”的敏锐感——这是日常生活很少提供的。
+这种强度使人们感到与自己的能力和世界更加紧密相连，唤醒了一种比日常琐事更真实的生动感。  
 
 Moreover, the unknown nature of adventures is deeply **attractive**. The chance to discover something new—a hidden waterfall, a community’s unique traditions, or even a new side of oneself—drives people to step out of familiarity. Adventures don’t just create memorable stories; they satisfy curiosity and add depth to life, turning ordinary existence into something richer and more meaningful.
 此外，冒险的未知性质非常吸引人。发现新事物的机会——一个隐藏的瀑布、一个社区独特的传统，甚至是自己的新一面——驱使人们走出熟悉。冒险不仅仅创造难忘的故事；它们满足了好奇心，为生活增添了深度，将平凡的存在变成了更丰富、更有意义的东西。
