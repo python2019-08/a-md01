@@ -407,6 +407,298 @@ make && sudo make install
 1. `file /lib/libz.so` 的输出。  
 2. 你执行 `strip` 的具体目标（如减小体积或隐藏符号）。
 
+=============================================
+# 4.1 osgearth_map 这个exe 太大，如何strip  
+
+是的，**`strip` 命令可以显著减小 `osgearth_map` 可执行文件的大小**，特别是对于包含大量调试信息的静态链接程序。
+
+---
+
+## **效果预估**
+
+根据您的 `osgearth_map` 文件大小（433MB），使用 `strip` 后：
+
+| 文件类型 | 预估大小 | 减少比例 |
+|---------|---------|---------|
+| 原始文件（含调试信息） | 433 MB | - |
+| **strip 后** | **80-120 MB** | **减少 70-80%** |
+
+---
+
+## **操作方法**
+
+### **1. 基本 strip（推荐）**
+```bash
+# 保留基本符号（仍可调试）
+strip --strip-debug osgearth_map
+
+# 或更激进的strip（完全移除调试信息）
+strip --strip-all osgearth_map
+```
+
+### **2. 备份后处理**
+```bash
+# 先备份原始文件
+cp osgearth_map osgearth_map.debug
+
+# 执行strip
+strip --strip-all osgearth_map
+
+# 验证结果
+ls -lh osgearth_map*
+```
+
+### **3. 使用CMake自动处理**
+在CMakeLists.txt中添加：
+```cmake
+# Release构建时自动strip
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_custom_command(TARGET osgearth_map POST_BUILD
+        COMMAND ${CMAKE_STRIP} --strip-all $<TARGET_FILE:osgearth_map>
+        COMMENT "Stripping debug symbols from osgearth_map"
+    )
+endif()
+```
+
+---
+
+## **不同strip选项对比**
+
+| 选项 | 作用 | 文件大小 | 是否可调试 |
+|------|------|---------|-----------|
+| **无strip** | 保留所有符号 | 433 MB | ✅ 完整调试 |
+| `--strip-debug` | 移除调试符号 | 100-150 MB | ⚠️ 有限调试 |
+| `--strip-all` | 移除所有符号 | 80-120 MB | ❌ 不可调试 |
+| `--strip-unneeded` | 移除重定位符号 | 120-180 MB | ⚠️ 有限调试 |
+
+---
+
+## **验证strip效果**
+
+### **1. 检查文件信息**
+```bash
+# strip前
+file osgearth_map.debug
+# 输出：with debug_info, not stripped
+
+# strip后  
+file osgearth_map
+# 输出：stripped
+```
+
+### **2. 查看符号表**
+```bash
+# strip前
+nm osgearth_map.debug | wc -l  # 可能数百万个符号
+
+# strip后
+nm osgearth_map | wc -l  # 只剩少量必要符号
+```
+
+### **3. 检查文件大小**
+```bash
+du -h osgearth_map*
+```
+
+---
+
+## **高级处理技巧**
+
+### **1. 分离调试信息（推荐）**
+```bash
+# 提取调试信息到单独文件
+objcopy --only-keep-debug osgearth_map osgearth_map.debug
+
+# 移除主文件调试信息
+objcopy --strip-debug osgearth_map
+
+# 需要调试时重新关联
+objcopy --add-gnu-debuglink=osgearth_map.debug osgearth_map
+```
+
+### **2. 使用UPX进一步压缩**
+```bash
+# 安装UPX
+sudo apt install upx
+
+# 压缩strip后的文件
+upx --best osgearth_map
+
+# 查看压缩效果
+ls -lh osgearth_map
+```
+
+---
+
+## **生产环境建议**
+
+### **开发阶段**
+```bash
+# 保留调试版本
+cp build/osgearth_map install/debug/
+
+# 部署时使用strip版本  
+strip --strip-all build/osgearth_map
+cp build/osgearth_map install/release/
+```
+
+### **自动化脚本**
+```bash
+#!/bin/bash
+# strip_and_deploy.sh
+
+# strip可执行文件
+strip --strip-all build/osgearth_map
+
+# 检查大小
+echo "文件大小: $(du -h build/osgearth_map | cut -f1)"
+
+# 部署到目标位置
+cp build/osgearth_map /opt/osgearth/bin/
+```
+
+---
+
+## **注意事项**
+
+1. **strip不可逆**：操作前务必备份原始文件
+2. **调试需求**：如果还需要调试，使用 `--strip-debug` 而非 `--strip-all`
+3. **动态库**：如果使用了动态库，也需要对它们进行strip
+4. **性能影响**：strip不会影响运行时性能，只是移除调试信息
+
+---
+
+## **总结**
+
+对于您的 433MB `osgearth_map` 文件：
+- **使用 `strip --strip-all`**：可减小到 ≈100MB（减少75%+）
+- **使用 `strip --strip-debug`**：可减小到 ≈150MB（减少65%+）
+
+**推荐命令**：
+```bash
+strip --strip-all osgearth_map
+```
+
+这样既能显著减小部署体积，又不会影响程序运行功能。
+
+==============================================
+# 4.2 strip --strip-all ；upx --best osgearth_map
+
+从文件信息可以看出：
+
+### **关键数据对比**
+| 文件               | 大小       | 处理方式          | 优化效果       |
+|--------------------|-----------|------------------|--------------|
+| `osgearth_map-raw` | 461MB     | 原始未处理         | -            |
+| `osgearth_map`     | 83.3MB    | 已优化（可能是strip） | 减少 **82%** |
+
+---
+
+### **优化建议**
+
+#### **1. 确认是否已strip**
+```bash
+# 检查文件类型
+file osgearth_map
+
+# 预期输出（如果是strip过的）：
+# osgearth_map: ELF 64-bit LSB executable, stripped
+```
+
+#### **2. 进一步优化（如果未完全strip）**
+```bash
+# 完全移除所有符号（不可逆）
+strip --strip-all osgearth_map-raw -o osgearth_map-stripped
+
+# 检查效果
+ls -lh osgearth_map*
+```
+
+#### **3. 使用UPX压缩（额外减积）**
+```bash
+# 安装UPX
+sudo apt install upx
+
+# 压缩（保持可执行性）
+upx --best osgearth_map
+
+# 检查结果
+ls -lh osgearth_map
+```
+**效果预估**：83MB → 可能压缩到 **30-50MB**
+
+---
+
+### **生产环境推荐方案**
+```bash
+# 完整优化流程
+cp osgearth_map-raw osgearth_map
+strip --strip-all osgearth_map      # 移除调试符号
+upx --best osgearth_map            # 二进制压缩
+
+# 验证
+file osgearth_map                   # 应显示 "stripped" 和 "UPX compressed"
+```
+
+---
+
+### **技术说明**
+1. **strip作用**：
+   - 移除 `.debug_*` 段（调试符号）
+   - 移除 `.comment` 等非必要段
+2. **UPX原理**：
+   - 无损压缩可执行文件
+   - 运行时自动解压（不影响功能）
+
+---
+
+### **自动化脚本示例**
+```bash
+#!/bin/bash
+# deploy_optimize.sh
+
+INPUT="osgearth_map-raw"
+OUTPUT="osgearth_map"
+
+# 1. Strip
+strip --strip-all $INPUT -o $OUTPUT
+
+# 2. Compress (optional)
+upx --best $OUTPUT
+
+# 3. Verify
+ls -lh $OUTPUT
+file $OUTPUT
+```
+
+---
+
+### **注意事项**
+1. **备份原始文件**：
+   ```bash
+   cp osgearth_map-raw osgearth_map.backup
+   ```
+2. **调试需求**：
+   - 如果需要调试，保留 `osgearth_map-raw`
+   - 或使用 `objcopy` 分离调试符号：
+     ```bash
+     objcopy --only-keep-debug osgearth_map-raw osgearth_map.debug
+     ```
+3. **兼容性**：
+   - UPX压缩文件在几乎所有Linux发行版均可运行
+   - 某些安全环境可能禁止UPX文件（需测试）
+
+---
+
+### **总结**
+- **当前优化**：`osgearth_map` 已从461MB → 83MB（效果显著）  
+- **进一步优化**：使用 `upx` 可再减少到 ≈50MB  
+- **推荐命令**：
+  ```bash
+  strip --strip-all osgearth_map-raw -o osgearth_map
+  upx --best osgearth_map
+  ```
+
 ==============================================
 # 5. xx_LINKER_FLAGS优先级规则​​
 

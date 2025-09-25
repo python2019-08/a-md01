@@ -385,3 +385,134 @@ C++标准并未强制要求`std::thread`的所有方法必须是线程安全的�
 | `hardware_concurrency()` | ✅ 线程安全 | 静态方法，返回系统支持的并发线程数，不涉及特定线程对象                  |
 
 **核心原则**：对同一线程对象的状态修改操作必须同步，避免多线程并发调用。
+
+======================================
+# 4. std::call_once
+
+`std::call_once` 是 C++11 标准库 `<mutex>` 头文件中提供的一个线程安全的一次性调用机制，用于确保某个函数（或可调用对象）在多线程环境下 **仅执行一次**，即使多个线程同时尝试调用它。
+
+---
+
+## **基本用法**
+```cpp
+#include <mutex>
+#include <iostream>
+
+std::once_flag flag;  // 用于同步的 once_flag 对象
+
+void initialize() {
+    std::cout << "Initialized only once!" << std::endl;
+}
+
+int main() {
+    // 多个线程调用 call_once，但 initialize() 只会执行一次
+    std::call_once(flag, initialize);
+    std::call_once(flag, initialize);
+    return 0;
+}
+```
+**输出**：
+```
+Initialized only once
+```
+即使多次调用 `std::call_once`，`initialize()` 也只会执行一次。
+
+---
+
+## **核心特性**
+1. **线程安全**  
+   - 内部通过锁或原子操作保证线程安全，无需手动同步。
+   - 适合用于 **懒汉式单例模式**、**全局初始化** 等场景。
+
+2. **与 `std::once_flag` 配合使用**  
+   - `std::once_flag` 是一个轻量级对象，用于标记是否已执行过。
+   - **必须全局或长期存在**，不能是临时变量（否则无法保证唯一性）。
+
+3. **异常处理**  
+   - 如果被调用的函数抛出异常，`std::call_once` 会标记为“未执行”，允许其他线程再次尝试。
+
+---
+
+## **典型应用场景**
+### **1. 懒汉式单例模式（线程安全版）**
+```cpp
+class Singleton {
+public:
+    static Singleton& getInstance() {
+        static std::once_flag initFlag;
+        std::call_once(initFlag,  {
+            instance.reset(new Singleton());
+        });
+        return *instance;
+    }
+
+private:
+    Singleton() = default;
+    static std::unique_ptr<Singleton> instance;
+};
+
+std::unique_ptr<Singleton> Singleton::instance;
+```
+
+### **2. 全局资源初始化**
+```cpp
+std::shared_ptr<Resource> globalResource;
+std::once_flag resourceFlag;
+
+void initResource() {
+    globalResource = std::make_shared<Resource>();
+}
+
+void useResource() {
+    std::call_once(resourceFlag, initResource);
+    globalResource->doSomething();
+}
+```
+
+### **3. 替代静态局部变量的线程安全初始化**
+C++11 已保证 **函数内的静态局部变量初始化是线程安全的**，但 `std::call_once` 更灵活：
+```cpp
+// C++11 静态局部变量（隐式线程安全）
+void foo() {
+    static auto obj = std::make_shared<MyClass>();  // 自动线程安全
+}
+
+// 显式使用 call_once（可控性更强）
+void bar() {
+    static std::once_flag flag;
+    std::call_once(flag,  {
+        auto obj = std::make_shared<MyClass>();
+    });
+}
+```
+
+---
+
+## **与类似机制对比**
+| 机制                | 线程安全 | 适用场景                          | 备注                     |
+|---------------------|----------|-----------------------------------|--------------------------|
+| `std::call_once`    | ✅        | 复杂初始化、单例模式              | 需配合 `std::once_flag`  |
+| 静态局部变量        | ✅        | 简单初始化（C++11 起）            | 代码更简洁               |
+| 双重检查锁定 (DCLP) | ❌（易错）| 旧代码（C++11 前）                | 需要手动管理内存屏障     |
+| `std::mutex` + 标志 | ✅        | 需要自定义逻辑时                  | 代码较冗长               |
+
+---
+
+## **注意事项**
+1. **不要复用 `std::once_flag`**  
+   每个 `std::call_once` 应对应独立的 `std::once_flag`，否则行为未定义。
+
+2. **性能开销**  
+   - 首次调用有同步开销，后续调用无锁（通过原子标记优化）。
+   - 适合低频初始化，不适用于高频调用的热路径。
+
+3. **C++11 及以上支持**  
+   低版本 C++ 需手动实现类似逻辑（如 `pthread_once`）。
+
+---
+
+## **总结**
+- **用途**：确保多线程环境下某段代码只执行一次。
+- **优势**：简单、线程安全、无竞态条件。
+- **适用场景**：单例模式、全局初始化、延迟加载等。
+- **替代方案**：C++11 的静态局部变量（更简洁，但灵活性较低）。
