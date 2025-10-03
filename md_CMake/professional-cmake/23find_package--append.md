@@ -1852,3 +1852,123 @@ cmake -B build \
 - 找**自己写的/系统内置的 `FindXXX.cmake`** → 用 `CMAKE_MODULE_PATH`；  
 - 找**第三方库自带的 `XXXConfig.cmake`** → 用 `CMAKE_PREFIX_PATH`；  
 - 交叉编译时**避免搜主机目录** → 用 `CMAKE_FIND_ROOT_PATH`。
+- CMAKE_FIND_ROOT_PATH_MODE_PACKAGE仅控制 ​​Config 模式​​（ZLIBConfig.cmake）的搜索路径，​​不控制 Find Module 模式​​（FindZLIB.cmake）。
+
+=========================================================
+# 16.CMAKE_FIND_ROOT_PATH_MODE_PACKAGE仅控制 ​​Config 模式​​（ZLIBConfig.cmake）的搜索路径，​​不控制 Find Module 模式​​（FindZLIB.cmake）
+
+## Q
+
+设置了CMAKE_FIND_ROOT_PATH 和 "-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY" ，但是--debug-find后，输出
+
+```
+  find_package considered the following locations for ZLIB's Config module:
+
+    /mnt/disk2/abner/zdev/nv/osgearth0x/build_by_sh/android/install/3rd/zlib/armeabi-v7a/ZLIBConfig.cmake
+    /mnt/disk2/abner/zdev/nv/osgearth0x/build_by_sh/android/install/3rd/zlib/armeabi-v7a/zlib-config.cmake
+    /mnt/disk2/abner/zdev/nv/osgearth0x/build_by_sh/android/install/3rd/zlib/armeabi-v7a/lib/cmake/zlib/ZLIBConfig.cmake
+    /mnt/disk2/abner/zdev/nv/osgearth0x/build_by_sh/android/install/3rd/zlib/armeabi-v7a/lib/cmake/zlib/zlib-config.cmake
+    /mnt/disk2/abner/zdev/nv/osgearth0x/build_by_sh/android/install/3rd/openssl/armeabi-v7a/ZLIBConfig.cmake
+    /mnt/disk2/abner/zdev/nv/osgearth0x/build_by_sh/android/install/3rd/openssl/armeabi-v7a/zlib-config.cmake
+    /home/abner/Android/Sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/ZLIBConfig.cmake
+    /home/abner/Android/Sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/zlib-config.cmake
+
+  The file was not found.
+
+  find_package considered the following paths for FindZLIB.cmake:
+
+    /mnt/disk2/abner/zdev/nv/osgearth0x/3rd/curl/CMake/FindZLIB.cmake
+
+  The file was found at
+
+    /usr/share/cmake-3.31.8/share/cmake-3.31/Modules/FindZLIB.cmake
+```
+从您的 `--debug-find` 输出来看，`find_package(ZLIB)` 的搜索行为与预期不符，尽管设置了 `CMAKE_FIND_ROOT_PATH` 和 `CMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY`，但仍然搜索了系统路径（如 NDK 路径和 `/usr/share/cmake`）。以下是分析和解决方案：
+
+---
+
+### **问题分析**
+1. **Config 模式搜索路径**  
+   CMake 仍然检查了以下路径（包括 NDK 路径）：
+   ```
+   /home/abner/Android/Sdk/ndk/.../ZLIBConfig.cmake
+   ```
+   这表明 `CMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY` 未完全生效。
+
+2. **Find Module 模式**  
+   最终找到了系统路径的 `FindZLIB.cmake`：
+   ```
+   /usr/share/cmake-3.31.8/share/cmake-3.31/Modules/FindZLIB.cmake
+   ```
+   这说明 `CMAKE_FIND_ROOT_PATH_MODE_PACKAGE` 未影响 Find Module 的搜索。
+
+---
+
+### **原因**
+1. **变量作用范围**  
+   `CMAKE_FIND_ROOT_PATH_MODE_PACKAGE` 仅控制 **Config 模式**（`ZLIBConfig.cmake`）的搜索路径，**不控制 Find Module 模式**（`FindZLIB.cmake`）。  
+   Find Module 的搜索由 `CMAKE_MODULE_PATH` 和系统默认路径决定。
+
+2. **变量设置时机**  
+   如果变量是通过命令行 `-D` 传递的，可能因 CMake 缓存或工具链文件加载顺序导致未生效。
+
+---
+
+### **解决方案**
+#### 1. **确保变量正确设置**
+在 **工具链文件**（如 `android.toolchain.cmake`）或 **CMakeLists.txt** 最顶部显式设置：
+```cmake
+set(CMAKE_FIND_ROOT_PATH "/mnt/disk2/abner/zdev/nv/osgearth0x/build_by_sh/android/install/3rd")
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+```
+
+#### 2. **禁止 Find Module 模式**
+强制使用 Config 模式，避免回退到 Find Module：
+```cmake
+find_package(ZLIB CONFIG REQUIRED)
+```
+
+#### 3. **检查变量是否被覆盖**
+在 `find_package` 前打印变量值确认：
+```cmake
+message(STATUS "CMAKE_FIND_ROOT_PATH: ${CMAKE_FIND_ROOT_PATH}")
+message(STATUS "CMAKE_FIND_ROOT_PATH_MODE_PACKAGE: ${CMAKE_FIND_ROOT_PATH_MODE_PACKAGE}")
+```
+
+#### 4. **修正 ZLIB 的安装路径**
+确保 ZLIB 的 `ZLIBConfig.cmake` 安装在 `CMAKE_FIND_ROOT_PATH` 的子路径下，例如：
+```
+/mnt/disk2/abner/.../install/3rd/zlib/armeabi-v7a/lib/cmake/zlib/ZLIBConfig.cmake
+```
+
+#### 5. **清理 CMake 缓存**
+删除 `CMakeCache.txt` 和 `CMakeFiles` 目录后重新配置。
+
+---
+
+### **调试建议**
+1. **检查实际生效的变量值**  
+   在 `find_package` 前添加：
+   ```cmake
+   get_cmake_property(_vars VARIABLES)
+   list(FIND _vars "CMAKE_FIND_ROOT_PATH_MODE_PACKAGE" _index)
+   if(_index GREATER -1)
+     message(STATUS "CMAKE_FIND_ROOT_PATH_MODE_PACKAGE is defined: ${CMAKE_FIND_ROOT_PATH_MODE_PACKAGE}")
+   else()
+     message(WARNING "CMAKE_FIND_ROOT_PATH_MODE_PACKAGE is NOT defined!")
+   endif()
+   ```
+
+2. **验证工具链文件加载顺序**  
+   确保工具链文件在项目配置前加载，且未被后续代码覆盖变量。
+
+---
+
+### **总结**
+- `CMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY` 仅控制 **Config 模式**，对 Find Module 无效。
+- 使用 `CONFIG` 关键字强制限制为 Config 模式。
+- 确保 `ZLIBConfig.cmake` 安装在 `CMAKE_FIND_ROOT_PATH` 的子目录中。
+
+通过以上调整，`find_package` 应能严格限制在指定的根目录路径中搜索。
