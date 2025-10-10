@@ -1,6 +1,6 @@
 Free Talk with Topic I - Lesson 41 Friends
 ========================================================  
-1. why friends are important?
+# 1. why friends are important?
 > Words may be used:
 > lonely
 > share
@@ -20,7 +20,7 @@ Second, friends let us **share** deeply: we can celebrate happy **experiences** 
 Finally, good friends boost our **confidence**: they see our strengths (even when we don’t), encourage us to try new things, and remind us we’re capable when self-doubt hits. In short, friends turn ordinary days brighter and hard days easier.  
 最后，好朋友会增强我们的**信心**：他们看到我们的优势（即使我们没有），鼓励我们尝试新事物，并提醒我们在自我怀疑时有能力。总之，朋友让平凡的日子变得光明，让艰难的日子变得轻松。  
 ========================================================
-2. Do you think it is a bad idea to borrow money from a friend?
+# 2. Do you think it is a bad idea to borrow money from a friend?
 > Words may be used:
 > pay back
 > on time
@@ -33,7 +33,7 @@ Whether borrowing money from a friend is a bad idea depends on how it’s handle
 Worse, it can change the **meaning** of the friendship: interactions might shift from carefree chats to awkward reminders about repayment, eroding the warmth that made the friendship special. While it’s not always bad (e.g., a small, urgent loan with clear plans to repay), it’s risky because money introduces stress that pure friendship doesn’t need. So it’s usually better to explore other options first—like a bank loan—to protect the trust and meaning of your friendship.  
 更糟糕的是，它可能会改变友谊的**意义**：互动可能会从无忧无虑的聊天转变为关于还款的尴尬提醒，侵蚀了使友谊变得特别的温暖。虽然这并不总是坏事（例如，一笔有明确还款计划的小额紧急贷款），但这是有风险的，因为金钱会带来纯粹友谊不需要的压力。因此，通常最好先探索其他选择，比如银行贷款，以保护友谊的信任和意义。  
 ========================================================
-3. what makes a good friend?
+# 3. what makes a good friend?
 > Words may be used:
 > support
 > care
@@ -46,7 +46,7 @@ A good friend stands out through consistent, heartfelt actions that build trust 
 A good friend shows **care** in small, daily ways—remembering your favorite snack, checking in when you’re unwell, or celebrating your tiny wins. They **support** you through highs and lows too: cheering you on at a big event, or sitting with you when you’re sad, no matter what. Most importantly, they **keep a promise**—whether it’s a plan to hang out or a secret you shared, you can count on them to follow through, which builds the trust that makes a friendship last.  
 一个好朋友会以日常的小方式表现出**的关心**——记住你最喜欢的零食，在你不舒服的时候登记，或者庆祝你的小胜利。他们**也支持**你度过高峰和低谷：在大型活动中为你加油，或者在你难过的时候和你坐在一起，不管发生什么。最重要的是，他们**信守承诺**——无论是出去玩的计划还是你分享的秘密，你都可以指望他们坚持到底，这建立了使友谊持久的信任。  
 ========================================================
-4. How should we deal with a fight with a friend?
+# 4. How should we deal with a fight with a friend?
 > Words may be used:
 > calm
 > point of view/perspective
@@ -60,7 +60,7 @@ Dealing with a fight with a friend starts with staying **calm**—don’t let an
 If you realize you’re in the wrong, don’t hesitate to **apologize** sincerely—not just a quick “sorry,” but acknowledging what you did and how it affected them. Even if you disagree, showing you care about their feelings more than “winning” the argument helps mend the rift. The goal isn’t to be right, but to understand each other and protect the friendship.  
 如果你意识到自己错了，不要犹豫，真诚地道歉——不仅仅是快速的“对不起”，还要承认你所做的一切以及它对他们的影响。即使你不同意，表明你关心他们的感受比“赢得”争论更有助于弥合分歧。我们的目标不是正确，而是相互理解，保护友谊。  
 ========================================================
-5. Do you tell your best friend everything?
+# 5. Do you tell your best friend everything?
 > Words may be used:
 > secret
 > private
@@ -76,7 +76,7 @@ True friendship doesn’t require “full disclosure”—it means sharing what�
 Selective Questions:
 (*If all the five questions above have already been finished, you can choose to discuss the following ones.)
 ========================================================
-6. How did you meet your best friend?
+# 6. How did you meet your best friend?
 
 I met my best friend back in middle school, thanks to a small, unexpected mix-up. We were both new to the class that year, and on the first day, our math teacher accidentally assigned us to the same group for a project—we had to work together to solve a set of tricky word problems. At first, we were both a little shy: I was nervous about fitting in, and they kept fumbling with their notebook (later they told me they were just as anxious!).  
 我在中学时遇到了我最好的朋友，多亏了一个意想不到的小误会。那年我们都是新来的，第一天，我们的数学老师不小心把我们分配到同一个小组做一个项目——我们必须一起解决一组棘手的单词问题。起初，我们都有点害羞：我对融入感到紧张，他们一直在摸索笔记本（后来他们告诉我他们也很焦虑！）。  
@@ -84,7 +84,7 @@ I met my best friend back in middle school, thanks to a small, unexpected mix-up
 But as we talked through the problems, we realized we both loved the same silly math jokes and hated the same overly sweet cafeteria cookies. After that project, we started sitting together at lunch, helping each other with homework, and even walking home together sometimes—talking about everything from our favorite cartoons to the small worries we had about school. What started as a teacher’s accidental pairing turned into a friendship that’s lasted years—all because we got a chance to really *talk* and find those little, shared things that make a connection stick.
 但当我们讨论这些问题时，我们意识到我们都喜欢同样愚蠢的数学笑话，也讨厌同样过于甜的自助餐厅饼干。在那个项目之后，我们开始坐在一起吃午饭，互相帮助做作业，有时甚至一起走回家——谈论从我们最喜欢的漫画到我们对学校的小担忧的一切。最初是一位老师的意外配对，后来演变成了一段持续多年的友谊——这一切都是因为我们有机会真正地“交谈”，找到那些能建立联系的小东西。
 ========================================================
-7. Do you consider your parents to be your friends?
+# 7. Do you consider your parents to be your friends?
 Yes, I do consider my parents to be friends—though their role as parents comes first, and our friendship has a warm, unique shape. Unlike my peers, they’ve known me my whole life: they listen to my **worry**s (like stress about school or friendships) without judgment, just like a good friend would, and they celebrate my small wins (like acing a test or trying a new hobby) with genuine joy.  是的，我确实认为我的父母是朋友——尽管他们作为父母的角色是第一位的，我们的友谊是温暖而独特的。与我的同龄人不同，他们一辈子都认识我：他们像好朋友一样，不加评判地倾听我的担忧（比如对学校或友谊的压力），他们以真正的快乐庆祝我的小胜利（比如通过考试或尝试新爱好）。  
 
 
@@ -95,7 +95,7 @@ We also share casual, fun moments—chatting about a silly **movie** we watched 
 Of course, they still guide and discipline me when needed (which a regular friend wouldn’t), but that care only makes our “friendship” deeper. They’re the kind of friends I can always count on, because their love and support are rooted in a lifetime of knowing and caring for me.
 当然，他们仍然会在需要的时候指导和管教我（普通朋友不会这样做），但这种关心只会让我们的“友谊”更加深厚。他们是我永远可以依靠的朋友，因为他们的爱和支持植根于我一生的了解和关心。
 ========================================================
-8. Which one is more important to you, family or friends? why?
+# 8. Which one is more important to you, family or friends? why?
 It’s hard to pick one as “more important” because family and friends fill different, equally vital roles in my life—but if I had to explain their unique value, I’d say they matter in ways that complement each other.  
 很难选择一个“更重要”，因为家人和朋友在我的生活中扮演着不同的、同样重要的角色——但如果我必须解释他们的独特价值，我会说他们的重要性是相辅相成的。  
 
@@ -110,7 +110,7 @@ Friends, though, are my “choice”: I get to pick people who share my passions
 At the end of the day, I don’t see them as competing—family gives me stability, and friends give me growth. Both make my life happier and more complete, so neither is “more important”—they’re just important in different, necessary ways.
 归根结底，我并不认为他们是在竞争——家人给了我稳定，朋友给了我成长。两者都让我的生活更快乐、更完整，所以两者都不“更重要”——它们只是在不同的、必要的方面很重要。
 ========================================================
-9. How do you make new friends?
+# 9. How do you make new friends?
 I make new friends by starting with small, genuine connections—focused on shared moments rather than forcing a bond. First, I look for common ground: if I’m in a new class, I might ask someone about their notes from a lecture (since we’re both there for the same class) or comment on a book they’re reading (if it’s one I know). Shared interests, even small ones, make it easy to start a casual chat without awkwardness.  
 我通过从小的、真正的联系开始结交新朋友——专注于共同的时刻，而不是强迫建立联系。首先，我寻找共同点：如果我在一个新班，我可能会问别人他们在讲座上的笔记（因为我们都在同一节课上），或者对他们正在读的一本书发表评论（如果我知道的话）。共同的兴趣，即使是很小的兴趣，也能让你轻松地开始随意聊天，而不会感到尴尬。  
 
@@ -121,7 +121,7 @@ I also try to be a good listener: when they talk about their hobbies or a recent
 Most importantly, I’m patient: I don’t rush to call someone a “friend” right away. Instead, I let the friendship grow slowly through consistent, kind interactions—remembering small details they mentioned (like their favorite snack) or checking in if they had a big day. Being genuine and not trying to “perform” makes it easier for both of us to feel comfortable, and that’s how new friendships take root.
 最重要的是，我很有耐心：我不会急于马上称某人为“朋友”。相反，我通过持续的、友好的互动让友谊慢慢发展——记住他们提到的小细节（比如他们最喜欢的零食），或者在他们度过重要的一天时登记入住。真诚而不试图“表现”让我们双方都更容易感到舒适，这就是新友谊扎根的方式。
 ========================================================
-10. How can we maintain a long-distance friendship?
+# 10. How can we maintain a long-distance friendship?
   
 Maintaining a long-distance friendship takes intentionality, but it’s totally possible—what matters is keeping the connection feeling real, not just frequent.  
 保持异地友谊需要意向性，但这是完全可能的——重要的是保持联系的真实感，而不仅仅是频繁。  
