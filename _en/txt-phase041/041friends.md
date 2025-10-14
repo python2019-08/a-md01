@@ -14,11 +14,14 @@ Friends are crucial because they nurture our emotional well-being and make life 
 First, they keep us from feeling **lonely**—having someone to spend casual time with (like grabbing coffee or watching a show) or lean on when we’re alone helps chase away isolation, especially during big life shifts (like moving or starting a new job). 
 首先，它们让我们不会感到**孤独**——当我们独自一人时，有人和我们一起度过休闲时光（比如喝咖啡或看节目）或依靠我们有助于驱散孤独感，尤其是在人生的重大转变中（比如搬家或开始一份新工作）。 
 
-Second, friends let us **share** deeply: we can celebrate happy **experiences** (a promotion, a trip) with them, and they’ll match our joy, or pour out tough **emotion**s (stress, heartache) to them—their listening and empathy make heavy feelings lighter. 
+Second, friends let us **share** deeply: we can celebrate happy **experiences** (a promotion, a trip) with them, and they’ll match our joy, or pour out tough **emotions** (stress, heartache) to them—their listening and empathy make heavy feelings lighter. 
 其次，朋友让我们**深入分享**：我们可以和他们一起庆祝快乐的**经历**（升职、旅行），他们会和我们一样快乐，或者向他们倾诉艰难的**情绪**（压力、心痛）——他们的倾听和同理心会让沉重的感觉变得轻松。 
 
-Finally, good friends boost our **confidence**: they see our strengths (even when we don’t), encourage us to try new things, and remind us we’re capable when self-doubt hits. In short, friends turn ordinary days brighter and hard days easier.  
-最后，好朋友会增强我们的**信心**：他们看到我们的优势（即使我们没有），鼓励我们尝试新事物，并提醒我们在自我怀疑时有能力。总之，朋友让平凡的日子变得光明，让艰难的日子变得轻松。  
+Finally, good friends boost our **confidence**: they see our strengths (even when we don’t), encourage us to try new things, and remind us we’re capable when self-doubt hits. 
+最后，好朋友会增强我们的**信心**：他们看到我们的优势（即使我们没有），鼓励我们尝试新事物，并提醒我们在自我怀疑时有能力。
+
+In short, friends turn ordinary days brighter and hard days easier.  
+总之，朋友让平凡的日子变得光明，让艰难的日子变得轻松。  
 ========================================================
 # 2. Do you think it is a bad idea to borrow money from a friend?
 > Words may be used:
@@ -27,8 +30,8 @@ Finally, good friends boost our **confidence**: they see our strengths (even whe
 > amount
 > meaning
 > trust
-Whether borrowing money from a friend is a bad idea depends on how it’s handled, but it can risk harming the relationship if not careful. First, **trust**—the core of friendship—can be shaken if you don’t **pay back** the money **on time**: even small delays might make your friend feel unvalued or worried about their own funds. The **amount** also matters: borrowing a large sum (that strains their finances) adds more pressure than a small, manageable one, as it turns a casual bond into a financial obligation.  
-向朋友借钱是否是个坏主意取决于如何处理，但如果不小心，可能会损害关系。首先，如果你不按时偿还**钱**，**信任**——友谊的核心——可能会动摇：即使是很小的延误也可能让你的朋友感到不受重视或担心自己的资金。**金额**也很重要：借入大笔资金（这会使他们的财务紧张）比借入小额、可控的资金增加更多的压力，因为它会将临时债券转化为财务义务。  
+Whether borrowing money from a friend is a bad idea depends on how it’s handled, but it can risk harming the relationship if not careful. First, **trust**—the core of friendship—can be shaken if you don’t **pay back** the money **on time**: even small delays might make your friend feel unvalued or worried about their own funds. Second,The **amount** also matters: borrowing a large sum (that strains their finances) adds more pressure than a small, manageable one, as it turns a casual bond into a financial obligation.  
+向朋友借钱是否是个坏主意取决于如何处理，但如果不小心，可能会损害关系。首先，如果你不按时偿还**钱**，**信任**——友谊的核心——可能会动摇：即使是很小的延误也可能让你的朋友感到不受重视或担心自己的资金。其次，**金额**也很重要：借入大笔资金（这会使他们的财务紧张）比借入小额、可控的资金增加更多的压力，因为它会将临时债券转化为财务义务。  
 
 Worse, it can change the **meaning** of the friendship: interactions might shift from carefree chats to awkward reminders about repayment, eroding the warmth that made the friendship special. While it’s not always bad (e.g., a small, urgent loan with clear plans to repay), it’s risky because money introduces stress that pure friendship doesn’t need. So it’s usually better to explore other options first—like a bank loan—to protect the trust and meaning of your friendship.  
 更糟糕的是，它可能会改变友谊的**意义**：互动可能会从无忧无虑的聊天转变为关于还款的尴尬提醒，侵蚀了使友谊变得特别的温暖。虽然这并不总是坏事（例如，一笔有明确还款计划的小额紧急贷款），但这是有风险的，因为金钱会带来纯粹友谊不需要的压力。因此，通常最好先探索其他选择，比如银行贷款，以保护友谊的信任和意义。  
@@ -40,7 +43,8 @@ Worse, it can change the **meaning** of the friendship: interactions might shift
 > listen
 > keep a promise
 > honest
-A good friend stands out through consistent, heartfelt actions that build trust and warmth. First, they **listen** truly—when you share joys or worries, they don’t just wait to speak, but focus on understanding your feelings, making you feel heard. They’re also **honest**: they’ll gently tell you the truth (even if it’s hard) instead of letting you make mistakes, and they won’t lie to avoid conflict.  一个好朋友通过始终如一、发自内心的行动脱颖而出，建立信任和温暖。首先，他们真诚地倾听——当你分享快乐或担忧时，他们不会只是等着说话，而是专注于理解你的感受，让你感到被倾听。他们也很诚实：他们会温和地告诉你真相（即使很难），而不是让你犯错，他们也不会为了避免冲突而撒谎。  
+A good friend stands out through consistent, heartfelt actions that build trust and warmth. First, they **listen** truly—when you share joys or worries, they don’t just wait to speak, but focus on understanding your feelings, making you feel heard. They’re also **honest**: they’ll gently tell you the truth (even if it’s hard) instead of letting you make mistakes, and they won’t lie to avoid conflict.  
+一个好朋友通过始终如一、发自内心的行动脱颖而出，建立信任和温暖。首先，他们真诚地倾听——当你分享快乐或担忧时，他们不会只是等着说话，而是专注于理解你的感受，让你感到被倾听。他们也很诚实：他们会温和地告诉你真相（即使很难），而不是让你犯错，他们也不会为了避免冲突而撒谎。  
 
 
 A good friend shows **care** in small, daily ways—remembering your favorite snack, checking in when you’re unwell, or celebrating your tiny wins. They **support** you through highs and lows too: cheering you on at a big event, or sitting with you when you’re sad, no matter what. Most importantly, they **keep a promise**—whether it’s a plan to hang out or a secret you shared, you can count on them to follow through, which builds the trust that makes a friendship last.  
@@ -65,7 +69,7 @@ If you realize you’re in the wrong, don’t hesitate to **apologize** sincerel
 > secret
 > private
 > uncomfortable
-> worry
+> worry  
 > necessary
 I don’t tell my best friend *everything*—it depends on what feels right for both of us. While I share most joys, **worrys**, and daily moments (since that’s part of being close), I hold back on things that are too **private** (like someone else’s **secret** I promised to keep) or things that would make either of us **uncomfortable** (e.g., overly negative rants that don’t help).  
 我不会把所有事情都告诉我最好的朋友——这取决于我们双方都觉得什么是对的。虽然我分享了大部分的快乐、忧虑和日常时刻（因为这是亲密关系的一部分），但我会克制那些太私密的事情（比如我承诺要保守的别人的秘密）或那些会让我们任何一方感到不舒服的事情（例如，那些没有帮助的过于消极的咆哮）。  
