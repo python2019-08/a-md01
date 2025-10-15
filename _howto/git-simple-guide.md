@@ -1,3 +1,8 @@
+# 0.“ignore的地址列表”
+
+;*douyin.com;*douyinstatic.com;*.bytedance.com;*.douyinvod.com;*zijieapi.com;*bytescm.com;*bytednsdoc.com;*oceanengine.com;*bytetcc.com;*douyinstatic.com;*bytetos.com;*zhihu.com;*qq.com;*doubao.com;*tencent.com;*163.com;*bing.com;*baidu.com;*bilibili.com;*jd.com;*csdn.net;*zhipin.com;*liepin.com
+
+
 # 1. 简易的命令行入门教程(from gitee):
 ## 1.1 Git 全局设置:
 
