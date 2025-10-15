@@ -1,83 +1,12 @@
 # 0.“ignore的地址列表”
-
+ 
+## for windows
 ;*douyin.com;*douyinstatic.com;*.bytedance.com;*.douyinvod.com;*zijieapi.com;*bytescm.com;*bytednsdoc.com;*oceanengine.com;*bytetcc.com;*douyinstatic.com;*bytetos.com;*zhihu.com;*qq.com;*doubao.com;*tencent.com;*163.com;*bing.com;*baidu.com;*bilibili.com;*jd.com;*csdn.net;*zhipin.com;*liepin.com
+## for ubuntu-linux
 
+export no_proxy="localhost,127.0.0.1,::1,*douyin.com,*douyinstatic.com,*.bytedance.com,*.douyinvod.com,*zijieapi.com,*bytescm.com,*bytednsdoc.com,*oceanengine.com,*bytetcc.com,*douyinstatic.com,*bytetos.com,*zhihu.com,*qq.com,*doubao.com,*tencent.com,*163.com,*bing.com,*baidu.com,*bilibili.com,*jd.com,*csdn.net,*zhipin.com,*liepin.com,*live.com"
 
-
-## 0.1 how to use viewTurboCore-x86_64-unknown-linux-gnu 
-
-```sh
-$ ./programs/viewTurboCore-x86_64-unknown-linux-gnu 
-════════════════════════════════════════════
-        ^_^  ViewTurbo (v1.3.0) 
-════════════════════════════════════════════
--- User Info --                                                                                                                                                                                     
-Email: python191@163.com
-Expiration: 2099-12-31 00:00:00
-Remaining Traffic: 25.19 GB
--- Proxy Status --
-Running Status: Off
-Current Node: Hong Kong-5000M-No.194
-System Proxy: ✓ 
-Git Proxy: ✓
-Proxy Mode: AI Proxy
-Location: China
-Config Directory: /home/abner/.config/ViewTurbo
-Environment Variables: export http_proxy=http://127.0.0.1:15732 https_proxy=http://127.0.0.1:15732
-Socks5 Port: 127.0.0.1:15733
-
-
-Please select action: 
-  > Status
--- User Info --
-Email: python191@163.com
-Expiration: 2099-12-31 00:00:00
-Remaining Traffic: 25.19 GB
--- Proxy Status --
-Running Status: Off
-Current Node: Hong Kong-5000M-No.194
-System Proxy: ✓ 
-Git Proxy: ✓
-Proxy Mode: AI Proxy
-Location: China
-Config Directory: /home/abner/.config/ViewTurbo
-Environment Variables: export http_proxy=http://127.0.0.1:15732 https_proxy=http://127.0.0.1:15732
-Socks5 Port: 127.0.0.1:15733
-
-## #####################################################
-## *选择location时，需要先选择 哪个国家，然后再选择哪个node（即城市）。
-## 不能直接选择 node（即城市）
-## #####################################################
-Please select action: 
-  > Settings
-Please select action: 
-  > Select Current Location
-Please select your current location for a better experience. If not listed, choose 'Others'
-Please select your current location?: ch
-  > China  ## *选择location时，需要先选择 哪个国家，不能直接选择城市**
-
-
-Please select action: 
-  > Start
-
-Please select node: 
-  > Hong Kong-IPLC-CM-5000M No.195 16.9%  ## *选择location时，在选择 哪个国家后，还要选择哪个城市
--- User Info --
-Email: python191@163.com
-Expiration: 2099-12-31 00:00:00
-Remaining Traffic: 25.19 GB
--- Proxy Status --
-Running Status: ● On
-Current Node: Hong Kong-IPLC-CM-5000M No.195
-System Proxy: ✓ 
-Git Proxy: ✓
-Proxy Mode: AI Proxy
-Location: China
-Config Directory: /home/abner/.config/ViewTurbo
-Environment Variables: export http_proxy=http://127.0.0.1:15732 https_proxy=http://127.0.0.1:15732
-Socks5 Port: 127.0.0.1:15733
-```
-
+ 
 ==========================================================================
 # 1. 简易的命令行入门教程(from gitee):
 ## 1.1 Git 全局设置:
