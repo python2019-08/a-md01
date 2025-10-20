@@ -11,9 +11,9 @@ Whether we should show our anger depends on the **situation** and whether we can
 
 我们是否应该表达我们的愤怒取决于**情况**以及我们是否能够**控制**它——这并不是要完全隐藏愤怒，而是以一种不伤害他人的方式表达它。  
 
-If we bottle up angry **feeling**s, they might build up and lead to a bigger, unplanned outburst later (like starting an unnecessary **argue**). So it’s healthier to **express** anger when it matters—for example, if someone crosses a boundary, calmly saying “I felt upset when you did X” helps them understand your perspective. But we need to stay in control: yelling, blaming, or lashing out only makes the situation worse, as it makes the other person defensive instead of willing to listen.  
-如果我们把愤怒的情绪压抑在心里，它们可能会积聚起来，导致更大的、无计划的爆发（比如开始不必要的争吵）。因此，在重要的时候表达愤怒更健康——例如，如果有人越界，冷静地说“你做X事时我感到很沮丧”有助于他们理解你的观点。但我们需要保持控制：大喊大叫、责备或猛烈抨击只会让情况变得更糟，因为这会让对方产生防御心理，而不是愿意倾听。  
-
+If we bottle up angry **feelings**, they might build up and lead to a bigger, unplanned outburst later (like starting an unnecessary **argue**). So it’s healthier to **express** anger when it matters—for example, if someone crosses a boundary, calmly saying “I felt upset when you did X” helps them understand your perspective. But we need to stay in control: yelling, blaming, or lashing out only makes the situation worse, as it makes the other person defensive instead of willing to listen.  
+如果我们把愤怒的情绪压抑在心里（If we suppress angry emotions within ourselves），它们可能会积聚起来（accumulate），导致更大的、无计划的爆发（比如开始不必要的争吵）。因此，在重要的时候表达愤怒更健康——例如，如果有人越界，冷静地说“你做X事时我感到很沮丧”有助于他们理解你的观点。但我们需要保持控制：大喊大叫、责备或猛烈抨击只会让情况变得更糟，因为这会让对方产生防御心理，而不是愿意倾听。  
+ 
 
 In short, we shouldn’t suppress anger, but we should choose *how* and *when* to show it—matching our expression to the situation, keeping our cool, and focusing on sharing our feelings rather than starting a fight.  
 简而言之，我们不应该压抑愤怒，但我们应该选择*如何*和*何时*展示它 - 将我们的表达与情况相匹配，保持冷静，并专注于分享我们的感受，而不是开始战斗。  
@@ -33,7 +33,6 @@ From a young age, many cultures **teach** boys to suppress “softer” emotions
 
 
 This doesn’t mean men feel emotions less deeply, or that all women are highly expressive—individual differences matter a lot. But the way society teaches genders to **deal with** emotions creates a pattern where women often feel more comfortable showing their feelings publicly, while men may keep them hidden to fit the “strong” stereotype. It’s a cultural influence, not a difference in the *amount* of emotion felt.  
-
 这并不意味着男性对情感的感受程度较低，也不意味着所有女性都善于表达情感——个体差异很重要。但是社会教导性别如何处理情感的方式形成了一种模式，在这种模式下，女性在公开场合表达自己的情感时往往感觉更舒适，而男性则可能为了符合“坚强”的刻板印象而隐藏自己的情感。这是一种文化影响，而不是情感感受的“数量”差异。  
 ========================================================
 # 3. what are the physical effects of anger?
