@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<script>
+
+// - `fmod(7.5, 2.5) = 0.0`（因为 7.5 = 3 * 2.5 + 0.0）  
+// - `fmod(7.5, 2.0) = 1.5`（因为 7.5 = 3 * 2.0 + 1.5，且 1.5 < 2.0）  
+// - `fmod(-7.5, 2.0) = -1.5`（结果符号与 `-7.5` 一致）  
+// - `fmod(7.5, -2.0) = 1.5`（结果符号与 `7.5` 一致，仅取决于被除数 `x`）  
+
+f01 = 7.5 % 2.5;
+console.log(`f01 = 7.5 % 2.5: ${f01}`);
+
+f02 = 7.5 % 2.0;
+console.log(`f02 = 7.5 % 2.0: ${f02}`);
+
+
+f03 = -7.5 % 2.0;
+console.log(`f03 = -7.5 % 2.0: ${f03}`);
+
+f04 = 7.5 % -2.0;
+console.log(`f04 = 7.5 % -2.0: ${f04}`);
+
+f05 = -7.5 % -2.0;
+console.log(`f05 = -7.5 % -2.0: ${f05}`);
+ 
+// 规范化经度（角度制）
+function normalizeLongitudeDegrees(longitude) {
+    const threeSixty = 360;
+    // 首先确保值在 [-360°, 360°] 范围内
+    longitude = ((longitude + 180) % threeSixty + threeSixty) % threeSixty - 180;
+    return longitude;
+}
+
+// 示例使用
+const originalLongitudeDegrees = 190; // 超出 [-180°, 180°] 范围的经度（角度）
+const normalizedLongitudeDegrees = normalizeLongitudeDegrees(originalLongitudeDegrees);
+console.log(`原始经度（角度）: ${originalLongitudeDegrees} -->规范化后的经度（角度）: ${normalizedLongitudeDegrees}`);
+
+
+const originalLongitudeDegrees01 = -190; // 超出 [-180°, 180°] 范围的经度（角度）
+const normalizedLongitudeDegrees01 = normalizeLongitudeDegrees(originalLongitudeDegrees01);
+console.log(`原始经度（角度）: ${originalLongitudeDegrees01}-->规范化后的经度（角度）: ${normalizedLongitudeDegrees01}`);
+ 
+
+const originalLongitudeDegrees02 = 720; // 超出 [-180°, 180°] 范围的经度（角度）
+const normalizedLongitudeDegrees02 = normalizeLongitudeDegrees(originalLongitudeDegrees02);
+console.log(`原始经度（角度）: ${originalLongitudeDegrees02}-->规范化后的经度（角度）: ${normalizedLongitudeDegrees02}`);
+
+// ----console输出：
+// f01 = 7.5 % 2.5: 0
+// f02 = 7.5 % 2.0: 1.5
+// f03 = -7.5 % 2.0: -1.5
+// f04 = 7.5 % -2.0: 1.5
+// f05 = -7.5 % -2.0: -1.5
+// 原始经度（角度）: 190 -->规范化后的经度（角度）: -170
+// 原始经度（角度）: -190-->规范化后的经度（角度）: 170
+// 原始经度（角度）: 720-->规范化后的经度（角度）: 0
+</script>
+
+<body>
+    
+</body>
+</html>

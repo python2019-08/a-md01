@@ -1008,3 +1008,60 @@ OpenSceneGraph-3.6.5
 若需修改代码，始终用 `git checkout -b <新分支名> <标签名>` 创建分支！
 
 =================================================
+# 15.Git submodule子模块的使用
+
+Turbock 2020-07-31 12:41:32 
+## 1. Git submodule
+1.1. submodule常用命令
+在项目中的.gitmodules文件中查看当前submodule设置
+
+git clone <repository> --recursive #递归的方式克隆整个项目
+git submodule add <repository> <path> #添加子模块
+#示例：git submodule add git://xxxxx.git findername
+```sh
+git submodule init #初始化子模块
+git submodule update --init --recursive	#初始化并更新子模块
+git submodule foreach git pull		#拉取所有子模块
+git pull --recurse-submodules  #拉取所有子模块中的依赖项
+git submodule sync	#将新的URL同步更新，该步骤适用于git submodule add或修改.gitmodules文件之后
+git submodule status third_party/ModuleA	#查看子模块状态，即该子模块切入的提交节点位置，即某HASH值
+
+#删除子模块,然后删除对应资源库所有文件
+git rm --cached ModuleA
+rm -rf moduleA
+
+git submodule set-url third_party/ModuleA https://XXX.git #，更新子模块URL，该功能在1.8.3.1以上版本
+git submodule set-branch --branch dev third_party/ModuleA	#设置子模块项目采用的分支，该功能在1.8.3.1以上版本
+``` 
+若希望每次clone拉取新的submodule到指定分支指定节点，需要在提交时将子模块checkout到指定指针位置，然后提交该子模块所在目录git add third_party/ModuleA;git commit xxx;(其实是提交子模块中的.git所在commit指针中位置HASH值e6fd72ad).
+
+### 1.1. 删除和更新子模块
+删除一个submodule
+1.删除 .gitsubmodule中对应submodule的条目
+2.删除 .git/config 中对应submodule的条目
+3.执行 git rm --cached {submodule_path}。注意，路径不要加后面的“/”。例如：你的submodule保存在 supports/libs/websocket/ 目录。执行命令为：git rm --cached supports/libs/websocket
+
+更新submodule的URL
+1.更新 .gitsubmodule中对应submodule的条目URL
+2.更新 .git/config 中对应submodule的条目的URL
+3.执行 git submodule sync
+
+## 2. 问题解决
+2.1.引用不是一个树
+fatal: 引用不是一个树：a27a43eafa8f4dd514e89984f5394260a36ea4f6
+无法在子模组路径 ‘src/lib/ecl’ 中检出 ‘a27a43eafa8f4dd514e89984f5394260a36ea4f6’
+```sh
+#解决方法为git添加子模块的位置：
+git add src/lib/ecl
+#下载子模块命令为：
+git submodule update --init --recursive
+``` 
+### 2.2. Needed a single revision
+fatal: Needed a single revision
+将出错的文件夹删除后，重新执行git submodule update命令
+
+### 2.3. 未在.gitmodules中发现路径’boringssl’的子模组映射
+```sh
+#虽然优化，但是没有优化删除缓存中库
+git rm --cached boringssl
+```
