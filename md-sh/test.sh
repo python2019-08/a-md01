@@ -10,8 +10,8 @@ echo $BASE_PATH
 
 ARGS_PRIVATE_REPO=${1-}
 echo ARGS_PRIVATE_REPO=$ARGS_PRIVATE_REPO
-exit 111
 
+# -----------------------------
 workDir=$(pwd)
 startTm=$(date +%Y/%m/%d--%H:%M:%S)
 image_pattern=""

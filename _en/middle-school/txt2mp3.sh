@@ -32,12 +32,12 @@ dir_path=$(dirname "$file_path")
 echo "$dir_path"
 
 ##(1) 
-work_dir=${dir_path}/047mp3
+work_dir=${dir_path}
 ##(2)
-filePrefix=L047
+filePrefix=high1
 echo "work_dir=${work_dir}"
 
-for idx in $(seq  1   5); do
+for idx in $(seq  2   2); do
     if [ ! -f "${work_dir}/${filePrefix}-${idx}.txt" ]; then
         echo "${work_dir}/${filePrefix}-${idx}.txt NOT exist..."
         continue
