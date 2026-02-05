@@ -4,11 +4,11 @@
 ### **0.**
 ```bash
 # mq: my best practice   13network
-inputPrefix=13network
+inputPrefix=bili-bigevent-3vue3-action
 docxName=${inputPrefix}.docx
 outMdName=${inputPrefix}.md
 
-outMediaPath=./media13
+outMediaPath=./${inputPrefix}--imgs
 pandoc ${docxName} -f docx -t gfm -o ${outMdName} --extract-media=${outMediaPath} --wrap=none
 ```
 

@@ -971,3 +971,890 @@ install(FILES sqlite3.h sqlite3ext.h DESTINATION include)
 - `install(FILES)`：实际安装头文件（给用户的「实物文件」）
 
 两者缺一不可：没有前者，依赖项目无法自动找到头文件路径；没有后者，安装目录中根本不存在头文件，导致编译失败。
+
+==========================================================================================
+# 13. CMake 的 `export(TARGETS)` 命令详解
+
+`export(TARGETS)` 是 CMake 中非常重要的命令，用于**导出构建目标**，使得其他项目可以导入并使用这些目标。
+
+## 1. 基本语法和作用
+
+### 基本语法
+```cmake
+export(TARGETS <target> [<target>...]
+       [NAMESPACE <namespace>]
+       [EXPORT <export-name>]
+       [APPEND]
+       FILE <filename>)
+```
+
+### 主要作用
+- 将**当前项目的构建目标**导出到文件中
+- 其他项目可以通过 `find_package()` 或 `include()` 导入
+- 自动处理目标的依赖、包含路径、编译选项等
+
+## 2. 核心使用场景
+
+### 场景 1：创建可导入的包
+```cmake
+# 1. 定义库
+add_library(MyLibrary STATIC
+    src/mylib.cpp
+    include/mylib.h
+)
+
+# 2. 设置包含目录
+target_include_directories(MyLibrary
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
+
+# 3. 导出目标
+export(TARGETS MyLibrary
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/MyLibraryTargets.cmake"
+)
+```
+
+### 场景 2：配合 `install()` 使用
+```cmake
+# 导出安装时的目标
+install(TARGETS MyLibrary
+    EXPORT MyLibraryTargets
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+)
+
+# 导出目标文件
+install(EXPORT MyLibraryTargets
+    FILE MyLibraryTargets.cmake
+    NAMESPACE MyLib::
+    DESTINATION lib/cmake/MyLibrary
+)
+```
+
+## 3. 完整示例
+
+### 项目 A：导出库
+```cmake
+# CMakeLists.txt for Project A (Library)
+cmake_minimum_required(VERSION 3.10)
+project(MyLibrary VERSION 1.0.0)
+
+# 创建库
+add_library(mylib STATIC
+    src/math_utils.cpp
+    src/string_utils.cpp
+)
+
+add_library(mylib_shared SHARED
+    src/network_utils.cpp
+)
+
+# 设置公共头文件
+target_include_directories(mylib
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
+
+target_include_directories(mylib_shared
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
+
+# 链接依赖
+target_link_libraries(mylib_shared
+    PUBLIC
+        mylib
+    PRIVATE
+        Threads::Threads
+)
+
+# 版本信息
+set_target_properties(mylib_shared
+    PROPERTIES
+        VERSION ${PROJECT_VERSION}
+        SOVERSION ${PROJECT_VERSION_MAJOR}
+)
+
+# 方法 1：导出构建树（开发时使用）
+export(TARGETS mylib mylib_shared
+    NAMESPACE MyLib::
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/MyLibraryTargets.cmake"
+)
+
+# 方法 2：导出安装树（发布时使用）
+install(TARGETS mylib mylib_shared
+    EXPORT MyLibraryTargets
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+)
+
+install(DIRECTORY include/
+    DESTINATION include
+)
+
+install(EXPORT MyLibraryTargets
+    FILE MyLibraryTargets.cmake
+    NAMESPACE MyLib::
+    DESTINATION lib/cmake/MyLibrary
+)
+
+# 创建 Config 文件
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/MyLibraryConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/MyLibraryConfig.cmake
+    INSTALL_DESTINATION lib/cmake/MyLibrary
+)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/MyLibraryConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/MyLibraryConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/MyLibraryConfigVersion.cmake
+    DESTINATION lib/cmake/MyLibrary
+)
+```
+
+**MyLibraryConfig.cmake.in** 模板文件：
+```cmake
+@PACKAGE_INIT@
+
+# 包含导出的目标
+include("${CMAKE_CURRENT_LIST_DIR}/MyLibraryTargets.cmake")
+
+# 检查所有必需的组件
+check_required_components(MyLibrary)
+```
+
+### 项目 B：导入并使用库
+```cmake
+# CMakeLists.txt for Project B (Application)
+cmake_minimum_required(VERSION 3.10)
+project(MyApp)
+
+# 方法 1：从构建树导入（开发时）
+if(EXISTS "${MyLibrary_DIR}/MyLibraryTargets.cmake")
+    include("${MyLibrary_DIR}/MyLibraryTargets.cmake")
+endif()
+
+# 方法 2：从安装树导入（使用时）
+find_package(MyLibrary REQUIRED)
+
+# 使用导入的库
+add_executable(myapp main.cpp)
+
+# 链接库，自动处理包含目录、编译选项等
+target_link_libraries(myapp
+    PRIVATE
+        MyLib::mylib_shared
+)
+```
+
+## 4. 在 MapLibre/Android 中的实际应用
+
+在 MapLibre 的 CMake 中，`export(TARGETS)` 用于导出原生库：
+
+```cmake
+# MapLibre 可能的配置
+add_library(maplibre SHARED
+    ${MAPLIBRE_SOURCES}
+)
+
+# 设置包含目录
+target_include_directories(maplibre
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+# 链接依赖
+target_link_libraries(maplibre
+    PRIVATE
+        # 内部依赖
+        mbgl-core
+        mbgl-vendor
+        
+    PUBLIC
+        # 公开依赖
+        android
+        log
+        EGL
+        GLESv2
+        z
+)
+
+# 导出目标，供其他模块或测试使用
+export(TARGETS maplibre
+    NAMESPACE MapLibre::
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/MapLibreTargets.cmake"
+    APPEND
+)
+
+# 如果构建测试
+if(BUILD_TESTING)
+    add_library(maplibre-test STATIC
+        ${TEST_SOURCES}
+    )
+    
+    target_link_libraries(maplibre-test
+        PRIVATE
+            maplibre
+            gtest
+    )
+    
+    # 导出测试目标
+    export(TARGETS maplibre-test
+        NAMESPACE MapLibre::
+        FILE "${CMAKE_CURRENT_BINARY_DIR}/MapLibreTargets.cmake"
+        APPEND
+    )
+endif()
+```
+
+## 5. 关键参数详解
+
+### 5.1 `NAMESPACE`
+```cmake
+export(TARGETS mylib
+    NAMESPACE MyLib::  # 添加命名空间
+    FILE "MyLibTargets.cmake"
+)
+```
+导入时会变成：`MyLib::mylib`
+
+### 5.2 `EXPORT` 参数
+```cmake
+# 定义导出组
+install(TARGETS mylib
+    EXPORT MyLibExportSet  # 定义导出集名称
+    ...
+)
+
+# 安装导出集
+install(EXPORT MyLibExportSet
+    FILE MyLibTargets.cmake
+    DESTINATION lib/cmake/MyLib
+)
+```
+
+### 5.3 `APPEND` 参数
+```cmake
+# 第一次导出
+export(TARGETS library1
+    FILE "AllTargets.cmake"
+)
+
+# 追加导出，不覆盖文件
+export(TARGETS library2
+    FILE "AllTargets.cmake"
+    APPEND
+)
+```
+
+### 5.4 `FILE` 参数
+```cmake
+# 生成在构建目录
+export(TARGETS mylib
+    FILE "${CMAKE_BINARY_DIR}/MyLibTargets.cmake"
+)
+
+# 生成在特定位置
+export(TARGETS mylib
+    FILE "cmake/MyLibTargets.cmake"
+)
+```
+
+## 6. 与 `install(EXPORT)` 的区别
+
+| 特性 | `export(TARGETS)` | `install(EXPORT)` |
+|------|------------------|-------------------|
+| 时机 | 构建时立即生成 | 安装时生成 |
+| 位置 | 构建目录 | 安装目录 |
+| 用途 | 开发阶段，项目间引用 | 发布阶段，用户使用 |
+| 更新 | 实时更新 | 安装时更新 |
+| 路径 | 相对路径 | 绝对路径（安装后） |
+
+```cmake
+# 通常两者一起使用
+export(TARGETS MyLibrary
+    FILE "${CMAKE_BINARY_DIR}/MyLibraryTargets.cmake"
+)
+
+install(TARGETS MyLibrary
+    EXPORT MyLibraryTargets
+    ...
+)
+
+install(EXPORT MyLibraryTargets
+    FILE MyLibraryTargets.cmake
+    DESTINATION lib/cmake/MyLibrary
+)
+```
+
+## 7. 处理目标依赖
+
+`export()` 会自动处理目标的传递依赖：
+
+```cmake
+# LibraryA 依赖 LibraryB
+add_library(LibraryB STATIC b.cpp)
+add_library(LibraryA STATIC a.cpp)
+
+target_link_libraries(LibraryA
+    PUBLIC
+        LibraryB
+)
+
+# 导出时，LibraryB 的信息也会被包含
+export(TARGETS LibraryA LibraryB
+    NAMESPACE MyProject::
+    FILE "${CMAKE_BINARY_DIR}/MyProjectTargets.cmake"
+)
+
+# 在另一个项目中
+find_package(MyProject REQUIRED)
+
+add_executable(MyApp app.cpp)
+target_link_libraries(MyApp
+    PRIVATE
+        MyProject::LibraryA
+        # 不需要显式链接 LibraryB，会自动处理
+)
+```
+
+## 8. Android NDK 中的特殊考虑
+
+在 Android 项目中，可能需要特殊处理：
+
+```cmake
+# Android NDK 特殊配置
+if(ANDROID)
+    # 设置 Android 特定的属性
+    set_target_properties(maplibre PROPERTIES
+        ANDROID_ARM_MODE arm
+        ANDROID_STL c++_shared
+    )
+    
+    # 导出时包含 Android 特定设置
+    export(TARGETS maplibre
+        FILE "${CMAKE_CURRENT_BINARY_DIR}/MapLibreTargets-android.cmake"
+    )
+else()
+    export(TARGETS maplibre
+        FILE "${CMAKE_CURRENT_BINARY_DIR}/MapLibreTargets.cmake"
+    )
+endif()
+```
+
+## 9. 调试和问题排查
+
+### 查看导出的内容：
+```cmake
+# 在导出后查看文件
+add_custom_target(check-export
+    COMMAND ${CMAKE_COMMAND} -E cat
+        "${CMAKE_BINARY_DIR}/MyLibraryTargets.cmake"
+    COMMENT "Checking exported targets file"
+)
+```
+
+### 验证导出：
+```bash
+# 手动测试导入
+mkdir test_import && cd test_import
+cat > CMakeLists.txt << 'EOF'
+cmake_minimum_required(VERSION 3.10)
+project(TestImport)
+include("/path/to/MyLibraryTargets.cmake")
+# 查看是否定义了目标
+get_target_property(inc MyLib::mylib INTERFACE_INCLUDE_DIRECTORIES)
+message("Include dirs: ${inc}")
+EOF
+cmake .
+```
+
+## 10. 最佳实践
+
+1. **始终使用命名空间**：避免目标名称冲突
+2. **导出所有相关目标**：包括静态库、共享库、接口库
+3. **处理版本兼容性**：使用 `write_basic_package_version_file`
+4. **测试导入**：确保导出的文件可以正确使用
+5. **文档化**：说明如何导入和使用你的库
+
+```cmake
+# 完整的导出配置示例
+include(CMakePackageConfigHelpers)
+
+# 1. 导出构建树
+export(EXPORT MyProjectTargets
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/MyProjectTargets.cmake"
+    NAMESPACE MyProject::
+)
+
+# 2. 创建配置文件
+configure_package_config_file(
+    MyProjectConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/MyProjectConfig.cmake
+    INSTALL_DESTINATION lib/cmake/MyProject
+)
+
+# 3. 创建版本文件
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/MyProjectConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+# 4. 安装配置
+install(EXPORT MyProjectTargets
+    FILE MyProjectTargets.cmake
+    NAMESPACE MyProject::
+    DESTINATION lib/cmake/MyProject
+)
+
+install(FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/MyProject.hpp
+    DESTINATION include
+)
+
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/MyProjectConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/MyProjectConfigVersion.cmake
+    DESTINATION lib/cmake/MyProject
+)
+```
+
+## 总结
+
+`export(TARGETS)` 是 CMake 模块化和代码重用的关键机制：
+- 使得库可以被其他项目轻松使用
+- 自动处理依赖关系
+- 保持构建系统的一致性
+- 是创建专业级 C++ 库的基础
+
+在 MapLibre 这样的复杂项目中，正确的目标导出使得 Android 构建系统能够正确找到和链接原生库，是跨模块协作的基础。
+
+=====================================================
+
+# 14.cmake的 export(EXPORT  和 export(TARGETS 的区别---Google AI 
+
+在 CMake 中，`export(EXPORT ...)` 和 `export(TARGETS ...)` 都用于将当前构建树（Build Tree）中的目标信息导出到文件中，供外部项目通过 `find_package` 或 `include` 使用。
+它们的主要区别在于目标的选择方式以及与安装逻辑的耦合度。
+
+### 1. 核心区别对比
+| 特性               | export(TARGETS ...)                              | export(EXPORT ...)                                      |
+|--------------------|--------------------------------------------------|---------------------------------------------------------|
+| 目标指定方式       | 显式列出：需要手动写举所有要导出的 Target 名。   | 引用导出集：引用由 `install(TARGETS ... EXPORT <name>)` 定义的导出集。 |
+| 同步性             | 独立于安装逻辑，容易遗漏新添加的 Target。        | 自动同步：只要 Target 被标记为某个 EXPORT 集，就会被包含。 |
+| 主要用途           | 快速、临时的构建树导出，或小型项目。             | 推荐做法：确保构建树导出内容与安装导出内容（Install Tree）保持一致。 |
+| 典型签名           | `export(TARGETS target1 target2 ... FILE <file>)` | `export(EXPORT <export-name> FILE <file>)`              |
+
+### 2. 详细解析
+#### export(TARGETS ...)
+这是最直接的签名。你直接告诉 CMake：“把这几个 Target 的配置写到这个文件中”。
+- 优点：简单直接，不需要先调用 `install` 命令。
+- 缺点：如果项目很大，你必须记得在 `export` 命令中手动添加每一个新创建的库。如果忘记添加某个被依赖的内部库，会导致生成的 `.cmake` 文件在其他项目中报错。
+
+#### export(EXPORT ...)
+这是更现代且推荐的用法。它并不直接操作 Target，而是操作一个名为“Export Set”（导出集）的逻辑容器。
+**工作流**：
+1. 在 `install(TARGETS ... EXPORT MyExportSet)` 中将目标关联到一个导出集。
+2. 调用 `export(EXPORT MyExportSet FILE MyProjectTargets.cmake)`。
+
+**优点**：
+- 单一来源：你只需在 `install` 命令里维护一次 Target 列表，`export(EXPORT)` 会自动获取这些目标及其依赖关系。
+- 一致性：它能确保你的构建树导出逻辑与将来执行 `install(EXPORT ...)` 时生成的安装树逻辑高度一致。
+
+### 3. 共同点（重要提示）
+无论使用哪种方式，`export()` 命令生成的都是非重定位的（Non-relocatable）配置文件。
+生成的 `.cmake` 文件中会包含你当前电脑上的绝对路径（如 `/home/user/project/build/...`）。
+这意味着该文件只能供你本地的其他项目使用，不能打包分发给别人。如果你需要分发给他人，必须使用 `install(EXPORT ...)` 来生成可重定位的路径。
+
+您是在为大型多模块项目设计构建系统，还是在尝试解决跨项目引用库的问题？ 如果您能描述项目结构，我可以为您提供一套完整的 Config.cmake 模板。
+
+=========================================================================
+
+# 15.## 深度对比：`export(EXPORT)` vs `export(TARGETS)`
+您说得对！Google AI 的回答非常准确和专业，我来补充详细说明和实际示例，特别是针对 **MapLibre 这类 Android NDK 项目** 的应用。
+
+### 🎯 核心区别可视化
+```
+# 传统方式：手动维护，容易遗漏
+export(TARGETS maplibre mbgl-test mbgl-core
+       FILE "${CMAKE_BINARY_DIR}/MapLibreTargets.cmake")
+# ❌ 问题：添加新库 mbgl-renderer 时，可能忘记更新这里
+
+# 现代方式：自动同步
+install(TARGETS maplibre mbgl-test mbgl-core mbgl-renderer
+        EXPORT MapLibreTargets  # ← 集中定义一次
+        ...)
+
+export(EXPORT MapLibreTargets  # ← 自动包含所有
+       FILE "${CMAKE_BINARY_DIR}/MapLibreTargets.cmake")
+# ✅ 优点：install 和 export 保持同步
+```
+
+## 在 MapLibre Android 中的实际应用
+
+### 场景分析：多目标 C++ 库
+MapLibre 需要导出的目标可能包括：
+1. 主渲染库 `maplibre`
+2. 核心引擎 `mbgl-core`
+3. 工具库 `mbgl-vendor-icu`
+4. 测试库 `mbgl-test`（条件构建）
+5. 基准测试库 `mbgl-benchmark`（条件构建）
+
+### 推荐实现：使用 `export(EXPORT)`
+
+```cmake
+# MapLibre/CMakeLists.txt 的最佳实践
+
+# 1. 定义所有目标
+add_library(mbgl-core STATIC ${CORE_SOURCES})
+add_library(maplibre SHARED ${RENDER_SOURCES})
+add_library(mbgl-test STATIC ${TEST_SOURCES})
+
+# 2. 设置依赖关系
+target_link_libraries(maplibre PRIVATE mbgl-core)
+target_link_libraries(mbgl-test PRIVATE maplibre)
+
+# 3. 集中定义导出集（关键！）
+install(TARGETS
+    mbgl-core
+    maplibre
+    EXPORT MapLibreTargets  # 集中管理
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+)
+
+# 条件目标也添加到导出集
+if(BUILD_TESTING)
+    install(TARGETS mbgl-test
+        EXPORT MapLibreTargets  # 同一个导出集
+        ARCHIVE DESTINATION lib
+    )
+endif()
+
+# 4. 导出构建树（开发用）
+export(EXPORT MapLibreTargets
+    FILE "${CMAKE_BINARY_DIR}/MapLibreTargets.cmake"
+    NAMESPACE MapLibre::
+)
+
+# 5. 导出安装树（发布用）
+install(EXPORT MapLibreTargets
+    FILE MapLibreTargets.cmake
+    NAMESPACE MapLibre::
+    DESTINATION lib/cmake/MapLibre
+)
+```
+
+## Android NDK 项目的特殊考虑
+
+### 问题：Android 需要同时支持多个 ABI
+```cmake
+# Android 多 ABI 的特殊处理
+if(ANDROID)
+    # 为每个 ABI 创建不同的导出
+    set(ANDROID_ABIS "arm64-v8a" "armeabi-v7a" "x86_64" "x86")
+    
+    foreach(ABI ${ANDROID_ABIS})
+        # 设置 ABI 特定的属性
+        set_target_properties(maplibre PROPERTIES
+            ANDROID_ABI ${ABI}
+            OUTPUT_NAME "maplibre_${ABI}"
+        )
+        
+        # 为每个 ABI 生成单独的导出文件
+        export(EXPORT MapLibreTargets
+            FILE "${CMAKE_BINARY_DIR}/MapLibreTargets-${ABI}.cmake"
+            NAMESPACE MapLibre::
+        )
+    endforeach()
+else()
+    # 桌面平台简单导出
+    export(EXPORT MapLibreTargets
+        FILE "${CMAKE_CURRENT_BINARY_DIR}/MapLibreTargets.cmake"
+        NAMESPACE MapLibre::
+    )
+endif()
+```
+
+## 完整项目示例：MapLibre 风格配置
+
+### 项目结构
+```
+MapLibreAndroid/
+├── CMakeLists.txt              # 主构建文件
+├── include/
+├── src/
+│   ├── core/                  # 核心引擎
+│   ├── render/                # 渲染器
+│   ├── platform/android/      # Android 平台代码
+│   └── vendor/               # 第三方库
+├── test/                      # 测试代码
+└── cmake/
+    ├── MapLibreConfig.cmake.in
+    └── FindDependencies.cmake
+```
+
+### 完整 CMakeLists.txt
+```cmake
+cmake_minimum_required(VERSION 3.19)
+project(MapLibreAndroid LANGUAGES C CXX)
+
+# 1. 基础配置
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# 2. 添加子目录（自动管理目标）
+add_subdirectory(src/core)      # 创建 mbgl-core
+add_subdirectory(src/render)    # 创建 maplibre
+add_subdirectory(src/vendor/icu) # 创建 mbgl-vendor-icu
+
+# 3. 条件添加测试
+option(BUILD_TESTING "Build tests" OFF)
+if(BUILD_TESTING)
+    add_subdirectory(test)      # 创建 mbgl-test
+endif()
+
+# 4. 集中定义安装规则
+set(EXPORT_NAME MapLibreTargets)
+
+install(TARGETS
+    mbgl-core
+    mbgl-vendor-icu
+    EXPORT ${EXPORT_NAME}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+    # 公共头文件
+    PUBLIC_HEADER DESTINATION include/mbgl
+)
+
+# 主渲染库单独配置（可能有特殊安装路径）
+install(TARGETS maplibre
+    EXPORT ${EXPORT_NAME}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+)
+
+# 条件目标
+if(BUILD_TESTING)
+    install(TARGETS mbgl-test
+        EXPORT ${EXPORT_NAME}
+        ARCHIVE DESTINATION lib
+    )
+endif()
+
+# 5. 安装头文件
+install(DIRECTORY include/
+    DESTINATION include
+    FILES_MATCHING PATTERN "*.hpp"
+)
+
+# 6. 构建树导出（Android Gradle 使用）
+export(EXPORT ${EXPORT_NAME}
+    FILE "${CMAKE_BINARY_DIR}/MapLibreTargets.cmake"
+    NAMESPACE MapLibre::
+)
+
+# 7. 安装树导出（发布包使用）
+install(EXPORT ${EXPORT_NAME}
+    FILE MapLibreTargets.cmake
+    NAMESPACE MapLibre::
+    DESTINATION lib/cmake/MapLibre
+)
+
+# 8. 创建配置文件
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/MapLibreConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/MapLibreConfig.cmake
+    INSTALL_DESTINATION lib/cmake/MapLibre
+    PATH_VARS
+        CMAKE_INSTALL_INCLUDEDIR
+        CMAKE_INSTALL_LIBDIR
+)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/MapLibreConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/MapLibreConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/MapLibreConfigVersion.cmake
+    DESTINATION lib/cmake/MapLibre
+)
+
+# 9. Android 特殊处理
+if(ANDROID)
+    # 设置目标属性
+    set_target_properties(maplibre PROPERTIES
+        ANDROID_ARM_NEON TRUE
+        ANDROID_STL c++_shared
+        OUTPUT_NAME "maplibre"  # 会添加 ABI 后缀
+    )
+    
+    # 生成供 Android.mk 或 Application.mk 使用的文件
+    export(EXPORT ${EXPORT_NAME}
+        FILE "${CMAKE_BINARY_DIR}/MapLibreTargets-android.cmake"
+        NAMESPACE MapLibre::
+    )
+endif()
+```
+
+## Android Gradle 集成
+
+### build.gradle.kts 配置
+```kotlin
+android {
+    externalNativeBuild {
+        cmake {
+            path = file("CMakeLists.txt")
+            version = "3.22.1"
+            
+            // 指定构建目标
+            targets.add("maplibre")
+            
+            // 如果有导出文件，可以包含
+            if (file("${buildDir}/MapLibreTargets.cmake").exists()) {
+                arguments.add("-DMAPLIBRE_TARGETS_FILE=${buildDir}/MapLibreTargets.cmake")
+            }
+        }
+    }
+}
+```
+
+## 为什么 `export(EXPORT)` 更适合大型项目？
+
+### 1. 依赖自动传播
+```cmake
+# mbgl-core 依赖 zlib
+target_link_libraries(mbgl-core PRIVATE ZLIB::ZLIB)
+
+# maplibre 依赖 mbgl-core
+target_link_libraries(maplibre PUBLIC mbgl-core)
+
+# 使用 export(EXPORT) 时：
+# 1. 自动包含 ZLIB 的依赖信息
+# 2. 外部项目链接 maplibre 时自动获得 zlib
+```
+
+### 2. 接口一致性保证
+```cmake
+# 危险：可能不一致
+install(TARGETS maplibre
+    EXPORT MapLibreTargets
+    INCLUDES DESTINATION include
+)
+
+export(TARGETS maplibre
+    FILE "MapLibreTargets.cmake"
+    # ❌ 没有 INCLUDES 信息！
+)
+
+# 安全：完全一致
+export(EXPORT MapLibreTargets
+    FILE "MapLibreTargets.cmake"
+    # ✅ 自动包含 install 中的所有信息
+)
+```
+
+### 3. 条件目标处理
+```cmake
+# 动态管理条件目标
+if(USE_VULKAN)
+    add_library(mbgl-vulkan SHARED ${VULKAN_SOURCES})
+    install(TARGETS mbgl-vulkan
+        EXPORT MapLibreTargets  # 自动加入
+    )
+endif()
+
+if(USE_OPENGL)
+    add_library(mbgl-opengl SHARED ${OPENGL_SOURCES})
+    install(TARGETS mbgl-opengl
+        EXPORT MapLibreTargets  # 自动加入
+    )
+endif()
+
+# 一次导出包含所有条件目标
+export(EXPORT MapLibreTargets
+    FILE "MapLibreTargets.cmake"
+)
+```
+
+## 调试技巧
+
+### 检查导出内容
+```bash
+# 查看导出了哪些目标
+cmake --build . --target help | grep "Export"
+
+# 查看导出文件内容
+cat build/MapLibreTargets.cmake | grep "add_library"
+
+# 验证是否可以导入
+cmake -DCMAKE_PREFIX_PATH=./build -DMapLibre_DIR=./build ...
+```
+
+### 常见问题解决
+```cmake
+# 问题：目标未正确导出
+# 解决：确保所有目标都添加到 EXPORT 集
+list(APPEND ALL_TARGETS mbgl-core maplibre mbgl-vendor-icu)
+install(TARGETS ${ALL_TARGETS}
+    EXPORT MapLibreTargets
+    ...
+)
+
+# 问题：Android 库名冲突
+# 解决：使用 OUTPUT_NAME
+set_target_properties(maplibre PROPERTIES
+    OUTPUT_NAME "maplibre_${ANDROID_ABI}"
+)
+```
+
+## 总结对比表
+
+| 维度 | `export(TARGETS)` | `export(EXPORT)` | 推荐度 |
+|------|------------------|------------------|--------|
+| 维护性 | 差：手动维护列表 | 优：自动同步 | ⭐⭐⭐⭐⭐ |
+| 一致性 | 易出错 | 高：与 install 一致 | ⭐⭐⭐⭐⭐ |
+| 扩展性 | 差：需手动更新 | 优：添加即生效 | ⭐⭐⭐⭐⭐ |
+| 依赖处理 | 需手动包含 | 自动传播 | ⭐⭐⭐⭐⭐ |
+| 条件目标 | 复杂 | 简单 | ⭐⭐⭐⭐⭐ |
+| 学习成本 | 低 | 中 | ⭐⭐⭐⭐ |
+
+## 最终建议
+
+**对于 MapLibre 这类复杂的 Android NDK 项目，强烈推荐使用 `export(EXPORT)`**：
+
+1. **从项目开始**就使用 `install(TARGETS ... EXPORT)`
+2. **所有目标**都通过同一个 EXPORT 集管理
+3. **条件构建**的目标也添加到 EXPORT 集中
+4. **Android 特殊配置**通过条件编译处理
+5. **保持一致性**：构建树和安装树使用相同的逻辑
+
+这样既能保证开发阶段的便利性，又能确保发布版本的稳定性，是大型 C++ 项目的**最佳实践**。

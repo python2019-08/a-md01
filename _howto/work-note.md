@@ -19,7 +19,7 @@ python -X pycache_prefix=/tmp/_pycache  -O -u  /home/abner/abner2/zdev/ai/pytest
     /home/abner/abner2/zdev/ai/av/stability-ai/comfyui
     /home/abner/abner2/zdev/ai/lm/langchain2025-quick-start
 
-    slam + pointcloud + nerf + SAM 
+    slam + pointcloud + nerf + GaussianSplatting + SAM 
 (2) mapsme-organicmaps2024-1112/CMakeLists.txt  
     CMake-Cookbook-master 
     doc-cmake/Professional-CMake.docx
@@ -49,6 +49,9 @@ abner@abner-XPS:~$ sudo umount /mnt/mdisk2t
 https://github.com/ultralytics/ultralytics
 把前缀github改成 deepwiki：
 https://deepwiki.com/ultralytics/ultralytics
+
+
+
 
 <--------------------------------------->
 # 8.conda init
@@ -123,3 +126,11 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin　　　
 # 11. DYLD_FALLBACK_LIBRARY_PATH in macOS
 export DYLD_FALLBACK_LIBRARY_PATH=/Users/xxx/_work/prj/build/mac/nn/Debug/
  
+-----------------------------------------
+# 12. 
+```sh
+(base) abner@abner-XPS:~/.local/share/unity3d/Asset Store-5.x$ pwd
+    /home/abner/.local/share/unity3d/Asset Store-5.x 
+(base) abner@abner-XPS:~/.local/share/unity3d$ cd ~
+(base) abner@abner-XPS:~$ ls ~/.local/share/unity3d/Asset\ Store-5.x/  
+```
