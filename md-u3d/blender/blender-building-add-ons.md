@@ -1,3 +1,5 @@
+免费纹理资源 https://texture.ninja/textures/Brick/1
+
 # 1.blender最全的城市建筑插件测评
 2025-03-09 15:09:33
 https://www.bilibili.com/video/BV1iHRbYXEQL/?spm_id_from=333.337.search-card.all.click&vd_source=4212b105520112daf65694a1e5944e23
@@ -29,19 +31,94 @@ Terrain import is now a part of the blender-osm addon. Get it for free at https:
 ```
 
 ## 2-单独建筑
-###  2.1.Procedural Alleys
+###  2.1.Procedural Alleys 
+付费
+    Procedural Alleys 是 Blender 上小巷生成的最佳工具，专注狭窄街巷、后巷、曲线巷，一键生成、氛围拉满、细节丰富，适合快速制作亚洲风格小巷场景。
+>     若你需要大型城市，选 Ultimate City；
+>     若需要免费 + 定制，选 Buildify；
+>     若需要小巷 + 氛围，选 Procedural Alleys。     
+
+    维度 | Procedural Alleys | Buildify | Ultimate City
+    ---|-------------------|----------|--------------
+    价格 | $18（付费）       | 免费      | $40–$60（付费）
+    核心 | 小巷 / 街巷生成    | 建筑 / 街区生成 | 完整城市生成
+    场景 | 狭窄街巷、后巷、曲线巷 | 单栋 / 街区建筑 | 完整城市（建筑 + 路网 + 交通）
+    资产 | 小巷专用资产（800MB+） | 无内置资产，纯节点 | 250+ 城市资产
+    定制 | 中（参数 + 资产替换） | 高（纯节点） | 中（资产替换）
+    上手 | 低（面板操作） | 中（需节点基础） | 低（面板操作）
+    版本 | 3.4–4.2      | 3.2+          | 2.8–3.2（4.0+ 一般）
+    适合 | 小巷 / 后巷 / 曲线巷场景 | 建筑单体、真实数据城市 | 快速完整城市
 
 ###  2.2.Building Nodes
-   快速，欧式风格
+免费、开源
+   快速，欧式风格。
+   Building Nodes（BuildingNodes） 是 Blender 上一款**免费、开源**、几何节点驱动的程序化建筑生成插件，主打极简节点、面板式建筑逻辑、实时编辑，适合快速制作规则化楼房与街区。
+
+    全称：BuildingNodes（简称 Building Nodes）
+    作者：Durman（GitHub 开源）
+    价格：完全免费
+    版本：v1.0+（适配 Blender 3.2–4.2）
+    定位：面板式程序化建筑生成（类似预制板搭楼）
+    技术：基于 Geometry Nodes，极简节点逻辑，无需复杂数学
+
+编辑与导出
+> **可编辑**：生成后为普通网格，可手动修改、加细节、换材质
+> **导出友好**：低模优化，一键导出 FBX/OBJ 到 Unity/Unreal
+> **风格复用**：一套风格可应用到任意基础网格，批量生成建筑群
+
+
 ###  2.3.UItimate City Addon
+付费
     城市配套资产多，如交通灯、交通道、交通控制设备、石块等。
+
+    作者 / 平台：Blender Market 付费插件
+    版本：v1.1（适配 Blender 2.8–3.2，对 4.0+ 兼容性一般）
+    定位：资产库 + 程序化生成的一站式城市制作工具    
+
 ###  2.4.Buildit-Auto Generate Buildings
-   适合快速生成城市建筑群，支持多种风格。
-    
+付费
+   付费、模块化、一键式建筑生成插件，主打快速批量生成城市楼房，适合游戏、影视、可视化中的背景建筑与街区快速搭建。
+
+版本：v1.0（2023-07）
+适配：Blender 3.5+（含 4.0+）
+定位：模块化建筑生成器，以预制模块快速组合生成楼房
+技术：基于 Blender 内置模块系统，**非几何节点，生成后可直接编辑**
+
 ###  2.5.Buildify
+免费、开源
     随意编辑建筑形状，和Blend-Osm配合使用，非常方便。
+    下载地址  https://paveloliva.gumroad.com/l/buildify
+
+    Buildify 如何使用
+    Buildify 是一个基于 几何节点 (Geometry Nodes) 的 Blender 工具，它可以让你通过简单的网格操作（如挤出、缩放）快速生成程序化的建筑。 
+    对于最新的 Blender 4.4，由于它完全支持几何节点系统，你可以按照以下步骤使用：
+
+    1. 安装与导入
+    Buildify 本质上是一个包含几何节点预设的 .blend 文件，而不是传统的插件。 
+    下载文件：从 Pavel Oliva 的 Gumroad 下载 Buildify 的最新版本（建议下载专门针对 Blender 4.x 优化的版本，如果可用）。
+    追加 (Append)：在你的 Blender 4.4 工程中，点击 File > Append，定位到下载的 Buildify.blend 文件，进入 NodeTree 文件夹，选择其中的几何节点组并追加到当前文件。 
+
+    2. 基本使用步骤
+    创建底稿：在场景中新建一个平面（Plane）或简单的多边形网格。
+    添加修改器：
+    选中该网格，在 修改器属性 (Modifier Properties) 选项卡中点击 Add Modifier。
+    选择 Geometry Nodes，并在下拉菜单中指定刚才追加的 Buildify 节点。
+    编辑生成：进入编辑模式 (Edit Mode)，通过 E 键挤出 (Extrude) 边或面，或者移动顶点，建筑会自动根据你的网格轮廓实时生成楼层、窗户和屋顶。 
+
+    3. 自定义与优化 (针对 8GB 显存)
+    由于你使用的是 RTX 3060 Ti，在大规模城市生成时需注意：
+    模块替换：Buildify 使用集合（Collections）来存放模块（如窗户、门、墙）。你可以创建自己的低多边形模块放进对应的集合中，以减少渲染压力。
+    限制实例：在几何节点面板中，可以调整“楼层高度”或“每层模块数量”，避免瞬间生成数百万个高精度面片导致显存溢出。
+    Blosm 联动：如果你想生成现实世界的街道，可以将 Buildify 与 Blosm 插件 结合使用。Blosm 负责抓取地图数据，Buildify 负责将这些数据转化为 3D 建筑。 
+    4. 4.4 版本注意事项
+    原理化 BSDF 升级：由于 Blender 4.0 之后材质节点有重大变动，如果发现追加过来的建筑材质发黑或粉红，请在 Shader 编辑器中重新连接 Principled BSDF 节点的贴图接口。
+    应用修改器：如果你需要将生成的建筑导出到其他软件，记得点击修改器上的箭头并选择 Apply，将其转换为真正的网格模型。 
+
+
 ###  2.6. Auto-Building
+付费
     建筑类型丰富，主要是中世纪建筑。
+    付费、几何节点驱动、面板式的程序化建筑生成插件，主打面 / 边缘资产散射、自动布尔开孔、屋顶 / 立柱 / 基础一体化生成，适合快速制作细节丰富、风格多样的单体建筑与街区。
 
 ## 3-几何节点文件
 ###  3.1.Abandoned City Generator - Geometry Nodes
@@ -56,13 +133,17 @@ Terrain import is now a part of the blender-osm addon. Get it for free at https:
 
 ## 4-资产库类型    
 ###  4.1.Procedural Building Generator 2
+付费（约 $45–$55，含基础预设包）
     资产库类型，包含多种风格建筑模型。
 ###  4.2.Night And Day - Procedural City Buildings
+付费、几何节点驱动、昼夜一体化的程序化城市建筑插件，主打一键生成带日夜切换的低模城市建筑群，内置海量建筑 / 道路资产与视差映射窗户照明，
+适配：Blender 4.0+（稳定支持 4.1–4.2）
     包含白天和黑夜两种风格的建筑资产库。
 ###  4.3.Medieval City Generator
     中世纪风格建筑资产库。包含城堡建筑、城堡门、城堡门廊、城堡门廊门等。
-
+低价位、几何节点驱动、曲线绘制式的中世纪城市生成工具，主打快速绘制街区、低模高效、资产复用，适合快速搭建中世纪 / 奇幻风格的城镇、村庄与城堡场景。
 ## 5-辅助插件
+免费、开源
    Building Tools    
 
 ================================================

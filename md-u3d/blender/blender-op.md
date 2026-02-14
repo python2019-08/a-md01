@@ -1,3 +1,8 @@
+```sh
+export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH
+./blender
+```
+
 # 1.blender中的东西太多，找不到某个物体，只能在大纲里看到它。如何快速把视图对准要找的物体
 
 在Blender大纲（Outliner）中找到物体后，快速对准视图的核心是“选中+聚焦”，以下是4种高效方法，覆盖不同场景与键盘配置，可直接套用。

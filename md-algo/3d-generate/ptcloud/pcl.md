@@ -27,3 +27,93 @@ PCL（Point Cloud Library）的核心依赖可分为**必选依赖**（编译运
 - **Android NDK**：参考PCL官方`android-cmake`脚本，或使用vcpkg的Android triplet（如`arm64-android`）构建交叉编译依赖。
 
 需要我帮你整理 **Android NDK+CMake+PCL依赖配置的具体CMakeLists.txt模板** 吗？可直接用于编译PCL核心模块到Android平台。
+
+=======================================================================================
+
+# 2. PCL（Point Cloud Library）点云库学习记录
+
+https://github.com/HuangCongQing/pcl-learning.git
+
+ 
+PCL（Point Cloud Library）点云库  **个人开发环境：Ubuntu18.04**
+* 如有疑问，微信：shuangyu_ai 
+  * **Plus: _可承接点云处理相关项目，欢迎私聊_**
+  * **PCL微信交流群二维码每周都更新一次，请关注公众号【双愚】后台回复PCL加群**
+  * 更多自动驾驶相关交流群，欢迎扫码加入：[自动驾驶感知(PCL/ROS+DL)：技术交流群汇总(新版)](https://mp.weixin.qq.com/s?__biz=MzI4OTY1MjA3Mg==&mid=2247486575&idx=1&sn=3145b7a5e9dda45595e1b51aa7e45171&chksm=ec2aa068db5d297efec6ba982d6a73d2170ef09a01130b7f44819b01de46b30f13644347dbf2#rd) 
+
+* [**【本仓库测试pcd数据】**](./data)
+
+
+**墙裂建议先看下：[PCL(Point Cloud Library)学习指南&资料推荐](https://zhuanlan.zhihu.com/p/268524083)**
+
+**<font color='red'>PCL学习入门指南&代码实践(最新版)入门视频： </font> https://www.bilibili.com/video/BV1HS4y1y7AB**
+
+**代码对应系列笔记：[PCL(Point Cloud Library)学习记录（最新）](https://www.yuque.com/huangzhongqing/pcl)**
+
+
+<img src="assets/wechat_group(PCL).png" alt="微信交流群二维码" width="40%;" height="40%" />
+
+
+**相关项目实战:**
+
+* 3D-MOT(多目标检测和追踪):
+  [https://github.com/HuangCongQing/3D-LIDAR-Multi-Object-Tracking/tree/kitti](https://github.com/HuangCongQing/3D-LIDAR-Multi-Object-Tracking/tree/kitti)
+    * 需要学习ROS：https://github.com/HuangCongQing/ROS
+
+@[双愚](https://github.com/HuangCongQing/pcl-learning) , 若fork或star请注明来源
+
+> * 点云数据的处理可以采用获得广泛应用的Point Cloud Library (点云库，PCL库)。
+> * PCL库是一个最初发布于2013年的开源C++库。它实现了大量点云相关的通用算法和高效的数据管理。
+> * 支持多种操作系统平台，可在Windows、Linux、Android、Mac OS X、部分嵌入式实时系统上运行。如果说OpenCV是2D信息获取与处理的技术结晶，那么PCL在3D信息获取与处理上，就与OpenCV具有同等地位
+> * PCL是BSD授权方式，可以免费进行商业和学术应用。
+
+* 英文官网：https://pcl.readthedocs.io/projects/tutorials/en/latest/#
+  * https://pointclouds.org/
+* GitHub：https://github.com/PointCloudLibrary/pcl
+  * 学习基于pcl1.9.1：https://github.com/PointCloudLibrary/pcl/tree/pcl-1.9.1
+
+**Tips:**
+
+* ubuntu下使用PCL，需要写**CMakeLists.txt**文件，然后编译才可以生成可执行文件.
+* 可执行文件在build文件夹下，所以运行可执行文件时，后面添加参数的pcd文件，应放在build文件夹下才能获取到。**（注意文件路径）**
+* `make -j `   (-j 自动多线程， -j4 四线程)
+ 
+## 实战项目
+
+不理解的地方,欢迎提issue: https://github.com/HuangCongQing/pcl-learning/issues
+
+* 3D-MOT(多目标检测和追踪)
+  * https://github.com/HuangCongQing/3D-LIDAR-Multi-Object-Tracking/tree/kitti
+* 3D点云目标检测&语义分割-SOTA方法,代码,论文,数据集等
+  * https://github.com/HuangCongQing/3D-Point-Clouds
+
+## 相关链接
+
+* 公众号：点云PCL
+* https://github.com/Yochengliu/awesome-point-cloud-analysis
+* https://github.com/QingyongHu/SoTA-Point-Cloud
+* https://github.com/PointCloudLibrary/pcl
+* 参考书籍：点云库PCL学习教程，朱德海，北京航空航天大学出版社
+* Plus：ROS学习-https://github.com/HuangCongQing/ROS
+
+**入门资料：**
+- **<font color='red'>PCL学习入门指南&代码实践(最新版)入门视频： </font> https://www.bilibili.com/video/BV1HS4y1y7AB**
+- **视频**：[bilibili-PCL点云库官网教程](https://space.bilibili.com/504859351/channel/detail?cid=130387)
+- **点云库PCL学习教程书籍每章总结：**[https://github.com/MNewBie/PCL-Notes](https://github.com/MNewBie/PCL-Notes)
+- 百度网盘资料：
+
+链接：[https://pan.baidu.com/s/1ziq8s_kj5QpM8eXO_d6RJg](https://pan.baidu.com/s/1ziq8s_kj5QpM8eXO_d6RJg)<br />提取码：g6ny<br />
+
+**代码实践资料：**
+
+- 官方各模块示例(和对应的对象函数对照着看)【英文】：[https://pcl.readthedocs.io/projects/tutorials/en/latest/#](https://pcl.readthedocs.io/projects/tutorials/en/latest/#)
+- 官方各模块对应的对象和函数【英文】：
+  - [https://pointclouds.org/documentation/modules.html](https://pointclouds.org/documentation/modules.html)
+  - [https://pointclouds.org/](https://pointclouds.org/) 点击网站中的12宫图，没一格对应一个模块的对象函数详解
+- [黑马机器人系列文档：PCL-3D点云](http://robot.czxy.com/docs/pcl/)：[http://robot.czxy.com/docs/pcl/](http://robot.czxy.com/docs/pcl/)
+- [CSDN博主系列文章PCL学习(64篇)](https://www.cnblogs.com/li-yao7758258/category/954066.html)：[https://www.cnblogs.com/li-yao7758258/category/954066.html](https://www.cnblogs.com/li-yao7758258/category/954066.html)
+ 
+============================================================
+
+# 3.pcl 和 PyCOLMAP的关系
+
