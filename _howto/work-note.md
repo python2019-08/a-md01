@@ -1,23 +1,28 @@
+# 0. 启动 Codex Cli  
+  - 终端输入：codex --dangerously-bypass-approvals-and-sandbox 
+  - 或者codex --yolo 这两条命令随便哪条命令都可以
+  - 这是免安全审批的Codex的启动命令（就是不需要批准自动执行）
 
 
 # 1. pytest/clock/clock.py
-python -X pycache_prefix=/tmp/_pycache  -O -u  /home/abner/abner2/zdev/ai/pytest/clock/clock.py
+python -X pycache_prefix=/tmp/_pycache  -O -u  /home/abner/a2/zdev/ai/pytest/clock/clock.py
 > -O：优化模式，生成更精简的.pyc文件
 > -u：无缓冲输出  
 <--------------------------------------->
 
 # 2.    snipaste
-
+    https://zh.snipaste.com/ 
+    
 <--------------------------------------->
 
 # 3. ocr-text/multi-images-2-txt.sh
-  /home/abner/abner2/zdev/ai/av/a-story-video-maker/ocr-text/multi-images-2-txt.sh
+  /home/abner/a2/zdev/ai/av/a-story-video-maker/ocr-text/multi-images-2-txt.sh
 
 <--------------------------------------->
 # 4.my list
 (1) ai + ffmpeg +   
-    /home/abner/abner2/zdev/ai/av/stability-ai/comfyui
-    /home/abner/abner2/zdev/ai/lm/langchain2025-quick-start
+    /home/abner/a2/zdev/ai/av/stability-ai/comfyui
+    /home/abner/a2/zdev/ai/lm/langchain2025-quick-start
 
     slam + pointcloud + nerf + GaussianSplatting + SAM 
 (2) mapsme-organicmaps2024-1112/CMakeLists.txt  
@@ -25,9 +30,7 @@ python -X pycache_prefix=/tmp/_pycache  -O -u  /home/abner/abner2/zdev/ai/pytest
     doc-cmake/Professional-CMake.docx
  
     Geographical-Adventures    +    Unity-Shader_rumen-jingyao.pdf
-   
-(3) golang + rust + reactJS 
-   + webGL 
+ 
  
 <--------------------------------------->
 # 5.docker run -i -t 
@@ -118,9 +121,9 @@ conda remove -n pytorch-py36 --all
 ```
 ----------------------------------------
 # 10.golang env var 
-export GOROOT=$HOME/programs/go1.20.6.linux-amd64
+export GOROOT=$HOME/programs/go
 export GOPATH=$HOME/abner2/zdev/gopath
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin　　　
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 ----------------------------------------
 # 11. DYLD_FALLBACK_LIBRARY_PATH in macOS

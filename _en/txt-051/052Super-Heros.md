@@ -100,21 +100,28 @@ Most importantly, true world-saving relies on **team work**. When heroes collabo
 ========================================================
 Selective Questions:
 (*If all the five questions above have already been finished, you can choose to discuss the following ones.)
-
+========================================================
 # 6. If you saw Batman in the corner of your room when you woke up, what would you do?
+
+If I woke up and saw Batman standing in the corner of my room, I would first freeze in surprise and stay calm instead of panicking.
+I would slowly sit up and watch him quietly to see what he wants. Then I would ask him gently why he is here and if he needs my help. I wouldn’t run or shout, because Batman is a hero who protects people. I would feel shocked but also a little excited to meet him in person.
 
 ========================================================
 # 7. Describe a hero in your mind.
-
+In my mind, a real hero is someone who is brave, kind and responsible.
+They don’t need superpowers or fancy costumes. A hero is willing to help others without asking for anything in return, stays calm in danger, and always sticks to what is right. They are humble, strong inside, and care about people around them. Ordinary people who sacrifice their own time and comfort to protect others are also true heroes in my heart.
 ========================================================
 # 8. Do you want to make friends with heroes? Why?
-
+Yes, I really want to make friends with heroes.
+Because heroes are usually kind, brave and responsible. Being around them can inspire me to become a better person. They have positive energy and always choose to do the right thing. I can learn patience, courage and kindness from them, and they will also be reliable friends who can give support when I meet difficulties.
 ========================================================
-# 9. Where doheroes live?
-
+# 9. Where do heroes live?
+Heroes don’t just live in fancy skyscrapers or secret hideouts.
+Most real heroes live right around us: in neighborhoods, ordinary apartments, small towns and quiet streets. They can be our neighbors, teachers, doctors, police officers, or even everyday people. Some fictional heroes live in mysterious mansions, hidden caves or big modern cities, but the true heroes live simply among common people, quietly protecting and caring for others.
 ========================================================
 # 10. Is there anything that you want to talk to heroes?
-  
+Yes, I have a lot I want to say to heroes.
+First, I want to thank them sincerely for being brave and always standing up to protect others. I’d tell them I admire their kindness, courage and selflessness. I also want to ask them how they stay strong when facing difficulties, and learn how to keep a good heart in daily life. Besides, I would tell them I want to follow their example and become a warm and helpful person in my own life.  
 ========================================================
 Further Reading:
 So. You want to be a superhero?

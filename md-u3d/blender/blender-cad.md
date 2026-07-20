@@ -69,3 +69,98 @@ Scale：如果 CAD 是毫米，建议缩放设为 0.001。
 ## 💡 避坑小指南：
 路径不能有中文：如果你的安装路径或 DWG 文件名包含中文，ODA 有时会崩溃。
 版本匹配：如果导入失败，尝试打开 ODA 独立软件，手动将 DWG 转换为 R12 ASCII DXF 格式，再进入 Blender 导入。
+
+============================================================
+# 4.开源的cad软件
+
+有，而且有不少成熟、免费、跨平台的开源CAD软件，覆盖**2D绘图**、**3D参数化建模**、**脚本建模**等不同场景，完全可以替代商业CAD做日常设计、图纸处理与模型导出。下面按用途分类推荐，附核心特点与适用场景。
+
+---
+
+### 一、2D 开源CAD（替代AutoCAD 2D、处理DWG/DXF）
+#### 1. LibreCAD（最常用、轻量）
+- **定位**：纯2D开源CAD，GPL协议，**完全免费**。
+- **核心能力**：
+  - 支持**DWG、DXF**读写（新版兼容性更好）。
+  - 图层、块、标注、测量、打印、PDF/SVG导出。
+  - 界面接近AutoCAD，上手快，对低配电脑友好。
+- **适用**：建筑平面图、机械零件图、施工图、底图处理。
+- **平台**：Windows/macOS/Linux（含国产Linux）。
+
+#### 2. QCAD（功能更全、社区版免费）
+- **定位**：工业级2D CAD，社区版免费，专业版付费。
+- **优势**：
+  - 绘图精度高、对象捕捉/约束完善。
+  - 支持DXF、DWG、PDF、SVG，自带符号库与模板。
+  - 插件丰富，可扩展批量处理、BIM接口。
+- **适用**：机械、土木、市政等专业2D制图。
+
+---
+
+### 二、3D 开源CAD（机械/产品/建筑建模）
+#### 1. FreeCAD（全能型、最推荐）
+  https://github.com/FreeCAD/FreeCAD.git
+- **定位**：**参数化3D建模**，LGPL开源，跨平台。
+- **核心亮点**：
+  - 工作台模块化：零件设计、装配、草图、BIM、渲染、CAM、有限元分析。
+  - 支持**STEP、IGES、STL、DXF、DWG、IFC（BIM）、OBJ、DAE**。
+  - 可做机械设计、产品建模、建筑BIM、3D打印模型。
+  - 与Blender、MeshLab、OpenFOAM等工具互通。
+- **适用**：机械工程、产品设计、建筑建模、创客/3D打印。
+- **平台**：Windows/macOS/Linux。
+
+#### 2. OpenSCAD（脚本化3D建模）
+- **定位**：**代码驱动建模**，无可视化界面，纯脚本定义模型。
+- **特点**：
+  - 语法简单，适合规则零件、参数化批量生成。
+  - 输出STL、OFF、DXF，适合3D打印与机械零件。
+  - 极轻量、启动快，适合程序员/创客。
+- **适用**：规则几何、可复用参数化零件、批量建模。
+
+#### 3. SolveSpace（轻量参数化3D）
+- **定位**：极简参数化CAD，专注机械约束与草图。
+- **优势**：
+  - 体积小、启动快、对硬件要求极低。
+  - 2D草图+3D拉伸/旋转/布尔，适合简单零件与机构。
+  - 导出STEP、DXF、STL、PDF。
+- **适用**：简单机械零件、教学、快速原型。
+
+---
+
+### 三、3D 查看/转换工具（辅助CAD）
+#### CAD Assistant（Open CASCADE 官方）
+- **定位**：免费3D模型查看与格式转换工具。
+- **能力**：
+  - 打开**STEP、IGES、BREP、IFC、DXF、SAT、GLTF、FBX、3DS**等。
+  - 测量、剖切、装配浏览、批量转换。
+- **适用**：跨软件格式互通、模型审核、轻量化查看。
+
+---
+
+### 四、开源CAD 对比速览
+| 软件 | 类型 | 核心优势 | 格式支持 | 适用场景 |
+|---|---|---|---|---|
+| LibreCAD | 2D | 轻量、DWG/DXF友好、免费 | DXF/DWG/PDF/SVG | 建筑/机械2D图纸 |
+| QCAD | 2D | 专业、精度高、插件多 | DXF/DWG/PDF | 工业2D制图 |
+| FreeCAD | 3D | 参数化、全功能、BIM/CAM | STEP/IGES/STL/DWG/IFC | 机械/产品/建筑建模 |
+| OpenSCAD | 3D | 脚本化、批量、3D打印友好 | STL/DXF | 规则零件、参数化建模 |
+| SolveSpace | 3D | 极简、约束强、轻量 | STEP/DXF/STL | 简单机械零件 |
+| CAD Assistant | 查看/转换 | 格式全、跨平台 | 几乎所有主流3D格式 | 模型查看、格式转换 |
+
+---
+
+### 五、与Blender配合的最佳方案
+1. **2D图纸**：用**LibreCAD**打开DWG → 清理 → 导出**DXF（R12）** → 导入Blender。
+2. **3D模型**：用**FreeCAD**建模 → 导出**STEP/STL/OBJ** → 导入Blender。
+3. **格式互通**：用**CAD Assistant**做中间转换，解决兼容性问题。
+
+---
+
+需要我给你整理一份**DWG→DXF→Blender**的详细操作步骤（含LibreCAD导出与Blender导入的最佳参数），你直接照着做即可吗？
+
+=======================================================
+# 5.Autodesk_DWG_TrueView 
+
+DWG_TrueView : View and convert 2D and 3D DWG files for free Open DWG files or convert them to work with older versions of AutoCAD software.
+ 
+Autodesk_DWG_TrueView_2026_en-US_setup_webinstall.exe:  https://www.autodesk.com/products/dwg-trueview/overview

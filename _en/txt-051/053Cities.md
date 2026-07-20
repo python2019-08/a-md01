@@ -128,18 +128,32 @@ Selective Questions:
 ========================================================
 # 6. What is the most important part of a city?
 
+I think the most important part of a city is its public facilities and transportation.
+Good transportation connects every corner of the city and makes people’s daily travel convenient. Meanwhile, parks, hospitals, schools and markets are also essential. They meet people’s basic needs for living, studying and relaxing, and make the city comfortable and livable for everyone.
 ========================================================
 # 7. What aspects of life in the city would you complain about?
-
+There are several aspects of city life that I would complain about.
+First, there’s heavy traffic and crowded public transport during rush hours. Also, the noise pollution from cars and crowds is quite annoying. Besides, the cost of living is much higher than in the countryside, and the air quality is sometimes not very good. What’s more, people often feel stressed and lack quiet places to relax in the city.
 ========================================================
 # 8. Would you enjoy designing a new city?
-
+Yes, I would really enjoy designing a new city.
+It would be fun to plan clean streets, green parks, convenient public transport and quiet living areas. I would also add comfortable schools, hospitals and shared leisure spaces. I want to make a city that is eco-friendly, safe, and suitable for people of all ages to live happily.
 ========================================================
 # 9. How can we make our cities safer places to live?
 
+We can make cities safer in many practical ways.
+First, add more street lights and public surveillance cameras to light up dark corners. Second, increase regular patrols to keep public order. Besides, we should set clear traffic rules and build safe pedestrian and bike lanes. It’s also important to educate people on safety awareness and improve emergency facilities. Green spaces and neat neighborhood management can also help reduce risks and make the city safer to live in.
 ========================================================
 # 10. What are some tourist attractions in your city?
-  
+  If you come to Beijing, there are many famous tourist attractions worth visiting.
+First, the **Forbidden City (Palace Museum)** is a must-see. It was the imperial palace of the Ming and Qing dynasties, with magnificent ancient buildings and a huge collection of cultural relics.
+
+Then, the **Badaling Great Wall**, a world cultural heritage, is a symbol of the Chinese nation.
+Besides, **Temple of Heaven** is where emperors prayed for good harvests, and **Summer Palace** is the largest imperial garden in China.
+There are also **Tian'anmen Square**, the **National Museum of China**, and the old streets like **Nanluoguxiang** that show traditional Beijing style.
+
+
+Would you like me to make a **one-day tour plan** for these attractions?
 ========================================================
 Further Reading:
 Where is the world's densest city?

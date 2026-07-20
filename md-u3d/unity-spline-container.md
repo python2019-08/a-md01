@@ -46,3 +46,74 @@ public class SplineTest : MonoBehaviour {
 
 你可以查看 Unity 官方 Splines 示例项目 学习更高级的案例。
 你是打算用它来做物体的移动路径（如过山车），还是用来生成场景模型（如围栏或道路）？
+
+==================================================================
+
+# 2. 利用已有围墙片段沿着一个路线建围墙
+
+在Unity中，利用已有围墙片段沿着一个路线建围墙，可通过使用插件或编写脚本实现，以下是具体方法：
+
+### 1.使用PathCreator插件
+- **安装插件**：从[GitHub](https://github.com/SebLague/Path-Creator)下载插件，解压后将`Assets/PathCreator`文件夹拖入Unity项目的`Assets`目录。
+- **创建路径**：右键点击Hierarchy面板，选择“PathCreator > 创建Path Creator对象”。选中该对象，可在Scene视图中通过拖动控制点编辑路径形状，也可在Inspector面板设置路径为闭合。
+- **编写脚本实例化围墙**：将以下脚本挂载到一个空物体上。
+```csharp
+using UnityEngine;
+
+public class WallPlacer : MonoBehaviour
+{
+    public GameObject wallPrefab;
+    public PathCreator pathCreator;
+    public int wallCount = 10;
+
+    void Start()
+    {
+        for (int i = 0; i < wallCount; i++)
+        {
+            float t = (float)i / (wallCount - 1);
+            Vector3 positionOnPath = pathCreator.path.GetPointAtDistance(t);
+            Quaternion rotationOnPath = pathCreator.path.GetRotationAtDistance(t);
+            Instantiate(wallPrefab, positionOnPath, rotationOnPath);
+        }
+    }
+}
+```
+- **设置参数**：在Inspector面板中，将围墙片段预制体拖到“wallPrefab”字段，将创建的Path Creator对象拖到“pathCreator”字段，可调整“wallCount”控制围墙数量。
+
+### 2.使用Splines工具包
+- **安装工具包**：在Unity 2022.2及以上版本中，打开Package Manager，搜索并安装Splines包。
+- **绘制样条路径**：选择“Create > Spline > Draw Spline”，在场景内点击放置点来绘制路径，可按住并拖拽鼠标添加曲线，画完后按Esc键结束。
+- **沿路径实例化围墙**：选中绘制的样条，添加Instantiate组件。在其Inspector面板中，将围墙预制体设置为“Prefab”，并根据需要调整“Count”等参数，即可沿着样条路径生成围墙。
+
+### 3.编写脚本实现
+- **创建空物体并添加脚本**：在Hierarchy面板中创建一个空物体，添加新的C#脚本，如“WallAlongLine.cs”。
+- **编写脚本代码**：以下代码可根据一系列点生成围墙。
+```csharp
+using System.Collections.Generic;
+using UnityEngine;
+
+public class WallAlongLine : MonoBehaviour
+{
+    public List<Vector3> vector3s = new List<Vector3>();
+    public GameObject wallPrefab;
+
+    void Start()
+    {
+        for (int i = 0; i < vector3s.Count - 1; i++)
+        {
+            Vector3 start = vector3s[i];
+            Vector3 end = vector3s[i + 1];
+            CreateWall(wallPrefab, start, end);
+        }
+        CreateWall(wallPrefab, vector3s[vector3s.Count - 1], vector3s[0]);
+    }
+
+    void CreateWall(GameObject obj, Vector3 start, Vector3 end)
+    {
+        GameObject temp = Instantiate(obj, start + (end - start) / 2, Quaternion.LookRotation(end - start, Vector3.up));
+        float distance = Vector3.Distance(start, end);
+        temp.transform.localScale = new Vector3(distance, temp.transform.localScale.y, temp.transform.localScale.z);
+    }
+}
+```
+- **设置路径点和围墙预制体**：在Inspector面板中，手动添加路径点到“vector3s”列表，将围墙片段预制体拖到“wallPrefab”字段。

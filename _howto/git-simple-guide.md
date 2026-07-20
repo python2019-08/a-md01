@@ -4,7 +4,7 @@
 ;*douyin.com;*douyinstatic.com;*.bytedance.com;*.douyinvod.com;*zijieapi.com;*bytescm.com;*bytednsdoc.com;*oceanengine.com;*bytetcc.com;*douyinstatic.com;*bytetos.com;*zhihu.com;*qq.com;*doubao.com;*tencent.com;*163.com;*bing.com;*baidu.com;*bilibili.com;*jd.com;*csdn.net;*zhipin.com;*liepin.com
 ## for ubuntu-linux
 
-export no_proxy="localhost,127.0.0.1,::1,*douyin.com,*douyinstatic.com,*.bytedance.com,*.douyinvod.com,*zijieapi.com,*bytescm.com,*bytednsdoc.com,*oceanengine.com,*bytetcc.com,*douyinstatic.com,*bytetos.com,*zhihu.com,*qq.com,*doubao.com,*tencent.com,*163.com,*bing.com,*baidu.com,*bilibili.com,*jd.com,*csdn.net,*zhipin.com,*liepin.com,*live.com"
+export no_proxy="localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1,*douyin.com,*douyinstatic.com,*.bytedance.com,*.douyinvod.com,*zijieapi.com,*bytescm.com,*bytednsdoc.com,*oceanengine.com,*bytetcc.com,*douyinstatic.com,*bytetos.com,*zhihu.com,*qq.com,*doubao.com,*tencent.com,*163.com,*bing.com,*baidu.com,*bilibili.com,*jd.com,*csdn.net,*zhipin.com,*liepin.com,*live.com"
 
  
 ==========================================================================

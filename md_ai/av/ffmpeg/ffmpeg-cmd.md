@@ -128,3 +128,72 @@ file '1-4/outVideo0.mp4'
 
 
 修改后重新运行命令，即可正常拼接视频。推荐优先使用方法 1，操作更简单直接。
+
+==============================================
+# 4. ffmpeg -f gdigrab录屏
+
+### Windows（gdigrab）
+#### 1. 基础命令（无音频）
+```bash
+ffmpeg -f gdigrab -framerate 30 \
+  -offset_x 100 -offset_y 50 \
+  -video_size 800x600 \
+  -show_region 1 \
+  -i desktop -c:v libx264 -preset fast output.mp4
+```
+- `-offset_x/y 100/50`：区域左上角起点
+- `-video_size 800x600`：区域宽×高
+- `-show_region 1`：红框标出录制区（方便对位）
+
+#### 2. 带系统音频+麦克风
+```bash
+ffmpeg -f gdigrab -framerate 30 \
+  -offset_x 100 -offset_y 50 -video_size 800x600 \
+  -i desktop \
+  -f dshow -i audio="麦克风 (Realtek(R) Audio)" \
+  -f dshow -i audio="立体声混音 (Realtek(R) Audio)" \
+  -c:v libx264 -c:a aac -b:a 128k output.mp4
+```
+- 用 `ffmpeg -list_devices true -f dshow -i dummy` 查音频设备名
+
+---
+
+### macOS（avfoundation）
+```bash
+ffmpeg -f avfoundation -framerate 30 -i "1" \
+  -vf "crop=800:600:100:50" \
+  -c:v libx264 -preset fast output.mp4
+```
+- `crop=w:h:x:y`：宽、高、X偏移、Y偏移
+
+---
+
+### Linux（X11/x11grab）
+```bash
+ffmpeg -f x11grab -framerate 30 \
+  -video_size 800x600 -i :0.0+100,50 \
+  -c:v libx264 output.mp4
+```
+- `:0.0+100,50`：屏幕ID+起点坐标
+
+---
+
+### 常用参数速查
+| 参数 | 说明 |
+|---|---|
+| `-f gdigrab` | Windows 屏幕捕获 |
+| `-framerate 30` | 帧率（常用 15/30/60） |
+| `-offset_x/y` | 区域起点（左上角为 0,0） |
+| `-video_size WxH` | 区域尺寸 |
+| `-show_region 1` | 显示录制红框 |
+| `-c:v libx264` | H.264 编码（兼容性好） |
+| `-preset fast` | 编码速度/质量平衡 |
+
+---
+
+### 提示
+- 坐标与尺寸不要超出屏幕分辨率
+- 高分辨率+高帧率建议用 `-preset medium` 或更低
+- 停止录制：终端按 `q` 或 `Ctrl+C`
+
+要不要我帮你生成一个**一键录制脚本**，自动适配屏幕分辨率并保存常用区域预设？

@@ -30,13 +30,14 @@
 
 ### **3. 命令对比**
 - **使用 CRA 创建 TypeScript 项目**：
-  ```bash
-  npx create-react-app my-app --template typescript
-  ```
+```bash
+npx create-react-app my-app --template typescript
+```
 - **使用 Vite 创建 React + TypeScript 项目**：
-  ```bash
-  pnpm create vite my-app --template react-ts
-  ```
+```bash
+pnpm create vite my-app --template react-ts
+npm create vite mapapp32 --template react-ts
+```
 
 
 ### **4. 推荐选择 Vite 的理由**
@@ -744,3 +745,18 @@ const nameInput = useInput("张三");
 ### 总结建议
 小型项目：不需要封装，直接写受控组件，保持单向流的透明性。
 中大型表单项目：不要自己封装，直接上 React Hook Form。它能解决双向绑定的繁琐，同时保持高性能。
+
+===============================
+
+# 7.React 的类组件（Class Component）和函数组件（Function Component） 
+
+ **类组件** 是 React 在 2019 年（Hooks 发布）之前的唯一主流写法。
+
+ **函数组件** 是 React 在 2019 年（Hooks 发布）之后的主流写法。
+
+你现在上手项目，该学哪种？
+结论很简单：**死磕函数组件（Function Components）即可**。
+> 虽然 React 官方表示类组件依然受支持（不会被废弃），但在现代开发中：
+> 新项目：99% 的新项目都只用函数组件。
+> 社区生态：像刚才提到的 React Hook Form，以及常用的 React Router，其最新版本基本都是基于 Hooks 设计的，在类组件里用起来非常麻烦。
+> 性能与体积：函数组件在压缩混淆代码时效果更好，性能优化也更直观。
