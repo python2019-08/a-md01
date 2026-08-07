@@ -24,7 +24,7 @@ python -X pycache_prefix=/tmp/_pycache  -O -u  /home/abner/a2/zdev/ai/pytest/clo
     /home/abner/a2/zdev/ai/av/stability-ai/comfyui
     /home/abner/a2/zdev/ai/lm/langchain2025-quick-start
 
-    slam + pointcloud + nerf + GaussianSplatting + SAM 
+    slam + pointcloud + GaussianSplatting + SAM 
 (2) mapsme-organicmaps2024-1112/CMakeLists.txt  
     CMake-Cookbook-master 
     doc-cmake/Professional-CMake.docx
@@ -38,7 +38,7 @@ docker run -i -t -v ./:/guopu:rw --gpus all --shm-size 16G nvidia/cuda:12.4.1-cu
  
 
 <--------------------------------------->
-# 6.
+# 6. mount /mnt/mdisk2t 
 abner@abner-XPS:~$ sudo mkdir /mnt/mdisk2t
 abner@abner-XPS:~$ sudo mount -t ntfs-3g /dev/sdc1 /mnt/mdisk2t
 abner@abner-XPS:~$ sudo umount /mnt/mdisk2t 

@@ -10,7 +10,7 @@ Free Talk with Topic Ⅰ– Lesson 35 Extreme Sport
 > 
 People are drawn to extreme sports for a mix of emotional, psychological, and experiential reasons, often rooted in a desire to break from the ordinary.  
   人们被极限运动吸引是出于情感、心理和体验的原因，往往植根于打破平凡的欲望。
-One key driver is the thrill of doing something **exciting**. Unlike routine activities that might feel **boring**, extreme sports—whether it’s skydiving, rock climbing, or big-wave surfing----deliver intense adrenaline[英/əˈdrenəlɪn/美/əˈdrenəlɪn/n.肾上腺素] rushes. The high-stakes nature of these sports, where split-second decisions matter, creates a sense of excitement that’s hard to replicate in daily life.  
+One key driver is the thrill of doing something **exciting**. Unlike routine activities that might feel **boring**, extreme sports———whether it’s skydiving, rock climbing, or big-wave surfing----deliver intense adrenaline[英/əˈdrenəlɪn/美/əˈdrenəlɪn/n.肾上腺素] rushes. The high-stakes nature of these sports, where split-second decisions matter, creates a sense of excitement that’s hard to replicate in daily life.  
   一个关键的驱动力是做一些令人兴奋的事情的快感。与可能感觉**无聊**的常规活动不同，极限运动——无论是跳伞、攀岩还是大浪冲浪——都会带来强烈的肾上腺素激增。这些运动的高风险性质，即瞬间的决定很重要，创造了一种在日常生活中难以复制的兴奋感。  
 Many also seek the **challenge** they present. Pushing physical and mental limits—mastering a difficult trick, scaling a steep cliff, or navigating rough terrain—brings a profound sense of accomplishment. Overcoming these challenges builds resilience[英/rɪˈzɪliəns/美/rɪˈzɪliəns/] and confidence, making the effort feel deeply rewarding.  
   许多人还寻求他们提出的**挑战**。突破身心极限——掌握一个困难的技巧、攀登陡峭的悬崖或在崎岖的地形上航行——会带来深刻的成就感。克服这些挑战可以建立韧性和信心，使努力感到非常有回报。 
