@@ -122,7 +122,7 @@ conda remove -n pytorch-py36 --all
 ----------------------------------------
 # 10.golang env var 
 export GOROOT=$HOME/programs/go
-export GOPATH=$HOME/abner2/zdev/gopath
+export GOPATH=$HOME/a2/zdev/gopath
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 ----------------------------------------
