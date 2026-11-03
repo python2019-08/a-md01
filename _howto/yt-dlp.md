@@ -57,13 +57,9 @@ sudo apt install ffmpeg
 
 ## ✅最稳妥完整命令（YouTube，同时获取手动+自动字幕，中英，嵌入视频，输出mkv）
 ```bash
-yt-dlp \
---write-subs \
---write-auto-subs \
---sub-langs "zh-Hans,zh‑CN,en" \
---convert-subs srt \
---embed-subs \
---merge-output-format mkv \
+yt-dlp  --write-subs  --write-auto-subs \
+--sub-langs "zh-Hans,zh‑CN,en" --convert-subs srt \
+--embed-subs  --merge-output-format mkv \
 --proxy http://127.0.0.1:7897 \
 "https://www.youtube.com/watch?v=J2mkbDb8b4k&list=PLGHe6Moaz52My7w7pr3jpDL_2FqzljfWd"
 
@@ -71,7 +67,7 @@ yt-dlp \
 yt-dlp --write-subs --write-auto-subs --sub-langs "en" --convert-subs srt \
 --embed-subs --merge-output-format mkv \
 --proxy http://127.0.0.1:7897 \
-"https://www.youtube.com/watch?v=pHlmN9Q28XM"
+"https://www.youtube.com/watch?v=H8Fo0mfyab0&list=PLOs8m1ECfMkhhGXVMbcz5GIs52jlE1zV-"
 
 ```
 参数解释：

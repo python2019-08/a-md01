@@ -1,0 +1,4 @@
+Q6: Have you ever optimized rendering performance? What common rendering optimizations do you know?
+
+Answer:
+Yes. Common optimizations: frustum culling, occlusion culling, LOD, instanced rendering, texture compression, mipmap, batch draw call reduction, state sorting, early-z test, shader simplification, and precomputation of lighting data. I also profile GPU bottlenecks to see whether it is vertex-bound, fragment-bound or texture-bound before optimization.

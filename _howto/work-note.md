@@ -1,9 +1,12 @@
-# 0. 启动 Codex Cli  
+# 0. 启动 vibe coding 
+
+## 0.1Codex Cli  
   - 终端输入：codex --dangerously-bypass-approvals-and-sandbox 
   - 或者codex --yolo 这两条命令随便哪条命令都可以
   - 这是免安全审批的Codex的启动命令（就是不需要批准自动执行）
 
-
+ 
+<!-- --------------------------------- -->
 # 1. pytest/clock/clock.py
 python -X pycache_prefix=/tmp/_pycache  -O -u  /home/abner/a2/zdev/ai/pytest/clock/clock.py
 > -O：优化模式，生成更精简的.pyc文件

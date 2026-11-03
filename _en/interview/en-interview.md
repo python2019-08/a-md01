@@ -1,4 +1,4 @@
-# Differences in quality‑requirements: Internet‑company map apps vs OEM‑built vehicle navigation apps 
+# t01.Differences in quality‑requirements: Internet‑company map apps vs OEM‑built vehicle navigation apps 
  <!-- 
  Revised: Quality‑requirement differences between internet‑company map apps and OEM‑preinstalled vehicle‑navigation apps 
  -->
@@ -36,3 +36,8 @@ For OEM navigation, **functional‑safety risk ranks highest**. Incorrect naviga
 > Key takeaway: Internet‑facing map apps have higher bar for user‑experience quality due to free user switching. OEM navigation imposes rigid automotive‑safety standards for vehicle‑system interaction, yet tolerates more sub‑optimal user‑experience outcomes because users cannot uninstall pre‑loaded software.
 
 If you want, I can condense this into short bullet‑points for presentation slides.
+
+========================================
+========================================
+
+# t02.

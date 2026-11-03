@@ -4,7 +4,7 @@
 ### **0.**
 ```bash
 # mq: my best practice   13network
-inputPrefix=pruduce_agent_req1
+inputPrefix=0.req--smart-patrol-alarm-robot-sys
 docxName=${inputPrefix}.docx
 outMdName=${inputPrefix}.md
 

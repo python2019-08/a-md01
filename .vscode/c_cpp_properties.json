@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${workspaceFolder}/.vscode/browse.vc.db",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/opt/ros/jazzy/include/**",
+        "/home/abner/a2/zdev/a-md/md_CMake/cmake-examples/01-basic/B-hello-headers/include/**",
+        "/home/abner/a2/zdev/a-md/md_CMake/cmake-examples/01-basic/C-static-library/include/**",
+        "/home/abner/a2/zdev/a-md/md_CMake/cmake-examples/01-basic/D-shared-library/include/**",
+        "/home/abner/a2/zdev/a-md/md_CMake/cmake-examples/01-basic/E-installing/include/**",
+        "/home/abner/a2/zdev/a-md/md_CMake/cmake-examples/06-installer/deb/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ros2",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++17"
+    }
+  ],
+  "version": 4
+}
