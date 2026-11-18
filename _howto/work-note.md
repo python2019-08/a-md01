@@ -140,3 +140,12 @@ export DYLD_FALLBACK_LIBRARY_PATH=/Users/xxx/_work/prj/build/mac/nn/Debug/
 (base) abner@abner-XPS:~/.local/share/unity3d$ cd ~
 (base) abner@abner-XPS:~$ ls ~/.local/share/unity3d/Asset\ Store-5.x/  
 ```
+
+# 13. mp3mp4repeater
+```sh
+conda activate av
+cd  ~/a2/zdev/ai/av/mp3mp4repeater
+(av) a@aX:~/a2/zdev/ai/av/mp3mp4repeater$ python  src/v1/main_repeater01.py 
+```
+
+ 

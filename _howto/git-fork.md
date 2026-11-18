@@ -139,13 +139,15 @@ git push origin main
 
 =============================================
 
-# ch03.GitHub上 fork了autoware项目后，tags 没有fork过来
+# ch04.GitHub上 fork了autoware项目后，tags 没有fork过来
 
 这是 GitHub 默认的机制。无论是通过网页端的 Fork 按钮，还是 Sync fork 一键同步，GitHub 都只会复制和同步分支（Branches），默认是不会同步任何标签（Tags）的。
 如果你在本地开发 Autoware 或者是编译特定版本的 ROS 节点，缺少 Tags 会导致无法拉取特定的稳定发布版（如 v1.0.0 等）。
 要将原作者（Upstream）的全部 Tags 同步到你自己的 GitHub 仓库中，你需要通过本地命令行强行将 Tags 推送上去。请依次在本地终端执行以下 4 行命令：
 
 ## 命令行同步 Tags 步骤
+
+
 ```bash
 # 0. 删掉刚刚配错的那个错误的 upstream 路径
 # git remote remove upstream
@@ -168,6 +170,30 @@ git push origin --tags
 如果在执行 git push origin --tags 时遇到报错权限拒绝（Permission Denied），可以告诉我：
 • 你目前使用的是 HTTPS 的 Personal Access Token (PAT) 还是 SSH 密钥 连的 GitHub？
 
+=================================================
+
+# ch05.git clone 后，没有把tag下载下来的情况
+默认情况下，当你运行 git clone 时，所有的 Tag（标签）其实都已经完整地下载到你的本地了。
+
+如果你运行 git tag 出来是空的，说明你在 clone 时可能误加了某些限制参数：
+##  原因一：使用了 --depth 浅克隆
+如果你为了加快下载速度，用了类似 git clone --depth 1 [URL] 的命令，Git 只会下载最新的一次提交，而不会下载历史 Tag。
+	• 修复方法：在项目目录下运行以下命令，把历史 Tag 补全拉取下来：
+```bash
+git fetch --tags --unshallow
+```
+## 原因二：使用了 --no-tags 参数
+显式地告诉 Git 不要克隆任何标签。
+
+修复方法：运行以下命令手动强制拉取远程所有标签：
+```sh
+git fetch --tags
+```
+
+## 附：基于 Tag 创建一个新分支进行开发（推荐）
+```bash
+git checkout -b my_dev_branch v1.2.0
+```
 
 ======================================================
 
@@ -258,3 +284,46 @@ git branch
 git push -u origin 你的新分支名
 ```
 请问你为这个基于 2.0.0 的新分支起好名字了吗？如果在创建时终端弹出了任何关于未提交改动（local changes）的终止警告，请随时把提示发给我。
+
+=====================================================
+# ch06. Git Tag 是某个 commit id 起的别名 / 标记
+ 
+✅ 一句话总结：
+**Git Tag 可以理解为给某个 commit id 起的别名/标记，方便人记忆，不用抄一长串哈希。**
+
+
+分两种 tag：轻量标签（lightweight tag）和附注标签（Annotated Tag）    
+```bash
+# (1) 轻量标签（lightweight tag）
+#     本质就是一个**指针**，直接指向一个 commit 对象，没有额外信息，就只是 commit id 的别名。
+
+# • 在当前分支的最新提交（HEAD）上，创建一个名为 v1.0.0 的轻量标签（Lightweight Tag）。
+# 它内部存的就是 commit hash。
+git tag v1.0.0 
+
+# • 例如，刚刚查到的日志里有一次提交：85595c9666bdb3ecf779627e2bd112a6b8645e90
+# • 针对该次历史提交（这里是 85595c9），创建一个名为 v0.53.0-stable 的轻量标签。
+git tag v0.53.0-stable 85595c9
+
+# (2).附注标签（Annotated Tag）:在团队协作和开源项目中，发布正式版本时必须使用这种方式。
+
+# • 在当前分支的最新提交上，创建一个名为 v1.0.0 的附注标签（Annotated Tag），
+#   并添加一段说明文字 "release v1.0.0"。
+git tag -a v1.0.0 -m "release v1.0.0"
+```
+ 
+
+常用操作：
+```bash
+# 查看tag
+git tag
+# 看tag对应的commit
+git show v1.0.0
+# 推送tag到远端
+git push origin v1.0.0
+# 删除本地tag
+git tag -d v1.0.0
+```
+
+补充：Tag **默认不会跟着分支 push**，需要单独推送；tag 是静态标记，一般打了版本 tag 就不移动它（和分支指针不一样，分支可以往前跑）。
+ 
